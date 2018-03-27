@@ -1,5 +1,6 @@
-# coding: utf-8
-lib = File.expand_path("../lib", __FILE__)
+# frozen_string_literal: true
+
+lib = File.expand_path("lib", __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require "action_policy/version"
 
@@ -9,8 +10,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Vladimir Dementyev"]
   spec.email         = ["dementiev.vm@gmail.com"]
 
-  spec.summary       = "WIP: Authorization framework"
-  spec.description   = "WIP: Authorization framework"
+  spec.summary       = "Authorization framework for Ruby/Rails application"
+  spec.description   = "Authorization framework for Ruby/Rails application"
   spec.homepage      = "https://github.com/palkan/action-policy"
   spec.license       = "MIT"
 
@@ -21,6 +22,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.15"
-  spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "minitest", "~> 5.0"
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rubocop", "~> 0.51"
+  spec.add_development_dependency "rubocop-md", "~> 0.2"
 end
