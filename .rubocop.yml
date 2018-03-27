@@ -1,0 +1,61 @@
+require:
+  - rubocop-md
+
+AllCops:
+  Include:
+    - 'lib/**/*.rb'
+    - 'lib/**/*.rake'
+    - 'test/**/*.rb'
+  Exclude:
+    - 'bin/**/*'
+    - 'gemfiles/**/*'
+    - 'test/dummy/**/*'
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+  DisplayCopNames: true
+  StyleGuideCopsOnly: false
+  TargetRubyVersion: 2.3
+
+Rails:
+  Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Naming/FileName:
+  Exclude:
+   - 'Rakefile'
+   - 'Gemfile'
+   - '**/*.md'
+
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/Documentation:
+  Exclude:
+    - 'test/**/*.rb'
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Layout/SpaceInsideStringInterpolation:
+  EnforcedStyle: no_space
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 100
+
+Metrics/AbcSize:
+  Exclude:
+    - 'test/**/*.rb'
