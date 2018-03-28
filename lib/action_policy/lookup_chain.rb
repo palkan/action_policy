@@ -1,6 +1,11 @@
 # frozen_string_literal: true
 
 module ActionPolicy
+  # LookupChain contains _resolvers_ to determine a policy
+  # for a record (with additional options).
+  #
+  # You can modify the `LookupChain.chain` (for example, to add
+  # custom resolvers).
   module LookupChain
     unless "".respond_to?(:safe_constantize)
       require "action_policy/ext/string_constantize"
@@ -31,7 +36,7 @@ module ActionPolicy
     }
 
     # Infer from class name
-    INFER_FROM_CLASS = -> (record, _) {
+    INFER_FROM_CLASS = ->(record, _) {
       record_class = record.is_a?(::Class) ? record : record.class
       "#{record_class}Policy".safe_constantize
     }

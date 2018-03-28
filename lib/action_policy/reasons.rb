@@ -60,23 +60,22 @@ module ActionPolicy
       super
     end
 
-    # Returns a result of applying the specified rule to the specified target.
-    # Under the hood a policy class for target is resolved
+    # Returns a result of applying the specified rule to the specified record.
+    # Under the hood a policy class for record is resolved
     # (unless it's explicitly set through `with` option).
     #
-    # If target is `nil` then we uses the current policy.
+    # If record is `nil` then we uses the current policy.
     #
     # rubocop: disable Metrics/MethodLength
-    def allowed_to?(rule, target = nil, with: nil)
+    def allowed_to?(rule, record = :__undef__, **options)
       policy = nil
 
       succeed =
-        if target.nil? && with.nil?
+        if record == :__undef__
           policy = self
           with_clean_reasons { public_send(rule) }
         else
-          policy_class = with || ::ActionPolicy.lookup(target)
-          policy = policy_class.new(verification_context)
+          policy = policy_for(record: record, **options)
 
           policy.apply(rule)
         end

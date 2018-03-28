@@ -7,7 +7,7 @@
 module ActionPolicy
   class Error < StandardError; end
 
-  # Raise when Action Policy fails to find a policy class for a record.
+  # Raised when Action Policy fails to find a policy class for a record.
   class NotFound < Error
     attr_reader :target, :message
 
@@ -17,7 +17,16 @@ module ActionPolicy
     end
   end
 
-  class Unauthorized < Error; end
+  # Raised when `authorize!` check fails
+  class Unauthorized < Error
+    attr_reader :policy, :rule, :reasons
+
+    def initialize(policy, rule)
+      @policy = policy.class
+      @rule = rule
+      @reasons = policy.reasons
+    end
+  end
 
   require "action_policy/version"
   require "action_policy/base"

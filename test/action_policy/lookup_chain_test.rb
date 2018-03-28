@@ -13,7 +13,7 @@ class LookupB
   end
 
   def policy_class
-    @type == 'a' ? LookupAPolicy : LookupBPolicy
+    @type == "a" ? LookupAPolicy : LookupBPolicy
   end
 end
 
@@ -36,12 +36,12 @@ class TestLookupChain < Minitest::Test
   end
 
   def test_instance_defined
-    a = LookupB.new('a')
+    a = LookupB.new("a")
     policy = ActionPolicy.lookup(a)
 
     assert_equal LookupAPolicy, policy
 
-    b = LookupB.new('b')
+    b = LookupB.new("b")
     policy = ActionPolicy.lookup(b)
 
     assert_equal LookupBPolicy, policy

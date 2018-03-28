@@ -21,18 +21,17 @@ class TestFailuresPolicy < Minitest::Test
   end
 end
 
-class UserFailuresPolicy < ActionPolicy::Base
-end
+class UserFailuresPolicy < ActionPolicy::Base; end
 
 class ComplexFailuresTestPolicy < ActionPolicy::Base
   verify :user
 
   def kill?
-    (user == "admin") && allowed_to?(:manage?, user, with: UserFailuresPolicy)
+    (user.name == "admin") && allowed_to?(:manage?, user, with: UserFailuresPolicy)
   end
 
   def save?
-    allowed_to?(:kill?) || allowed_to?(:create?, with: UserFailuresPolicy)
+    allowed_to?(:kill?) || allowed_to?(:create?, user)
   end
 
   def feed?
@@ -41,8 +40,12 @@ class ComplexFailuresTestPolicy < ActionPolicy::Base
 end
 
 class TestComplexFailuresPolicy < Minitest::Test
+  User = Struct.new(:name)
+
+  class UserPolicy < ActionPolicy::Base; end
+
   def test_and_condition_first_main_clause_failure
-    policy = ComplexFailuresTestPolicy.new user: "guest"
+    policy = ComplexFailuresTestPolicy.new user: User.new("guest")
 
     refute policy.apply(:kill?)
     reasons = policy.reasons
@@ -51,7 +54,7 @@ class TestComplexFailuresPolicy < Minitest::Test
   end
 
   def test_and_condition_nested_check_failure
-    policy = ComplexFailuresTestPolicy.new user: "admin"
+    policy = ComplexFailuresTestPolicy.new user: User.new("admin")
 
     refute policy.apply(:kill?)
     reasons = policy.reasons
@@ -62,7 +65,7 @@ class TestComplexFailuresPolicy < Minitest::Test
   end
 
   def test_or_condition
-    policy = ComplexFailuresTestPolicy.new user: "guest"
+    policy = ComplexFailuresTestPolicy.new user: User.new("guest")
 
     refute policy.apply(:save?)
     reasons = policy.reasons
@@ -72,12 +75,12 @@ class TestComplexFailuresPolicy < Minitest::Test
     assert_equal ComplexFailuresTestPolicy, reasons.first.policy
     assert_equal :kill?, reasons.first.rule
 
-    assert_equal UserFailuresPolicy, reasons.last.policy
+    assert_equal UserPolicy, reasons.last.policy
     assert_equal :create?, reasons.last.rule
   end
 
   def test_or_condition_2
-    policy = ComplexFailuresTestPolicy.new user: "admin"
+    policy = ComplexFailuresTestPolicy.new user: User.new("admin")
 
     refute policy.apply(:save?)
     reasons = policy.reasons
@@ -87,7 +90,7 @@ class TestComplexFailuresPolicy < Minitest::Test
     assert_equal ComplexFailuresTestPolicy, reasons.first.policy
     assert_equal :kill?, reasons.first.rule
 
-    assert_equal UserFailuresPolicy, reasons.last.policy
+    assert_equal UserPolicy, reasons.last.policy
     assert_equal :create?, reasons.last.rule
   end
 end

@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+module ActionPolicy
+  # Adds `policy_for` method
+  module PolicyFor
+    # Returns policy instance for the record.
+    def policy_for(record:, with: nil)
+      policy_class = with || ::ActionPolicy.lookup(record)
+      policy_class.new(authorization_context).set(record)
+    end
+
+    def authorization_context
+      raise NotImplementedError, "Please, define `authorization_context` method!"
+    end
+  end
+end

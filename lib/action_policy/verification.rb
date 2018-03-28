@@ -36,11 +36,11 @@ module ActionPolicy
   module Verification
     def self.included(base)
       base.extend ClassMethods
-      base.attr_reader :verification_context
+      base.attr_reader :authorization_context
     end
 
     def initialize(params = {})
-      @verification_context = {}
+      @authorization_context = {}
 
       self.class.verification_targets.each do |id, opts|
         raise VerificationTargetMissing, id unless params.key?(id)
@@ -49,10 +49,10 @@ module ActionPolicy
 
         raise VerificationTargetMissing, id if val.nil? && opts[:allow_nil] != true
 
-        verification_context[id] = instance_variable_set("@#{id}", val)
+        authorization_context[id] = instance_variable_set("@#{id}", val)
       end
 
-      verification_context.freeze
+      authorization_context.freeze
     end
 
     module ClassMethods # :nodoc:

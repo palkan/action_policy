@@ -47,6 +47,9 @@ Style/RegexpLiteral:
 Style/NumericPredicate:
   Enabled: false
 
+Style/Lambda:
+  Enabled: false
+
 Layout/SpaceInsideStringInterpolation:
   EnforcedStyle: no_space
 
