@@ -7,14 +7,27 @@
 module ActionPolicy
   class Error < StandardError; end
 
+  # Raise when Action Policy fails to find a policy class for a record.
+  class NotFound < Error
+    attr_reader :target, :message
+
+    def initialize(target)
+      @target = target
+      @message = "Couldn't find policy class for #{target.inspect}"
+    end
+  end
+
+  class Unauthorized < Error; end
+
   require "action_policy/version"
   require "action_policy/base"
+  require "action_policy/lookup_chain"
 
   class << self
     # Find a policy class for a target
     def lookup(target, **options)
-      # TODO: add lookup chain, replace policy_class with policy_name (symbol)
-      # (to make it work with namespaces)
+      LookupChain.call(target, **options) ||
+        raise(NotFound, target)
     end
   end
 end
