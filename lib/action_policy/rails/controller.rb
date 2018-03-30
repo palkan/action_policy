@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "active_support/concern"
-require "action_policy/policy_for"
+require "action_policy/behaviour"
 
 module ActionPolicy
   # Raised when `authorize!` hasn't been called for action
@@ -17,14 +17,13 @@ module ActionPolicy
   module Controller
     extend ActiveSupport::Concern
 
-    include PolicyFor
+    include ActionPolicy::Behaviour
 
     included do
       helper_method :allowed_to?
 
       attr_writer :authorize_count
 
-      private :authorization_context
       protected :authorize_count=, :authorize_count
     end
 
@@ -43,13 +42,11 @@ module ActionPolicy
       record = controller_name.classify.safe_constantize if
         record == :__undef__
 
-      policy = policy_for(record: record, **options)
+      to ||= "#{action_name}?"
 
-      rule = to || "#{action_name}?"
+      super(record, to: to, **options)
 
       self.authorize_count += 1
-
-      policy.apply(rule) || raise(::ActionPolicy::Unauthorized.new(policy, rule))
     end
 
     # Checks that an activity is allowed for the current context (e.g. user).
@@ -62,19 +59,7 @@ module ActionPolicy
       record = controller_name.classify.safe_constantize if
         record == :__undef__
 
-      policy = policy_for(record: record, **options)
-
-      policy.apply(rule)
-    end
-
-    def authorization_context
-      return @__authorization_context if
-        instance_variable_defined?(:@__authorization_context)
-
-      @__authorization_context = self.class.authorization_targets
-                                     .each_with_object({}) do |(key, meth), obj|
-        obj[key] = public_send(meth)
-      end
+      super(rule, record, **options)
     end
 
     def verify_authorized
@@ -87,24 +72,6 @@ module ActionPolicy
     end
 
     class_methods do
-      # Configure authorization context.
-      #
-      # For example:
-      #
-      #   class ApplicationController < ActionController::Base
-      #     # Pass the value of `current_user` to authorization as `user`
-      #     authorize :current_user, as: :user
-      #   end
-      #
-      #   # Assuming that in your ApplicationPolicy
-      #   class ApplicationPolicy < ActionPolicy::Base
-      #     verify :user
-      #   end
-      def authorize(meth, as: nil)
-        key = as || meth
-        authorization_targets[key] = meth
-      end
-
       # Adds after_action callback to check that
       # authorize! method has been called.
       def verify_authorized(**options)
@@ -114,17 +81,6 @@ module ActionPolicy
       # Skips verify_authorized after_action callback.
       def skip_verify_authorized(**options)
         skip_after_action :verify_authorized, **options\
-      end
-
-      def authorization_targets
-        return @authorization_targets if instance_variable_defined?(:@authorization_targets)
-
-        @authorization_targets =
-          if superclass.respond_to?(:authorization_targets)
-            superclass.authorization_targets.dup
-          else
-            {}
-          end
       end
     end
   end
