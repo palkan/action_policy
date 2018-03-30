@@ -1,0 +1,6 @@
+<% @users.each do |user| %>
+  <li><%= user.name %> (<%= allowed_to?(:edit?, user) ? "editable" : "read-only" %>)</li>
+<% end %>
+<% if allowed_to?(:create?) %>
+  <button>Create User</button>
+<% end %>

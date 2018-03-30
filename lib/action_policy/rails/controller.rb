@@ -13,6 +13,8 @@ module ActionPolicy
     include PolicyFor
 
     included do
+      helper_method :allowed_to?
+
       private :authorization_context
     end
 
@@ -45,7 +47,7 @@ module ActionPolicy
     #
     # Returns true of false.
     def allowed_to?(rule, record = :__undef__, **options)
-      record ||= controller_name.classify.safe_constantize if
+      record = controller_name.classify.safe_constantize if
         record == :__undef__
 
       policy = policy_for(record: record, **options)
