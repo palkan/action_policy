@@ -86,3 +86,57 @@ class TestSimpleControllerIntegration < ActionController::TestCase
     assert_equal "Read-only", response.body
   end
 end
+
+class TestControllerHookIntegration < ActionController::TestCase
+  class UsersController < ActionController::Base
+    authorize :current_user, as: :user
+
+    verify_authorized except: [:index]
+
+    skip_verify_authorized only: [:show]
+
+    def index
+      render plain: "OK"
+    end
+
+    def new
+      authorize!
+      render plain: "OK"
+    end
+
+    def create
+      render plain: "OK"
+    end
+
+    def show
+      render plain: "OK"
+    end
+
+    def current_user
+      @current_user ||= User.new("admin")
+    end
+  end
+
+  tests UsersController
+
+  def test_non_verified_index
+    get :index
+    assert_equal "OK", response.body
+  end
+
+  def test_verified_new
+    get :new
+    assert_equal "OK", response.body
+  end
+
+  def test_missing_authorize_create
+    assert_raises(ActionPolicy::UnauthorizedAction) do
+      get :create
+    end
+  end
+
+  def test_skipped_verify_show
+    get :show
+    assert_equal "OK", response.body
+  end
+end

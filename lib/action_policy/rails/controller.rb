@@ -4,6 +4,13 @@ require "active_support/concern"
 require "action_policy/policy_for"
 
 module ActionPolicy
+  # Raised when `authorize!` hasn't been called for action
+  class UnauthorizedAction < Error
+    def initialize(controller, action)
+      super("Action '#{controller}##{action}' hasn't been authorized")
+    end
+  end
+
   # Controller concern.
   # Add `authorize!` and `allowed_to?` methods,
   # provide `verify_authorized` hook.
@@ -15,7 +22,10 @@ module ActionPolicy
     included do
       helper_method :allowed_to?
 
+      attr_writer :authorize_count
+
       private :authorization_context
+      protected :authorize_count=, :authorize_count
     end
 
     # Authorize action against a policy.
@@ -36,6 +46,8 @@ module ActionPolicy
       policy = policy_for(record: record, **options)
 
       rule = to || "#{action_name}?"
+
+      self.authorize_count += 1
 
       policy.apply(rule) || raise(::ActionPolicy::Unauthorized.new(policy, rule))
     end
@@ -65,6 +77,15 @@ module ActionPolicy
       end
     end
 
+    def verify_authorized
+      raise UnauthorizedAction.new(controller_path, action_name) if
+        authorize_count.zero?
+    end
+
+    def authorize_count
+      @authorize_count ||= 0
+    end
+
     class_methods do
       # Configure authorization context.
       #
@@ -82,6 +103,17 @@ module ActionPolicy
       def authorize(meth, as: nil)
         key = as || meth
         authorization_targets[key] = meth
+      end
+
+      # Adds after_action callback to check that
+      # authorize! method has been called.
+      def verify_authorized(**options)
+        after_action :verify_authorized, **options
+      end
+
+      # Skips verify_authorized after_action callback.
+      def skip_verify_authorized(**options)
+        skip_after_action :verify_authorized, **options\
       end
 
       def authorization_targets
