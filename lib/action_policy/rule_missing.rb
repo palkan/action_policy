@@ -6,11 +6,11 @@ module ActionPolicy
   # (thus we could avoid `method_missing` later)
   module RuleMissing
     def respond_to_missing?(meth, include_private = false)
-      meth.to_s.ends_with?("?") ? true : super
+      meth.to_s.end_with?("?") ? true : super
     end
 
     def method_missing(meth, *_args, &block)
-      return super unless meth.to_s.ends_with?("?")
+      return super unless meth.to_s.end_with?("?")
 
       self.class.class_eval do
         alias_method meth, :manage?
