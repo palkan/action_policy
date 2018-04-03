@@ -73,7 +73,7 @@ module ActionPolicy
       succeed =
         if record == :__undef__
           policy = self
-          with_clean_reasons { public_send(rule) }
+          with_clean_reasons { apply(rule) }
         else
           policy = policy_for(record: record, **options)
 

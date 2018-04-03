@@ -2,7 +2,9 @@
 
 require "test_helper"
 
-class DefaultsTestPolicy < ActionPolicy::Base
+class DefaultsTestPolicy
+  include ActionPolicy::Core
+  include ActionPolicy::Defaults
 end
 
 class TestPolicyDefaults < Minitest::Test

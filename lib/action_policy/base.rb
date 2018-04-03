@@ -8,11 +8,13 @@ module ActionPolicy
     require "action_policy/policy_for"
     require "action_policy/verification"
     require "action_policy/reasons"
+    require "action_policy/apply_cache"
 
     include Core
     include Defaults
     include PolicyFor
     prepend Verification
     prepend Reasons
+    prepend ApplyCache
   end
 end
