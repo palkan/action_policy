@@ -41,3 +41,67 @@ class TestViewsIntegration < ActionController::TestCase
     refute_includes response.body, "Create User"
   end
 end
+
+class TestControllerViewsMemoization < ActionController::TestCase
+  class UserPolicy < ::UserPolicy
+    class << self
+      def policies
+        @policies ||= []
+      end
+
+      def reset
+        @policies = []
+      end
+    end
+
+    def initialize(*)
+      super
+      self.class.policies << self
+    end
+  end
+
+  class User < ::User
+    def policy_class
+      UserPolicy
+    end
+
+    def cache_key
+      "user/#{name}"
+    end
+  end
+
+  class UsersController < ActionController::Base
+    self.view_paths = File.expand_path("./views/users", __dir__)
+
+    authorize :current_user, as: :user
+
+    def index
+      @users = [
+        User.new("guest"),
+        User.new("guest")
+      ]
+
+      authorize! @users.first, to: :update?
+
+      render template: "index"
+    end
+
+    def current_user
+      @current_user ||= User.new(params[:user])
+    end
+  end
+
+  tests UsersController
+
+  def test_memoize_policies
+    get :index, params: { user: "admin" }
+
+    assert_includes response.body, "guest (editable)"
+    assert_includes response.body, "guest (editable)"
+    assert_includes response.body, "Create User"
+
+    # One for admin user and one for class (`create?`)
+    # TODO: change to 2 when namespaces support will be added
+    assert_equal 1, UserPolicy.policies.size
+  end
+end
