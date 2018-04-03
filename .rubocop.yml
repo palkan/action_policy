@@ -62,3 +62,7 @@ Metrics/LineLength:
 Metrics/AbcSize:
   Exclude:
     - 'test/**/*.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'

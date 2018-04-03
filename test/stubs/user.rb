@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class User
+  include Comparable
+
   attr_reader :name
 
   def initialize(name)
@@ -9,6 +11,11 @@ class User
 
   def admin?
     name == "admin"
+  end
+
+  def <=>(other)
+    return super unless other.is_a?(User)
+    name <=> other.name
   end
 end
 
