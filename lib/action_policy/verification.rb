@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module ActionPolicy
-  class VerificationTargetMissing < Error # :nodoc:
-    MESSAGE_TEMPLATE = "Missing policy verification target: %s"
+  class VerificationContextMissing < Error # :nodoc:
+    MESSAGE_TEMPLATE = "Missing policy verification context: %s"
 
     attr_reader :message
 
@@ -34,20 +34,22 @@ module ActionPolicy
   #
   #   ApplicantPolicy.new(user: user, account: account)
   module Verification
-    def self.included(base)
+    def self.prepended(base)
       base.extend ClassMethods
       base.attr_reader :authorization_context
     end
 
-    def initialize(params = {})
+    def initialize(record, **params)
+      super(record)
+
       @authorization_context = {}
 
       self.class.verification_targets.each do |id, opts|
-        raise VerificationTargetMissing, id unless params.key?(id)
+        raise VerificationContextMissing, id unless params.key?(id)
 
         val = params.fetch(id)
 
-        raise VerificationTargetMissing, id if val.nil? && opts[:allow_nil] != true
+        raise VerificationContextMissing, id if val.nil? && opts[:allow_nil] != true
 
         authorization_context[id] = instance_variable_set("@#{id}", val)
       end

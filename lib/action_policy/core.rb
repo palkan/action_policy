@@ -3,12 +3,10 @@
 module ActionPolicy
   # Core policy API
   module Core
-    attr_reader :object
+    attr_reader :record
 
-    # Sets authorization object
-    def set(object)
-      @object = object
-      self
+    def initialize(record)
+      @record = record
     end
 
     # Returns a result of applying the specified rule.

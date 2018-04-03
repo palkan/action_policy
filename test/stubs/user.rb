@@ -24,6 +24,6 @@ class UserPolicy < ActionPolicy::Base
   end
 
   def manage?
-    user.admin? && !object.admin?
+    user.admin? && !record.admin?
   end
 end

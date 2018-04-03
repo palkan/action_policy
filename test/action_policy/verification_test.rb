@@ -12,38 +12,38 @@ end
 
 class VerificationTest < Minitest::Test
   def test_target_is_missing
-    e = assert_raises ActionPolicy::VerificationTargetMissing do
-      VerifyTestPolicy.new
+    e = assert_raises ActionPolicy::VerificationContextMissing do
+      VerifyTestPolicy.new nil
     end
 
-    assert_equal "Missing policy verification target: account", e.message
+    assert_equal "Missing policy verification context: account", e.message
   end
 
   def test_target_is_present
-    policy = VerifyTestPolicy.new(account: "EvilMartians")
+    policy = VerifyTestPolicy.new(nil, account: "EvilMartians")
     assert_equal "EvilMartians", policy.account
   end
 
   def test_target_is_nil
-    assert_raises ActionPolicy::VerificationTargetMissing do
-      VerifyTestPolicy.new(account: nil)
+    assert_raises ActionPolicy::VerificationContextMissing do
+      VerifyTestPolicy.new(nil, account: nil)
     end
   end
 
   def test_target_inheritance
-    e = assert_raises ActionPolicy::VerificationTargetMissing do
-      SubVerifyTestPolicy.new(account: "EvilMartians")
+    e = assert_raises ActionPolicy::VerificationContextMissing do
+      SubVerifyTestPolicy.new(nil, account: "EvilMartians")
     end
 
-    assert_equal "Missing policy verification target: role", e.message
+    assert_equal "Missing policy verification context: role", e.message
 
-    policy = SubVerifyTestPolicy.new(account: "EvilMartians", role: "human")
+    policy = SubVerifyTestPolicy.new(nil, account: "EvilMartians", role: "human")
     assert_equal "EvilMartians", policy.account
     assert_equal "human", policy.role
   end
 
   def test_context_allow_nil
-    policy = SubVerifyTestPolicy.new(account: "EvilMartians", role: nil)
+    policy = SubVerifyTestPolicy.new(nil, account: "EvilMartians", role: nil)
     assert_equal "EvilMartians", policy.account
     assert_nil policy.role
   end

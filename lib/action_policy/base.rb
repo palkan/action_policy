@@ -12,7 +12,7 @@ module ActionPolicy
     include Core
     include Defaults
     include PolicyFor
-    include Verification
+    prepend Verification
     prepend Reasons
   end
 end

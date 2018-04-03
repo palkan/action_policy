@@ -7,7 +7,7 @@ end
 
 class TestPolicyDefaults < Minitest::Test
   def setup
-    @policy = DefaultsTestPolicy.new
+    @policy = DefaultsTestPolicy.new nil
   end
 
   def test_crud_rules

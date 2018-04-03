@@ -6,7 +6,7 @@ module ActionPolicy
     # Returns policy instance for the record.
     def policy_for(record:, with: nil)
       policy_class = with || ::ActionPolicy.lookup(record)
-      policy_class.new(authorization_context).set(record)
+      policy_class.new(record, **authorization_context)
     end
 
     def authorization_context
