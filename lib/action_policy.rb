@@ -31,4 +31,6 @@ module ActionPolicy
         raise(NotFound, target)
     end
   end
+
+  require "action_policy/railtie" if defined?(::Rails)
 end
