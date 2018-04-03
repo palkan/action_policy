@@ -43,7 +43,7 @@ class TestBehaviour < Minitest::Test
     end
 
     assert_equal UserPolicy, e.policy
-    assert_equal :update?, e.rule
+    assert_equal :manage?, e.rule
   end
 
   def test_allowed_to

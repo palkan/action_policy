@@ -10,6 +10,8 @@ module ActionPolicy
   module Behaviour
     include ActionPolicy::PolicyFor
 
+    FALLBACK_RULE = :manage?
+
     def self.included(base)
       # Handle ActiveSupport::Concern differently
       if base.respond_to?(:class_methods)
@@ -29,7 +31,8 @@ module ActionPolicy
     # Raises `ActionPolicy::Unauthorized` if check failed.
     def authorize!(record, to:, **options)
       policy = policy_for(record: record, **options)
-      policy.apply(to) || raise(::ActionPolicy::Unauthorized.new(policy, to))
+
+      Authorizer.call(policy, authorization_rule_for(policy, to))
     end
 
     # Checks that an activity is allowed for the current context (e.g. user).
@@ -37,7 +40,7 @@ module ActionPolicy
     # Returns true of false.
     def allowed_to?(rule, record, **options)
       policy = policy_for(record: record, **options)
-      policy.apply(rule)
+      policy.apply(authorization_rule_for(policy, rule))
     end
 
     def authorization_context
@@ -48,6 +51,12 @@ module ActionPolicy
                                      .each_with_object({}) do |(key, meth), obj|
         obj[key] = public_send(meth)
       end
+    end
+
+    # Check that rule is defined for policy,
+    # otherwise fallback to :manage? rule.
+    def authorization_rule_for(policy, rule)
+      policy.respond_to?(rule) ? rule : FALLBACK_RULE
     end
 
     module ClassMethods # :nodoc:

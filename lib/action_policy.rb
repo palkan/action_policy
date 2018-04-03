@@ -17,20 +17,10 @@ module ActionPolicy
     end
   end
 
-  # Raised when `authorize!` check fails
-  class Unauthorized < Error
-    attr_reader :policy, :rule, :reasons
-
-    def initialize(policy, rule)
-      @policy = policy.class
-      @rule = rule
-      @reasons = policy.reasons
-    end
-  end
-
   require "action_policy/version"
   require "action_policy/base"
   require "action_policy/lookup_chain"
+  require "action_policy/authorizer"
   require "action_policy/behaviour"
 
   class << self
