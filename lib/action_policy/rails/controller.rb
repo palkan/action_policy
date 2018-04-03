@@ -44,7 +44,7 @@ module ActionPolicy
       record = controller_name.classify.safe_constantize if
         record == :__undef__
 
-      to ||= "#{action_name}?"
+      to ||= :"#{action_name}?"
 
       super(record, to: to, **options)
 

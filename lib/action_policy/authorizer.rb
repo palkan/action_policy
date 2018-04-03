@@ -8,7 +8,8 @@ module ActionPolicy
     def initialize(policy, rule)
       @policy = policy.class
       @rule = rule
-      @reasons = policy.reasons
+      # Reasons module could be not included
+      @reasons = policy.reasons if policy.respond_to?(:reasons)
     end
   end
 
