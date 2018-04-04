@@ -3,8 +3,8 @@
 require "test_helper"
 
 class DefaultsTestPolicy
-  include ActionPolicy::Core
-  include ActionPolicy::Defaults
+  include ActionPolicy::Policy::Core
+  include ActionPolicy::Policy::Defaults
 end
 
 class TestPolicyDefaults < Minitest::Test

@@ -2,7 +2,7 @@
 
 require "active_support/concern"
 require "action_policy/behaviour"
-require "action_policy/memoize"
+require "action_policy/behaviours/memoize"
 
 module ActionPolicy
   # Raised when `authorize!` hasn't been called for action
@@ -19,7 +19,7 @@ module ActionPolicy
     extend ActiveSupport::Concern
 
     include ActionPolicy::Behaviour
-    include ActionPolicy::Memoize
+    include ActionPolicy::Behaviours::Memoize
 
     included do
       helper_method :allowed_to?

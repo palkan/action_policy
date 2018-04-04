@@ -2,10 +2,10 @@
 
 require "test_helper"
 
-class TestApplyCache < Minitest::Test
+class TestCachedApply < Minitest::Test
   class TestPolicy
-    include ActionPolicy::Core
-    include ActionPolicy::ApplyCache
+    include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::CachedApply
 
     attr_reader :managed_count
 

@@ -36,7 +36,7 @@ class TestMemoize < Minitest::Test
 
   class ChatChannel
     include ActionPolicy::Behaviour
-    prepend ActionPolicy::Memoize
+    prepend ActionPolicy::Behaviours::Memoize
 
     attr_reader :user
 

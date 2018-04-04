@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require "action_policy/policy_for"
+require "action_policy/behaviours/policy_for"
+require "action_policy/behaviours/memoize"
 
 module ActionPolicy
   # Provides `authorize!` and `allowed_to?` methods and
@@ -8,7 +9,7 @@ module ActionPolicy
   #
   # Could be included anywhere to perform authorization.
   module Behaviour
-    include ActionPolicy::PolicyFor
+    include ActionPolicy::Behaviours::PolicyFor
 
     FALLBACK_RULE = :manage?
 
