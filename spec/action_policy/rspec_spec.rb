@@ -113,7 +113,7 @@ describe "ActionPolicy RSpec matchers" do
             .to be_authorized_to(:manage?, target).with(UserPolicy)
         end.to raise_error(
           RSpec::Expectations::ExpectationNotMetError,
-          /expected.+to be authorized with UserPolicy#manage?/
+          %r{expected.+to be authorized with UserPolicy#manage?}
         )
       end
     end
