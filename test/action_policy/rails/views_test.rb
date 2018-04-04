@@ -101,7 +101,6 @@ class TestControllerViewsMemoization < ActionController::TestCase
     assert_includes response.body, "Create User"
 
     # One for admin user and one for class (`create?`)
-    # TODO: change to 2 when namespaces support will be added
-    assert_equal 1, UserPolicy.policies.size
+    assert_equal 2, UserPolicy.policies.size
   end
 end

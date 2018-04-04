@@ -19,6 +19,7 @@ module ActionPolicy
 
     include ActionPolicy::Behaviour
     include ActionPolicy::Behaviours::Memoized
+    prepend ActionPolicy::Behaviours::Namespaced
 
     included do
       helper_method :allowed_to?

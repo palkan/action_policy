@@ -26,6 +26,18 @@ end
 class LookupAPolicy; end
 class LookupBPolicy; end
 
+module LookupNamespace
+  class LookupAPolicy; end
+
+  module NestedNamespace; end
+end
+
+class LookupAA
+  def self.policy_name
+    :LookupAPolicy
+  end
+end
+
 class TestLookupChain < Minitest::Test
   def test_not_found
     e = assert_raises(ActionPolicy::NotFound) do
@@ -63,5 +75,41 @@ class TestLookupChain < Minitest::Test
     a_nested = LookupA::NestedLookup.new
 
     assert_equal LookupA::NestedLookupPolicy, ActionPolicy.lookup(a_nested)
+  end
+
+  def test_with_namespace
+    a = LookupA.new
+
+    assert_equal(
+      LookupNamespace::LookupAPolicy,
+      ActionPolicy.lookup(a, namespace: LookupNamespace)
+    )
+  end
+
+  def test_namespace_fallback_to_global
+    b = LookupB.new("b")
+
+    assert_equal(
+      LookupBPolicy,
+      ActionPolicy.lookup(b, namespace: LookupNamespace.name)
+    )
+  end
+
+  def test_namespace_fallback_to_intermidiate_namespace
+    a = LookupA.new
+
+    assert_equal(
+      LookupNamespace::LookupAPolicy,
+      ActionPolicy.lookup(a, namespace: LookupNamespace::NestedNamespace)
+    )
+  end
+
+  def test_lookup_namespace_by_policy_name
+    a = LookupAA.new
+
+    assert_equal(
+      LookupNamespace::LookupAPolicy,
+      ActionPolicy.lookup(a, namespace: LookupNamespace::NestedNamespace)
+    )
   end
 end

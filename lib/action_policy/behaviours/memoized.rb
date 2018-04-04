@@ -19,14 +19,13 @@ module ActionPolicy
     #
     #   policy.equal?(policy_for(record, with: CustomPolicy)) #=> false
     module Memoized
-      def policy_for(record:, with: nil)
-        policy_class = with || ::ActionPolicy.lookup(record)
-        __policy_memoize__(policy_class, record) { super(record: record, with: policy_class) }
+      def policy_for(record:, **opts)
+        __policy_memoize__(record, **opts) { super(record: record, **opts) }
       end
 
-      def __policy_memoize__(klass, record)
+      def __policy_memoize__(record, with: nil, namespace: nil)
         record_key = record.respond_to?(:cache_key) ? record.cache_key : record.object_id
-        cache_key = "#{klass}/#{record_key}"
+        cache_key = "#{namespace}/#{with}/#{record_key}"
 
         return __policies_cache__[cache_key] if
           __policies_cache__.key?(cache_key)

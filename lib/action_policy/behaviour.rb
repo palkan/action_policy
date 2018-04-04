@@ -2,6 +2,7 @@
 
 require "action_policy/behaviours/policy_for"
 require "action_policy/behaviours/memoized"
+require "action_policy/behaviours/namespaced"
 
 module ActionPolicy
   # Provides `authorize!` and `allowed_to?` methods and

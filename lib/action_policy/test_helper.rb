@@ -19,6 +19,7 @@ module ActionPolicy
     #       get :show, id: user.id
     #     end
     #
+    # rubocop: disable Metrics/MethodLength
     def assert_authorized_to(rule, target, with: nil)
       raise ArgumentError, "Block is required" unless block_given?
 
@@ -36,9 +37,10 @@ module ActionPolicy
         actual_calls.any? { |call| call.matches?(policy, rule, target) },
         "Expected #{target.inspect} to be authorized with #{policy}##{rule}, " \
         "but no such authorization has been made.\n" \
-        "Registered authorizations: #{actual_calls.empty? ? 'none' : actual_calls.map(&:inspect).join(',')}"
+        "Registered authorizations: " \
+        "#{actual_calls.empty? ? 'none' : actual_calls.map(&:inspect).join(',')}"
       )
     end
+    # rubocop: enable Metrics/MethodLength
   end
 end
-
