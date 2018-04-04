@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "action_policy/behaviours/policy_for"
-require "action_policy/behaviours/memoize"
+require "action_policy/behaviours/memoized"
 
 module ActionPolicy
   # Provides `authorize!` and `allowed_to?` methods and

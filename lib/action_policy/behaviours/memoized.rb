@@ -18,7 +18,7 @@ module ActionPolicy
     #   policy.equal?(policy) #=> true
     #
     #   policy.equal?(policy_for(record, with: CustomPolicy)) #=> false
-    module Memoize
+    module Memoized
       def policy_for(record:, with: nil)
         policy_class = with || ::ActionPolicy.lookup(record)
         __policy_memoize__(policy_class, record) { super(record: record, with: policy_class) }
