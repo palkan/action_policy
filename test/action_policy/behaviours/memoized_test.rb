@@ -47,17 +47,17 @@ class TestMemoize < Minitest::Test
     end
 
     def talk(user)
-      authorize! user, to: :update?
+      authorize! user, to: :update
       "OK"
     end
 
     def speak(user)
-      authorize! user, to: :update?, with: CustomPolicy
+      authorize! user, to: :update, with: CustomPolicy
       "OK"
     end
 
     def talk?(user)
-      allowed_to?(:talk?, user)
+      allowed_to?(:talk, user)
     end
   end
 

@@ -71,6 +71,8 @@ module ActionPolicy
       def allowed_to?(rule, record = :__undef__, **options)
         policy = nil
 
+        rule = :"#{rule}?"
+
         succeed =
           if record == :__undef__
             policy = self

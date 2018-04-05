@@ -44,7 +44,7 @@ module ActionPolicy
       record = controller_name.classify.safe_constantize if
         record == :__undef__
 
-      to ||= :"#{action_name}?"
+      to ||= action_name.to_sym
 
       super(record, to: to, **options)
 
@@ -82,7 +82,7 @@ module ActionPolicy
 
       # Skips verify_authorized after_action callback.
       def skip_verify_authorized(**options)
-        skip_after_action :verify_authorized, **options\
+        skip_after_action :verify_authorized, **options
       end
     end
   end

@@ -24,7 +24,7 @@ class TestSimpleControllerIntegration < ActionController::TestCase
     end
 
     def show
-      if allowed_to?(:update?, @user)
+      if allowed_to?(:update, @user)
         render plain: "OK"
       else
         render plain: "Read-only"

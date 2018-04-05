@@ -18,14 +18,14 @@ class TestBehaviour < Minitest::Test
     def talk(name)
       user = User.new(name)
 
-      authorize! user, to: :update?
+      authorize! user, to: :update
 
       "OK"
     end
 
     def talk?(name)
       user = User.new(name)
-      allowed_to?(:talk?, user)
+      allowed_to?(:talk, user)
     end
   end
 

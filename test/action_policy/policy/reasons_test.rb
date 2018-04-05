@@ -27,11 +27,11 @@ class ComplexFailuresTestPolicy < ActionPolicy::Base
   verify :user
 
   def kill?
-    (user.name == "admin") && allowed_to?(:manage?, user, with: UserFailuresPolicy)
+    (user.name == "admin") && allowed_to?(:manage, user, with: UserFailuresPolicy)
   end
 
   def save?
-    allowed_to?(:kill?) || allowed_to?(:create?, user)
+    allowed_to?(:kill) || allowed_to?(:create, user)
   end
 
   def feed?

@@ -34,7 +34,8 @@ module ActionPolicy
     def authorize!(record, to:, **options)
       policy = policy_for(record: record, **options)
 
-      Authorizer.call(policy, authorization_rule_for(policy, to))
+      rule = :"#{to}?"
+      Authorizer.call(policy, authorization_rule_for(policy, rule))
     end
 
     # Checks that an activity is allowed for the current context (e.g. user).
@@ -42,6 +43,7 @@ module ActionPolicy
     # Returns true of false.
     def allowed_to?(rule, record, **options)
       policy = policy_for(record: record, **options)
+      rule = :"#{rule}?"
       policy.apply(authorization_rule_for(policy, rule))
     end
 

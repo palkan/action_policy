@@ -29,17 +29,17 @@ class TestNamespaced < Minitest::Test
     end
 
     def talk(user)
-      authorize! user, to: :update?
+      authorize! user, to: :update
       "OK"
     end
 
     def speak(user)
-      authorize! user, to: :update?, with: CustomPolicy
+      authorize! user, to: :update, with: CustomPolicy
       "OK"
     end
 
     def notify_all(account)
-      authorize! account, to: :manage?
+      authorize! account, to: :manage
       "OK"
     end
   end
