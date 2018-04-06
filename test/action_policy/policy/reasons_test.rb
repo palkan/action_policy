@@ -3,11 +3,14 @@
 require "test_helper"
 
 class FailuresTestPolicy < ActionPolicy::Base
+  def index?
+    true
+  end
 end
 
 class TestFailuresPolicy < Minitest::Test
   def setup
-    @policy = FailuresTestPolicy.new nil
+    @policy = FailuresTestPolicy.new
   end
 
   def test_apply_success
@@ -45,7 +48,7 @@ class TestComplexFailuresPolicy < Minitest::Test
   class UserPolicy < ActionPolicy::Base; end
 
   def test_and_condition_first_main_clause_failure
-    policy = ComplexFailuresTestPolicy.new nil, user: User.new("guest")
+    policy = ComplexFailuresTestPolicy.new user: User.new("guest")
 
     refute policy.apply(:kill?)
     reasons = policy.reasons
@@ -54,7 +57,7 @@ class TestComplexFailuresPolicy < Minitest::Test
   end
 
   def test_and_condition_nested_check_failure
-    policy = ComplexFailuresTestPolicy.new nil, user: User.new("admin")
+    policy = ComplexFailuresTestPolicy.new user: User.new("admin")
 
     refute policy.apply(:kill?)
     reasons = policy.reasons
@@ -65,7 +68,7 @@ class TestComplexFailuresPolicy < Minitest::Test
   end
 
   def test_or_condition
-    policy = ComplexFailuresTestPolicy.new nil, user: User.new("guest")
+    policy = ComplexFailuresTestPolicy.new user: User.new("guest")
 
     refute policy.apply(:save?)
     reasons = policy.reasons
@@ -80,7 +83,7 @@ class TestComplexFailuresPolicy < Minitest::Test
   end
 
   def test_or_condition_2
-    policy = ComplexFailuresTestPolicy.new nil, user: User.new("admin")
+    policy = ComplexFailuresTestPolicy.new user: User.new("admin")
 
     refute policy.apply(:save?)
     reasons = policy.reasons

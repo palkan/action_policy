@@ -12,8 +12,6 @@ module ActionPolicy
   module Behaviour
     include ActionPolicy::Behaviours::PolicyFor
 
-    FALLBACK_RULE = :manage?
-
     def self.included(base)
       # Handle ActiveSupport::Concern differently
       if base.respond_to?(:class_methods)
@@ -58,7 +56,7 @@ module ActionPolicy
     # Check that rule is defined for policy,
     # otherwise fallback to :manage? rule.
     def authorization_rule_for(policy, rule)
-      policy.respond_to?(rule) ? rule : FALLBACK_RULE
+      policy.resolve_rule(rule)
     end
 
     module ClassMethods # :nodoc:

@@ -22,6 +22,10 @@ end
 class UserPolicy < ActionPolicy::Base
   verify :user
 
+  def index?
+    true
+  end
+
   def create?
     user.admin?
   end

@@ -61,12 +61,6 @@ module ActionPolicy
         super
       end
 
-      # Returns a result of applying the specified rule to the specified record.
-      # Under the hood a policy class for record is resolved
-      # (unless it's explicitly set through `with` option).
-      #
-      # If record is `nil` then we uses the current policy.
-      #
       # rubocop: disable Metrics/MethodLength
       def allowed_to?(rule, record = :__undef__, **options)
         policy = nil

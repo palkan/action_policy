@@ -9,15 +9,17 @@ end
 
 class TestPolicyDefaults < Minitest::Test
   def setup
-    @policy = DefaultsTestPolicy.new nil
+    @policy = DefaultsTestPolicy.new
   end
 
   def test_crud_rules
-    assert @policy.index?
-
+    refute @policy.index?
     refute @policy.create?
-    refute @policy.new?
-
     refute @policy.manage?
+  end
+
+  def test_aliases
+    assert_equal :manage?, @policy.resolve_rule(:destroy?)
+    assert_equal :create?, @policy.resolve_rule(:new?)
   end
 end

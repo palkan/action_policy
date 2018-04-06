@@ -8,14 +8,13 @@ module ActionPolicy
     require "action_policy/policy/verification"
     require "action_policy/policy/reasons"
     require "action_policy/policy/cached_apply"
-
-    require "action_policy/behaviours/policy_for"
+    require "action_policy/policy/aliases"
 
     include ActionPolicy::Policy::Core
     include ActionPolicy::Policy::Defaults
-    include ActionPolicy::Behaviours::PolicyFor
     prepend ActionPolicy::Policy::Verification
     prepend ActionPolicy::Policy::Reasons
     prepend ActionPolicy::Policy::CachedApply
+    prepend ActionPolicy::Policy::Aliases
   end
 end

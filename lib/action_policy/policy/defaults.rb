@@ -2,22 +2,26 @@
 
 module ActionPolicy
   module Policy
-    # Contains rules for standard CRUD operations:
-    # - `index?` (=`true`)
+    # Create default rules and aliases:
+    # - `index?` (=`false`)
     # - `create?` (=`false`)
     # - `new?` as an alias for `create?`
-    # - `manage?` as a fallback for all unspecified rules.
+    # - `manage?` as a fallback for all unspecified rules (default rule)
     module Defaults
+      def self.included(base)
+        # Aliases module is required for defaults
+        base.prepend Aliases unless base.ancestors.include?(Aliases)
+
+        base.default_rule :manage?
+        base.alias_rule :new?, to: :create?
+      end
+
       def index?
-        true
+        false
       end
 
       def create?
         false
-      end
-
-      def new?
-        create?
       end
 
       def manage?
