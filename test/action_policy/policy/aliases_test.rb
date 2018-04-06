@@ -4,7 +4,7 @@ require "test_helper"
 
 class AliasesRuleTestPolicy
   include ActionPolicy::Policy::Core
-  prepend ActionPolicy::Policy::Aliases
+  include ActionPolicy::Policy::Aliases
 
   default_rule :manage?
 

@@ -19,8 +19,18 @@ module ActionPolicy
     #
     #   policy.equal?(policy_for(record, with: CustomPolicy)) #=> false
     module Memoized
-      def policy_for(record:, **opts)
-        __policy_memoize__(record, **opts) { super(record: record, **opts) }
+      class << self
+        def prepended(base)
+          base.prepend InstanceMethods
+        end
+
+        alias included prepended
+      end
+
+      module InstanceMethods # :nodoc:
+        def policy_for(record:, **opts)
+          __policy_memoize__(record, **opts) { super(record: record, **opts) }
+        end
       end
 
       def __policy_memoize__(record, with: nil, namespace: nil)

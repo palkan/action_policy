@@ -54,31 +54,15 @@ module ActionPolicy
     #     end
     #   end
     module Reasons
+      class << self
+        def prepended(base)
+          base.prepend InstanceMethods
+        end
+
+        alias included prepended
+      end
+
       attr_reader :reasons
-
-      def apply(rule)
-        @reasons = FailureReasons.new
-        super
-      end
-
-      # rubocop: disable Metrics/MethodLength
-      def allowed_to?(rule, record = :__undef__, **options)
-        policy = nil
-
-        succeed =
-          if record == :__undef__
-            policy = self
-            with_clean_reasons { apply(rule) }
-          else
-            policy = policy_for(record: record, **options)
-
-            policy.apply(rule)
-          end
-
-        reasons.add(policy, rule) if reasons && !succeed
-        succeed
-      end
-      # rubocop: enable Metrics/MethodLength
 
       def with_clean_reasons # :nodoc:
         old_reasons = reasons
@@ -86,6 +70,32 @@ module ActionPolicy
         res = yield
         @reasons = old_reasons
         res
+      end
+
+      module InstanceMethods # :nodoc:
+        def apply(rule)
+          @reasons = FailureReasons.new
+          super
+        end
+
+        # rubocop: disable Metrics/MethodLength
+        def allowed_to?(rule, record = :__undef__, **options)
+          policy = nil
+
+          succeed =
+            if record == :__undef__
+              policy = self
+              with_clean_reasons { apply(rule) }
+            else
+              policy = policy_for(record: record, **options)
+
+              policy.apply(rule)
+            end
+
+          reasons.add(policy, rule) if reasons && !succeed
+          succeed
+        end
+        # rubocop: enable Metrics/MethodLength
       end
     end
   end

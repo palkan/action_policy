@@ -61,9 +61,19 @@ module ActionPolicy
       require "action_policy/ext/module_namespace"
       using ActionPolicy::Ext::ModuleNamespace
 
-      def authorization_namespace
-        return @authorization_namespace if instance_variable_defined?(:@authorization_namespace)
-        @authorization_namespace = self.class.namespace
+      class << self
+        def prepended(base)
+          base.prepend InstanceMethods
+        end
+
+        alias included prepended
+      end
+
+      module InstanceMethods # :nodoc:
+        def authorization_namespace
+          return @authorization_namespace if instance_variable_defined?(:@authorization_namespace)
+          @authorization_namespace = self.class.namespace
+        end
       end
     end
   end

@@ -22,13 +22,20 @@ module ActionPolicy
     module Aliases
       DEFAULT = :__default__
 
-      def self.prepended(base)
-        base.extend ClassMethods
+      class << self
+        def prepended(base)
+          base.extend ClassMethods
+          base.prepend InstanceMethods
+        end
+
+        alias included prepended
       end
 
-      def resolve_rule(activity)
-        return activity if respond_to?(activity)
-        self.class.lookup_alias(activity) || super
+      module InstanceMethods # :nodoc:
+        def resolve_rule(activity)
+          return activity if respond_to?(activity)
+          self.class.lookup_alias(activity) || super
+        end
       end
 
       module ClassMethods # :nodoc:

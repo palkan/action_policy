@@ -12,9 +12,9 @@ module ActionPolicy
 
     include ActionPolicy::Policy::Core
     include ActionPolicy::Policy::Defaults
-    prepend ActionPolicy::Policy::Verification
-    prepend ActionPolicy::Policy::Reasons
-    prepend ActionPolicy::Policy::CachedApply
-    prepend ActionPolicy::Policy::Aliases
+    include ActionPolicy::Policy::Verification
+    include ActionPolicy::Policy::Reasons
+    include ActionPolicy::Policy::CachedApply
+    include ActionPolicy::Policy::Aliases
   end
 end

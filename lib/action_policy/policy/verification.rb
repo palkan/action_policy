@@ -35,27 +35,35 @@ module ActionPolicy
     #
     #   ApplicantPolicy.new(user: user, account: account)
     module Verification
-      def self.prepended(base)
-        base.extend ClassMethods
-        base.attr_reader :authorization_context
-      end
-
-      def initialize(*args, **params)
-        super(*args)
-
-        @authorization_context = {}
-
-        self.class.verification_targets.each do |id, opts|
-          raise VerificationContextMissing, id unless params.key?(id)
-
-          val = params.fetch(id)
-
-          raise VerificationContextMissing, id if val.nil? && opts[:allow_nil] != true
-
-          authorization_context[id] = instance_variable_set("@#{id}", val)
+      class << self
+        def prepended(base)
+          base.extend ClassMethods
+          base.prepend InstanceMethods
         end
 
-        authorization_context.freeze
+        alias included prepended
+      end
+
+      attr_reader :authorization_context
+
+      module InstanceMethods # :nodoc:
+        def initialize(*args, **params)
+          super(*args)
+
+          @authorization_context = {}
+
+          self.class.verification_targets.each do |id, opts|
+            raise VerificationContextMissing, id unless params.key?(id)
+
+            val = params.fetch(id)
+
+            raise VerificationContextMissing, id if val.nil? && opts[:allow_nil] != true
+
+            authorization_context[id] = instance_variable_set("@#{id}", val)
+          end
+
+          authorization_context.freeze
+        end
       end
 
       module ClassMethods # :nodoc:

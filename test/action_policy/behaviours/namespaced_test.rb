@@ -18,7 +18,7 @@ class TestNamespaced < Minitest::Test
 
   class Channel
     include ActionPolicy::Behaviour
-    prepend ActionPolicy::Behaviours::Namespaced
+    include ActionPolicy::Behaviours::Namespaced
 
     attr_reader :user
 
