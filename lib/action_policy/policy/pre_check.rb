@@ -50,19 +50,24 @@ module ActionPolicy
 
           alias fulfilled? fulfilled
 
+          def denied?
+            @value == DENY
+          end
+
           def value
             KINDS.fetch(@value)
           end
         end
 
-        attr_reader :name
+        attr_reader :name, :policy_class
 
-        def initialize(name, except: nil, only: nil)
+        def initialize(policy, name, except: nil, only: nil)
           if !except.nil? && !only.nil?
             raise ArgumentError,
                   "Only one of `except` and `only` may be specified for pre-check"
           end
 
+          @policy_class = policy
           @name = name
           @blacklist = Array(except) unless except.nil?
           @whitelist = Array(only) unless only.nil?
@@ -76,7 +81,11 @@ module ActionPolicy
         end
 
         def call(policy)
-          Result.new(policy.send(name))
+          Result.new(policy.send(name)).tap do |res|
+            # add denial reason if Reasons included
+            policy.reasons.add(policy_class, name) if
+              res.denied? && policy.respond_to?(:reasons)
+          end
         end
 
         # rubocop: disable Metrics/AbcSize, Metrics/CyclomaticComplexity
@@ -109,7 +118,7 @@ module ActionPolicy
         # rubocop: enable Metrics/PerceivedComplexity, Metrics/MethodLength
 
         def dup
-          self.class.new(name, except: blacklist.dup, only: whitelist.dup)
+          self.class.new(policy_class, name, except: blacklist.dup, only: whitelist.dup)
         end
 
         private
@@ -166,7 +175,7 @@ module ActionPolicy
             check = pre_checks.find { |c| c.name == name }
             raise "Pre-check already defined: #{name}" unless check.nil?
 
-            pre_checks << Check.new(name, **options)
+            pre_checks << Check.new(self, name, **options)
           end
         end
 

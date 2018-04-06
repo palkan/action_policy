@@ -46,24 +46,6 @@ class TestPreCheck < Minitest::Test
     end
   end
 
-  class AdminTestPolicy < TestPolicy
-    skip_pre_check :allow_admins, only: :manage?
-    skip_pre_check :deny_when_record_is_nil, only: :manage?
-    skip_pre_check :user_is_nil, except: [:new?]
-
-    def show?
-      manage?
-    end
-  end
-
-  class NoAdminTestPolicy < TestPolicy
-    skip_pre_check :allow_admins
-
-    def show?
-      manage?
-    end
-  end
-
   def setup
     @guest = User.new("guest")
     @admin = User.new("admin")
@@ -98,12 +80,14 @@ class TestPreCheck < Minitest::Test
     assert policy3.apply(:manage?)
   end
 
-  def test_skip_pre_check_completely
-    policy = NoAdminTestPolicy.new false, user: admin
+  class AdminTestPolicy < TestPolicy
+    skip_pre_check :allow_admins, only: :manage?
+    skip_pre_check :deny_when_record_is_nil, only: :manage?
+    skip_pre_check :user_is_nil, except: [:new?]
 
-    assert policy.apply(:index?)
-    refute policy.apply(:manage?)
-    refute policy.apply(:show?)
+    def show?
+      manage?
+    end
   end
 
   def test_skip_except_pre_check_with_only
@@ -133,5 +117,37 @@ class TestPreCheck < Minitest::Test
     refute policy2.apply(:new?)
     assert policy2.apply(:manage?)
     assert policy2.apply(:show?)
+  end
+
+  class NoAdminTestPolicy < TestPolicy
+    skip_pre_check :allow_admins
+
+    def show?
+      manage?
+    end
+  end
+
+  def test_skip_pre_check_completely
+    policy = NoAdminTestPolicy.new false, user: admin
+
+    assert policy.apply(:index?)
+    refute policy.apply(:manage?)
+    refute policy.apply(:show?)
+  end
+
+  class ReasonsTestPolicy < TestPolicy
+    include ActionPolicy::Policy::Reasons
+  end
+
+  def test_pre_check_with_reasons
+    policy = ReasonsTestPolicy.new true, user: User.new("Neil")
+
+    refute policy.apply(:index?)
+
+    reasons = policy.reasons
+
+    assert_equal 1, reasons.size
+    assert_equal TestPolicy, reasons.first.policy
+    assert_equal :user_is_nil, reasons.first.rule
   end
 end

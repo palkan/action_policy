@@ -2,7 +2,14 @@
 
 module ActionPolicy
   module Policy
-    FailureReason = Struct.new(:policy, :rule)
+    class FailureReason # :nodoc:
+      attr_reader :policy, :rule
+
+      def initialize(policy_or_class, rule)
+        @policy = policy_or_class.is_a?(Class) ? policy_or_class : policy_or_class.class
+        @rule = rule
+      end
+    end
 
     # Failures reasons store
     class FailureReasons
@@ -16,7 +23,7 @@ module ActionPolicy
       end
 
       def add(policy, rule)
-        @reasons << FailureReason.new(policy.class, rule)
+        @reasons << FailureReason.new(policy, rule)
       end
     end
 
