@@ -5,7 +5,7 @@ require_relative "controllers_helper"
 
 class TestSimpleControllerIntegration < ActionController::TestCase
   class UsersController < ActionController::Base
-    authorize :current_user, as: :user
+    authorize :user, through: :current_user
 
     before_action :set_user, only: [:update, :show]
 
@@ -89,7 +89,7 @@ end
 
 class TestControllerHookIntegration < ActionController::TestCase
   class UsersController < ActionController::Base
-    authorize :current_user, as: :user
+    authorize :user, through: :current_user
 
     verify_authorized except: [:index]
 

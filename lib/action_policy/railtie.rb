@@ -46,7 +46,7 @@ module ActionPolicy # :nodoc:
 
         next unless ActionPolicy.channel_authorize_current_user
 
-        ActionCable::Channel::Base.authorize :current_user, as: :user
+        ActionCable::Channel::Base.authorize :user, through: :current_user
       end
     end
   end

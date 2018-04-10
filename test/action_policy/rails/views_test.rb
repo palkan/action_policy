@@ -7,7 +7,7 @@ class TestViewsIntegration < ActionController::TestCase
   class UsersController < ActionController::Base
     self.view_paths = File.expand_path("./views/users", __dir__)
 
-    authorize :current_user, as: :user
+    authorize :user, through: :current_user
 
     def index
       @users = [
@@ -73,7 +73,7 @@ class TestControllerViewsMemoization < ActionController::TestCase
   class UsersController < ActionController::Base
     self.view_paths = File.expand_path("./views/users", __dir__)
 
-    authorize :current_user, as: :user
+    authorize :user, through: :current_user
 
     def index
       @users = [

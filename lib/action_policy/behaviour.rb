@@ -66,15 +66,15 @@ module ActionPolicy
       #
       #   class ApplicationController < ActionController::Base
       #     # Pass the value of `current_user` to authorization as `user`
-      #     authorize :current_user, as: :user
+      #     authorize :user, through: :current_user
       #   end
       #
       #   # Assuming that in your ApplicationPolicy
       #   class ApplicationPolicy < ActionPolicy::Base
       #     verify :user
       #   end
-      def authorize(meth, as: nil)
-        key = as || meth
+      def authorize(key, through: nil)
+        meth = through || key
         authorization_targets[key] = meth
       end
 
