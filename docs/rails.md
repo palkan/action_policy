@@ -4,7 +4,7 @@ Action Policy seamlessly integrates with Rails applications.
 
 In most cases you don't have to do anything except from writing policy files and adding `authorize!` calls.
 
-## Controllers Integration
+## Controllers integration
 
 Action Policy assumes that you have `current_user` method which specifies the current authenticated subject (`user`).
 
@@ -75,7 +75,7 @@ class ApiController < ApplicationController::API
 end
 ```
 
-## Channels Integration
+## Channels integration
 
 Action Policy also integrates with Action Cable to help you authorize your channels actions:
 

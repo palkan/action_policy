@@ -18,7 +18,7 @@ And then execute:
 
     $ bundle
 
-## Basic Usage
+## Basic usage
 
 The core component of Action Policy is a _policy class_. Policy class describes how you control access to resources.
 
@@ -71,7 +71,7 @@ end
 
 \* See [Non-Rails Usage](non_rails.md) on how to add `authorize!` to any Ruby project
 
-In the above case Action Policy automatically infers a policy class and a rule to verify access: `@post -> Post -> PostPolicy`, rule is inferred from the action name (`update -> update?`), and `current_user` is used as `user` within the policy by default (read more about [authorization context](authorize_context.md)).
+In the above case Action Policy automatically infers a policy class and a rule to verify access: `@post -> Post -> PostPolicy`, rule is inferred from the action name (`update -> update?`), and `current_user` is used as `user` within the policy by default (read more about [authorization context](authorization_context.md)).
 
 When authorization is successful (i.e. the corresponding rule returns `true`) nothing happens, but in case of authorization failure `ActionPolicy::Unauthorized` error is raised.
 
