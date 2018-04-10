@@ -22,7 +22,7 @@ end
 
 **NOTE**: it is not recommended to manually initialize policy objects and use them directly (one exclusion–[tests](testing.md)). Use `authorize!` / `allowed_to?` methods instead.
 
-In order to initialize policy object you should specify target record and context:
+To initialize policy object, you should specify target record and context:
 
 ```ruby
 policy = PostPolicy.new(post, user: user)
@@ -41,7 +41,7 @@ policy.apply(:update?)
 
 ## Calling other policies
 
-Sometimes it's useful to call other resources policies from within a policy. Action Policy provides `allowed_to?` method as a part of `ActionPolicy::Base`:
+Sometimes it's useful to call other resources policies from within policy. Action Policy provides the `allowed_to?` method as a part of `ActionPolicy::Base`:
 
 ```ruby
 class CommentPolicy < ApplicationPolicy

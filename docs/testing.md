@@ -1,6 +1,6 @@
 # Testing
 
-Authorization is one of the crucial parts of your application, hence it should be thoroughly tested (that's the place where 100% coverage makes sense).
+Authorization is one of the crucial parts of your application. Hence it should be thoroughly tested (that's the place where 100% coverage makes sense).
 
 When you use policies for authorization, it is possible to split testing into two parts:
 - Test that **the required authorization is performed** within your authorization layer (controller, channel, etc.)
@@ -8,7 +8,7 @@ When you use policies for authorization, it is possible to split testing into tw
 
 ## Testing authorization
 
-In order to test the act of authorization you have to make sure that the `authorize!` method is called with the appropriate arguments.
+To test the act of authorization you have to make sure that the `authorize!` method is called with the appropriate arguments.
 
 Action Policy provides tools for such kind of testing for Minitest and RSpec.
 
@@ -78,11 +78,11 @@ describe PostsController do
 end
 ```
 
-If you omit `.with(PostPolicy)` then the inferred policy for target (`post`) would be used.
+If you omit `.with(PostPolicy)` then the inferred policy for the target (`post`) would be used.
 
 ## Testing policies
 
-You can test policies as plain-old Ruby classes, not special tooling is required.
+You can test policies as plain-old Ruby classes, no special tooling is required.
 
 Consider an RSpec example:
 

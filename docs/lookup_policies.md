@@ -2,9 +2,9 @@
 
 Action Policy tries to automatically infer policy class from the target using the following _probes_:
 
-1) If target responds to `policy_class` then use it
+1) If target responds to `policy_class`, then use it
 
-2) If target's class responds to `policy_class` then use it
+2) If target's class responds to `policy_class`, then use it
 
 3\*) If target's class responds to `policy_name` then use `#{target.class.policy_name}Policy`
 

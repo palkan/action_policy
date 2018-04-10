@@ -14,11 +14,11 @@ Action Policy provides flexible tools to build _authorization layer_ for your ap
 
 _TODO: схема с местом авторизации в приложении_
 
-**NOTE:** Action Policy doesn't force you to use specific authorization model (i.e. roles, permissions, etc.) and doesn't provide one. It answers the only one question: **How to verify access?**
+**NOTE:** Action Policy doesn't force you to use specific authorization model (i.e., roles, permissions, etc.) and doesn't provide one. It answers the only one question: **How to verify access?**
 
 ## History
 
-Action Policy gem is an _extraction-kind_ of library. Most of the code has been used in production for several years in different [Evil Martians][] projects.
+Action Policy gem is an _extraction_-kind of the library. Most of the code has been used in production for several years in different [Evil Martians][] projects.
 
 We decided to collect all our authorization techniques and pack them into a standalone gem–that's how Action Policy was born!
 
@@ -28,13 +28,13 @@ Why did we decide to build our own authorization gem instead of using the existi
 
 **TL;DR they didn't solve all of our problems.**
 
-[Pundit][] has been our framework of a choice for a long time. Being too _dead-simple_, it required a lot of hacking to fulfill business-logic requirements.
+[Pundit][] has been our framework of choice for a long time. Being too _dead-simple_, it required a lot of hacking to fulfill business-logic requirements.
 
 These _hacks_ turned into Action Policy (we even call it "Pundit, re-visited").
 
 We also took a few ideas from [CanCanCan][], such as default rules and rules aliases.
 
-It's also worth noting, that Action Policy (despite from _Railsy_ name) is designed to be **Rails-free**. From the other hand, it contains some Rails-specific extensions and seamlessly integrates into the framework.
+It's also worth noting that Action Policy (despite from _Railsy_ name) is designed to be **Rails-free**. On the other hand, it contains some Rails-specific extensions and seamlessly integrates into the framework.
 
 <a href="https://evilmartians.com/">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
