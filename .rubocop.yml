@@ -37,6 +37,7 @@ Style/SymbolArray:
 Style/Documentation:
   Exclude:
     - 'test/**/*.rb'
+    - '**/*.md'
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes

@@ -1,0 +1,101 @@
+# Quick Start
+
+## Installation
+
+To install Action Policy with RubyGems:
+
+```ruby
+gem install action_policy
+```
+
+Or add this line to your application's Gemfile:
+
+```ruby
+gem "action_policy"
+```
+
+And then execute:
+
+    $ bundle
+
+## Basic Usage
+
+The core component of Action Policy is a _policy class_. Policy class describes how you control access to resources.
+
+We suggest that you have a separate policy class for each resource and encourage you to follow the conventions:
+- put policies into `app/policies` folder
+- name policies using the corresponding resource name (model name) plus suffix `Policy`, e.g. `Post -> PostPolicy`
+- name rules using a predicate form of the corresponding activity (typically, a controller's action), e.g. `PostsController#update -> PostsPolicy#update?`.
+
+ We also recommend to use an application-specific `ApplicationPolicy` with some global configuration to inherit from:
+
+```ruby
+class ApplicationPolicy < ActionPolicy::Base
+end
+```
+
+NOTE: it's not necessary to inherit from `ActionPolicy::Base`, you can [construct basic policy](custom_policy.md) choosing only the components you need.
+
+Consider a simple example:
+
+```ruby
+class PostPolicy < ApplicationPolicy
+  # everyone can see any post
+  def show?
+    true
+  end
+
+  def update?
+    # `user` is a performing subject,
+    # `record` is a target object (post we want to update)
+    user.admin? || (user.id == record.user_id)
+  end
+end
+```
+
+Now you can easily add authorization to your Rails\* controller:
+
+```ruby
+class PostsController < ApplicationController
+  def update
+    @post = Post.find(params[:id])
+    authorize! @post
+    if @post.update(post_params)
+      redirect_to @post
+    else
+      render :edit
+    end
+  end
+end
+```
+
+\* See [Non-Rails Usage](non_rails.md) on how to add `authorize!` to any Ruby project
+
+In the above case Action Policy automatically infers a policy class and a rule to verify access: `@post -> Post -> PostPolicy`, rule is inferred from the action name (`update -> update?`), and `current_user` is used as `user` within the policy by default (read more about [authorization context](authorize_context.md)).
+
+When authorization is successful (i.e. the corresponding rule returns `true`) nothing happens, but in case of authorization failure `ActionPolicy::Unauthorized` error is raised.
+
+There is also an `allowed_to?` method which returns `true` of `false` and could be used, for example, in views:
+
+```erb
+<% @posts.each do |post| %>
+  <li><%= post.title %>
+    <% if allowed_to?(:edit?, post) %>
+      = link_to post, "Edit"
+    <% end %>
+  </li>
+<% end %>
+```
+
+Although Action Policy tries to [infer the corresponding policy class](policy_lookup.md) and rule itself, there could be a situation when you want to specify those values explicitly:
+
+```ruby
+# specify the rule to verify access
+authorize! @post, to: :update?
+
+# specify policy class
+authorize! @post, with: CustomPostPolicy
+
+# or
+allowed_to? :edit?, @post, with: CustomPostPolicy
+```

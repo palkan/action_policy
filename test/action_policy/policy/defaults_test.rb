@@ -2,14 +2,12 @@
 
 require "test_helper"
 
-class DefaultsTestPolicy
-  include ActionPolicy::Policy::Core
-  include ActionPolicy::Policy::Defaults
+class DefaultsTestPolicy < ActionPolicy::Base
 end
 
 class TestPolicyDefaults < Minitest::Test
   def setup
-    @policy = DefaultsTestPolicy.new
+    @policy = DefaultsTestPolicy.new user: User.new("john")
   end
 
   def test_crud_rules

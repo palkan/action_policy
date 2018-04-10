@@ -2,9 +2,16 @@
 
 require "test_helper"
 
-class FailuresTestPolicy < ActionPolicy::Base
+class FailuresTestPolicy
+  include ActionPolicy::Policy::Core
+  include ActionPolicy::Policy::Reasons
+
   def index?
     true
+  end
+
+  def manage?
+    false
   end
 end
 
@@ -24,7 +31,10 @@ class TestFailuresPolicy < Minitest::Test
   end
 end
 
-class UserFailuresPolicy < ActionPolicy::Base; end
+class UserFailuresPolicy < ActionPolicy::Base
+  include ActionPolicy::Policy::Core
+  include ActionPolicy::Policy::Reasons
+end
 
 class ComplexFailuresTestPolicy < ActionPolicy::Base
   verify :user

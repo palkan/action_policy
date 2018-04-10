@@ -9,11 +9,16 @@ module ActionPolicy
     # - `manage?` as a fallback for all unspecified rules (default rule)
     module Defaults
       def self.included(base)
-        # Aliases module is required for defaults
-        base.prepend Aliases unless base.ancestors.include?(Aliases)
+        raise "Aliases support is required for defaults" unless
+          base.ancestors.include?(Aliases)
 
         base.default_rule :manage?
         base.alias_rule :new?, to: :create?
+
+        raise "Verification context support is required for defaults" unless
+          base.ancestors.include?(Aliases)
+
+        base.verify :user
       end
 
       def index?

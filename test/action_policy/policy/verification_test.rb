@@ -2,7 +2,9 @@
 
 require "test_helper"
 
-class VerifyTestPolicy < ActionPolicy::Base
+class VerifyTestPolicy
+  include ActionPolicy::Policy::Core
+  include ActionPolicy::Policy::Verification
   verify :account
 end
 

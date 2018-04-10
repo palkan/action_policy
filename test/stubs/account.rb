@@ -20,8 +20,6 @@ class Account
 end
 
 class AccountPolicy < ActionPolicy::Base
-  verify :user
-
   def create?
     user.admin?
   end
