@@ -5,10 +5,10 @@ require "test_helper"
 class TestPreCheck < Minitest::Test
   class BasePolicy
     include ActionPolicy::Policy::Core
-    include ActionPolicy::Policy::Verification
+    include ActionPolicy::Policy::Authorization
     include ActionPolicy::Policy::PreCheck
 
-    verify :user
+    authorize :user
 
     pre_check :allow_admins
 

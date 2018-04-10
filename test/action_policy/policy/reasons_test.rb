@@ -31,14 +31,9 @@ class TestFailuresPolicy < Minitest::Test
   end
 end
 
-class UserFailuresPolicy < ActionPolicy::Base
-  include ActionPolicy::Policy::Core
-  include ActionPolicy::Policy::Reasons
-end
+class UserFailuresPolicy < ActionPolicy::Base; end
 
 class ComplexFailuresTestPolicy < ActionPolicy::Base
-  verify :user
-
   def kill?
     (user.name == "admin") && allowed_to?(:manage?, user, with: UserFailuresPolicy)
   end

@@ -6,7 +6,7 @@ require "action_policy/behaviours/namespaced"
 
 module ActionPolicy
   # Provides `authorize!` and `allowed_to?` methods and
-  # `authorize` class method to define authoriztion context.
+  # `authorize` class method to define authorization context.
   #
   # Could be included anywhere to perform authorization.
   module Behaviour

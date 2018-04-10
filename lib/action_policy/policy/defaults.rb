@@ -18,7 +18,7 @@ module ActionPolicy
         raise "Verification context support is required for defaults" unless
           base.ancestors.include?(Aliases)
 
-        base.verify :user
+        base.authorize :user
       end
 
       def index?

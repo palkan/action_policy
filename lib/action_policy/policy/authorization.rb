@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module ActionPolicy
-  class VerificationContextMissing < Error # :nodoc:
-    MESSAGE_TEMPLATE = "Missing policy verification context: %s"
+  class AuthorizationContextMissing < Error # :nodoc:
+    MESSAGE_TEMPLATE = "Missing policy authorization context: %s"
 
     attr_reader :message
 
@@ -22,10 +22,10 @@ module ActionPolicy
     #   class ApplicationPolicy < ActionPolicy::Base
     #     # Add user and account to the context; it's required to be passed
     #     # to a policy constructor and be not nil
-    #     verify :user, :account
+    #     authorize :user, :account
     #
     #     # you can skip non-nil check if you want
-    #     # verify :account, allow_nil: true
+    #     # authorize :account, allow_nil: true
     #
     #     def manage?
     #       # available as a simple accessor
@@ -34,7 +34,7 @@ module ActionPolicy
     #   end
     #
     #   ApplicantPolicy.new(user: user, account: account)
-    module Verification
+    module Authorization
       class << self
         def prepended(base)
           base.extend ClassMethods
@@ -52,12 +52,12 @@ module ActionPolicy
 
           @authorization_context = {}
 
-          self.class.verification_targets.each do |id, opts|
-            raise VerificationContextMissing, id unless params.key?(id)
+          self.class.authorization_targets.each do |id, opts|
+            raise AuthorizationContextMissing, id unless params.key?(id)
 
             val = params.fetch(id)
 
-            raise VerificationContextMissing, id if val.nil? && opts[:allow_nil] != true
+            raise AuthorizationContextMissing, id if val.nil? && opts[:allow_nil] != true
 
             authorization_context[id] = instance_variable_set("@#{id}", val)
           end
@@ -67,20 +67,20 @@ module ActionPolicy
       end
 
       module ClassMethods # :nodoc:
-        def verify(*ids, **opts)
+        def authorize(*ids, **opts)
           ids.each do |id|
-            verification_targets[id] = opts
+            authorization_targets[id] = opts
           end
 
           attr_reader(*ids)
         end
 
-        def verification_targets
-          return @verification_targets if instance_variable_defined?(:@verification_targets)
+        def authorization_targets
+          return @authorization_targets if instance_variable_defined?(:@authorization_targets)
 
-          @verification_targets =
-            if superclass.respond_to?(:verification_targets)
-              superclass.verification_targets.dup
+          @authorization_targets =
+            if superclass.respond_to?(:authorization_targets)
+              superclass.authorization_targets.dup
             else
               {}
             end
