@@ -1,6 +1,6 @@
 [![Gem Version](https://badge.fury.io/rb/action_policy.svg)](https://badge.fury.io/rb/action_policy)
 [![Build Status](https://travis-ci.org/palkan/action_policy.svg?branch=master)](https://travis-ci.org/palkan/action_policy)
-[![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)(http://palkan.github.io/action_policy)
+[![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)](http://palkan.github.io/action_policy)
 
 # ActionPolicy
 
