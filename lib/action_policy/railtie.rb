@@ -36,7 +36,7 @@ module ActionPolicy # :nodoc:
 
         next unless ActionPolicy.controller_authorize_current_user
 
-        ActionController::Base.authorize :current_user, as: :user
+        ActionController::Base.authorize :user, through: :current_user
       end
 
       ActiveSupport.on_load(:action_cable) do

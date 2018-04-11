@@ -6,7 +6,7 @@ module ActionPolicy
     # extract common checks from rules.
     #
     #    class ApplicationPolicy < ActionPolicy::Base
-    #      verify :user
+    #      authorize :user
     #      pre_check :allow_admins
     #
     #      private

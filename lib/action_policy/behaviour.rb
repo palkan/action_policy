@@ -71,7 +71,7 @@ module ActionPolicy
       #
       #   # Assuming that in your ApplicationPolicy
       #   class ApplicationPolicy < ActionPolicy::Base
-      #     verify :user
+      #     authorize :user
       #   end
       def authorize(key, through: nil)
         meth = through || key

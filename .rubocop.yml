@@ -22,6 +22,10 @@ Rails:
 Bundler/OrderedGems:
   Enabled: false
 
+Lint/Void:
+  Exclude:
+    - '**/*.md'
+
 Naming/FileName:
   Exclude:
    - 'Rakefile'
