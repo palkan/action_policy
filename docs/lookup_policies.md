@@ -15,3 +15,5 @@ Action Policy tries to automatically infer policy class from the target using th
 You can call `ActionPolicy.lookup(record, options)` to infer policy class for the record.
 
 When no policy class is found `ActionPolicy::NotFound` error is raised.
+
+You can [customize lookup](custom_lookup_chain.md) logic if necessary.

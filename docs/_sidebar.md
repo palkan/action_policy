@@ -16,4 +16,4 @@
   * [I18n Integration](i18n.md)
 * Customize
   * [Base Policy](custom_policy.md)
-  * [Lookup Chain](lookup_chain.md)
+  * [Lookup Chain](custom_lookup_chain.md)

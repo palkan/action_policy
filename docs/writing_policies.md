@@ -18,7 +18,7 @@ class PostPolicy < ActionPolicy::Base
 end
 ```
 
-## Manually initializing policies
+## Initializing policies
 
 **NOTE**: it is not recommended to manually initialize policy objects and use them directly (one exclusion–[tests](testing.md)). Use `authorize!` / `allowed_to?` methods instead.
 

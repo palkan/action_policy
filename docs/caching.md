@@ -42,7 +42,7 @@ We rely on the following assumptions:
 
 We use `record.cache_key` (or `record.object_id` if `cache_key` is not defined) as a part of policy identifier in the local store.
 
-**NOTE**: policies memoization is an extension for `ActionPolicy::Behaviour` and could be included with `ActionPolicy::Behaviours::Memoization`.
+**NOTE**: policies memoization is an extension for `ActionPolicy::Behaviour` and could be included with `ActionPolicy::Behaviours::Memoized`.
 
 **NOTE**: memoization is automatically included into Rails controllers integration (but not included into channels integration, 'cause channels are long-lived objects).
 
