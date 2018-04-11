@@ -32,10 +32,6 @@
   background: var(--theme-color-light);
 }
 
-.github-corner svg {
-  fill: var(--theme-color-secondary);
-}
-
 body {
   font-size: 100%;
   font: 18px/30px "Stem Text", "Arial", sans-serif;
@@ -50,6 +46,16 @@ a {
   transition: all 0.3s linear;
   border-bottom: none !important;
 }
+
+.github-corner svg {
+  fill: var(--theme-color-secondary);
+}
+
+.chart-container {
+  padding: 1em 0;
+  text-align: center;
+}
+
 
 aside.sidebar {
   border: none;
@@ -251,6 +257,51 @@ section.cover .cover-main {
 
 .sidebar::-webkit-scrollbar {
   width:0;
+}
+
+@media (max-width: 768px) {
+  aside.sidebar {
+    width: 300px;
+  }
+
+  body.close .sidebar {
+    transform: translateX(300px);
+  }
+
+  body .sidebar-toggle span {
+    background-color: var(--theme-color-secondary);
+  }
+
+
+  body.close .sidebar-toggle span {
+    background-color: white;
+  }
+
+  .sidebar-toggle:hover span:nth-child(1), .sidebar-toggle:hover span:nth-child(2), .sidebar-toggle:hover span:nth-child(3) {
+    transform: none;
+    width:  1.5rem;
+    opacity: 1;
+  }
+
+  .close .sidebar-toggle span:nth-child(1), .close .sidebar-toggle:hover span:nth-child(1) {
+    transform: rotate(45deg);
+    width: 1.75rem;
+    top: 0.65rem;
+  }
+
+  .close .sidebar-toggle span:nth-child(2), .close .sidebar-toggle:hover span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .close .sidebar-toggle span:nth-child(3), .close .sidebar-toggle:hover span:nth-child(3) {
+    transform: rotate(-45deg);
+    width: 1.75rem;
+    top: 0.65rem;
+  }
+
+  body.close .sidebar-toggle {
+    background: none;
+  }
 }
 
 @media (min-width: 1200px) {

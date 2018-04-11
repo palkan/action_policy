@@ -12,7 +12,9 @@ permission to **do something** (don't mess with [_authentication_](https://en.wi
 
 Action Policy provides flexible tools to build _authorization layer_ for your applications.
 
-_TODO: схема с местом авторизации в приложении_
+<div class="chart-container">
+  <img src="assets/images/layer.svg" alt="Authorization layer" width="80%">
+</div>
 
 **NOTE:** Action Policy doesn't force you to use specific authorization model (i.e., roles, permissions, etc.) and doesn't provide one. It answers the only one question: **How to verify access?**
 
