@@ -1,4 +1,4 @@
-# Lookup Policies
+# Policies Lookup
 
 Action Policy tries to automatically infer policy class from the target using the following _probes_:
 

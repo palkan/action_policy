@@ -5,7 +5,7 @@
   * [Non-Rails Usage](non_rails.md)
   * [Testing](testing.md)
 * Features
-  * [Lookup Policies](lookup_policies.md)
+  * [Policies Lookup](lookup_chain.md)
   * [Authorization Context](authorization_context.md)
   * [Aliases](aliases.md)
   * [Pre-Checks](pre_checks.md)

@@ -17,7 +17,6 @@ module ActionPolicy
 
     class << self
       attr_accessor :chain
-      private :chain=
 
       def call(record, **opts)
         chain.each do |probe|

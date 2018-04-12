@@ -4,7 +4,7 @@ Action Policy can lookup policies with respect to the current execution _namespa
 
 Consider an example:
 
-```ruby  
+```ruby
 module Admin
   class UsersController < ApplictionController
     def index
@@ -14,10 +14,10 @@ module Admin
   end
 end
 ```
-    
+
 Modules nesting is also supported:
 
-```ruby    
+```ruby
 module Admin
   module Client
     class UsersController < ApplictionController
@@ -29,17 +29,17 @@ module Admin
   end
 end
 ```
-    
+
 **NOTE**: in order to support namespaced lookup for non-inferrable resources,
 you should specify `policy_name` at a class level (instead of `policy_class`, which doesn't take into account namespaces):
 
-```ruby    
+```ruby
 class Guest < User
   def self.policy_name
     "UserPolicy"
   end
 end
-```    
+```
 
 **NOTE**: by default, we use class's name as a policy name; so, for namespaced resources, the namespace part is also included:
 
@@ -51,12 +51,12 @@ end
 
 # search for Admin::UserPolicy, but not for UserPolicy
 authorize! Admin::User.new
-``` 
+```
 
 You can access the current authorization namespace through `authorization_namespace` method.
-    
+
 You can also define your own namespacing logic by overriding `authorization_namespace`:
-    
+
 ```ruby
 def authorization_namespace
   return ::Admin if current_user.admin?

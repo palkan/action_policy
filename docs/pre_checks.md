@@ -3,8 +3,6 @@
 There is a common situation when you start most (even all) of your rules with the same predicates.
 For example, when having a super-user role in the application:
 
-<span style="display:none;"># rubocop:disable Lint/DuplicateMethods</span>
-
 ```ruby
 class PostPolicy < ApplicationPolicy
   def show?
@@ -40,8 +38,6 @@ class PostPolicy < ApplicationPolicy
   end
 end
 ```
-
-<span style="display:none;"># rubocop:enable Lint/DuplicateMethods</span>
 
 Pre-checks act like _callbacks_: you can add multiple pre-checks, specify `except` and `only` options, and skip already defined pre-checks if necessary:
 
