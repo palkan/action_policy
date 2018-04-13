@@ -8,7 +8,7 @@ In most cases you don't have to do anything except from writing policy files and
 
 Action Policy assumes that you have `current_user` method which specifies the current authenticated subject (`user`).
 
-You can turn off this behaviour by setting `ActionPolicy.controller_authorize_current_user = false` in initializer, or override it:
+You can turn off this behaviour by setting `config.action_policy.controller_authorize_current_user = false` in `application.rb`, or override it:
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -19,8 +19,7 @@ end
 > Read more about [authorization context](authorization_context.md).
 
 In case you don't want to include Action Policy to controllers at all,
-you can turn this integration off by setting `ActionPolicy.auto_inject_into_controller` to false
-in initializer.
+you can turn this integration off by setting `config.action_policy.auto_inject_into_controller = false` in `application.rb`.
 
 ### `verify_authorized` hooks
 
@@ -93,7 +92,7 @@ end
 
 Action Policy assumes that you have `current_user` as a connection identifier.
 
-You can turn off this behaviour by setting `ActionPolicy.channel_authorize_current_user = false` in initializer, or override it:
+You can turn off this behaviour by setting `config.action_policy.channel_authorize_current_user = false` in `application.rb`, or override it:
 
 ```ruby
 module ApplicationCable
@@ -107,5 +106,4 @@ end
 > Read more about [authorization context](authorization_context.md).
 
 In case you don't want to include Action Policy to channels at all,
-you can turn this integration off by setting `ActionPolicy.auto_inject_into_channel` to false
-in initializer.
+you can turn this integration off by setting `config.action_policy.auto_inject_into_channel = false` in `application.rb`.
