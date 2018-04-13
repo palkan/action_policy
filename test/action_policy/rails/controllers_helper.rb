@@ -19,5 +19,9 @@ ActionController::TestCase.include(
       @routes = SharedTestRoutes
       super
     end
+
+    def teardown
+      ActionPolicy::PerThreadCache.clear_all
+    end
   end
 )

@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class TestMemoize < Minitest::Test
+class TestMemoized < Minitest::Test
   class UserPolicy < ::UserPolicy
     class << self
       def policies
@@ -69,6 +69,7 @@ class TestMemoize < Minitest::Test
 
   def teardown
     UserPolicy.reset
+    CustomPolicy.reset
   end
 
   def test_instance_cache

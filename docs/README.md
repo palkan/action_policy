@@ -8,7 +8,7 @@
 ## What is it?
 
 _Authorization_ is an act of giving **someone** official
-permission to **do something** (don't mess with [_authentication_](https://en.wikipedia.org/wiki/Authentication)).
+permission to **do something** (to not be confused with [_authentication_](https://en.wikipedia.org/wiki/Authentication)).
 
 Action Policy provides flexible tools to build _authorization layer_ for your applications.
 

@@ -9,7 +9,7 @@ module ActionPolicy
     # Example:
     #
     #   include ActionPolicy::Behaviour
-    #   include ActionPolicy::Memoize
+    #   include ActionPolicy::Memoized
     #
     #   record = User.first
     #   policy = policy_for(record)

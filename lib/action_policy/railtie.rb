@@ -28,6 +28,11 @@ module ActionPolicy # :nodoc:
   self.channel_authorize_current_user = true
 
   class Railtie < ::Rails::Railtie # :nodoc:
+    initializer "action_policy.clear_per_thread_cache" do |app|
+      app.executor.to_run { ActionPolicy::PerThreadCache.clear_all }
+      app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
+    end
+
     config.after_initialize do |_app|
       ActiveSupport.on_load(:action_controller) do
         next unless ActionPolicy.auto_inject_into_controller

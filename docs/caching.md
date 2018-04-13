@@ -48,8 +48,6 @@ We use `record.cache_key` (or `record.object_id` if `cache_key` is not defined) 
 
 ### Per-thread
 
-🛠 **WORK IN PROGRESS**
-
 Consider more complex situation:
 
 ```ruby
@@ -89,9 +87,9 @@ That's an example of _N+1 authorization_ problem, which in its turn could easily
 
 It is likely that many comments belong to the same posts. If so, we can move our memoization one level up and use local thread store.
 
-Action Policy provides `ActionPolicy::Behaviours::ThreadMemoization` module which provides this functionality (included into Rails controllers integration by default).
+Action Policy provides `ActionPolicy::Behaviours::ThreadMemoized` module which provides this functionality (included into Rails controllers integration by default).
 
-If you want to add this behaviour to your custom authorization-aware class, you should care about cleaning up thread store manually (by calling `ActionPolicy::PerThreadCache.clear!`).
+If you want to add this behaviour to your custom authorization-aware class, you should care about cleaning up thread store manually (by calling `ActionPolicy::PerThreadCache.clear_all`).
 
 ## Rules cache
 

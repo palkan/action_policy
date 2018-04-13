@@ -18,6 +18,7 @@ module ActionPolicy
     extend ActiveSupport::Concern
 
     include ActionPolicy::Behaviour
+    include ActionPolicy::Behaviours::ThreadMemoized
     include ActionPolicy::Behaviours::Memoized
     include ActionPolicy::Behaviours::Namespaced
 
