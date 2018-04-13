@@ -40,7 +40,7 @@ We rely on the following assumptions:
 - parent object (e.g., controller instance) is _ephemeral_, i.e., it's a short-lived object
 - all authorizations uses the same [authorization context](authorization_context.md).
 
-We use `record.cache_key` (or `record.object_id` if `cache_key` is not defined) as a part of policy identifier in the local store.
+We use `record.policy_cache_key` with fallback to `record.cache_key` or `record.object_id` as a part of policy identifier in the local store.
 
 **NOTE**: policies memoization is an extension for `ActionPolicy::Behaviour` and could be included with `ActionPolicy::Behaviours::Memoized`.
 
@@ -103,8 +103,6 @@ In that case, Action Policy invokes the rule method only once, remember the resu
 
 ### Using cache store
 
-🛠 **WORK IN PROGRESS**
-
 Some policy rules might be _performance-heavy_, e.g., make complex DB queries.
 
 In that case, it makes sense to cache the rule application result for a long time (not just during the same request).
@@ -158,15 +156,15 @@ Cache store must provide at least `#fetch(key, **options, &block)` method.
 By default, Action Policy builds a cache key using the following scheme:
 
 ```ruby
-"#{cache_namespace}/#{context_1.policy_cache_key}/#{context_2.policy_cache_key}/<other contexts>" \
-"#{record.policy_cache_key}/#{policy.class.name}/#{rule}"
+"#{cache_namespace}/#{context_cache_key}" \
+"/#{record.policy_cache_key}/#{policy.class.name}/#{rule}"
 ```
 
-Where `cache_namespace` is equal to "action_policy_cache", `context_1` and `context_2` are authorization contexts (in order they defined in the policy class).
+Where `cache_namespace` is equal to "acp:#{MAJOR_GEM_VERSION}.#{MINOR_GEM_VERSION}", `context_cache_key` is concatanated cache keys of all authorization contexts (in order they defined in the policy class).
 
-When any of the objects doesn't respond to `#policy_cache_key`, we fallback to `#cache_key`. If `#cache_key` is not defined and `ArgumentError` is raised.
+When any of the objects doesn't respond to `#policy_cache_key`, we fallback to `#cache_key`. If `#cache_key` is not defined `ArgumentError` is raised.
 
-You can define your own `cache_key` method for policy class to override this logic.
+You can define your own `cache_key` / `cache_namespace` / `context_cache_key` methods for policy class to override this logic.
 
 #### Invalidation
 

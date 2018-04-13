@@ -24,6 +24,8 @@ module ActionPolicy
   require "action_policy/behaviour"
 
   class << self
+    attr_accessor :cache_store
+
     # Find a policy class for a target
     def lookup(target, **options)
       LookupChain.call(target, **options) ||

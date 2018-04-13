@@ -19,6 +19,9 @@ module ActionPolicy
     #
     #   policy.equal?(policy_for(record, with: CustomPolicy)) #=> false
     module Memoized
+      require "action_policy/ext/policy_cache_key"
+      using ActionPolicy::Ext::PolicyCacheKey
+
       class << self
         def prepended(base)
           base.prepend InstanceMethods
@@ -34,7 +37,7 @@ module ActionPolicy
       end
 
       def __policy_memoize__(record, with: nil, namespace: nil)
-        record_key = record.respond_to?(:cache_key) ? record.cache_key : record.object_id
+        record_key = record._policy_cache_key(use_object_id: true)
         cache_key = "#{namespace}/#{with}/#{record_key}"
 
         return __policies_cache__[cache_key] if
