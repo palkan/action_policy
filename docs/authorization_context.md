@@ -2,11 +2,11 @@
 
 _Authorization context_ contains information about the acting subject.
 
-In most cases, it's just a _user_, but sometimes it could be a composition of subjects.
+In most cases, it is just a _user_, but sometimes it could be a composition of subjects.
 
-You must configure authorization context in **two places**: in the policy itself and in the place where you perform authorization (e.g., controllers).
+You must configure authorization context in **two places**: in the policy itself and in the place where you perform the authorization (e.g., controllers).
 
-By default, `ActionPolicy::Base` includes `user` as authorization context. If you don't need it, you have to [build your base policy](custom_policy.md) yourself.
+By default, `ActionPolicy::Base` includes `user` as authorization context. If you don't need it, you have to [build your own base policy](custom_policy.md).
 
 To specify additional contexts, you should use `authorize` method:
 
@@ -20,7 +20,7 @@ Now you must provide `account` during policy initialization. When authorization 
 
 **NOTE:** if you want to allow passing `nil` as `account` value, you must add `allow_nil: true` option to `authorize`.
 
-To do that automatically in your `authorize!` and `allowed_to?` calls you must also configure authorization context. For example, in your controller:
+To do that automatically in your `authorize!` and `allowed_to?` calls, you must also configure authorization context. For example, in your controller:
 
 ```ruby
 class ApplicationController < ActionController::Base
