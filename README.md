@@ -8,12 +8,12 @@ Action Policy is an authorization framework for Ruby and Rails applications.
 
 📑 [Documentation][]
 
-<a href="https://evilmartians.com/">
+<a href="https://evilmartians.com/?utm_source=action_policy">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add this line to your application's `Gemfile`:
 
 ```ruby
 gem "action_policy"
@@ -34,7 +34,7 @@ class ApplicationPolicy < ActionPolicy::Base
 end
 ```
 
-Then write a policy for some resource. For example:
+Then write a policy for a resource. For example:
 
 ```ruby
 class PostPolicy < ApplicationPolicy
@@ -58,6 +58,7 @@ class PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
     authorize! @post
+
     if @post.update(post_params)
       redirect_to @post
     else
@@ -67,12 +68,12 @@ class PostsController < ApplicationController
 end
 ```
 
-\* See [Non-Rails Usage](docs/non_rails.md) on how to add `authorize!` to any Ruby project
+\* See [Non-Rails Usage](docs/non_rails.md) on how to add `authorize!` to any Ruby project.
 
 
-When authorization is successful (i.e. the corresponding rule returns `true`) nothing happens, but in case of authorization failure `ActionPolicy::Unauthorized` error is raised.
+When authorization is successful (i.e., the corresponding rule returns `true`), nothing happens, but in case of authorization failure `ActionPolicy::Unauthorized` error is raised.
 
-There is also an `allowed_to?` method which returns `true` of `false` and could be used, for example, in views:
+There is also an `allowed_to?` method which returns `true` or `false`, and could be used, in views, for example:
 
 ```erb
 <% @posts.each do |post| %>
