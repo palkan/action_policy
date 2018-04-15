@@ -1,6 +1,6 @@
-# Rules Aliases
+# Rule Aliases
 
-Action Policy allows you to add rule aliases. It's useful when you rely on _implicit_ rules in controllers. For example:
+Action Policy allows you to add rule aliases. It is useful when you rely on _implicit_ rules in controllers. For example:
 
 ```ruby
 class PostsController < ApplicationController
@@ -10,14 +10,14 @@ class PostsController < ApplicationController
 
   def load_post
     @post = Post.find(params[:id])
-    # depending on action `edit?`, `update?` or `destroy?`
+    # depending on action, an `edit?`, `update?` or `destroy?`
     # rule would be applied
     authorize! @post
   end
 end
 ```
 
-In your policy you can create aliases to avoid duplication:
+In your policy, you can create aliases to avoid duplication:
 
 ```ruby
 class PostPolicy < ApplicationPolicy
@@ -27,17 +27,17 @@ end
 
 **NOTE**: `alias_rule` is available only if you inherit from `ActionPolicy::Base` or include `ActionPolicy::Policy::Aliases` into your `ApplicationPolicy`.
 
-**Why not just using Ruby's `alias`?**
+**Why not just use Ruby's `alias`?**
 
-An alias created with `alias_rule` is resolved at _authorization time_ (during `authorize!` or `allowed_to?` call), and it doesn't add an alias method to the class.
+An alias created with `alias_rule` is resolved at _authorization time_ (during an `authorize!` or `allowed_to?` call), and it does not add an alias method to the class.
 
-That allows us to easier write tests–we should only test the rule, not the alias–and to better leverage [caching](caching.md).
+That allows us to write tests easier, as we should only test the rule, not the alias–and to leverage [caching](caching.md) better.
 
-By default, `ActionPolicy::Base` adds one alias: `alias_rule :new?, to: :create?.
+By default, `ActionPolicy::Base` adds one alias: `alias_rule :new?, to: :create?`.
 
 ## Default rule
 
-You can add a _default_ rule–the rule that would be applied if the rule specified during authorization is missing (like a wildcard alias):
+You can add a _default_ rule–the rule that would be applied if the rule specified during authorization is missing (like a "wildcard" alias):
 
 ```ruby
 class PostPolicy < ApplicationPolicy
