@@ -1,12 +1,12 @@
 # Using with Rails
 
-Action Policy seamlessly integrates with Rails applications.
+Action Policy seamlessly integrates Ruby on Rails applications seamlessly.
 
-In most cases you don't have to do anything except from writing policy files and adding `authorize!` calls.
+In most cases, you do not have to do anything except writing policy files and adding `authorize!` calls.
 
 ## Controllers integration
 
-Action Policy assumes that you have `current_user` method which specifies the current authenticated subject (`user`).
+Action Policy assumes that you have a `current_user` method which specifies the current authenticated subject (`user`).
 
 You can turn off this behaviour by setting `config.action_policy.controller_authorize_current_user = false` in `application.rb`, or override it:
 
@@ -19,19 +19,20 @@ end
 > Read more about [authorization context](authorization_context.md).
 
 In case you don't want to include Action Policy to controllers at all,
-you can turn this integration off by setting `config.action_policy.auto_inject_into_controller = false` in `application.rb`.
+you can turn disable the integration by setting `config.action_policy.auto_inject_into_controller = false` in `application.rb`.
 
 ### `verify_authorized` hooks
 
-Usually, you need all of your actions to be authorized. Action Policy provides a controller hook which ensures that an `authorize!` call has been during the action:
+Usually, you need all of your actions to be authorized. Action Policy provides a controller hook which ensures that an `authorize!` call has been made during the action:
 
 ```ruby
 class ApplicationController < ActionController::Base
-  # adds after_action callback to verify
+  # adds an after_action callback to verify
   # that `authorize!` has been called.
   verify_authorized
 
-  # you can also pass additional options like in normal callback
+  # you can also pass additional options,
+  # like with a usual callback
   verify_authorized except: :index
 end
 ```
@@ -44,12 +45,12 @@ class PostsController < ApplicationController
 end
 ```
 
-When unauthorized action is encountered, the `ActionPolicy::UnauthorizedAction` error is raised.
+When an unauthorized action is encountered, the `ActionPolicy::UnauthorizedAction` error is raised.
 
 ### Resource-less `authorize!`
 
-You can also call `authorize!` without any specified resource.
-In that case Action Policy tries to infer the resource class from the controller name:
+You can also call `authorize!` without a resource specified.
+In that case, Action Policy tries to infer the resource class from the controller name:
 
 ```ruby
 class PostsController < ApplicationPolicy
@@ -69,7 +70,7 @@ Action Policy is only included into `ActionController::Base`. If you want to use
 class ApiController < ApplicationController::API
   include ActionPolicy::Controller
 
-  # NOTE: you have to provide authorization context manually too
+  # NOTE: you have to provide authorization context manually as well
   authorize :current_user, as: :user
 end
 ```
@@ -105,5 +106,5 @@ end
 
 > Read more about [authorization context](authorization_context.md).
 
-In case you don't want to include Action Policy to channels at all,
-you can turn this integration off by setting `config.action_policy.auto_inject_into_channel = false` in `application.rb`.
+In case you do not want to include Action Policy to channels at all,
+you can disable the integration by setting `config.action_policy.auto_inject_into_channel = false` in `application.rb`.
