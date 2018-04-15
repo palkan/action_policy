@@ -3,42 +3,42 @@
 
 ## Action Policy
 
-> authorization framework for Ruby and Rails applications.
+> Action Policy is an authorization framework for Ruby and Rails applications.
 
 ## What is it?
 
 _Authorization_ is an act of giving **someone** official
 permission to **do something** (to not be confused with [_authentication_](https://en.wikipedia.org/wiki/Authentication)).
 
-Action Policy provides flexible tools to build _authorization layer_ for your applications.
+Action Policy provides flexible tools to build an _authorization layer_ for your application.
 
 <div class="chart-container">
   <img src="assets/images/layer.svg" alt="Authorization layer" width="80%">
 </div>
 
-**NOTE:** Action Policy doesn't force you to use specific authorization model (i.e., roles, permissions, etc.) and doesn't provide one. It answers the only one question: **How to verify access?**
+**NOTE:** Action Policy does not force you to use a specific authorization model (i.e., roles, permissions, etc.) and does not provide one. It only answers a single question: **How to verify access?**
 
 ## History
 
-Action Policy gem is an _extraction_-kind of the library. Most of the code has been used in production for several years in different [Evil Martians][] projects.
+Action Policy gem is an _extraction_-kind of a library. Most of the code has been used in production for several years in different [Evil Martians][] projects.
 
-We decided to collect all our authorization techniques and pack them into a standalone gem–that's how Action Policy was born!
+We have decided to collect all our authorization techniques and pack them into a standalone gem–and that is how Action Policy was born!
 
 ## What about the existing solutions?
 
-Why did we decide to build our own authorization gem instead of using the existing solutions, such as [Pundit][] and [CanCanCan][], for example?
+Why did we decide to build our own authorization gem instead of using the existing solutions, such as [Pundit][] and [CanCanCan][]?
 
 **TL;DR they didn't solve all of our problems.**
 
-[Pundit][] has been our framework of choice for a long time. Being too _dead-simple_, it required a lot of hacking to fulfill business-logic requirements.
+[Pundit][] has been our framework of choice for a long time. Being too _dead-simple_, it required a lot of hacking to fulfill business logic requirements.
 
-These _hacks_ turned into Action Policy (we even call it "Pundit, re-visited").
+These _hacks_ later become into Action Policy (initially, we even called it "Pundit, re-visited").
 
-We also took a few ideas from [CanCanCan][], such as default rules and rules aliases.
+We also took a few ideas from [CanCanCan][]—such as default rules and rule aliases.
 
-It's also worth noting that Action Policy (despite from _Railsy_ name) is designed to be **Rails-free**. On the other hand, it contains some Rails-specific extensions and seamlessly integrates into the framework.
+It is also worth noting that Action Policy (despite from a _Railsy_ name) is designed to be **Rails-free**. On the other hand, it contains some Rails-specific extensions and seamlessly integrates into the framework.
 
-<a href="https://evilmartians.com/">
+<a href="https://evilmartians.com/?utm_source=action_policy">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
 
 [CanCanCan]: https://github.com/CanCanCommunity/cancancan
