@@ -13,7 +13,7 @@
   * [Namespaces](namespaces.md)
   * [Failure Reasons](reasons.md)
   * [Instrumentation](instrumentation.md)
-  * [I18n Integration](i18n.md)
+  * [I18n Support](i18n.md)
 * Customize
   * [Base Policy](custom_policy.md)
   * [Lookup Chain](custom_lookup_chain.md)
