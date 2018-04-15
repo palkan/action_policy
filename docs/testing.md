@@ -1,10 +1,10 @@
 # Testing
 
-Authorization is one of the crucial parts of your application. Hence it should be thoroughly tested (that's the place where 100% coverage makes sense).
+Authorization is one of the crucial parts of your application. Hence, it should be thoroughly tested (that is the place where 100% coverage makes sense).
 
 When you use policies for authorization, it is possible to split testing into two parts:
-- Test that **the required authorization is performed** within your authorization layer (controller, channel, etc.)
-- Test policy class itself.
+- Test that **the required authorization is performed** within your authorization layer (controller, channel, etc.);
+- Test the policy class itself.
 
 ## Testing authorization
 
@@ -96,17 +96,17 @@ describe PostPolicy do
   describe "#update?" do
     subject { policy.update? }
 
-    it "returns false when user is not admin nor author" do
+    it "returns false when the user is not admin nor author" do
       is_expected.to eq false
     end
 
-    context "when user is admin" do
+    context "when the user is admin" do
       let(:user) { build_stubbed(:user, :admin) }
 
       it { is_expected.to eq true }
     end
 
-    context "when user is author" do
+    context "when the user is an author" do
       let(:post) { build_stubbed(:post, user: user) }
 
       it { is_expected.to eq true }
