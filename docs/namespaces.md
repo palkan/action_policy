@@ -15,7 +15,7 @@ module Admin
 end
 ```
 
-Modules nesting is also supported:
+Module nesting is also supported:
 
 ```ruby
 module Admin
@@ -30,8 +30,8 @@ module Admin
 end
 ```
 
-**NOTE**: in order to support namespaced lookup for non-inferrable resources,
-you should specify `policy_name` at a class level (instead of `policy_class`, which doesn't take into account namespaces):
+**NOTE**: to support namespaced lookup for non-inferrable resources,
+you should specify `policy_name` at a class level (instead of `policy_class`, which doesn't take namespaces into account):
 
 ```ruby
 class Guest < User
@@ -66,4 +66,4 @@ def authorization_namespace
 end
 ```
 
-**NOTE**: namespaces support is an extension for `ActionPolicy::Behaviour` and could be included with `ActionPolicy::Behaviours::Namespaced` (included into Rails controllers and channels integrations by default).
+**NOTE**: namespace support is an extension for `ActionPolicy::Behaviour` and could be included with `ActionPolicy::Behaviours::Namespaced` (included into Rails controllers and channel integrations by default).
