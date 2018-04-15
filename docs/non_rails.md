@@ -1,9 +1,9 @@
 # Using with Ruby applications
 
-Action Policy is designed to be independent of any framework and doesn't have dependencies.
-You can [write your policies](writing_policies.md) the same way as for Rails applications.
+Action Policy is designed to be independent of any framework and does not have specific dependencies on Ruby on Rails.
+You can [write your policies](writing_policies.md) for non-Rails applications the same way as you would do for Rails applications.
 
-In order to have `authorize!` / `allowed_to?` methods you have to include `ActionPolicy::Behaviour` into your class (where you want to perform authorization):
+In order to have `authorize!` / `allowed_to?` methods, you will have to include `ActionPolicy::Behaviour` into your class (where you want to perform authorization):
 
 ```ruby
 class PostUpdateAction
