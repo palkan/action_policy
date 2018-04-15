@@ -2,7 +2,7 @@
 
 Policy class contains predicate methods (_rules_) which are used to authorize activities.
 
-Policy instance is instantiated with the target `record` (authorization object) and the [authorization context](authorization_context.md) (by default equals to `user`):
+A Policy is instantiated with the target `record` (authorization object) and the [authorization context](authorization_context.md) (by default equals to `user`):
 
 ```ruby
 class PostPolicy < ActionPolicy::Base
@@ -33,7 +33,7 @@ policy.update?
 
 You can omit the first argument (in that case `record` would be `nil`).
 
-Instead of calling rules directly you'd better call `apply` method (which wraps rule method with some useful functionality, such as [caching](caching.md), [pre-checks](pre_checks.md), [failure reasons tracking](reasons.md)):
+Instead of calling rules directly, it is better to call the `apply` method (which wraps rule method with some useful functionality, such as [caching](caching.md), [pre-checks](pre_checks.md), and [failure reasons tracking](reasons.md)):
 
 ```ruby
 policy.apply(:update?)
@@ -41,7 +41,7 @@ policy.apply(:update?)
 
 ## Calling other policies
 
-Sometimes it's useful to call other resources policies from within policy. Action Policy provides the `allowed_to?` method as a part of `ActionPolicy::Base`:
+Sometimes it is useful to call other resources policies from within a policy. Action Policy provides the `allowed_to?` method as a part of `ActionPolicy::Base`:
 
 ```ruby
 class CommentPolicy < ApplicationPolicy
