@@ -1,10 +1,10 @@
 # Caching
 
-Action Policy aims to be as much performant as possible. One of the way to accomplish that is to build a comprehensive caching system.
+Action Policy aims to be as performant as possible. One of the ways to accomplish that is to include a comprehensive caching system.
 
-There are several cache layers available: rule-level memoization, local (instance-level) memoization, _external_ cache (through cache stores).
+There are several cache layers available: rule-level memoization, local (instance-level) memoization, and _external_ cache (through cache stores).
 
-## Policies memoization
+## Policy memoization
 
 ### Per-instance
 
@@ -34,21 +34,21 @@ end
 <% end %>
 ```
 
-In the above example, we need to use the same policy three times. Action Policy re-uses the same policy instance to avoid unnecessary objects allocation.
+In the above example, we need to use the same policy three times. Action Policy re-uses the policy instance to avoid unnecessary object allocation.
 
 We rely on the following assumptions:
-- parent object (e.g., controller instance) is _ephemeral_, i.e., it's a short-lived object
-- all authorizations uses the same [authorization context](authorization_context.md).
+- parent object (e.g., a controller instance) is _ephemeral_, i.e., it is a short-lived object
+- all authorizations use the same [authorization context](authorization_context.md).
 
 We use `record.policy_cache_key` with fallback to `record.cache_key` or `record.object_id` as a part of policy identifier in the local store.
 
 **NOTE**: policies memoization is an extension for `ActionPolicy::Behaviour` and could be included with `ActionPolicy::Behaviours::Memoized`.
 
-**NOTE**: memoization is automatically included into Rails controllers integration (but not included into channels integration, 'cause channels are long-lived objects).
+**NOTE**: memoization is automatically included into Rails controllers integration, but not included into channels integration, since channels are long-lived objects.
 
 ### Per-thread
 
-Consider more complex situation:
+Consider a more complex situation:
 
 ```ruby
 # app/controllers/comments_controller.rb
@@ -81,31 +81,31 @@ class CommentPolicy < ApplicationPolicy
 end
 ```
 
-In some case, we have to initialize **two** policies for each comment: one for the comment itself and one for the comment's post (in `allowed_to?` call).
+In some cases, we have to initialize **two** policies for each comment: one for the comment itself and one for the comment's post (in the `allowed_to?` call).
 
-That's an example of _N+1 authorization_ problem, which in its turn could easily cause _N+1 query_ problem (if `PostPolicy#manage?` makes DB queries). Sounds bad, doesn't it?
+That is an example of a _N+1 authorization_ problem, which in its turn could easily cause a _N+1 query_ problem (if `PostPolicy#manage?` makes database queries). Sounds terrible, doesn't it?
 
-It is likely that many comments belong to the same posts. If so, we can move our memoization one level up and use local thread store.
+It is likely that many comments belong to the same post. If so, we can move our memoization one level up and use local thread store.
 
-Action Policy provides `ActionPolicy::Behaviours::ThreadMemoized` module which provides this functionality (included into Rails controllers integration by default).
+Action Policy provides `ActionPolicy::Behaviours::ThreadMemoized` module with this functionality (included into Rails controllers integration by default).
 
-If you want to add this behaviour to your custom authorization-aware class, you should care about cleaning up thread store manually (by calling `ActionPolicy::PerThreadCache.clear_all`).
+If you want to add this behavior to your custom authorization-aware class, you should care about cleaning up the thread store manually (by calling `ActionPolicy::PerThreadCache.clear_all`).
 
-## Rules cache
+## Rule cache
 
 ### Per-instance
 
 There could be a situation when the same rule is called multiple times for the same policy instance (for example, when using [aliases](aliases.md)).
 
-In that case, Action Policy invokes the rule method only once, remember the result, and return it immediately for the subsequent calls.
+In that case, Action Policy invokes the rule method only once, remembers the result, and returns it immediately for the subsequent calls.
 
-**NOTE**: rules results memoization is available only if you inherit from `ActionPolicy::Base` or include `ActionPolicy::Policy::CachedApply` into your `ApplicationPolicy`.
+**NOTE**: rule results memoization is available only if you inherit from `ActionPolicy::Base` or include `ActionPolicy::Policy::CachedApply` into your `ApplicationPolicy`.
 
-### Using cache store
+### Using the cache store
 
-Some policy rules might be _performance-heavy_, e.g., make complex DB queries.
+Some policy rules might be _performance-heavy_, e.g., make complex database queries.
 
-In that case, it makes sense to cache the rule application result for a long time (not just during the same request).
+In that case, it makes sense to cache the rule application result for a long time (not just for the duration of a request).
 
 Action Policy provides a way to use _cache stores_ for that. You have to explicitly define which rules you want to cache in your policy class. For example:
 
@@ -136,13 +136,13 @@ class StagePolicy < ApplicationPolicy
 end
 ```
 
-You must configure a cache store in order to use this feature:
+You must configure a cache store to use this feature:
 
 ```ruby
 ActionPolicy.cache_store = MyCacheStore.new
 ```
 
-Or in Rails:
+Or, in Rails:
 
 ```ruby
 # config/application.rb (or config/environments/<environment>.rb)
@@ -151,7 +151,7 @@ Rails.application.configure do |config|
 end
 ```
 
-Cache store must provide at least `#fetch(key, **options, &block)` method.
+Cache store must provide at least a `#fetch(key, **options, &block)` method.
 
 By default, Action Policy builds a cache key using the following scheme:
 
@@ -160,23 +160,23 @@ By default, Action Policy builds a cache key using the following scheme:
 "/#{record.policy_cache_key}/#{policy.class.name}/#{rule}"
 ```
 
-Where `cache_namespace` is equal to "acp:#{MAJOR_GEM_VERSION}.#{MINOR_GEM_VERSION}", `context_cache_key` is concatanated cache keys of all authorization contexts (in order they defined in the policy class).
+Where `cache_namespace` is equal to `"acp:#{MAJOR_GEM_VERSION}.#{MINOR_GEM_VERSION}"`, and `context_cache_key` is a concatenation of all authorization contexts cache keys (in the same order as they are defined in the policy class).
 
-When any of the objects doesn't respond to `#policy_cache_key`, we fallback to `#cache_key`. If `#cache_key` is not defined `ArgumentError` is raised.
+If any object does not respond to `#policy_cache_key`, we fallback to `#cache_key`. If `#cache_key` is not defined, an `ArgumentError` is raised.
 
 You can define your own `cache_key` / `cache_namespace` / `context_cache_key` methods for policy class to override this logic.
 
 #### Invalidation
 
-There no one-size-fits-all solution here. It highly depends on your business-logic.
+There no one-size-fits-all solution for invalidation. It highly depends on your business logic.
 
 **Case \#1**: no invalidation required.
 
-First of all, you should try to avoid manual invalidation at all. That could be achieved by using _good_ cache keys.
+First of all, you should try to avoid manual invalidation at all. That could be achieved by using elaborate cache keys.
 
 Let's consider an example.
 
-Suppose that your users have _roles_ (i.e. `User.belongs_to :role`) and you give access to resources through `Access` model (i.e. `Resource.has_many :accesses`).
+Suppose that your users have _roles_ (i.e. `User.belongs_to :role`) and you give access to resources through the `Access` model (i.e. `Resource.has_many :accesses`).
 
 Then you can do the following:
 - Keep tracking the last `Access` added/updated/deleted for resource (e.g. `Access.belongs_to :accessessable, touch: :access_updated_at`)
@@ -202,7 +202,7 @@ That's pretty easy: just override `cache_namespace` method in your `ApplicationP
 
 ```ruby
 class ApplicationPolicy < ActionPolicy::Base
-  # It's good to store the changing part in the constant
+  # It's a good idea to store the changing part in the constant
   CACHE_VERSION = "v2".freeze
 
   # or even from the env variable
@@ -216,7 +216,7 @@ end
 
 **Case \#3**: discarding some keys.
 
-That's an alternative approach to _crafting_ cache keys.
+That is an alternative approach to _crafting_ cache keys.
 
 If you have a limited number of places in your application where you update access control,
 you can invalidate policies cache manually. If your cache store supports `delete_matched` command (deleting keys using a wildcard), you can try the following:
