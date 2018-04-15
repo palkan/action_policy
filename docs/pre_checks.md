@@ -1,7 +1,8 @@
 # Pre-Checks
 
-There is a common situation when you start most (even all) of your rules with the same predicates.
-For example, when having a super-user role in the application:
+Consider a typical situation when you start most—or even all—of your rules with the same predicates.
+
+For example, when you have a super-user role in the application:
 
 ```ruby
 class PostPolicy < ApplicationPolicy
@@ -17,7 +18,7 @@ class PostPolicy < ApplicationPolicy
 end
 ```
 
-Action Policy allows you to extract this common parts from rules into _pre-checks_:
+Action Policy allows you to extract the common parts from rules into _pre-checks_:
 
 ```ruby
 class PostPolicy < ApplicationPolicy
@@ -51,6 +52,6 @@ class UserPolicy < ApplicationPolicy
 end
 ```
 
-To halt the authorization process within a pre-check, you must return either `allow!` or `deny!` call value. When any other value is returned the pre-check is ignored, and the rule is called (or next pre-check).
+To halt the authorization process within a pre-check, you must return either `allow!` or `deny!` call value. When any other value is returned, the pre-check is ignored, and the rule is called (or next pre-check).
 
 **NOTE**: pre-checks are available only if you inherit from `ActionPolicy::Base` or include `ActionPolicy::Policy::PreCheck` into your `ApplicationPolicy`.
