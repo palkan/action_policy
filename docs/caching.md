@@ -4,6 +4,10 @@ Action Policy aims to be as performant as possible. One of the ways to accomplis
 
 There are several cache layers available: rule-level memoization, local (instance-level) memoization, and _external_ cache (through cache stores).
 
+<div class="chart-container">
+  <img src="assets/images/cache.svg" alt="Cache layers" width="60%">
+</div>
+
 ## Policy memoization
 
 ### Per-instance
