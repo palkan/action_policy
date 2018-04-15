@@ -1,8 +1,8 @@
 # Failure Reasons
 
-When you have complex policy rules it could be helpful to have an ability to distinguish between the reasons why authorization was rejected.
+When you have complex policy rules, it could be helpful to have an ability to define an exact reason for why a specific authorization was rejected.
 
-It's escepially helpful when you compose policies (i.e. use one policy within another).
+It is especially helpful when you compose policies (i.e., use one policy within another).
 
 Action Policy allows you to track failed `allowed_to?` checks in your rules.
 
@@ -17,7 +17,7 @@ class ApplicantPolicy < ApplicationPolicy
 end
 ```
 
-When `ApplicantPolicy#show?` check fails the exception has the `reasons` object, which contains additional information about the failure:
+When `ApplicantPolicy#show?` check fails, the exception has the `reasons` object, which contains additional information about the failure:
 
 ```ruby
 class ApplicationController < ActionController::Base
@@ -48,9 +48,9 @@ p ex.reasons.messages #=> { applicant: [:view_applicants?] }
 p ex.reasons.messages #=> { stage: [:show?] }
 ```
 
-**What the point of failure reasons?**
+**What is the point of failure reasons?**
 
-First, you can provide a user with a more specific feedback. For example, in the above scenariio when the reason is `ApplicantPolicy#view_applicants?` you can show the following message:
+First, you can provide a user with helpful feedback. For example, in the above scenario, when the reason is `ApplicantPolicy#view_applicants?`, you could show the following message:
 
 ```
 You don't have enough permissions to view applicants.
@@ -61,7 +61,7 @@ And when the reason is `StagePolicy#show?`:
 
 ```
 You don't have access to the stage XYZ.
-Please, ask you manager to grant access to this stage.
+Please, ask your manager to grant access to this stage.
 ```
 
-It's much more useful than just showing "You are not authorized to perform this action", isn't it?
+Much more useful than just showing "You are not authorized to perform this action," isn't it?
