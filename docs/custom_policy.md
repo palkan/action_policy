@@ -1,6 +1,6 @@
 # Custom Base Policy
 
-`ActionPolicy::Base` is a combination of all available policies extensions with the default configuration.
+`ActionPolicy::Base` is a combination of all available policy extensions with the default configuration.
 
 It looks like this:
 
@@ -39,7 +39,7 @@ end
 <span style="display:none;"># rubocop:enable Style/ClassAndModuleChildren</span>
 
 You can write your `ApplicationPolicy` from scratch instead of inheriting from `ActionPolicy::Base`
-if the defaults above doesn't fit your needs. The only required component is `ActionPolicy::Policy::Core`:
+if the defaults above do not fit your needs. The only required component is `ActionPolicy::Policy::Core`:
 
 ```ruby
 # minimal ApplicationPolicy
