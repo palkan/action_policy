@@ -3,7 +3,10 @@
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 
 require "action_policy"
-require "pry-byebug"
+begin
+  require "pry-byebug"
+rescue LoadError # rubocop:disable Lint/HandleExceptions
+end
 
 require_relative "../test/stubs/user"
 
