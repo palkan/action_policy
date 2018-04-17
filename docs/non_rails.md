@@ -21,7 +21,7 @@ class PostUpdateAction
   def call(post, params)
     authorize! post, to: :update?
 
-    post.udpate!(params)
+    post.update!(params)
   end
 end
 ```
