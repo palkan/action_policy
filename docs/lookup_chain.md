@@ -5,7 +5,7 @@ Action Policy tries to automatically infer policy class from the target using th
 1. If the target responds to `policy_class`, then use it;
 2. If the target's class responds to `policy_class`, then use it;
 3. If the target's class responds to `policy_name`, then use `#{target.class.policy_name}Policy`;
-4. Otherwise use, `#{target.class.name}Policy`.
+4. Otherwise, use `#{target.class.name}Policy`.
 
 > \* [Namespaces](namespaces.md) could be also be considered when `namespace` option is set.
 
