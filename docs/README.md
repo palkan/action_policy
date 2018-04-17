@@ -38,6 +38,10 @@ We also took a few ideas from [CanCanCan][]—such as default rules and rule ali
 
 It is also worth noting that Action Policy (despite from a _Railsy_ name) is designed to be **Rails-free**. On the other hand, it contains some Rails-specific extensions and seamlessly integrates into the framework.
 
+## Resources
+
+- RailsConf, 2018 "Access Denied" talk [[slides](https://speakerdeck.com/palkan/railsconf-2018-access-denied-the-missing-guide-to-authorization-in-rails)]
+
 <a href="https://evilmartians.com/?utm_source=action_policy">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
 

@@ -11,6 +11,11 @@ Action Policy is an authorization framework for Ruby and Rails applications.
 <a href="https://evilmartians.com/?utm_source=action_policy">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
 
+## Resources
+
+- RailsConf, 2018 "Access Denied" talk [[slides](https://speakerdeck.com/palkan/railsconf-2018-access-denied-the-missing-guide-to-authorization-in-rails)]
+
+
 ## Installation
 
 Add this line to your application's `Gemfile`:
