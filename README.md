@@ -1,6 +1,6 @@
 [![Gem Version](https://badge.fury.io/rb/action_policy.svg)](https://badge.fury.io/rb/action_policy)
 [![Build Status](https://travis-ci.org/palkan/action_policy.svg?branch=master)](https://travis-ci.org/palkan/action_policy)
-[![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)](http://palkan.github.io/action_policy)
+[![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)](http://actionpolicy.evilmartians.io)
 
 # ActionPolicy
 
@@ -95,4 +95,4 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/palkan
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
-[Documentation]: http://palkan.github.io/action_policy
+[Documentation]: http://actionpolicy.evilmartians.io
