@@ -118,7 +118,7 @@ module ActionPolicy
         # rubocop: enable Metrics/PerceivedComplexity, Metrics/MethodLength
 
         def dup
-          self.class.new(policy_class, name, except: blacklist.dup, only: whitelist.dup)
+          self.class.new(policy_class, name, except: blacklist&.dup, only: whitelist&.dup)
         end
 
         private
