@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
 
   spec.summary       = "Authorization framework for Ruby/Rails application"
   spec.description   = "Authorization framework for Ruby/Rails application"
-  spec.homepage      = "https://github.com/palkan/action-policy"
+  spec.homepage      = "https://github.com/palkan/action_policy"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
