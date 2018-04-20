@@ -42,7 +42,10 @@ module ActionPolicy # :nodoc:
 
         ActionPolicy.cache_store.then do |store|
           @result = store.read(key)
-          next result.value unless result.nil?
+          unless result.nil?
+            result.cached!
+            next result.value
+          end
           yield
           store.write(key, result, options)
           result.value
