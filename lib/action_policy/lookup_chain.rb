@@ -15,6 +15,24 @@ module ActionPolicy
     require "action_policy/ext/module_namespace"
     using ActionPolicy::Ext::ModuleNamespace
 
+    # Cache namespace resolving result for policies
+    class NamespaceCache
+      class << self
+        attr_reader :store
+
+        def fetch(namespace, policy)
+          return store[namespace][policy] if store[namespace].key?(policy)
+          store[namespace][policy] ||= yield
+        end
+
+        def clear
+          @store = Hash.new { |h, k| h[k] = {} }
+        end
+      end
+
+      clear
+    end
+
     class << self
       attr_accessor :chain
 
@@ -30,14 +48,18 @@ module ActionPolicy
 
       def lookup_within_namespace(record, namespace)
         policy_name = policy_class_name_for(record)
-        mod = namespace
-        loop do
-          return mod.const_get(policy_name, false) if
-            mod.const_defined?(policy_name, false)
+        NamespaceCache.fetch(namespace.name, policy_name) do
+          mod = namespace
 
-          mod = mod.namespace
+          loop do
+            policy = "#{mod.name}::#{policy_name}".safe_constantize
 
-          return if mod.nil?
+            break policy unless policy.nil?
+
+            mod = mod.namespace
+
+            break if mod.nil?
+          end
         end
       end
 
