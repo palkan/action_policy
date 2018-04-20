@@ -27,6 +27,14 @@ module ActionPolicy
         @value == false
       end
 
+      def cached!
+        @cached = true
+      end
+
+      def cached?
+        @cached == true
+      end
+
       def inspect
         "<#{policy}##{rule}: #{@value}>"
       end

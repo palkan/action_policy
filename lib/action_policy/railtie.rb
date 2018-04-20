@@ -61,6 +61,12 @@ module ActionPolicy # :nodoc:
       end
     end
 
+    initializer "action_policy.instrumentation" do |_app|
+      require "action_policy/rails/policy/instrumentation"
+
+      ActionPolicy::Base.include ActionPolicy::Policy::Rails::Instrumentation
+    end
+
     config.to_prepare do |_app|
       ActionPolicy::LookupChain.namespace_cache_enabled =
         Rails.application.config.action_policy.namespace_cache_enabled
