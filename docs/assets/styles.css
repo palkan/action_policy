@@ -2,13 +2,13 @@
   font-weight: 400;
   font-style: normal;
   font-family: "Stem Text";
-  src: url("http://cdn.evilmartians.com/front/fonts/subset-StemText-Regular.woff") format("woff");
+  src: url("//cdn.evilmartians.com/front/fonts/subset-StemText-Regular.woff") format("woff");
 }
 @font-face {
   font-weight: 700;
   font-style: normal;
   font-family: "Stem Text";
-  src: url("http://cdn.evilmartians.com/front/fonts/subset-StemText-Bold.woff") format("woff");
+  src: url("//cdn.evilmartians.com/front/fonts/subset-StemText-Bold.woff") format("woff");
 }
 
 @font-face {
