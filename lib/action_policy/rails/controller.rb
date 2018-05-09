@@ -23,7 +23,7 @@ module ActionPolicy
     include ActionPolicy::Behaviours::Namespaced
 
     included do
-      helper_method :allowed_to?
+      helper_method :allowed_to? if respond_to?(:helper_method)
 
       attr_writer :authorize_count
 
@@ -83,7 +83,7 @@ module ActionPolicy
 
       # Skips verify_authorized after_action callback.
       def skip_verify_authorized(**options)
-        skip_after_action :verify_authorized, **options\
+        skip_after_action :verify_authorized, **options
       end
     end
   end
