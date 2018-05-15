@@ -13,7 +13,7 @@ Action Policy is an authorization framework for Ruby and Rails applications.
 
 ## Resources
 
-- RailsConf, 2018 "Access Denied" talk [[slides](https://speakerdeck.com/palkan/railsconf-2018-access-denied-the-missing-guide-to-authorization-in-rails)]
+- RailsConf, 2018 "Access Denied" talk [[video](https://www.youtube.com/watch?v=NVwx0DARDis), [slides](https://speakerdeck.com/palkan/railsconf-2018-access-denied-the-missing-guide-to-authorization-in-rails)]
 
 
 ## Installation
