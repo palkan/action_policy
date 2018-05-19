@@ -1,4 +1,5 @@
 ## master
+- Fix modules order in `ActionPolicy::Base`. ([@ilyasgaraev][])
 
 ## 0.1.2 (2018-05-09)
 
@@ -13,3 +14,4 @@
 - Initial pre-release version. ([@palkan][])
 
 [@palkan]: https://github.com/palkan
+[@ilyasgaraev]: https://github.com/ilyasgaraev
