@@ -1,12 +1,12 @@
 [![Gem Version](https://badge.fury.io/rb/action_policy.svg)](https://badge.fury.io/rb/action_policy)
 [![Build Status](https://travis-ci.org/palkan/action_policy.svg?branch=master)](https://travis-ci.org/palkan/action_policy)
-[![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)](http://actionpolicy.evilmartians.io)
+[![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)](https://actionpolicy.evilmartians.io)
 
 # ActionPolicy
 
 Action Policy is an authorization framework for Ruby and Rails applications.
 
-📑 [Documentation][]
+📑 [Documentation][https://actionpolicy.evilmartians.io]
 
 <a href="https://evilmartians.com/?utm_source=action_policy">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
