@@ -1,4 +1,7 @@
 ## master
+
+## 0.1.3 (2018-05-20)
+
 - Fix modules order in `ActionPolicy::Base`. ([@ilyasgaraev][])
 
 ## 0.1.2 (2018-05-09)
