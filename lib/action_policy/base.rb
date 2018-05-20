@@ -14,8 +14,8 @@ module ActionPolicy
 
     include ActionPolicy::Policy::Core
     include ActionPolicy::Policy::Authorization
-    include ActionPolicy::Policy::Reasons
     include ActionPolicy::Policy::PreCheck
+    include ActionPolicy::Policy::Reasons
     include ActionPolicy::Policy::Aliases
     include ActionPolicy::Policy::Cache
     include ActionPolicy::Policy::CachedApply
