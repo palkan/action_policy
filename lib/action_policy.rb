@@ -28,7 +28,7 @@ module ActionPolicy
 
     # Find a policy class for a target
     def lookup(target, **options)
-      LookupChain.call(target, **options) ||
+      LookupChain.call(target, options) ||
         raise(NotFound, target)
     end
   end

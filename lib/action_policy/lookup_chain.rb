@@ -38,7 +38,7 @@ module ActionPolicy
 
       def call(record, **opts)
         chain.each do |probe|
-          val = probe.call(record, **opts)
+          val = probe.call(record, opts)
           return val unless val.nil?
         end
         nil

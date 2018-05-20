@@ -26,6 +26,9 @@ Lint/Void:
   Exclude:
     - '**/*.md'
 
+Lint/SplatKeywordArguments:
+  Enabled: false
+
 Lint/DuplicateMethods:
   Exclude:
     - '**/*.md'

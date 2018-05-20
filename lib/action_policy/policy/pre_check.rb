@@ -44,7 +44,7 @@ module ActionPolicy
           attr_reader :fulfilled
 
           def initialize(val)
-            @fulfilled = KINDS.keys.include?(val)
+            @fulfilled = KINDS.key?(val)
             @value = val
           end
 
@@ -175,7 +175,7 @@ module ActionPolicy
             check = pre_checks.find { |c| c.name == name }
             raise "Pre-check already defined: #{name}" unless check.nil?
 
-            pre_checks << Check.new(self, name, **options)
+            pre_checks << Check.new(self, name, options)
           end
         end
 

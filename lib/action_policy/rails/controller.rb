@@ -78,12 +78,12 @@ module ActionPolicy
       # Adds after_action callback to check that
       # authorize! method has been called.
       def verify_authorized(**options)
-        after_action :verify_authorized, **options
+        after_action :verify_authorized, options
       end
 
       # Skips verify_authorized after_action callback.
       def skip_verify_authorized(**options)
-        skip_after_action :verify_authorized, **options
+        skip_after_action :verify_authorized, options
       end
     end
   end

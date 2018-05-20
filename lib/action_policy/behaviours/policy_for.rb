@@ -8,7 +8,7 @@ module ActionPolicy
       def policy_for(record:, with: nil, namespace: nil)
         namespace ||= authorization_namespace
         policy_class = with || ::ActionPolicy.lookup(record, namespace: namespace)
-        policy_class.new(record, **authorization_context)
+        policy_class.new(record, authorization_context)
       end
 
       def authorization_context
