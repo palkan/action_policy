@@ -1,5 +1,7 @@
 ## master
 
+## 0.1.4 (2018-06-06)
+
 - Fix Railtie injection hook. ([@palkan][])
 
 - Fix Ruby 2.3 compatibility. ([@palkan])
