@@ -6,7 +6,7 @@ module ActionPolicy
     module StringMatch
       refine String do
         def match?(regexp)
-          regexp.match?(self)
+          !regexp.match(self).nil?
         end
       end
     end
