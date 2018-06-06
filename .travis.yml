@@ -13,8 +13,10 @@ matrix:
       gemfile: gemfiles/railsmaster.gemfile
     - rvm: jruby-9.1.0.0
       gemfile: gemfiles/jruby.gemfile
-    - rvm: 2.5.0
+    - rvm: 2.5.1
       gemfile: Gemfile
+    - rvm: 2.5.1
+      gemfile: gemfiles/rails42.gemfile
     - rvm: 2.4.3
       gemfile: Gemfile
     - rvm: 2.3.1
