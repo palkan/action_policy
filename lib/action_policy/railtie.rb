@@ -49,7 +49,7 @@ module ActionPolicy # :nodoc:
       app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
     end
 
-    config.after_initialize do |_app|
+    config.to_prepare do |_app|
       ActiveSupport.on_load(:action_controller) do
         next unless Rails.application.config.action_policy.auto_inject_into_controller
 

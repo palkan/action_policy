@@ -1,5 +1,9 @@
 ## master
 
+- Fix Railtie injection hook. ([@palkan][])
+
+- Fix Ruby 2.3 compatibility. ([@palkan])
+
 ## 0.1.3 (2018-05-20)
 
 - Fix modules order in `ActionPolicy::Base`. ([@ilyasgaraev][])
