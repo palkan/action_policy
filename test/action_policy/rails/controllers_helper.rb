@@ -5,6 +5,8 @@ require "action_policy/rails/controller"
 
 ActionController::Base.include(ActionPolicy::Controller)
 
+ActionController::Base.include(Module.new { def _routes; end })
+
 SharedTestRoutes = ActionDispatch::Routing::RouteSet.new
 
 SharedTestRoutes.draw do

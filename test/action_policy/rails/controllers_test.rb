@@ -32,13 +32,13 @@ class TestSimpleControllerIntegration < ActionController::TestCase
     end
 
     def current_user
-      @current_user ||= User.new(params[:user])
+      @current_user ||= User.new(params[:user] || params[:params][:user])
     end
 
     private
 
     def set_user
-      @user = User.new(params[:target])
+      @user = User.new(params[:target] || params[:params][:target])
       authorize! @user
     end
   end
@@ -46,7 +46,7 @@ class TestSimpleControllerIntegration < ActionController::TestCase
   tests UsersController
 
   def test_index
-    get :index
+    get :index, params: { user: "guest" }
     assert_equal "OK", response.body
   end
 

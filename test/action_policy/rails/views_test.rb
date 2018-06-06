@@ -19,7 +19,7 @@ class TestViewsIntegration < ActionController::TestCase
     end
 
     def current_user
-      @current_user ||= User.new(params[:user])
+      @current_user ||= User.new(params[:user] || params[:params][:user])
     end
   end
 
@@ -87,7 +87,7 @@ class TestControllerViewsMemoization < ActionController::TestCase
     end
 
     def current_user
-      @current_user ||= User.new(params[:user])
+      @current_user ||= User.new(params[:user] || params[:params][:user])
     end
   end
 
