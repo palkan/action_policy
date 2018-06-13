@@ -17,6 +17,8 @@ class ApplicantPolicy < ApplicationPolicy
 end
 ```
 
+**NOTE:** `messages` support hasn't been released yet. See [the issue](https://github.com/palkan/action_policy/issues/13).
+
 When `ApplicantPolicy#show?` check fails, the exception has the `reasons` object, which contains additional information about the failure:
 
 ```ruby
