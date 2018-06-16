@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "action_policy/behaviours/policy_for"
+require "action_policy/policy/execution_result"
 
 module ActionPolicy
   # Raised when `resolve_rule` failed to find an approriate
@@ -18,19 +19,55 @@ module ActionPolicy
   module Policy
     # Core policy API
     module Core
+      class << self
+        def included(base)
+          base.extend ClassMethods
+
+          # Generate a new class for each _policy chain_
+          # in order to extend it independently
+          base.module_eval do
+            @result_class = Class.new(ExecutionResult)
+          end
+        end
+      end
+
+      module ClassMethods # :nodoc:
+        def result_class
+          return @result_class if instance_variable_defined?(:@result_class)
+          @result_class = superclass.result_class
+        end
+      end
+
       include ActionPolicy::Behaviours::PolicyFor
 
-      attr_reader :record
+      attr_reader :record, :result
 
       def initialize(record = nil)
         @record = record
       end
 
-      # Returns a result of applying the specified rule.
+      # Returns a result of applying the specified rule (true of false).
       # Unlike simply calling a predicate rule (`policy.manage?`),
       # `apply` also calls pre-checks.
       def apply(rule)
+        @result = self.class.result_class.new
+        @result.load __apply__(rule)
+      end
+
+      # This method performs the rule call.
+      # Override or extend it to provide custom functionality
+      # (such as caching, pre checks, etc.)
+      def __apply__(rule)
         public_send(rule)
+      end
+
+      # Wrap code that could modify result
+      # to prevent the current result modification
+      def with_clean_result
+        was_result = @result
+        res = yield
+        @result = was_result
+        res
       end
 
       # Returns a result of applying the specified rule to the specified record.
@@ -39,14 +76,11 @@ module ActionPolicy
       #
       # If record is `nil` then we uses the current policy.
       def allowed_to?(rule, record = :__undef__, **options)
-        policy =
-          if record == :__undef__
-            self
-          else
-            policy_for(record: record, **options)
-          end
-
-        policy.apply(rule)
+        if record == :__undef__
+          __apply__(rule)
+        else
+          policy_for(record: record, **options).apply(rule)
+        end
       end
 
       # Returns a rule name (policy method name) for activity.

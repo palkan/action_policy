@@ -57,7 +57,7 @@ class TestSimpleControllerIntegration < ActionController::TestCase
 
     assert_equal UserPolicy, e.policy
     assert_equal :create?, e.rule
-    assert e.reasons.is_a?(::ActionPolicy::Policy::FailureReasons)
+    assert e.result.reasons.is_a?(::ActionPolicy::Policy::FailureReasons)
   end
 
   def test_create_succeed

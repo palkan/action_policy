@@ -7,21 +7,19 @@ module ActionPolicy
     # When you call `apply` twice on the same policy and for the same rule,
     # the check (and pre-checks) is only called once.
     module CachedApply
-      class << self
-        def prepended(base)
-          base.prepend InstanceMethods
+      def apply(rule)
+        @__rules_cache__ ||= {}
+
+        if @__rules_cache__.key?(rule)
+          @result = @__rules_cache__[rule]
+          return result.value
         end
 
-        alias included prepended
-      end
+        super
 
-      module InstanceMethods # :nodoc:
-        def apply(rule)
-          @__rules_cache__ ||= {}
-          return @__rules_cache__[rule] if @__rules_cache__.key?(rule)
+        @__rules_cache__[rule] = result
 
-          @__rules_cache__[rule] = super
-        end
+        result.value
       end
     end
   end

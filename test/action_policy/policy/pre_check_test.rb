@@ -144,7 +144,7 @@ class TestPreCheck < Minitest::Test
 
     refute policy.apply(:index?)
 
-    reasons = policy.reasons
+    reasons = policy.result.reasons
 
     assert_equal 1, reasons.size
     assert_equal TestPolicy, reasons.first.policy

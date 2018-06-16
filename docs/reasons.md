@@ -17,17 +17,20 @@ class ApplicantPolicy < ApplicationPolicy
 end
 ```
 
-**NOTE:** `messages` support hasn't been released yet. See [the issue](https://github.com/palkan/action_policy/issues/13).
-
-When `ApplicantPolicy#show?` check fails, the exception has the `reasons` object, which contains additional information about the failure:
+When `ApplicantPolicy#show?` check fails, the exception has the `result` object, which in its turn contains additional information about the failure (`reasons`):
 
 ```ruby
 class ApplicationController < ActionController::Base
   rescue_from ActionPolicy::Unauthorized do |ex|
-    p ex.reasons.messages #=> { stage: [:show?] }
+    p ex.result.reasons.details #=> { stage: [:show?] }
+
+    # or with i18n support
+    p ex.result.reasons.full_messages #=> ["You do not have access to the stage"]
   end
 end
 ```
+
+**NOTE:** `full_messages` support hasn't been released yet. See [the issue](https://github.com/palkan/action_policy/issues/15).
 
 You can also wrap _local_ rules into `allowed_to?` to populate reasons:
 
@@ -44,11 +47,13 @@ class ApplicantPolicy < ApplicationPolicy
 end
 
 # then the reasons object could be
-p ex.reasons.messages #=> { applicant: [:view_applicants?] }
+p ex.result.reasons.details #=> { applicant: [:view_applicants?] }
 
 # or
-p ex.reasons.messages #=> { stage: [:show?] }
+p ex.result.reasons.details #=> { stage: [:show?] }
 ```
+
+
 
 **What is the point of failure reasons?**
 

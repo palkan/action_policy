@@ -3,13 +3,12 @@
 module ActionPolicy
   # Raised when `authorize!` check fails
   class Unauthorized < Error
-    attr_reader :policy, :rule, :reasons
+    attr_reader :policy, :rule, :result
 
     def initialize(policy, rule)
       @policy = policy.class
       @rule = rule
-      # Reasons module could be not included
-      @reasons = policy.reasons if policy.respond_to?(:reasons)
+      @result = policy.result
     end
   end
 

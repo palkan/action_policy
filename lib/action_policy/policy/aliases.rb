@@ -7,7 +7,7 @@ module ActionPolicy
     #
     #   class ApplicationPolicy
     #     include ActionPolicy::Policy::Core
-    #     prepend ActionPolicy::Policy::Aliases
+    #     include ActionPolicy::Policy::Aliases
     #
     #     # define which rule to use if `authorize!` called with
     #     # unknown rule
@@ -23,19 +23,14 @@ module ActionPolicy
       DEFAULT = :__default__
 
       class << self
-        def prepended(base)
+        def included(base)
           base.extend ClassMethods
-          base.prepend InstanceMethods
         end
-
-        alias included prepended
       end
 
-      module InstanceMethods # :nodoc:
-        def resolve_rule(activity)
-          return activity if respond_to?(activity)
-          self.class.lookup_alias(activity) || super
-        end
+      def resolve_rule(activity)
+        return activity if respond_to?(activity)
+        self.class.lookup_alias(activity) || super
       end
 
       module ClassMethods # :nodoc:

@@ -83,8 +83,8 @@ module ActionPolicy
         def call(policy)
           Result.new(policy.send(name)).tap do |res|
             # add denial reason if Reasons included
-            policy.reasons.add(policy_class, name) if
-              res.denied? && policy.respond_to?(:reasons)
+            policy.result.reasons.add(policy_class, name) if
+              res.denied? && policy.result.respond_to?(:reasons)
           end
         end
 
@@ -136,12 +136,9 @@ module ActionPolicy
       end
 
       class << self
-        def prepended(base)
+        def included(base)
           base.extend ClassMethods
-          base.prepend InstanceMethods
         end
-
-        alias included prepended
       end
 
       def run_pre_checks(rule)
@@ -162,10 +159,8 @@ module ActionPolicy
         Check::Result::ALLOW
       end
 
-      module InstanceMethods # :nodoc:
-        def apply(rule)
-          run_pre_checks(rule) { super }
-        end
+      def __apply__(rule)
+        run_pre_checks(rule) { super }
       end
 
       module ClassMethods # :nodoc:

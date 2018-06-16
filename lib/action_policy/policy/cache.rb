@@ -15,12 +15,9 @@ module ActionPolicy # :nodoc:
     # NOTE: if cache_store is nil then we silently skip all the caching.
     module Cache
       class << self
-        def prepended(base)
+        def included(base)
           base.extend ClassMethods
-          base.prepend InstanceMethods
         end
-
-        alias included prepended
       end
 
       def cache_namespace
@@ -42,13 +39,11 @@ module ActionPolicy # :nodoc:
         ActionPolicy.cache_store.fetch(cache_key(rule), options) { yield }
       end
 
-      module InstanceMethods # :nodoc:
-        def apply(rule)
-          return super if ActionPolicy.cache_store.nil? ||
-                          !self.class.cached_rules.key?(rule)
+      def apply(rule)
+        return super if ActionPolicy.cache_store.nil? ||
+                        !self.class.cached_rules.key?(rule)
 
-          apply_with_cache(rule) { super }
-        end
+        apply_with_cache(rule) { super }
       end
 
       module ClassMethods # :nodoc:

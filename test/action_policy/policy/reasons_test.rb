@@ -22,12 +22,12 @@ class TestFailuresPolicy < Minitest::Test
 
   def test_apply_success
     assert @policy.apply(:index?)
-    assert @policy.reasons.empty?
+    assert @policy.result.reasons.empty?
   end
 
   def test_apply_failure
     refute @policy.apply(:manage?)
-    assert @policy.reasons.empty?
+    assert @policy.result.reasons.empty?
   end
 end
 
@@ -56,16 +56,15 @@ class TestComplexFailuresPolicy < Minitest::Test
     policy = ComplexFailuresTestPolicy.new user: User.new("guest")
 
     refute policy.apply(:kill?)
-    reasons = policy.reasons
-
-    assert_equal 0, reasons.size
+    assert_equal 0, policy.result.reasons.size
   end
 
   def test_and_condition_nested_check_failure
     policy = ComplexFailuresTestPolicy.new user: User.new("admin")
 
     refute policy.apply(:kill?)
-    reasons = policy.reasons
+
+    reasons = policy.result.reasons
 
     assert_equal 1, reasons.size
     assert_equal UserFailuresPolicy, reasons.first.policy
@@ -76,7 +75,8 @@ class TestComplexFailuresPolicy < Minitest::Test
     policy = ComplexFailuresTestPolicy.new user: User.new("guest")
 
     refute policy.apply(:save?)
-    reasons = policy.reasons
+
+    reasons = policy.result.reasons
 
     assert_equal 2, reasons.size
 
@@ -91,7 +91,8 @@ class TestComplexFailuresPolicy < Minitest::Test
     policy = ComplexFailuresTestPolicy.new user: User.new("admin")
 
     refute policy.apply(:save?)
-    reasons = policy.reasons
+
+    reasons = policy.result.reasons
 
     assert_equal 2, reasons.size
 

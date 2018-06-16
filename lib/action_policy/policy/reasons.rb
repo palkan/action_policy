@@ -27,6 +27,13 @@ module ActionPolicy
       end
     end
 
+    # Extend ExecutionResult with `reasons` method
+    module ResultFailureReasons
+      def reasons
+        @reasons ||= FailureReasons.new
+      end
+    end
+
     # Provides failure reasons tracking functionality.
     # That allows you to distinguish between the reasons why authorization was rejected.
     #
@@ -45,7 +52,7 @@ module ActionPolicy
     # information about the failure:
     #
     #   rescue_from ActionPolicy::Unauthorized do |ex|
-    #     ex.reasons.messages  #=> { stage: [:show] }
+    #     ex.result.reasons.details  #=> { stage: [:show] }
     #   end
     #
     # You can also wrap _local_ rules into `allowed_to?` to populate reasons:
@@ -62,48 +69,29 @@ module ActionPolicy
     #   end
     module Reasons
       class << self
-        def prepended(base)
-          base.prepend InstanceMethods
+        def included(base)
+          base.result_class.include(ResultFailureReasons)
         end
-
-        alias included prepended
       end
 
-      attr_reader :reasons
+      # rubocop: disable Metrics/MethodLength
+      def allowed_to?(rule, record = :__undef__, **options)
+        policy = nil
 
-      def with_clean_reasons # :nodoc:
-        old_reasons = reasons
-        @reasons = nil
-        res = yield
-        @reasons = old_reasons
-        res
+        succeed =
+          if record == :__undef__
+            policy = self
+            with_clean_result { apply(rule) }
+          else
+            policy = policy_for(record: record, **options)
+
+            policy.apply(rule)
+          end
+
+        result.reasons.add(policy, rule) unless succeed
+        succeed
       end
-
-      module InstanceMethods # :nodoc:
-        def apply(rule)
-          @reasons = FailureReasons.new
-          super
-        end
-
-        # rubocop: disable Metrics/MethodLength
-        def allowed_to?(rule, record = :__undef__, **options)
-          policy = nil
-
-          succeed =
-            if record == :__undef__
-              policy = self
-              with_clean_reasons { apply(rule) }
-            else
-              policy = policy_for(record: record, **options)
-
-              policy.apply(rule)
-            end
-
-          reasons.add(policy, rule) if reasons && !succeed
-          succeed
-        end
-        # rubocop: enable Metrics/MethodLength
-      end
+      # rubocop: enable Metrics/MethodLength
     end
   end
 end

@@ -36,34 +36,29 @@ module ActionPolicy
     #   ApplicantPolicy.new(user: user, account: account)
     module Authorization
       class << self
-        def prepended(base)
+        def included(base)
           base.extend ClassMethods
-          base.prepend InstanceMethods
         end
-
-        alias included prepended
       end
 
       attr_reader :authorization_context
 
-      module InstanceMethods # :nodoc:
-        def initialize(*args, **params)
-          super(*args)
+      def initialize(*args, **params)
+        super(*args)
 
-          @authorization_context = {}
+        @authorization_context = {}
 
-          self.class.authorization_targets.each do |id, opts|
-            raise AuthorizationContextMissing, id unless params.key?(id)
+        self.class.authorization_targets.each do |id, opts|
+          raise AuthorizationContextMissing, id unless params.key?(id)
 
-            val = params.fetch(id)
+          val = params.fetch(id)
 
-            raise AuthorizationContextMissing, id if val.nil? && opts[:allow_nil] != true
+          raise AuthorizationContextMissing, id if val.nil? && opts[:allow_nil] != true
 
-            authorization_context[id] = instance_variable_set("@#{id}", val)
-          end
-
-          authorization_context.freeze
+          authorization_context[id] = instance_variable_set("@#{id}", val)
         end
+
+        authorization_context.freeze
       end
 
       module ClassMethods # :nodoc:
