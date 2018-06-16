@@ -1,0 +1,42 @@
+----------------------------------------------
+Groups::AnnouncementsControllerTest: test_show
+----------------------------------------------
+----------------------------------------------
+Groups::AnnouncementsControllerTest: test_show
+----------------------------------------------
+Started GET "/groups/annoucements/1" for 127.0.0.1 at 2018-06-16 12:57:03 +0300
+----------------------------------------------
+Groups::AnnouncementsControllerTest: test_show
+----------------------------------------------
+Started GET "/groups/annoucements/1" for 127.0.0.1 at 2018-06-16 13:08:54 +0300
+----------------------------------------------
+Groups::AnnouncementsControllerTest: test_show
+----------------------------------------------
+Started GET "/groups/announcements/1" for 127.0.0.1 at 2018-06-16 13:14:45 +0300
+Processing by Groups::AnnouncementsController#show as HTML
+  Parameters: {"id"=>"1"}
+Completed 500 Internal Server Error in 3ms
+----------------------------------------------
+Groups::AnnouncementsControllerTest: test_show
+----------------------------------------------
+Started GET "/groups/announcements/1" for 127.0.0.1 at 2018-06-16 13:14:55 +0300
+Processing by Groups::AnnouncementsController#show as HTML
+  Parameters: {"id"=>"1"}
+Completed 500 Internal Server Error in 527130ms
+----------------------------------------------
+Groups::AnnouncementsControllerTest: test_show
+----------------------------------------------
+Started GET "/groups/announcements/1" for 127.0.0.1 at 2018-06-16 13:23:46 +0300
+Processing by Groups::AnnouncementsController#show as HTML
+  Parameters: {"id"=>"1"}
+Completed 200 OK in 4172ms
+----------------------------------------------
+Groups::AnnouncementsControllerTest: test_show
+----------------------------------------------
+----------------------------------------------
+Groups::AnnouncementsControllerTest: test_show
+----------------------------------------------
+Started GET "/groups/announcements/1" for 127.0.0.1 at 2018-06-16 13:25:04 +0300
+Processing by Groups::AnnouncementsController#show as HTML
+  Parameters: {"id"=>"1"}
+Completed 200 OK in 0ms
