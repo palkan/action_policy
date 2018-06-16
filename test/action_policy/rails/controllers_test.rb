@@ -140,3 +140,68 @@ class TestControllerHookIntegration < ActionController::TestCase
     assert_equal "OK", response.body
   end
 end
+
+class TestNamespacedControllerIntegration < ActionController::TestCase
+  module Admin
+    class UserPolicy < ::UserPolicy
+      authorize :user, allow_nil: true
+
+      def index?
+        user.present?
+      end
+
+      def show?
+        user&.admin?
+      end
+    end
+
+    class UsersController < ActionController::Base
+      authorize :user, through: :current_user
+
+      def index
+        authorize!
+        render plain: "OK"
+      end
+
+      def show
+        authorize! current_user
+        render plain: "OK"
+      end
+
+      def current_user
+        return unless params[:user]
+        @current_user ||= User.new(params[:user])
+      end
+    end
+  end
+
+  tests Admin::UsersController
+
+  def test_index_unauthorized
+    e = assert_raises(ActionPolicy::Unauthorized) do
+      get :index
+    end
+
+    assert_equal Admin::UserPolicy, e.policy
+    assert_equal :index?, e.rule
+  end
+
+  def test_index_authorized
+    get :index, params: { user: "guest" }
+    assert_equal "OK", response.body
+  end
+
+  def test_show_unauthorized
+    e = assert_raises(ActionPolicy::Unauthorized) do
+      get :show, params: { user: "guest" }
+    end
+
+    assert_equal Admin::UserPolicy, e.policy
+    assert_equal :show?, e.rule
+  end
+
+  def test_show_authorized
+    get :show, params: { user: "admin" }
+    assert_equal "OK", response.body
+  end
+end
