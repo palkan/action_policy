@@ -5,6 +5,7 @@ require "test_helper"
 class TestCachedApply < Minitest::Test
   class TestPolicy
     include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::Reasons
     include ActionPolicy::Policy::CachedApply
 
     attr_reader :managed_count
@@ -14,6 +15,10 @@ class TestCachedApply < Minitest::Test
       @managed_count += 1
 
       record
+    end
+
+    def kill?
+      allowed_to?(:manage?)
     end
   end
 
@@ -31,6 +36,18 @@ class TestCachedApply < Minitest::Test
 
     refute policy.apply(:manage?)
     refute policy.apply(:manage?)
+
+    assert_equal 1, policy.managed_count
+  end
+
+  def test_cache_with_reasons
+    policy = TestPolicy.new false
+
+    refute policy.apply(:kill?)
+    assert :manage?, policy.result.reasons.first.rule
+
+    refute policy.apply(:kill?)
+    assert :manage?, policy.result.reasons.first.rule
 
     assert_equal 1, policy.managed_count
   end

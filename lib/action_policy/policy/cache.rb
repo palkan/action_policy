@@ -6,7 +6,10 @@ module ActionPolicy # :nodoc:
   # By default cache namespace (or prefix) contains major and minor version of the gem
   CACHE_NAMESPACE = "acp:#{ActionPolicy::VERSION.split('.').take(2).join('.')}"
 
+  require "action_policy/ext/yield_self_then"
   require "action_policy/ext/policy_cache_key"
+
+  using ActionPolicy::Ext::YieldSelfThen
   using ActionPolicy::Ext::PolicyCacheKey
 
   module Policy
@@ -33,11 +36,20 @@ module ActionPolicy # :nodoc:
         authorization_context.map { |_k, v| v._policy_cache_key.to_s }.join("/")
       end
 
+      # rubocop: disable Metrics/AbcSize
       def apply_with_cache(rule)
         options = self.class.cached_rules.fetch(rule)
+        key = cache_key(rule)
 
-        ActionPolicy.cache_store.fetch(cache_key(rule), options) { yield }
+        ActionPolicy.cache_store.then do |store|
+          @result = store.read(key)
+          next result.value unless result.nil?
+          yield
+          store.write(key, result, options)
+          result.value
+        end
       end
+      # rubocop: enable Metrics/AbcSize
 
       def apply(rule)
         return super if ActionPolicy.cache_store.nil? ||

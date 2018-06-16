@@ -9,10 +9,12 @@ class InMemoryCache
     self.store = {}
   end
 
-  def fetch(key, **_options)
-    return store[key] if store.key?(key)
+  def read(key)
+    store[key]
+  end
 
-    store[key] = yield
+  def write(key, val, _options)
+    store[key] = val
   end
 end
 
@@ -20,20 +22,22 @@ class TestCache < Minitest::Test
   class TestPolicy
     include ActionPolicy::Policy::Core
     include ActionPolicy::Policy::Authorization
+    include ActionPolicy::Policy::Reasons
     include ActionPolicy::Policy::Cache
 
     class << self
-      attr_accessor :managed_count, :shown_count
+      attr_accessor :managed_count, :shown_count, :saved_count
 
       def reset
         @managed_count = 0
         @shown_count = 0
+        @saved_count = 0
       end
     end
 
     authorize :user
 
-    cache :manage?
+    cache :manage?, :save?
 
     def manage?
       self.class.managed_count ||= 0
@@ -47,6 +51,12 @@ class TestCache < Minitest::Test
       self.class.shown_count += 1
 
       user.admin? || !record.admin?
+    end
+
+    def save?
+      self.class.saved_count ||= 0
+      self.class.saved_count += 1
+      allowed_to?(:manage?)
     end
   end
 
@@ -103,6 +113,23 @@ class TestCache < Minitest::Test
 
     assert_equal 1, TestPolicy.managed_count
     assert_equal 3, TestPolicy.shown_count
+  end
+
+  def test_cache_with_reasons
+    user = CacheableUser.new("guest")
+
+    policy = TestPolicy.new guest, user: user
+
+    refute policy.apply(:save?)
+    assert :manage?, policy.result.reasons.first.rule
+
+    policy = TestPolicy.new guest, user: user
+
+    refute policy.apply(:save?)
+    assert :manage?, policy.result.reasons.first.rule
+
+    assert_equal 1, TestPolicy.managed_count
+    assert_equal 1, TestPolicy.saved_count
   end
 
   def test_cache_with_different_records
