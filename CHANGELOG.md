@@ -1,5 +1,22 @@
 ## master
 
+- Add `reasons.details`. ([@palkan][])
+
+  ```ruby
+  rescue_from ActionPolicy::Unauthorized do |ex|
+    ex.result.reasons.details  #=> { stage: [:show?] }
+  end
+  ```
+
+- Add `ExecutionResult`. ([@palkan][])
+
+  ExecutionResult contains all the rule application artifacts: the result (`true` / `false`),
+  failures reasons.
+
+  This value is now stored in a cache (if any) instead of just the call result (`true` / `false`).
+
+- Add `Policy.identifier`. ([@palkan][])
+
 ## 0.1.4 (2018-06-06)
 
 - Fix Railtie injection hook. ([@palkan][])
