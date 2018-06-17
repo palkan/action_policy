@@ -9,8 +9,8 @@ module ActionPolicy
     # For other core classes returns string representation.
     #
     # Raises ArgumentError otherwise.
-    module PolicyCacheKey
-      refine Object do
+    module PolicyCacheKey # :nodoc: all
+      module ObjectExt
         def _policy_cache_key(use_object_id: false)
           return policy_cache_key if respond_to?(:policy_cache_key)
           return cache_key if respond_to?(:cache_key)
@@ -19,6 +19,14 @@ module ActionPolicy
 
           raise ArgumentError, "object is not cacheable"
         end
+      end
+
+      # JRuby doesn't support _global_ modules refinements (see https://github.com/jruby/jruby/issues/5220)
+      # Fallback to monkey-patching.
+      ::Object.include(ObjectExt) if RUBY_PLATFORM =~ /java/i
+
+      refine Object do
+        include ObjectExt
       end
 
       refine NilClass do
@@ -51,9 +59,23 @@ module ActionPolicy
         end
       end
 
-      refine Numeric do
-        def _policy_cache_key(*)
-          to_s
+      if RUBY_PLATFORM =~ /java/i
+        refine Integer do
+          def _policy_cache_key(*)
+            to_s
+          end
+        end
+
+        refine Float do
+          def _policy_cache_key(*)
+            to_s
+          end
+        end
+      else
+        refine Numeric do
+          def _policy_cache_key(*)
+            to_s
+          end
         end
       end
 

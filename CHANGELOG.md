@@ -4,7 +4,7 @@
 
   ```ruby
   rescue_from ActionPolicy::Unauthorized do |ex|
-    ex.result.reasons.details  #=> { stage: [:show?] }
+    ex.result.reasons.details #=> { stage: [:show?] }
   end
   ```
 
