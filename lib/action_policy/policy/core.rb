@@ -3,6 +3,11 @@
 require "action_policy/behaviours/policy_for"
 require "action_policy/policy/execution_result"
 
+unless "".respond_to?(:underscore)
+  require "action_policy/ext/string_underscore"
+  using ActionPolicy::Ext::StringUnderscore
+end
+
 module ActionPolicy
   # Raised when `resolve_rule` failed to find an approriate
   # policy rule method for the activity
@@ -32,9 +37,17 @@ module ActionPolicy
       end
 
       module ClassMethods # :nodoc:
+        attr_writer :identifier
+
         def result_class
           return @result_class if instance_variable_defined?(:@result_class)
           @result_class = superclass.result_class
+        end
+
+        def identifier
+          return @identifier if instance_variable_defined?(:@identifier)
+
+          @identifier = name.sub(/Policy$/, "").underscore.to_sym
         end
       end
 

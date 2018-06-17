@@ -83,7 +83,7 @@ module ActionPolicy
         def call(policy)
           Result.new(policy.send(name)).tap do |res|
             # add denial reason if Reasons included
-            policy.result.reasons.add(policy_class, name) if
+            policy.result.reasons.add(policy, name) if
               res.denied? && policy.result.respond_to?(:reasons)
           end
         end

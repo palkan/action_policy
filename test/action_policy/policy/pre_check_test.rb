@@ -137,6 +137,8 @@ class TestPreCheck < Minitest::Test
 
   class ReasonsTestPolicy < TestPolicy
     include ActionPolicy::Policy::Reasons
+
+    self.identifier = :reasons
   end
 
   def test_pre_check_with_reasons
@@ -144,10 +146,6 @@ class TestPreCheck < Minitest::Test
 
     refute policy.apply(:index?)
 
-    reasons = policy.result.reasons
-
-    assert_equal 1, reasons.size
-    assert_equal TestPolicy, reasons.first.policy
-    assert_equal :user_is_nil, reasons.first.rule
+    assert_equal({ reasons: [:user_is_nil] }, policy.result.reasons.details)
   end
 end

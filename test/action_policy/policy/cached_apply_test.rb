@@ -8,6 +8,8 @@ class TestCachedApply < Minitest::Test
     include ActionPolicy::Policy::Reasons
     include ActionPolicy::Policy::CachedApply
 
+    self.identifier = :test
+
     attr_reader :managed_count
 
     def manage?
@@ -44,10 +46,10 @@ class TestCachedApply < Minitest::Test
     policy = TestPolicy.new false
 
     refute policy.apply(:kill?)
-    assert :manage?, policy.result.reasons.first.rule
+    assert_equal({ test: [:manage?] }, policy.result.reasons.details)
 
     refute policy.apply(:kill?)
-    assert :manage?, policy.result.reasons.first.rule
+    assert_equal({ test: [:manage?] }, policy.result.reasons.details)
 
     assert_equal 1, policy.managed_count
   end

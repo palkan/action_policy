@@ -2,28 +2,26 @@
 
 module ActionPolicy
   module Policy
-    class FailureReason # :nodoc:
-      attr_reader :policy, :rule
-
-      def initialize(policy_or_class, rule)
-        @policy = policy_or_class.is_a?(Class) ? policy_or_class : policy_or_class.class
-        @rule = rule
-      end
-    end
-
     # Failures reasons store
     class FailureReasons
-      include Enumerable
-      extend Forwardable
-
-      def_delegators :@reasons, :size, :empty?, :last, :each
+      attr_reader :details
 
       def initialize
-        @reasons = []
+        @details = {}
       end
 
-      def add(policy, rule)
-        @reasons << FailureReason.new(policy, rule)
+      def add(policy_or_class, rule)
+        policy_class = policy_or_class.is_a?(Class) ? policy_or_class : policy_or_class.class
+        details[policy_class.identifier] ||= []
+        details[policy_class.identifier] << rule
+      end
+
+      def empty?
+        details.empty?
+      end
+
+      def present?
+        !empty?
       end
     end
 
@@ -52,7 +50,9 @@ module ActionPolicy
     # information about the failure:
     #
     #   rescue_from ActionPolicy::Unauthorized do |ex|
-    #     ex.result.reasons.details  #=> { stage: [:show] }
+    #     ex.policy #=> ApplicantPolicy
+    #     ex.rule #=> :show?
+    #     ex.result.reasons.details  #=> { stage: [:show?] }
     #   end
     #
     # You can also wrap _local_ rules into `allowed_to?` to populate reasons:

@@ -53,3 +53,39 @@ end
 ```
 
 You can also specify all the usual options (such as `with`).
+
+## Identifiers
+
+Each policy class has an `identifier`, which is by default just an underscored class name:
+
+```ruby
+class CommentPolicy < ApplicationPolicy
+end
+
+CommentPolicy.identifier #=> :comment
+```
+
+For namespaced policies it has a form of:
+
+```ruby
+module ActiveAdmin
+  class UserPolicy < ApplicationPolicy
+  end
+end
+
+ActiveAdmin::UserPolicy.identifier # => :"active_admin/user"
+```
+
+You can specify your own identifier:
+
+```ruby
+module MyVeryLong
+  class LongLongNamePolicy < ApplicationPolicy
+    self.identifier = :long_name
+  end
+end
+
+MyVeryLong::LongLongNamePolicy.identifier #=> :long_name
+```
+
+Identifiers are required for some modules, such as [failure reasons tracking](reasons.md) and [i18n](i18n.md).

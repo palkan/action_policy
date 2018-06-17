@@ -74,7 +74,15 @@ end
 
 In the above case, Action Policy automatically infers a policy class and a rule to verify access: `@post -> Post -> PostPolicy`, rule is inferred from the action name (`update -> update?`), and `current_user` is used as `user` within the policy by default (read more about [authorization context](authorization_context.md)).
 
-When authorization is successful (i.e., the corresponding rule returns `true`), nothing happens, but in case of an authorization failure `ActionPolicy::Unauthorized` error is raised.
+When authorization is successful (i.e., the corresponding rule returns `true`), nothing happens, but in case of an authorization failure `ActionPolicy::Unauthorized` error is raised:
+
+```ruby
+rescue_from ActionPolicy::Unauthorized do |ex|
+  # Exception object contains the following information
+  ex.policy #=> policy class, e.g. UserPolicy
+  ex.rule #=> applied rule, e.g. :show?
+end
+```
 
 There is also an `allowed_to?` method which returns `true` or `false` and could be used, for example, in views:
 

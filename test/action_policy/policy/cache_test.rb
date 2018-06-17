@@ -25,6 +25,8 @@ class TestCache < Minitest::Test
     include ActionPolicy::Policy::Reasons
     include ActionPolicy::Policy::Cache
 
+    self.identifier = :test
+
     class << self
       attr_accessor :managed_count, :shown_count, :saved_count
 
@@ -121,12 +123,12 @@ class TestCache < Minitest::Test
     policy = TestPolicy.new guest, user: user
 
     refute policy.apply(:save?)
-    assert :manage?, policy.result.reasons.first.rule
+    assert_equal({ test: [:manage?] }, policy.result.reasons.details)
 
     policy = TestPolicy.new guest, user: user
 
     refute policy.apply(:save?)
-    assert :manage?, policy.result.reasons.first.rule
+    assert_equal({ test: [:manage?] }, policy.result.reasons.details)
 
     assert_equal 1, TestPolicy.managed_count
     assert_equal 1, TestPolicy.saved_count
