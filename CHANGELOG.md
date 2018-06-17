@@ -1,5 +1,7 @@
 ## master
 
+- Make `action_policy` JRuby-compatible. ([@palkan][])
+
 - Add `reasons.details`. ([@palkan][])
 
   ```ruby

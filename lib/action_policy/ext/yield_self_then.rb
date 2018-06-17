@@ -14,7 +14,7 @@ module ActionPolicy
         alias then yield_self
       end
 
-      # See https://github.com/jruby/jruby/issues/5220)
+      # See https://github.com/jruby/jruby/issues/5220
       ::Object.include(Ext) if RUBY_PLATFORM =~ /java/i
 
       refine Object do

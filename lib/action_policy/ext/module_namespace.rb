@@ -22,7 +22,7 @@ module ActionPolicy
         end
       end
 
-      # See https://github.com/jruby/jruby/issues/5220)
+      # See https://github.com/jruby/jruby/issues/5220
       ::Module.include(Ext) if RUBY_PLATFORM =~ /java/i
 
       refine Module do
