@@ -3,6 +3,11 @@
 require "test_helper"
 require_relative "controllers_helper"
 
+if ActionPack.version.release < Gem::Version.new("5")
+  require_relative "controller_rails_4"
+  using ControllerRails4
+end
+
 class TestSimpleControllerIntegration < ActionController::TestCase
   class UsersController < ActionController::Base
     authorize :user, through: :current_user
@@ -32,13 +37,13 @@ class TestSimpleControllerIntegration < ActionController::TestCase
     end
 
     def current_user
-      @current_user ||= User.new(params[:user] || params[:params][:user])
+      @current_user ||= User.new(params[:user])
     end
 
     private
 
     def set_user
-      @user = User.new(params[:target] || params[:params][:target])
+      @user = User.new(params[:target])
       authorize! @user
     end
   end

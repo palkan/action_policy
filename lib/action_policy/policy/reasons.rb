@@ -55,6 +55,16 @@ module ActionPolicy
     #     ex.result.reasons.details  #=> { stage: [:show?] }
     #   end
     #
+    # NOTE: the reason key (`stage`) is a policy identifier (underscored class name by default).
+    # For namespaced policies it has a form of:
+    #
+    #   class Admin::UserPolicy < ApplicationPolicy
+    #     # ..
+    #   end
+    #
+    #   reasons.details #=> { :"admin/user" => [:show?] }
+    #
+    #
     # You can also wrap _local_ rules into `allowed_to?` to populate reasons:
     #
     #   class ApplicantPolicy < ApplicationPolicy

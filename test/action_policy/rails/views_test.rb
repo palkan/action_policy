@@ -3,6 +3,11 @@
 require "test_helper"
 require_relative "controllers_helper"
 
+if ActionPack.version.release < Gem::Version.new("5")
+  require_relative "controller_rails_4"
+  using ControllerRails4
+end
+
 class TestViewsIntegration < ActionController::TestCase
   class UsersController < ActionController::Base
     self.view_paths = File.expand_path("./views/users", __dir__)
@@ -19,7 +24,7 @@ class TestViewsIntegration < ActionController::TestCase
     end
 
     def current_user
-      @current_user ||= User.new(params[:user] || params[:params][:user])
+      @current_user ||= User.new(params[:user])
     end
   end
 
@@ -87,7 +92,7 @@ class TestControllerViewsMemoization < ActionController::TestCase
     end
 
     def current_user
-      @current_user ||= User.new(params[:user] || params[:params][:user])
+      @current_user ||= User.new(params[:user])
     end
   end
 
