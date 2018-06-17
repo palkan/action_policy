@@ -10,11 +10,19 @@ class InMemoryCache
   end
 
   def read(key)
-    store[key]
+    deserialize(store[key]) if store.key?(key)
   end
 
   def write(key, val, _options)
-    store[key] = val
+    store[key] = serialize(val)
+  end
+
+  def serialize(val)
+    Marshal.dump(val)
+  end
+
+  def deserialize(val)
+    Marshal.load(val) # rubocop:disable Security/MarshalLoad
   end
 end
 

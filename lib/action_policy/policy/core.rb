@@ -32,6 +32,10 @@ module ActionPolicy
           # in order to extend it independently
           base.module_eval do
             @result_class = Class.new(ExecutionResult)
+
+            # we need to make this class _named_,
+            # 'cause anonymous classes couldn't be marshalled
+            base.const_set(:APR, @result_class)
           end
         end
       end
