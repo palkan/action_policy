@@ -29,8 +29,15 @@ module ActionPolicy
       end
 
       def resolve_rule(activity)
-        return activity if respond_to?(activity)
-        self.class.lookup_alias(activity) || super
+        if self.class.instance_methods(false).include?(activity)
+          activity
+        elsif self.class.lookup_alias(activity)
+          self.class.lookup_alias(activity)
+        elsif self.class.superclass.instance_methods.include?(activity)
+          activity
+        else
+          self.class.lookup_default_rule || super
+        end
       end
 
       module ClassMethods # :nodoc:
@@ -45,7 +52,11 @@ module ActionPolicy
         end
 
         def lookup_alias(rule)
-          rules_aliases.fetch(rule, rules_aliases[DEFAULT])
+          rules_aliases[rule]
+        end
+
+        def lookup_default_rule
+          rules_aliases[DEFAULT]
         end
 
         def rules_aliases
