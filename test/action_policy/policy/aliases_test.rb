@@ -14,10 +14,12 @@ class AliasesRuleTestPolicy
 
   def edit?; end
 
+  def index?; end
+
   class NoDefault < self
     default_rule nil
 
-    alias_rule :update?, to: :manage?
+    alias_rule :index?, :update?, to: :manage?
   end
 end
 
@@ -54,5 +56,6 @@ class TestPolicyAliasesRule < Minitest::Test
 
     assert_equal :edit?, policy.resolve_rule(:destroy?)
     assert_equal :manage?, policy.resolve_rule(:update?)
+    assert_equal :manage?, policy.resolve_rule(:index?)
   end
 end
