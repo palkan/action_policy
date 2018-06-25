@@ -3,6 +3,7 @@
 module ActionPolicy # :nodoc:
   require "action_policy/rails/controller"
   require "action_policy/rails/channel"
+  require "action_policy/middleware"
 
   class Railtie < ::Rails::Railtie # :nodoc:
     # Provides Rails-specific configuration,
