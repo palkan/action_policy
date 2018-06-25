@@ -1,15 +1,17 @@
-module ActionPolicy
-	class Middleware
-		def initialize app
-	    @app = app
-	  end
+# frozen_string_literal: true
 
-	  def call(env)
-	  	ActionPolicy::PerThreadCache.clear_all
-	  	status, headers, response = @app.call(env)
-	  	ActionPolicy::PerThreadCache.clear_all
+module ActionPolicy # :nodoc:
+  class Middleware # :nodoc:
+    def initialize(app)
+      @app = app
+    end
 
-	  	[status, headers, response]
-	  end
-	end
+    def call(env)
+      ActionPolicy::PerThreadCache.clear_all
+      status, headers, response = @app.call(env)
+      ActionPolicy::PerThreadCache.clear_all
+
+      [status, headers, response]
+    end
+  end
 end
