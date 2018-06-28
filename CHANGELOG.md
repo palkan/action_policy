@@ -1,7 +1,7 @@
 ## master
 
 - Use `send` instead of `public_send` to get the `authorization_context` so that contexts such as
-	`current_user` can be `private` in the controller. ([@brendon][])
+  `current_user` can be `private` in the controller. ([@brendon][])
 
 ## 0.2.0 (2018-06-17)
 
