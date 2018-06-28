@@ -45,7 +45,7 @@ module ActionPolicy
       record = controller_name.classify.safe_constantize if
         record == :__undef__
 
-      to ||= :"#{action_name}?"
+      to ||= self.class.lookup_alias(action_name) || :"#{action_name}?"
 
       super(record, to: to, **options)
 
@@ -84,6 +84,28 @@ module ActionPolicy
       # Skips verify_authorized after_action callback.
       def skip_verify_authorized(**options)
         skip_after_action :verify_authorized, options
+      end
+
+      # Allows one to specify rules to use for particular actions
+      def alias_action(*actions, to_rule:)
+        actions.each do |action|
+          actions_aliases[action] = to_rule
+        end
+      end
+
+      def lookup_alias(action)
+        actions_aliases[action]
+      end
+
+      def actions_aliases
+        return @actions_aliases if instance_variable_defined?(:@actions_aliases)
+
+        @actions_aliases =
+          if superclass.respond_to?(:actions_aliases)
+            superclass.actions_aliases.dup
+          else
+            {}
+          end
       end
     end
   end
