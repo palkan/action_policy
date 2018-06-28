@@ -50,7 +50,7 @@ module ActionPolicy # :nodoc:
         app.executor.to_run { ActionPolicy::PerThreadCache.clear_all }
         app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
       else
-        app.middleware.use ActionPolicy::Middleware
+        app_middleware.use ActionPolicy::CacheMiddleware
       end
     end
 
