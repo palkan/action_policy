@@ -50,7 +50,7 @@ module ActionPolicy
 
       @__authorization_context = self.class.authorization_targets
                                      .each_with_object({}) do |(key, meth), obj|
-        obj[key] = public_send(meth)
+        obj[key] = send(meth)
       end
     end
 
