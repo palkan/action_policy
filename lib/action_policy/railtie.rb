@@ -3,6 +3,7 @@
 module ActionPolicy # :nodoc:
   require "action_policy/rails/controller"
   require "action_policy/rails/channel"
+  require "action_policy/middleware"
 
   class Railtie < ::Rails::Railtie # :nodoc:
     # Provides Rails-specific configuration,
@@ -45,8 +46,12 @@ module ActionPolicy # :nodoc:
     config.action_policy = Config
 
     initializer "action_policy.clear_per_thread_cache" do |app|
-      app.executor.to_run { ActionPolicy::PerThreadCache.clear_all }
-      app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
+      if Rails::VERSION::MAJOR >= 5
+        app.executor.to_run { ActionPolicy::PerThreadCache.clear_all }
+        app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
+      else
+        app_middleware.use ActionPolicy::CacheMiddleware
+      end
     end
 
     config.to_prepare do |_app|
