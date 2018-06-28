@@ -84,6 +84,8 @@ Here's an example:
 ```ruby
 module AdditionalFunctionalityConcern
 
+	extend ActiveSupport::Concern
+
 	included do
 		alias_action [:first_action, :second_action], to_rule: :view?
 		alias_action [:third_action], to_rule: :edit?
