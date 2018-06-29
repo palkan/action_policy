@@ -12,7 +12,7 @@ You can turn off this behaviour by setting `config.action_policy.controller_auth
 
 ```ruby
 class ApplicationController < ActionController::Base
-  authorize :my_current_user, as: :user
+  authorize :user, through: :my_current_user
 end
 ```
 
@@ -71,7 +71,7 @@ class ApiController < ApplicationController::API
   include ActionPolicy::Controller
 
   # NOTE: you have to provide authorization context manually as well
-  authorize :current_user, as: :user
+  authorize :user, through: :current_user
 end
 ```
 
