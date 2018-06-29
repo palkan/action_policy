@@ -14,6 +14,8 @@
   * [Failure Reasons](reasons.md)
   * [Instrumentation](instrumentation.md)
   * [I18n Support](i18n.md)
+* Tips & Tricks
+  * [Controller Action Aliases](controller_action_aliases.md)
 * Customize
   * [Base Policy](custom_policy.md)
   * [Lookup Chain](custom_lookup_chain.md)
