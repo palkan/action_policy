@@ -29,15 +29,10 @@ module ActionPolicy
       end
 
       def resolve_rule(activity)
-        if self.class.instance_methods(false).include?(activity)
-          activity
-        elsif self.class.lookup_alias(activity)
-          self.class.lookup_alias(activity)
-        elsif self.class.superclass.instance_methods.include?(activity)
-          activity
-        else
-          self.class.lookup_default_rule || super
-        end
+        self.class.lookup_alias(activity) ||
+          (activity if respond_to?(activity)) ||
+          self.class.lookup_default_rule ||
+          super
       end
 
       module ClassMethods # :nodoc:
@@ -68,6 +63,10 @@ module ActionPolicy
             else
               {}
             end
+        end
+
+        def method_added(name)
+          rules_aliases.delete(name)
         end
       end
     end
