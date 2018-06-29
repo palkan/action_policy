@@ -66,7 +66,7 @@ module ActionPolicy
         end
 
         def method_added(name)
-          rules_aliases.delete(name)
+          rules_aliases.delete(name) if public_method_defined?(name)
         end
       end
     end
