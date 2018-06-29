@@ -36,6 +36,8 @@ end
 
 **NOTE:** it is not necessary to inherit from `ActionPolicy::Base`; instead, you can [construct basic policy](custom_policy.md) choosing only the components you need.
 
+Rules must be public methods on the class. Using private methods as rules will raise an error.
+
 Consider a simple example:
 
 ```ruby

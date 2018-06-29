@@ -53,6 +53,10 @@ Now when you call `authorize! post` with any rule not explicitly defined in poli
 
 By default, `ActionPolicy::Base` sets `manage?` as a default rule.
 
+## Aliases and Private Methods
+
+Rules in `action_policy` can only be public methods. Trying to use a private method as a rule will raise an error. Thus, aliases can also only point to public methods.
+
 ## Rule resolution with subclasses
 
 Here's the order in which aliases and concrete rule methods are resolved in regards to subclasses:
