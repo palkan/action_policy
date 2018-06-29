@@ -11,20 +11,18 @@ be executed without regard to the record in any of the subclass controllers:
 
 ```ruby
 class AbstractController < ApplicationController
+  authorize :context
+  before_action :authorize_context
 
-	authorize :context
-	before_action :authorize_context
+  def context
+    # Some code to get your policy context
+  end
 
-	def context
-		# Some code to get your policy context
-	end
+  private
 
-	private
-
-	def authorize_context
-		authorize! Context
-	end
-
+  def authorize_context
+    authorize! Context
+  end
 end
 ```
 
@@ -32,7 +30,6 @@ Your policy might look like this:
 
 ```ruby
 class ContextPolicy < ApplicationPolicy
-
   authorize :context
 
   alias_rule :index?, :show?, to: :view?
@@ -45,7 +42,6 @@ class ContextPolicy < ApplicationPolicy
   def edit?
     context.has_permission_to(:edit, user)
   end
-
 end
 ```
 
@@ -56,17 +52,17 @@ You may then want to include a concern in your subclass controller(s) that add e
 
 ```ruby
 class ConcreteController < AbstractController
+  include AdditionalFunctionalityConcern
 
-	include AdditionalFunctionalityConcern
+  def index
+    # Index Action
+  end
 
-	def index
-	end
+  def new
+    # New Action
+  end
 
-	def new
-	end
-
-	# etc...
-
+  # etc...
 end
 ```
 
@@ -76,30 +72,31 @@ the `to:` parameter but since our call to `authorize!` is in a superclass it has
 I propose the following controller method:
 
 ```ruby
-alias_action *actions, to_rule: rule
+alias_action(*actions, to_rule: rule)
 ```
 
 Here's an example:
 
 ```ruby
 module AdditionalFunctionalityConcern
+  extend ActiveSupport::Concern
 
-	extend ActiveSupport::Concern
+  included do
+    alias_action [:first_action, :second_action], to_rule: :view?
+    alias_action [:third_action], to_rule: :edit?
+  end
 
-	included do
-		alias_action [:first_action, :second_action], to_rule: :view?
-		alias_action [:third_action], to_rule: :edit?
-	end
+  def first_action
+    # First Action
+  end
 
-	def first_action
-	end
+  def second_action
+    # Second Action
+  end
 
-	def second_action
-	end
-
-	def third_action
-	end
-
+  def third_action
+    # Third Action
+  end
 end
 ```
 
