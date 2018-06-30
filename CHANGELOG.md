@@ -1,12 +1,13 @@
 ## master
 
+- [Fix [#18](https://github.com/palkan/action_policy/issues/18)] Clarify documentation around, and fix the way `resolve_rule` resolves rules and rule aliases when subclasses are involved. ([@brendon][])
+
 ## 0.2.1 (2018-06-28)
 
 - Use `send` instead of `public_send` to get the `authorization_context` so that contexts such as
   `current_user` can be `private` in the controller. ([@brendon][])
 
 - Fix railtie initialisation for Rails < 5. ([@brendon][])
-
 
 ## 0.2.0 (2018-06-17)
 
