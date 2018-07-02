@@ -29,8 +29,10 @@ module ActionPolicy
       end
 
       def resolve_rule(activity)
-        return activity if respond_to?(activity)
-        self.class.lookup_alias(activity) || super
+        self.class.lookup_alias(activity) ||
+          (activity if respond_to?(activity)) ||
+          self.class.lookup_default_rule ||
+          super
       end
 
       module ClassMethods # :nodoc:
@@ -45,7 +47,11 @@ module ActionPolicy
         end
 
         def lookup_alias(rule)
-          rules_aliases.fetch(rule, rules_aliases[DEFAULT])
+          rules_aliases[rule]
+        end
+
+        def lookup_default_rule
+          rules_aliases[DEFAULT]
         end
 
         def rules_aliases
@@ -57,6 +63,10 @@ module ActionPolicy
             else
               {}
             end
+        end
+
+        def method_added(name)
+          rules_aliases.delete(name) if public_method_defined?(name)
         end
       end
     end

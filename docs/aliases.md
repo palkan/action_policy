@@ -52,3 +52,63 @@ end
 Now when you call `authorize! post` with any rule not explicitly defined in policy class, the `manage?` rule is applied.
 
 By default, `ActionPolicy::Base` sets `manage?` as a default rule.
+
+## Aliases and Private Methods
+
+Rules in `action_policy` can only be public methods. Trying to use a private method as a rule will raise an error. Thus, aliases can also only point to public methods.
+
+## Rule resolution with subclasses
+
+Here's the order in which aliases and concrete rule methods are resolved in regards to subclasses:
+
+1. If there is a concrete rule method on the subclass, this is called, else
+2. If there is a matching alias then this is called, else
+  * When aliases are defined on the subclass they will overwrite matching aliases on the superclass.
+3. If there is a concrete rule method on the superclass, then this is called, else
+4. If there is a default rule defined, then this is called, else
+5. `ActionPolicy::UnknownRule` is raised.
+
+Here's an example with the expected results:
+
+```ruby
+class SuperPolicy < ApplicationPolicy
+  default_rule :manage?
+
+  alias_rule :update?, :destroy?, :create?, to: :edit?
+
+  def manage?; end
+
+  def edit?; end
+
+  def index?; end
+end
+
+class SubPolicy < AbstractPolicy
+  default_rule nil
+
+  alias_rule :index?, :update?, to: :manage?
+
+  def create?; end
+end
+```
+
+Authorizing against the SuperPolicy:
+
+* `update?` will resolve to `edit?`
+* `destroy?` will resolve to `edit?`
+* `create?` will resolve to `edit?`
+* `manage?` will resolve to `manage?`
+* `edit?` will resolve to `edit?`
+* `index?` will resolve to `index?`
+* `something?` will resolve to `manage?`
+
+Authorizing against the SuBPolicy:
+
+* `index?` will resolve to `manage?`
+* `update?` will resolve to `manage?`
+* `create?` will resolve to `create?`
+* `destroy?` will resolve to `edit?`
+* `manage?` will resolve to `manage?`
+* `edit?` will resolve to `edit?`
+* `index?` will resolve to `manage?`
+* `something?` will raise `ActionPolicy::UnknownRule`
