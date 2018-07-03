@@ -1,5 +1,13 @@
 ## master
 
+- [Fix [#16](https://github.com/palkan/action_policy/issues/16)] Add ability to disable namespace resolution cache. ([@palkan][])
+
+  We cache namespaced policy resolution for better performance (it could affect performance when we look up a policy from a deeply nested module context).
+
+  It could be disabled by setting `ActionPolicy::LookupChain.namespace_cache_enabled = false`. It's enabled by default unless `RACK_ENV` env var is specified and is not equal to `"production"` (e.g. when `RACK_ENV=test` the cache is disabled).
+
+  When using Rails it's enabled only in production mode but could be configured through setting the `config.config.action_policy.namespace_cache_enabled` parameter.
+
 - [Fix [#18](https://github.com/palkan/action_policy/issues/18)] Clarify documentation around, and fix the way `resolve_rule` resolves rules and rule aliases when subclasses are involved. ([@brendon][])
 
 ## 0.2.2 (2018-07-01)

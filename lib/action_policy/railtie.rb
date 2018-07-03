@@ -25,6 +25,11 @@ module ActionPolicy # :nodoc:
         # the default authorization context in channels
         attr_accessor :channel_authorize_current_user
 
+        # Define whether to cache namespaced policy resolution
+        # result (e.g. in controllers).
+        # Enabled only in production by default.
+        attr_accessor :namespace_cache_enabled
+
         def cache_store=(store, *args)
           if store.is_a?(Symbol)
             store = ActiveSupport::Cache.lookup_store(
@@ -40,6 +45,7 @@ module ActionPolicy # :nodoc:
       self.controller_authorize_current_user = true
       self.auto_inject_into_channel = true
       self.channel_authorize_current_user = true
+      self.namespace_cache_enabled = Rails.env.production?
     end
 
     config.action_policy = Config
@@ -55,6 +61,9 @@ module ActionPolicy # :nodoc:
     end
 
     config.to_prepare do |_app|
+      ActionPolicy::LookupChain.namespace_cache_enabled =
+        Rails.application.config.action_policy.namespace_cache_enabled
+
       ActiveSupport.on_load(:action_controller) do
         next unless Rails.application.config.action_policy.auto_inject_into_controller
 
