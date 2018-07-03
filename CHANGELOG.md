@@ -1,5 +1,7 @@
 ## master
 
+## 0.2.3 (2018-07-03)
+
 - [Fix [#16](https://github.com/palkan/action_policy/issues/16)] Add ability to disable namespace resolution cache. ([@palkan][])
 
   We cache namespaced policy resolution for better performance (it could affect performance when we look up a policy from a deeply nested module context).
