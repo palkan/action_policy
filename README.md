@@ -92,6 +92,12 @@ There is also an `allowed_to?` method which returns `true` or `false`, and could
 
 Read more in our [Documentation][].
 
+## Alternatives
+
+There are [many authorization libraries](https://www.ruby-toolbox.com/categories/rails_authorization) for Ruby/Rails applications.
+
+What makes Action Policy different? See [this section](https://actionpolicy.evilmartians.io/#/?id=what-about-the-existing-solutions) in our docs.
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/palkan/action_policy.
