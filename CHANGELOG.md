@@ -1,5 +1,7 @@
 ## master
 
+- Fix the broken middleware require statement and reference to app_middleware. ([@brendon][])
+
 ## 0.2.1 (2018-06-28)
 
 - Use `send` instead of `public_send` to get the `authorization_context` so that contexts such as
