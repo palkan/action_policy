@@ -9,7 +9,6 @@ AllCops:
   Exclude:
     - 'bin/**/*'
     - 'gemfiles/**/*'
-    - 'test/dummy/**/*'
     - 'vendor/**/*'
     - 'tmp/**/*'
   DisplayCopNames: true

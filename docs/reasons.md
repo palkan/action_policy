@@ -59,7 +59,9 @@ p ex.result.reasons.details #=> { stage: [:show?] }
 
 **What is the point of failure reasons?**
 
-First, you can provide a user with helpful feedback. For example, in the above scenario, when the reason is `ApplicantPolicy#view_applicants?`, you could show the following message:
+Failure reasons helps you to write _actionable_ error messages, i.e. to provide a user with helpful feedback.
+
+For example, in the above scenario, when the reason is `ApplicantPolicy#view_applicants?`, you could show the following message:
 
 ```
 You don't have enough permissions to view applicants.

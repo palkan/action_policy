@@ -3,7 +3,6 @@
 module ActionPolicy # :nodoc:
   require "action_policy/rails/controller"
   require "action_policy/rails/channel"
-  require "action_policy/cache_middleware"
 
   class Railtie < ::Rails::Railtie # :nodoc:
     # Provides Rails-specific configuration,
@@ -26,6 +25,11 @@ module ActionPolicy # :nodoc:
         # the default authorization context in channels
         attr_accessor :channel_authorize_current_user
 
+        # Define whether to cache namespaced policy resolution
+        # result (e.g. in controllers).
+        # Enabled only in production by default.
+        attr_accessor :namespace_cache_enabled
+
         def cache_store=(store, *args)
           if store.is_a?(Symbol)
             store = ActiveSupport::Cache.lookup_store(
@@ -41,6 +45,7 @@ module ActionPolicy # :nodoc:
       self.controller_authorize_current_user = true
       self.auto_inject_into_channel = true
       self.channel_authorize_current_user = true
+      self.namespace_cache_enabled = Rails.env.production?
     end
 
     config.action_policy = Config
@@ -50,11 +55,15 @@ module ActionPolicy # :nodoc:
         app.executor.to_run { ActionPolicy::PerThreadCache.clear_all }
         app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
       else
+        require "action_policy/cache_middleware"
         app.middleware.use ActionPolicy::CacheMiddleware
       end
     end
 
     config.to_prepare do |_app|
+      ActionPolicy::LookupChain.namespace_cache_enabled =
+        Rails.application.config.action_policy.namespace_cache_enabled
+
       ActiveSupport.on_load(:action_controller) do
         next unless Rails.application.config.action_policy.auto_inject_into_controller
 

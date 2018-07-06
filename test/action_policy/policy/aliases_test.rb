@@ -8,7 +8,7 @@ class AliasesRuleTestPolicy
 
   default_rule :manage?
 
-  alias_rule :update?, :destroy?, to: :edit?
+  alias_rule :update?, :destroy?, :create?, to: :edit?
 
   def manage?; end
 
@@ -20,6 +20,8 @@ class AliasesRuleTestPolicy
     default_rule nil
 
     alias_rule :index?, :update?, to: :manage?
+
+    def create?; end
   end
 end
 
@@ -57,5 +59,6 @@ class TestPolicyAliasesRule < Minitest::Test
     assert_equal :edit?, policy.resolve_rule(:destroy?)
     assert_equal :manage?, policy.resolve_rule(:update?)
     assert_equal :manage?, policy.resolve_rule(:index?)
+    assert_equal :create?, policy.resolve_rule(:create?)
   end
 end

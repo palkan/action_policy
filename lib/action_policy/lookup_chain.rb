@@ -15,12 +15,14 @@ module ActionPolicy
     require "action_policy/ext/module_namespace"
     using ActionPolicy::Ext::ModuleNamespace
 
-    # Cache namespace resolving result for policies
+    # Cache namespace resolving result for policies.
+    # @see benchmarks/namespaced_lookup_cache.rb
     class NamespaceCache
       class << self
         attr_reader :store
 
         def fetch(namespace, policy)
+          return yield unless LookupChain.namespace_cache_enabled?
           return store[namespace][policy] if store[namespace].key?(policy)
           store[namespace][policy] ||= yield
         end
@@ -34,7 +36,9 @@ module ActionPolicy
     end
 
     class << self
-      attr_accessor :chain
+      attr_accessor :chain, :namespace_cache_enabled
+
+      alias namespace_cache_enabled? namespace_cache_enabled
 
       def call(record, **opts)
         chain.each do |probe|
@@ -73,6 +77,11 @@ module ActionPolicy
         end
       end
     end
+
+    # Enable namespace cache by default or
+    # if RACK_ENV provided and equal to "production"
+    self.namespace_cache_enabled =
+      !ENV["RACK_ENV"].nil? ? ENV["RACK_ENV"] == "production" : true
 
     # By self `policy_class` method
     INSTANCE_POLICY_CLASS = ->(record, _) {
