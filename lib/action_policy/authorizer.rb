@@ -9,6 +9,8 @@ module ActionPolicy
       @policy = policy.class
       @rule = rule
       @result = policy.result
+
+      super("Not Authorized")
     end
   end
 
