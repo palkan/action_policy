@@ -4,20 +4,26 @@ module ActionPolicy
   module Policy
     # Failures reasons store
     class FailureReasons
-      attr_reader :details
+      attr_reader :reasons
 
       def initialize
-        @details = {}
+        @reasons = {}
       end
 
       def add(policy_or_class, rule)
         policy_class = policy_or_class.is_a?(Class) ? policy_or_class : policy_or_class.class
-        details[policy_class.identifier] ||= []
-        details[policy_class.identifier] << rule
+        reasons[policy_class] ||= []
+        reasons[policy_class] << rule
+      end
+
+      # Return Hash of the form:
+      #   { policy_identifier => [rules, ...] }
+      def details
+        reasons.transform_keys(&:identifier)
       end
 
       def empty?
-        details.empty?
+        reasons.empty?
       end
 
       def present?
