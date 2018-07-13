@@ -9,6 +9,7 @@
   * [Authorization Context](authorization_context.md)
   * [Aliases](aliases.md)
   * [Pre-Checks](pre_checks.md)
+  * [Scoping](scoping.md)
   * [Caching](caching.md)
   * [Namespaces](namespaces.md)
   * [Failure Reasons](reasons.md)
