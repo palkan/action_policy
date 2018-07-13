@@ -22,7 +22,7 @@ module ActionPolicy
   end
 
   module Policy
-    # Scoping is used to modify the _objects under authorization_.
+    # Scoping is used to modify the _object under authorization_.
     #
     # The most common situation is when you want to _scope_ the collection depending
     # on the current user permissions.
@@ -33,8 +33,8 @@ module ActionPolicy
     #     # Scoping only makes sense when you have the authorization context
     #     authorize :user
     #
-    #     # :scope here is a scoping type
-    #     authorized :scope do |relation|
+    #     # :relation here is a scoping type
+    #     scope_for :relation do |relation|
     #       # authorization context is available within a scope
     #       if user.admin?
     #         relation
@@ -46,7 +46,7 @@ module ActionPolicy
     #
     #   base_scope = User.all
     #   authorized_scope = ApplicantPolicy.new(user: user)
-    #    .apply_scope(base_scope, :scope)
+    #    .apply_scope(base_scope, type: :relation)
     module Scoping
       class << self
         def included(base)
@@ -54,21 +54,23 @@ module ActionPolicy
         end
       end
 
-      # TODO: better API?
-      def apply_scope(target, type, as: :default)
+      # Pass target to the scope handler of the specified type and name.
+      # If `name` is not specified then `:default` name is used.
+      # If `type` is not specified then we try to infer the type from the
+      # target class.
+      def apply_scope(target, type: nil, name: :default)
         raise ActionPolicy::UnknownScopeType, type unless
           self.class.scoping_handlers.key?(type)
 
-        raise ActionPolicy::UnknownNamedScope.new(type, as) unless
-          self.class.scoping_handlers[type].key?(as)
+        raise ActionPolicy::UnknownNamedScope.new(type, name) unless
+          self.class.scoping_handlers[type].key?(name)
 
-        send(:"__scoping__#{type}__#{as}", target)
+        send(:"__scoping__#{type}__#{name}", target)
       end
 
       module ClassMethods # :nodoc:
         # Register a new scoping method for the `type`
-        # TODO: better naming; now it's confused with `authorize`
-        def authorized(type, name = :default, &block)
+        def scope_for(type, name = :default, &block)
           mid = :"__scoping__#{type}__#{name}"
 
           define_method(mid, &block)

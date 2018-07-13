@@ -10,7 +10,7 @@ class TestScopingPolicy < Minitest::Test
 
     authorize :user
 
-    authorized :scope do |users|
+    scope_for :data do |users|
       next users if user.admin?
 
       users.reject(&:admin?)
@@ -19,11 +19,11 @@ class TestScopingPolicy < Minitest::Test
 
   class GuestPolicy < UserPolicy
     # override parent class scope
-    authorized :scope do |_|
+    scope_for :data do |_|
       []
     end
 
-    authorized :scope, :own do |users|
+    scope_for :data, :own do |users|
       users.select { |u| u.name == user.name }
     end
   end
@@ -38,7 +38,7 @@ class TestScopingPolicy < Minitest::Test
     policy = UserPolicy.new(user: User.new("admin"))
 
     e = assert_raises ActionPolicy::UnknownScopeType do
-      policy.apply_scope(users, :test)
+      policy.apply_scope(users, type: :test)
     end
 
     assert_equal "Unknown policy scope type: test", e.message
@@ -47,7 +47,7 @@ class TestScopingPolicy < Minitest::Test
   def test_default_scope
     policy = UserPolicy.new(user: User.new("guest"))
 
-    scoped_users = policy.apply_scope(users, :scope)
+    scoped_users = policy.apply_scope(users, type: :data)
 
     assert_equal 1, scoped_users.size
     assert_equal "jack", scoped_users.first.name
@@ -56,7 +56,7 @@ class TestScopingPolicy < Minitest::Test
   def test_subpolicy_scope
     policy = GuestPolicy.new(user: User.new("admin"))
 
-    scoped_users = policy.apply_scope(users, :scope)
+    scoped_users = policy.apply_scope(users, type: :data)
 
     assert_equal 0, scoped_users.size
   end
@@ -64,7 +64,7 @@ class TestScopingPolicy < Minitest::Test
   def test_named_scope
     policy = GuestPolicy.new(user: User.new("admin"))
 
-    scoped_users = policy.apply_scope(users, :scope, as: :own)
+    scoped_users = policy.apply_scope(users, type: :data, name: :own)
 
     assert_equal 1, scoped_users.size
     assert_equal "admin", scoped_users.first.name
@@ -74,9 +74,9 @@ class TestScopingPolicy < Minitest::Test
     policy = UserPolicy.new(user: User.new("admin"))
 
     e = assert_raises ActionPolicy::UnknownNamedScope do
-      policy.apply_scope(users, :scope, as: :own)
+      policy.apply_scope(users, type: :data, name: :own)
     end
 
-    assert_equal "Unknown named scope :own for type :scope", e.message
+    assert_equal "Unknown named scope :own for type :data", e.message
   end
 end
