@@ -44,6 +44,14 @@ module ActionPolicy
       policy.apply(authorization_rule_for(policy, rule))
     end
 
+    # Apply scope to the target of the specified type.
+    #
+    # NOTE: the policy must we specified explicitly through the `with` option.
+    def authorized(target, type, as: :default, **options)
+      policy = policy_for(options)
+      policy.apply_scope(target, type: type, name: as)
+    end
+
     def authorization_context
       return @__authorization_context if
         instance_variable_defined?(:@__authorization_context)

@@ -51,3 +51,62 @@ class TestBehaviour < Minitest::Test
     refute ChatChannel.new("guest").talk?("admin")
   end
 end
+
+class TestAuthorizedBehaviour < Minitest::Test
+  class ChatChannel
+    include ActionPolicy::Behaviour
+
+    attr_reader :user, :data
+
+    authorize :user
+
+    def initialize(name, data)
+      @user = User.new(name)
+      @data = data
+    end
+
+    def all
+      authorized(data, :data, with: UserPolicy)
+    end
+
+    def my
+      authorized(data, :data, as: :own, with: UserPolicy)
+    end
+  end
+
+  def setup
+    @users = [User.new("jack"), User.new("admin")]
+  end
+
+  attr_reader :users
+
+  def test_default_authorized
+    chat = ChatChannel.new("guest", users)
+
+    scoped_users = chat.all
+
+    assert_equal 1, scoped_users.size
+    assert_equal "jack", scoped_users.first.name
+
+    chat = ChatChannel.new("admin", users)
+
+    scoped_users = chat.all
+
+    assert_equal 2, scoped_users.size
+  end
+
+  def test_named_authorized
+    chat = ChatChannel.new("guest", users)
+
+    scoped_users = chat.my
+
+    assert_equal 0, scoped_users.size
+
+    chat = ChatChannel.new("admin", users)
+
+    scoped_users = chat.my
+
+    assert_equal 1, scoped_users.size
+    assert_equal "admin", scoped_users.first.name
+  end
+end

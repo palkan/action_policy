@@ -20,6 +20,15 @@ class User
 end
 
 class UserPolicy < ActionPolicy::Base
+  scope_for :data do |users|
+    next users if user.admin?
+    users.reject(&:admin?)
+  end
+
+  scope_for :data, :own do |users|
+    users.select { |u| u.name == user.name }
+  end
+
   def index?
     true
   end
