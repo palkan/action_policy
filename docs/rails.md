@@ -56,7 +56,8 @@ In that case, Action Policy tries to infer the resource class from the controlle
 class PostsController < ApplicationPolicy
   def index
     # Uses Post class as a resource implicitly.
-    # NOTE: it just calls `controller_name.classify.safe_constantize`
+    # NOTE: it just calls `controller_name.classify.safe_constantize`,
+    # you can override this by defining `implicit_authorization_target` method.
     authorize!
   end
 end

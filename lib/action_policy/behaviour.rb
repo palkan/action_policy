@@ -30,7 +30,10 @@ module ActionPolicy
     # (unless explicitly specified through `with` option).
     #
     # Raises `ActionPolicy::Unauthorized` if check failed.
-    def authorize!(record, to:, **options)
+    def authorize!(record = :__undef__, to:, **options)
+      record = implicit_authorization_target if record == :__undef__
+      raise ArgumentError, "Record must be specified" if record.nil?
+
       policy = policy_for(record: record, **options)
 
       Authorizer.call(policy, authorization_rule_for(policy, to))
@@ -39,16 +42,21 @@ module ActionPolicy
     # Checks that an activity is allowed for the current context (e.g. user).
     #
     # Returns true of false.
-    def allowed_to?(rule, record, **options)
+    def allowed_to?(rule, record = :__undef__, **options)
+      record = implicit_authorization_target if record == :__undef__
+      raise ArgumentError, "Record must be specified" if record.nil?
+
       policy = policy_for(record: record, **options)
+
       policy.apply(authorization_rule_for(policy, rule))
     end
 
     # Apply scope to the target of the specified type.
     #
-    # NOTE: the policy must we specified explicitly through the `with` option.
+    # NOTE: the policy must we specified either explicitly through the `with` option
+    # or implicitly by defining `implicit_authorization_target`
     def authorized(target, type, as: :default, **options)
-      policy = policy_for(options)
+      policy = policy_for(record: implicit_authorization_target, **options)
       policy.apply_scope(target, type: type, name: as)
     end
 
@@ -66,6 +74,15 @@ module ActionPolicy
     # otherwise fallback to :manage? rule.
     def authorization_rule_for(policy, rule)
       policy.resolve_rule(rule)
+    end
+
+    # Override this method to provide implicit authorization target
+    # that would be used in case `record` is not specified in
+    # `authorize!` and `allowed_to?` call.
+    #
+    # It is also used to infer a policy for scoping (in `authorized` method).
+    def implicit_authorization_target
+      # no-op
     end
 
     module ClassMethods # :nodoc:
