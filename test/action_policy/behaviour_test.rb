@@ -66,11 +66,15 @@ class TestAuthorizedBehaviour < Minitest::Test
     end
 
     def all
-      authorized(data, :data, with: UserPolicy)
+      authorized(data, :data)
     end
 
     def my
-      authorized(data, :data, as: :own, with: UserPolicy)
+      authorized(data, :data, as: :own)
+    end
+
+    def implicit_authorization_target
+      User
     end
   end
 

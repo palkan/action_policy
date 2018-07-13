@@ -42,9 +42,6 @@ module ActionPolicy
     #
     # Raises `ActionPolicy::Unauthorized` if check failed.
     def authorize!(record = :__undef__, to: nil, **options)
-      record = controller_name.classify.safe_constantize if
-        record == :__undef__
-
       to ||= :"#{action_name}?"
 
       super(record, to: to, **options)
@@ -52,17 +49,10 @@ module ActionPolicy
       self.authorize_count += 1
     end
 
-    # Checks that an activity is allowed for the current context (e.g. user).
-    #
-    # If record is not provided, tries to infer the resource class
-    # from controller name (i.e. `controller_name.classify.safe_constantize`).
-    #
-    # Returns true of false.
-    def allowed_to?(rule, record = :__undef__, **options)
-      record = controller_name.classify.safe_constantize if
-        record == :__undef__
-
-      super(rule, record, **options)
+    # Tries to infer the resource class from controller name
+    # (i.e. `controller_name.classify.safe_constantize`).
+    def implicit_authorization_target
+      controller_name.classify.safe_constantize
     end
 
     def verify_authorized
