@@ -7,7 +7,12 @@ module ActionPolicy
     # This class could be extended by some modules to provide
     # additional functionality
     class ExecutionResult
-      attr_reader :value
+      attr_reader :value, :policy, :rule
+
+      def initialize(policy, rule)
+        @policy = policy
+        @rule = rule
+      end
 
       # Populate the final value
       def load(value)

@@ -67,7 +67,7 @@ module ActionPolicy
       # Unlike simply calling a predicate rule (`policy.manage?`),
       # `apply` also calls pre-checks.
       def apply(rule)
-        @result = self.class.result_class.new
+        @result = self.class.result_class.new(self.class, rule)
         @result.load __apply__(rule)
       end
 
