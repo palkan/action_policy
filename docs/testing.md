@@ -94,7 +94,7 @@ describe PostPolicy do
   let(:policy) { described_class.new(post, user: user) }
 
   describe "#update?" do
-    subject { policy.update? }
+    subject { policy.apply(:update?) }
 
     it "returns false when the user is not admin nor author" do
       is_expected.to eq false
