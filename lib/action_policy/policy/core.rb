@@ -100,6 +100,11 @@ module ActionPolicy
         end
       end
 
+      # An alias for readability purposes
+      def check?(*args)
+        allowed_to?(*args)
+      end
+
       # Returns a rule name (policy method name) for activity.
       #
       # By default, rule name is equal to activity name.

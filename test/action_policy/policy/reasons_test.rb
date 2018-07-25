@@ -41,7 +41,7 @@ class ComplexFailuresTestPolicy < ActionPolicy::Base
   end
 
   def save?
-    allowed_to?(:kill?) || (allowed_to?(:create?, user) && allowed_to?(:feed?))
+    allowed_to?(:kill?) || (allowed_to?(:create?, user) && check?(:feed?))
   end
 
   def feed?

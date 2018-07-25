@@ -54,6 +54,22 @@ end
 
 You can also specify all the usual options (such as `with`).
 
+There is also a `check?` method which is just an "alias"\* for `allowed_to?` added for better readability:
+
+```
+class PostPolicy < ApplicationPolicy
+  def show?
+    user.admin? || check?(:publicly_visible?)
+  end
+
+  def publicly_visible?
+    # ...
+  end
+end
+```
+
+\* It's not a Ruby _alias_ but a wrapper; we can't use `alias` or `alias_method`, 'cause `allowed_to?` could be extended by some extensions.
+
 ## Identifiers
 
 Each policy class has an `identifier`, which is by default just an underscored class name:
