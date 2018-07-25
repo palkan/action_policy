@@ -95,6 +95,13 @@ Action Policy provides `ActionPolicy::Behaviours::ThreadMemoized` module with th
 
 If you want to add this behavior to your custom authorization-aware class, you should care about cleaning up the thread store manually (by calling `ActionPolicy::PerThreadCache.clear_all`).
 
+**NOTE:** per-thread cache is disabled by default in test environment (when either `RACK_ENV` or `RAILS_ENV` environment variable is equal to "test").
+You can turn it on (or off) by setting:
+
+```ruby
+ActionPolicy::PerThreadCache.enabled = true # or false to disable
+```
+
 ## Rule cache
 
 ### Per-instance

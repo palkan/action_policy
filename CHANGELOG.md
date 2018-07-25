@@ -1,5 +1,13 @@
 ## master
 
+- Add ability to disable per-thread cache and disable it in test env by default. ([@palkan][])
+
+  You can control per-thread cache by setting:
+
+  ```ruby
+  ActionPolicy::PerThreadCache.enabled = true # or false
+  ```
+
 ## 0.2.3 (2018-07-03)
 
 - [Fix [#16](https://github.com/palkan/action_policy/issues/16)] Add ability to disable namespace resolution cache. ([@palkan][])

@@ -5,7 +5,15 @@ module ActionPolicy
     CACHE_KEY = "action_policy.per_thread_cache"
 
     class << self
+      attr_writer :enabled
+
+      def enabled?
+        @enabled == true
+      end
+
       def fetch(key)
+        return yield unless enabled?
+
         store = (Thread.current[CACHE_KEY] ||= {})
 
         return store[key] if store.key?(key)
@@ -17,6 +25,9 @@ module ActionPolicy
         Thread.current[CACHE_KEY] = {}
       end
     end
+
+    # Turn off by default in test env
+    self.enabled = !(ENV["RAILS_ENV"] == "test" || ENV["RACK_ENV"] == "test")
   end
 
   module Behaviours

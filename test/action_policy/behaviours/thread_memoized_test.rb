@@ -61,8 +61,13 @@ class TestThreadMemoized < Minitest::Test
     end
   end
 
+  def setup
+    ActionPolicy::PerThreadCache.enabled = true
+  end
+
   def teardown
     ActionPolicy::PerThreadCache.clear_all
+    ActionPolicy::PerThreadCache.enabled = false
     UserPolicy.reset
     CustomPolicy.reset
   end
@@ -77,6 +82,20 @@ class TestThreadMemoized < Minitest::Test
     channel_2.talk(user)
 
     assert_equal 1, UserPolicy.policies.size
+  end
+
+  def test_disabled
+    ActionPolicy::PerThreadCache.enabled = false
+
+    user = User.new("guest")
+
+    channel = ChatChannel.new("admin")
+    channel.talk(user)
+
+    channel_2 = ChatChannel.new("admin")
+    channel_2.talk(user)
+
+    assert_equal 2, UserPolicy.policies.size
   end
 
   def test_same_thread_with_different_context
