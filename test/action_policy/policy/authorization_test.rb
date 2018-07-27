@@ -56,10 +56,10 @@ class ProxyAuthorizationToSubPoliciesTest < Minitest::Test
     include ActionPolicy::Policy::Core
     include ActionPolicy::Policy::Authorization
 
-    authorize :user, :role
+    authorize :user, :role, :region
 
     def manage?
-      role == "admin" || user.admin?
+      region == "New Zealand" || role == "admin" || user.admin?
     end
   end
 
@@ -75,7 +75,7 @@ class ProxyAuthorizationToSubPoliciesTest < Minitest::Test
   end
 
   def test_passing_context_in_policy_for
-    policy = SubTestPolicy.new(user: User.new("guest"), role: "admin")
+    policy = SubTestPolicy.new(user: User.new("guest"), role: "admin", region: "New Zealand")
 
     assert_equal "admin", policy.authorization_context[:role]
     assert_equal "guest", policy.authorization_context[:user].name
