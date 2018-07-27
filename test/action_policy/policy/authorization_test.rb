@@ -50,3 +50,35 @@ class AuthorizationTest < Minitest::Test
     assert_nil policy.role
   end
 end
+
+class ProxyAuthorizationToSubPoliciesTest < Minitest::Test
+  class TestPolicy
+    include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::Authorization
+
+    authorize :user, :role
+
+    def manage?
+      role == "admin" || user.admin?
+    end
+  end
+
+  class SubTestPolicy
+    include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::Authorization
+
+    authorize :user, :role
+
+    def manage?
+      allowed_to?(:manage?, with: TestPolicy)
+    end
+  end
+
+  def test_passing_context_in_policy_for
+    policy = SubTestPolicy.new(user: User.new("guest"), role: "admin")
+
+    assert_equal "admin", policy.authorization_context[:role]
+    assert_equal "guest", policy.authorization_context[:user].name
+    assert policy.apply(:manage?)
+  end
+end
