@@ -53,6 +53,18 @@ class TestPolicyAliasesRule < Minitest::Test
     end
   end
 
+  if defined?(::DidYouMean::SpellChecker)
+    def test_suggest
+      policy = AliasesRuleTestPolicy::NoDefault.new
+
+      e = assert_raises(ActionPolicy::UnknownRule) do
+        policy.resolve_rule(:creates?)
+      end
+
+      assert_includes e.message, "Did you mean? create?"
+    end
+  end
+
   def test_inherited_override
     policy = AliasesRuleTestPolicy::NoDefault.new
 

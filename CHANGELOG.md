@@ -1,5 +1,7 @@
 ## master
 
+- Add `did_you_mean` suggestion to `UnknownRule` exception. ([@palkan][])
+
 - Add `check?` as an alias for `allowed_to?` in policies. ([@palkan][])
 
 - Add ability to disable per-thread cache and disable it in test env by default. ([@palkan][])

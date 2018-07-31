@@ -17,7 +17,21 @@ module ActionPolicy
     def initialize(policy, rule)
       @policy = policy.class
       @rule = rule
-      @message = "Couldn't find rule '#{@rule}' for #{@policy}"
+      @message = "Couldn't find rule '#{@rule}' for #{@policy}#{suggest(policy, rule)}"
+    end
+
+    if defined?(::DidYouMean::SpellChecker)
+      def suggest(policy, error)
+        suggestion = ::DidYouMean::SpellChecker.new(
+          dictionary: policy.public_methods
+        ).correct(error).first
+
+        suggestion ? "\nDid you mean? #{suggestion}" : ""
+      end
+    else
+      def suggest(*)
+        ""
+      end
     end
   end
 
