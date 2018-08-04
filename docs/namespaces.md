@@ -68,7 +68,7 @@ end
 
 **NOTE**: namespace support is an extension for `ActionPolicy::Behaviour` and could be included with `ActionPolicy::Behaviours::Namespaced` (included into Rails controllers and channel integrations by default).
 
-## Namespace resultion cache
+## Namespace resolution cache
 
 We cache namespaced policy resolution for better performance (it could affect performance when we look up a policy from a deeply nested module context, see the [benchmark](https://github.com/palkan/action_policy/blob/master/benchmarks/namespaced_lookup_cache.rb)).
 

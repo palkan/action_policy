@@ -39,11 +39,62 @@ end
 
 ## Define scopes
 
-TBD
+To define scope you should use either `scope_for` or `smth_scope` methods in your policy:
+
+```ruby
+class PostPolicy < ApplicationPolicy
+  # define a scope of a `relation` type
+  scope_for :relation do |relation|
+    relation.where(user: user)
+  end
+
+  # define a scope of `my_data` type,
+  # which acts on hashes
+  scope_for :my_data do |data|
+    next data if user.admin?
+    data.delete_if { |k, _| SENSITIVE_KEYS.include?(k) }
+  end
+end
+```
+
+Scopes have _types_: different types of scopes are meant to be applied to different data types.
+
+You can specify multiple scopes (_named scopes_) for the same type providing a scope name:
+
+```ruby
+class EventPolicy < ApplictionPolicy
+  scope_for :relation, :own do |relation|
+    relation.where(owner: user)
+  end
+end
+```
+
+When the second argument is not speficied, the `:default` is implied as the scope name.
 
 ## Apply scopes
 
-TBD
+Action Policy behaviour (`ActionPolicy::Behaviour`) provides an `authorized` method which allows you to use scoping:
+
+```ruby
+class PostsController < ApplicationController
+  def index
+    # The first argument is the target,
+    # which is passed to the scope block
+    #
+    # The second argument is the scope type
+    @posts = authorized(Post.all, :relation)
+    #
+    # For named scopes provide `as` option
+    @events = authorized(Event.all, :relation, as: :own)
+  end
+end
+```
+
+You can also specify additional options for policy class inference (see [behaviour docs](./behaviour.md)). For example, to explicitly specify the policy class use:
+
+```ruby
+@posts = authorized(Post.all, with: CustomPostPolicy)
+```
 
 ## Scope type inference
 
@@ -57,7 +108,7 @@ Action Policy provides a couple of _scope matchers_ out-of-the-box for ActiveRec
 
 Scope type `:relation` is automatically applied to the object of `ActiveRecord::Relation` type.
 
-To define ActiveRecord scopes you can use `relation_scope` macro in your policy:
+To define ActiveRecord scopes you can use `relation_scope` macro (which is just an alias for `scope :relation`) in your policy:
 
 ```ruby
 class PostPolicy < ApplicationPolicy
@@ -92,11 +143,11 @@ end
 
 ### ActionController parameters
 
-Use scopes of type `:params` if your strong parameters filterings depends on the current user:
+Use scopes of type `:params` if your strong parameters filterings depend on the current user:
 
 ```ruby
 class UserPolicy < ApplicationPolicy
-  # Equals `scope_for :params do ...`
+  # Equals to `scope_for :params do ...`
   params_scope do |params|
     if user.admin?
       params.permit(:name, :email, :role)

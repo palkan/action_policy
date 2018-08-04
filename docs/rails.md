@@ -4,6 +4,8 @@ Action Policy seamlessly integrates Ruby on Rails applications seamlessly.
 
 In most cases, you do not have to do anything except writing policy files and adding `authorize!` calls.
 
+**NOTE:** both controllers and channels extensions are built on top of the Action Policy [behaviour](./behaviour.md) mixin.
+
 ## Controllers integration
 
 Action Policy assumes that you have a `current_user` method which specifies the current authenticated subject (`user`).
