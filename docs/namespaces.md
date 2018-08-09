@@ -74,4 +74,4 @@ We cache namespaced policy resolution for better performance (it could affect pe
 
 It could be disabled by setting `ActionPolicy::LookupChain.namespace_cache_enabled = false`. It's enabled by default unless `RACK_ENV` env var is specified and is not equal to `"production"` (e.g. when `RACK_ENV=test` the cache is disabled).
 
-When using Rails it's enabled only in production mode but could be configured through setting the `config.config.action_policy.namespace_cache_enabled` parameter.
+When using Rails it's enabled only in production mode but could be configured through setting the `config.action_policy.namespace_cache_enabled` parameter.
