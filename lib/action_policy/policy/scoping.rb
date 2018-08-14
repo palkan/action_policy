@@ -1,23 +1,35 @@
 # frozen_string_literal: true
 
+require "action_policy/utils/suggest_message"
+
 module ActionPolicy
   class UnknownScopeType < Error # :nodoc:
-    MESSAGE_TEMPLATE = "Unknown policy scope type: %s"
+    include ActionPolicy::SuggestMessage
+
+    MESSAGE_TEMPLATE = "Unknown policy scope type: %s%s"
 
     attr_reader :message
 
-    def initialize(type)
-      @message = MESSAGE_TEMPLATE % type
+    def initialize(policy_class, type)
+      @message = format(
+        MESSAGE_TEMPLATE,
+        type, suggest(type, policy_class.scoping_handlers.keys)
+      )
     end
   end
 
   class UnknownNamedScope < Error # :nodoc:
-    MESSAGE_TEMPLATE = "Unknown named scope :%s for type :%s"
+    include ActionPolicy::SuggestMessage
+
+    MESSAGE_TEMPLATE = "Unknown named scope :%s for type :%s%s"
 
     attr_reader :message
 
-    def initialize(type, name)
-      @message = format(MESSAGE_TEMPLATE, name, type)
+    def initialize(policy_class, type, name)
+      @message = format(
+        MESSAGE_TEMPLATE, name, type,
+        suggest(name, policy_class.scoping_handlers[type].keys)
+      )
     end
   end
 
@@ -59,10 +71,10 @@ module ActionPolicy
       # If `type` is not specified then we try to infer the type from the
       # target class.
       def apply_scope(target, type: nil, name: :default)
-        raise ActionPolicy::UnknownScopeType, type unless
+        raise ActionPolicy::UnknownScopeType.new(self.class, type) unless
           self.class.scoping_handlers.key?(type)
 
-        raise ActionPolicy::UnknownNamedScope.new(type, name) unless
+        raise ActionPolicy::UnknownNamedScope.new(self.class, type, name) unless
           self.class.scoping_handlers[type].key?(name)
 
         send(:"__scoping__#{type}__#{name}", target)

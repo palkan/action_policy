@@ -2,6 +2,7 @@
 
 require "action_policy/behaviours/policy_for"
 require "action_policy/policy/execution_result"
+require "action_policy/utils/suggest_message"
 
 unless "".respond_to?(:underscore)
   require "action_policy/ext/string_underscore"
@@ -12,26 +13,16 @@ module ActionPolicy
   # Raised when `resolve_rule` failed to find an approriate
   # policy rule method for the activity
   class UnknownRule < Error
+    include ActionPolicy::SuggestMessage
+
     attr_reader :policy, :rule, :message
 
     def initialize(policy, rule)
       @policy = policy.class
       @rule = rule
-      @message = "Couldn't find rule '#{@rule}' for #{@policy}#{suggest(policy, rule)}"
-    end
-
-    if defined?(::DidYouMean::SpellChecker)
-      def suggest(policy, error)
-        suggestion = ::DidYouMean::SpellChecker.new(
-          dictionary: policy.public_methods
-        ).correct(error).first
-
-        suggestion ? "\nDid you mean? #{suggestion}" : ""
-      end
-    else
-      def suggest(*)
-        ""
-      end
+      @message =
+        "Couldn't find rule '#{@rule}' for #{@policy}" \
+        "#{suggest(@rule, @policy.instance_methods - Object.instance_methods)}"
     end
   end
 
