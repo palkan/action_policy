@@ -82,10 +82,10 @@ class PostsController < ApplicationController
     # which is passed to the scope block
     #
     # The second argument is the scope type
-    @posts = authorized(Post.all, :relation)
+    @posts = authorized(Post, :relation)
     #
     # For named scopes provide `as` option
-    @events = authorized(Event.all, :relation, as: :own)
+    @events = authorized(Event, :relation, as: :own)
   end
 end
 ```
@@ -93,22 +93,48 @@ end
 You can also specify additional options for policy class inference (see [behaviour docs](./behaviour.md)). For example, to explicitly specify the policy class use:
 
 ```ruby
-@posts = authorized(Post.all, with: CustomPostPolicy)
+@posts = authorized(Post, with: CustomPostPolicy)
 ```
 
 ## Scope type inference
 
-TBD
+Action Policy could look up a scope type if it's not specified and if _scope matchers_ were configured.
+
+Scope matcher is an object that implements `#===` (_case equality_) or a Proc. You can define it within a policy class:
+
+```ruby
+class ApplicationPolicy < ActionPolicy::Base
+  match_scope :relation, ActiveRecord::Relation
+
+  # use Proc to handle AR models classes
+  match_scope :relation, -> { |target| target < ActiveRecord::Base }
+
+  match_scope :custom, MyCustomClass
+end
+```
+
+Adding a scope matcher also adds a DSL to define scope rules (just a syntax sugar):
+
+```ruby
+class ApplicationPolicy < ActionPolicy::Base
+  match_scope :relation, ActiveRecord::Relation
+
+  # now you can define scope rules like this
+  relation_scope { |relation| relation }
+end
+```
+
+When `authorized` is called without the explicit scope type, Action Policy uses matchers (in the order they're defined) to infer the type.
 
 ## Rails integration
 
-Action Policy provides a couple of _scope matchers_ out-of-the-box for ActiveRecord relations and ActionController paramters.
+Action Policy provides a couple of _scope matchers_ out-of-the-box for Active Record relations and Action Controller paramters.
 
-### ActiveRecord scopes
+### Active Record scopes
 
 Scope type `:relation` is automatically applied to the object of `ActiveRecord::Relation` type.
 
-To define ActiveRecord scopes you can use `relation_scope` macro (which is just an alias for `scope :relation`) in your policy:
+To define Active Record scopes you can use `relation_scope` macro (which is just an alias for `scope :relation`) in your policy:
 
 ```ruby
 class PostPolicy < ApplicationPolicy
@@ -141,7 +167,7 @@ def index
 end
 ```
 
-### ActionController parameters
+### Action Controller parameters
 
 Use scopes of type `:params` if your strong parameters filterings depend on the current user:
 
