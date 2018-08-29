@@ -11,7 +11,7 @@ module ActionPolicy
       end
 
       def add(policy_or_class, rule)
-        policy_class = policy_or_class.is_a?(Class) ? policy_or_class : policy_or_class.class
+        policy_class = policy_or_class.is_a?(Module) ? policy_or_class : policy_or_class.class
         reasons[policy_class] ||= []
         reasons[policy_class] << rule
       end
