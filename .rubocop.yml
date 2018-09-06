@@ -69,6 +69,10 @@ Style/NumericPredicate:
 Style/Lambda:
   Enabled: false
 
+Style/StructInheritance:
+  Exclude:
+    - 'test/**/*.rb'
+
 Layout/SpaceInsideStringInterpolation:
   EnforcedStyle: no_space
 
@@ -79,6 +83,7 @@ Metrics/LineLength:
   Max: 100
 
 Metrics/AbcSize:
+  Max: 18
   Exclude:
     - 'test/**/*.rb'
 

@@ -104,12 +104,12 @@ Scope matcher is an object that implements `#===` (_case equality_) or a Proc. Y
 
 ```ruby
 class ApplicationPolicy < ActionPolicy::Base
-  match_scope :relation, ActiveRecord::Relation
+  scope_matcher :relation, ActiveRecord::Relation
 
   # use Proc to handle AR models classes
-  match_scope :relation, -> { |target| target < ActiveRecord::Base }
+  scope_matcher :relation, ->(target) { target < ActiveRecord::Base }
 
-  match_scope :custom, MyCustomClass
+  scope_matcher :custom, MyCustomClass
 end
 ```
 
@@ -117,7 +117,7 @@ Adding a scope matcher also adds a DSL to define scope rules (just a syntax suga
 
 ```ruby
 class ApplicationPolicy < ActionPolicy::Base
-  match_scope :relation, ActiveRecord::Relation
+  scope_matcher :relation, ActiveRecord::Relation
 
   # now you can define scope rules like this
   relation_scope { |relation| relation }

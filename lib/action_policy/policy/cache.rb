@@ -36,7 +36,6 @@ module ActionPolicy # :nodoc:
         authorization_context.map { |_k, v| v._policy_cache_key.to_s }.join("/")
       end
 
-      # rubocop: disable Metrics/AbcSize
       def apply_with_cache(rule)
         options = self.class.cached_rules.fetch(rule)
         key = cache_key(rule)
@@ -49,7 +48,6 @@ module ActionPolicy # :nodoc:
           result.value
         end
       end
-      # rubocop: enable Metrics/AbcSize
 
       def apply(rule)
         return super if ActionPolicy.cache_store.nil? ||
