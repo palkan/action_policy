@@ -94,3 +94,97 @@ class TestScopingPolicy < Minitest::Test
       defined?(::DidYouMean::SpellChecker)
   end
 end
+
+class TestPolicyScopeMatchers < Minitest::Test
+  class Payload < Struct.new(:value, :level); end
+
+  class MyPayload < Payload; end
+
+  class UserPolicy
+    include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::Authorization
+    include ActionPolicy::Policy::Scoping
+
+    authorize :user
+
+    scope_matcher :hash_or_array, ->(v) { v.is_a?(Array) || v.is_a?(Hash) }
+
+    scope_for :hash_or_array do |users|
+      next users if user.admin?
+
+      # handle hash values or arrays
+      if users.is_a?(Array)
+        users.reject(&:admin?)
+      else
+        users.reject { |_, v| v.admin? }
+      end
+    end
+
+    scope_for :payload do |payload|
+      next payload if user.admin?
+
+      next payload if payload.level.zero?
+
+      nil
+    end
+  end
+
+  class GuestPolicy < UserPolicy
+    scope_matcher :payload, Payload
+  end
+
+  def test_proc_matcher
+    users = [User.new("jack"), User.new("admin")]
+
+    policy = UserPolicy.new(user: User.new("guest"))
+
+    scoped_users = policy.apply_scope(users)
+
+    assert_equal 1, scoped_users.size
+    assert_equal "jack", scoped_users.first.name
+
+    policy = UserPolicy.new(user: User.new("admin"))
+
+    scoped_users = policy.apply_scope(users)
+    assert_equal 2, scoped_users.size
+
+    users_hash = { a: User.new("jack"), b: User.new("admin") }
+
+    policy = UserPolicy.new(user: User.new("guest"))
+
+    scoped_users = policy.apply_scope(users_hash)
+
+    assert_equal({ a: User.new("jack") }, scoped_users)
+  end
+
+  def test_class_matcher
+    payload = Payload.new("a", 2)
+    payload2 = Payload.new("a", 0)
+
+    policy = GuestPolicy.new(user: User.new("guest"))
+    scoped_payload = policy.apply_scope(payload)
+
+    assert_nil scoped_payload
+
+    scoped_payload = policy.apply_scope(payload2)
+
+    assert_equal payload2, scoped_payload
+
+    policy = GuestPolicy.new(user: User.new("admin"))
+    scoped_payload = policy.apply_scope(payload)
+
+    assert_equal payload, scoped_payload
+  end
+
+  def test_no_matching_type
+    payload = Payload.new("a", 2)
+    policy = UserPolicy.new(user: User.new("guest"))
+
+    e = assert_raises ActionPolicy::UnrecognizedScopeTarget do
+      policy.apply_scope(payload)
+    end
+
+    assert_includes e.message,
+                    "Couldn't infer scope type for TestPolicyScopeMatchers::Payload instance"
+  end
+end

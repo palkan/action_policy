@@ -2,6 +2,10 @@
 
 require "action_policy/utils/suggest_message"
 
+require "action_policy/ext/proc_case_eq"
+
+using ActionPolicy::Ext::ProcCaseEq
+
 module ActionPolicy
   class UnknownScopeType < Error # :nodoc:
     include ActionPolicy::SuggestMessage
@@ -29,6 +33,20 @@ module ActionPolicy
       @message = format(
         MESSAGE_TEMPLATE, name, type,
         suggest(name, policy_class.scoping_handlers[type].keys)
+      )
+    end
+  end
+
+  class UnrecognizedScopeTarget < Error # :nodoc:
+    MESSAGE_TEMPLATE = "Couldn't infer scope type for %s instance"
+
+    attr_reader :message
+
+    def initialize(target)
+      target_class = target.is_a?(Module) ? target : target.class
+
+      @message = format(
+        MESSAGE_TEMPLATE, target_class
       )
     end
   end
@@ -70,7 +88,9 @@ module ActionPolicy
       # If `name` is not specified then `:default` name is used.
       # If `type` is not specified then we try to infer the type from the
       # target class.
-      def apply_scope(target, type: nil, name: :default)
+      def apply_scope(target, type: lookup_type_from_target(target), name: :default)
+        raise ActionPolicy::UnrecognizedScopeTarget, target if type.nil?
+
         raise ActionPolicy::UnknownScopeType.new(self.class, type) unless
           self.class.scoping_handlers.key?(type)
 
@@ -78,6 +98,12 @@ module ActionPolicy
           self.class.scoping_handlers[type].key?(name)
 
         send(:"__scoping__#{type}__#{name}", target)
+      end
+
+      def lookup_type_from_target(target)
+        self.class.scope_matchers.detect do |(_type, matcher)|
+          matcher === target # rubocop:disable Style/CaseEquality
+        end&.first
       end
 
       module ClassMethods # :nodoc:
@@ -102,6 +128,27 @@ module ActionPolicy
           end
 
           @scoping_handlers
+        end
+
+        # Define scope type matcher.
+        #
+        # Scope matcher is an object that implements `#===` (_case equality_) or a Proc.
+        #
+        # When no type is provided when applying a scope we try to infer a type
+        # from the target object by calling matchers one by one until we find a matching
+        # type (i.e. there is a matcher which returns `true` when applying it to the target).
+        def scope_matcher(type, class_or_proc)
+          scope_matchers << [type, class_or_proc]
+        end
+
+        def scope_matchers
+          return @scope_matchers if instance_variable_defined?(:@scope_matchers)
+
+          @scope_matchers = []
+
+          @scope_matchers = superclass.scope_matchers.dup if superclass.respond_to?(:scope_matchers)
+
+          @scope_matchers
         end
       end
     end

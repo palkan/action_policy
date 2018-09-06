@@ -174,7 +174,6 @@ module ActionPolicy
           end
         end
 
-        # rubocop: disable Metrics/AbcSize
         def skip_pre_check(*names, **options)
           names.each do |name|
             check = pre_checks.find { |c| c.name == name }
@@ -187,7 +186,6 @@ module ActionPolicy
             pre_checks[pre_checks.index(check)] = check.dup.tap { |c| c.skip! options }
           end
         end
-        # rubocop: enable Metrics/AbcSize
 
         def pre_checks
           return @pre_checks if instance_variable_defined?(:@pre_checks)
