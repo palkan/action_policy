@@ -1,5 +1,9 @@
 ## master
 
+## 0.2.4 (2018-09-06)
+
+- [Fix [#39](https://github.com/palkan/action_policy/issues/39)] Fix configuring cache store in Rails. ([@palkan][])
+
 - Add `did_you_mean` suggestion to `UnknownRule` exception. ([@palkan][])
 
 - Add `check?` as an alias for `allowed_to?` in policies. ([@palkan][])
