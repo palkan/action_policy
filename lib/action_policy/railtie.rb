@@ -30,11 +30,12 @@ module ActionPolicy # :nodoc:
         # Enabled only in production by default.
         attr_accessor :namespace_cache_enabled
 
-        def cache_store=(store, *args)
-          if store.is_a?(Symbol)
-            store = ActiveSupport::Cache.lookup_store(
-              store, *args
-            )
+        def cache_store=(store)
+          # Handle both:
+          #   store = :memory
+          #   store = :mem_cache, ENV['MEMCACHE']
+          if store.is_a?(Symbol) || store.is_a?(Array)
+            store = ActiveSupport::Cache.lookup_store(store)
           end
 
           ActionPolicy.cache_store = store
