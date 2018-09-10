@@ -26,4 +26,4 @@ class PostUpdateAction
 end
 ```
 
-`ActionPolicy::Behaviour` provides `authorize` class-level method to configure [authorization context](authorization_context.rb) and two instance-level methods: `authorize!` and `allowed_to?`.
+`ActionPolicy::Behaviour` provides `authorize` class-level method to configure [authorization context](authorization_context.md) and two instance-level methods: `authorize!` and `allowed_to?`.
