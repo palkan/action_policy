@@ -6,6 +6,10 @@ gemspec
 
 gem "pry-byebug", platform: :mri
 
+gem 'sqlite3', platform: :mri
+gem 'activerecord-jdbcsqlite3-adapter', '~> 50.0', platform: :jruby
+gem 'jdbc-sqlite3', platform: :jruby
+
 local_gemfile = File.join(__dir__, "Gemfile.local")
 
 if File.exist?(local_gemfile)
