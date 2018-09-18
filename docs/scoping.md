@@ -138,7 +138,7 @@ To define Active Record scopes you can use `relation_scope` macro (which is just
 
 ```ruby
 class PostPolicy < ApplicationPolicy
-  # Equals `scope_for :relation do ...`
+  # Equals `scope_for :ar_relation do ...`
   relation_scope do |scope|
     if super_user? || admin?
       scope
@@ -155,7 +155,7 @@ class PostPolicy < ApplicationPolicy
 end
 ```
 
-**NOTE:** the `:relation` scoping is used if and only if an `ActiveRecord::Relation` is passed to `authorized`:
+**NOTE:** the `:ar_relation` scoping is used if and only if an `ActiveRecord::Relation` is passed to `authorized`:
 
 ```ruby
 def index
@@ -173,13 +173,17 @@ Use scopes of type `:params` if your strong parameters filterings depend on the 
 
 ```ruby
 class UserPolicy < ApplicationPolicy
-  # Equals to `scope_for :params do ...`
-  params_scope do |params|
+  # Equals to `scope_for :ac_params do ...`
+  params_filter do |params|
     if user.admin?
       params.permit(:name, :email, :role)
     else
       params.permit(:name)
     end
+  end
+
+  params_filter(:update) do |params|
+    params.permit(:name)
   end
 end
 
@@ -187,6 +191,11 @@ class UsersController < ApplicationController
   def create
     # Call `authorized` on `params` object
     @user = User.create!(authorized(params.require(:user)))
+    head :ok
+  end
+
+  def update
+    @user.update!(authorized(params.require(:user), as: :update))
     head :ok
   end
 end

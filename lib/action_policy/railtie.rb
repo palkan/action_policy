@@ -66,6 +66,8 @@ module ActionPolicy # :nodoc:
         Rails.application.config.action_policy.namespace_cache_enabled
 
       ActiveSupport.on_load(:action_controller) do
+        require "action_policy/rails/scope_matchers/action_controller_params"
+
         next unless Rails.application.config.action_policy.auto_inject_into_controller
 
         ActionController::Base.include ActionPolicy::Controller
@@ -83,6 +85,10 @@ module ActionPolicy # :nodoc:
         next unless Rails.application.config.action_policy.channel_authorize_current_user
 
         ActionCable::Channel::Base.authorize :user, through: :current_user
+      end
+
+      ActiveSupport.on_load(:active_record) do
+        require "action_policy/rails/scope_matchers/active_record"
       end
     end
   end
