@@ -1,5 +1,43 @@
 ## master
 
+- Added scoping support. ([@palkan][])
+
+  See [#5](https://github.com/palkan/action_policy/issues/5).
+
+  By "scoping" we mean an ability to use policies to _scope data_.
+
+  For example, when you want to _scope_ Active Record collections depending
+  on the current user permissions:
+
+  ```ruby
+  class PostsController < ApplicationController
+    def index
+      @posts = authorized(Post.all)
+    end
+  end
+
+  class PostPolicy < ApplicationPolicy
+    relation_scope do |relation|
+      next relation if user.admin?
+      relation.where(user: user)
+    end
+  end
+  ```
+
+  Action Policy provides a flexible mechanism to apply scopes to anything you want.
+
+  Read more in [docs](https://actionpolicy.evilmartians.io/).
+
+- Added `#implicit_authorization_target`. ([@palkan][]).
+
+  See [#35](https://github.com/palkan/action_policy/issues/35).
+
+  Implicit authorization target (defined by `implicit_authorization_target`) is used when no target specified for `authorize!` call.
+
+  For example, for Rails controllers integration it's just `controller_name.classify.safe_constantize`.
+
+- Consider `record#policy_name` when looking up for a policy class. ([@palkan][])
+
 ## 0.2.4 (2018-09-06)
 
 - [Fix [#39](https://github.com/palkan/action_policy/issues/39)] Fix configuring cache store in Rails. ([@palkan][])
