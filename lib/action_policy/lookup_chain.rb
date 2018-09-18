@@ -68,6 +68,8 @@ module ActionPolicy
       end
 
       def policy_class_name_for(record)
+        return record.policy_name.to_s if record.respond_to?(:policy_name)
+
         record_class = record.is_a?(Module) ? record : record.class
 
         if record_class.respond_to?(:policy_name)
