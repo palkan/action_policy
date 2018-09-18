@@ -36,7 +36,7 @@ module ActionPolicy
         end
       end
 
-      def __policy_memoize__(record, with: nil, namespace: nil)
+      def __policy_memoize__(record, with: nil, namespace: nil, **_opts)
         record_key = record._policy_cache_key(use_object_id: true)
         cache_key = "#{namespace}/#{with}/#{record_key}"
 

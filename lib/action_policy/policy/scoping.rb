@@ -88,7 +88,9 @@ module ActionPolicy
       # If `name` is not specified then `:default` name is used.
       # If `type` is not specified then we try to infer the type from the
       # target class.
-      def apply_scope(target, type: lookup_type_from_target(target), name: :default)
+      def apply_scope(target, type: nil, name: :default)
+        type = lookup_type_from_target(target) if type.nil?
+
         raise ActionPolicy::UnrecognizedScopeTarget, target if type.nil?
 
         raise ActionPolicy::UnknownScopeType.new(self.class, type) unless

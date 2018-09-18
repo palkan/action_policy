@@ -56,25 +56,22 @@ class TestAuthorizedBehaviour < Minitest::Test
   class ChatChannel
     include ActionPolicy::Behaviour
 
-    attr_reader :user, :data
+    attr_reader :user
 
     authorize :user
 
-    def initialize(name, data)
+    def initialize(name)
       @user = User.new(name)
-      @data = data
-    end
-
-    def all
-      authorized(data, :data)
-    end
-
-    def my
-      authorized(data, :data, as: :own)
     end
 
     def implicit_authorization_target
       User
+    end
+  end
+
+  class CustomPolicy < UserPolicy
+    scope_for :users do |arr|
+      arr.select { |u| u.name == user.name }
     end
   end
 
@@ -85,30 +82,50 @@ class TestAuthorizedBehaviour < Minitest::Test
   attr_reader :users
 
   def test_default_authorized
-    chat = ChatChannel.new("guest", users)
+    chat = ChatChannel.new("guest")
 
-    scoped_users = chat.all
+    scoped_users = chat.authorized(users, type: :data)
 
     assert_equal 1, scoped_users.size
     assert_equal "jack", scoped_users.first.name
 
-    chat = ChatChannel.new("admin", users)
+    chat = ChatChannel.new("admin")
 
-    scoped_users = chat.all
+    scoped_users = chat.authorized(users, type: :data)
 
     assert_equal 2, scoped_users.size
   end
 
   def test_named_authorized
-    chat = ChatChannel.new("guest", users)
+    chat = ChatChannel.new("guest")
 
-    scoped_users = chat.my
+    scoped_users = chat.authorized(users, type: :data, as: :own)
 
     assert_equal 0, scoped_users.size
 
-    chat = ChatChannel.new("admin", users)
+    chat = ChatChannel.new("admin")
 
-    scoped_users = chat.my
+    scoped_users = chat.authorized(users, type: :data, as: :own)
+
+    assert_equal 1, scoped_users.size
+    assert_equal "admin", scoped_users.first.name
+  end
+
+  def test_infer_policy_from_target
+    chat = ChatChannel.new("jack")
+
+    assert_raises(ActionPolicy::UnknownScopeType) do
+      chat.authorized(users, type: :users)
+    end
+
+    users.define_singleton_method(:policy_class) { CustomPolicy }
+
+    scoped_users = chat.authorized(users, type: :users)
+    assert_equal "jack", scoped_users.first.name
+
+    chat = ChatChannel.new("admin")
+
+    scoped_users = chat.authorized(users, type: :users)
 
     assert_equal 1, scoped_users.size
     assert_equal "admin", scoped_users.first.name

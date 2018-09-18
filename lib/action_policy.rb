@@ -27,9 +27,9 @@ module ActionPolicy
     attr_accessor :cache_store
 
     # Find a policy class for a target
-    def lookup(target, **options)
+    def lookup(target, allow_nil: false, **options)
       LookupChain.call(target, options) ||
-        raise(NotFound, target)
+        (allow_nil ? nil : raise(NotFound, target))
     end
   end
 

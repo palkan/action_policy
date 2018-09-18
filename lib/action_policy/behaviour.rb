@@ -53,10 +53,13 @@ module ActionPolicy
 
     # Apply scope to the target of the specified type.
     #
-    # NOTE: the policy must we specified either explicitly through the `with` option
-    # or implicitly by defining `implicit_authorization_target`
-    def authorized(target, type, as: :default, **options)
-      policy = policy_for(record: implicit_authorization_target, **options)
+    # NOTE: policy lookup consists of the following steps:
+    #   - first, check whether `with` option is present
+    #   - secondly, try to infer policy class from `target` (non-raising lookup)
+    #   - use `implicit_authorization_target` if none of the above works.
+    def authorized(target, type: nil, as: :default, with: nil, **options)
+      policy = with || policy_for(record: target, allow_nil: true, **options)
+      policy ||= policy_for(record: implicit_authorization_target, **options)
       policy.apply_scope(target, type: type, name: as)
     end
 
