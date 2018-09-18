@@ -82,10 +82,10 @@ class PostsController < ApplicationController
     # which is passed to the scope block
     #
     # The second argument is the scope type
-    @posts = authorized(Post, :relation)
+    @posts = authorized(Post, type: :relation)
     #
     # For named scopes provide `as` option
-    @events = authorized(Event, :relation, as: :own)
+    @events = authorized(Event, type: :relation, as: :own)
   end
 end
 ```

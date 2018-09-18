@@ -83,7 +83,7 @@ Metrics/LineLength:
   Max: 100
 
 Metrics/AbcSize:
-  Max: 18
+  Max: 20
   Exclude:
     - 'test/**/*.rb'
 

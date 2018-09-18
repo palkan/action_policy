@@ -14,6 +14,7 @@ module ActionPolicy
           names.shift if names.size > 1 && names.first.empty?
 
           names.inject(Object) do |constant, name|
+            break if constant.nil?
             constant.const_get(name, false) if constant.const_defined?(name, false)
           end
         end
