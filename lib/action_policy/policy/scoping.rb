@@ -10,14 +10,15 @@ module ActionPolicy
   class UnknownScopeType < Error # :nodoc:
     include ActionPolicy::SuggestMessage
 
-    MESSAGE_TEMPLATE = "Unknown policy scope type: %s%s"
+    MESSAGE_TEMPLATE = "Unknown policy scope type :%s for %s%s"
 
     attr_reader :message
 
     def initialize(policy_class, type)
       @message = format(
         MESSAGE_TEMPLATE,
-        type, suggest(type, policy_class.scoping_handlers.keys)
+        type, policy_class,
+        suggest(type, policy_class.scoping_handlers.keys)
       )
     end
   end
@@ -25,13 +26,13 @@ module ActionPolicy
   class UnknownNamedScope < Error # :nodoc:
     include ActionPolicy::SuggestMessage
 
-    MESSAGE_TEMPLATE = "Unknown named scope :%s for type :%s%s"
+    MESSAGE_TEMPLATE = "Unknown named scope :%s for type :%s for %s%s"
 
     attr_reader :message
 
     def initialize(policy_class, type, name)
       @message = format(
-        MESSAGE_TEMPLATE, name, type,
+        MESSAGE_TEMPLATE, name, type, policy_class,
         suggest(name, policy_class.scoping_handlers[type].keys)
       )
     end

@@ -41,7 +41,7 @@ class TestScopingPolicy < Minitest::Test
       policy.apply_scope(users, type: :datta)
     end
 
-    assert_includes e.message, "Unknown policy scope type: datta"
+    assert_includes e.message, "Unknown policy scope type :datta"
     assert_includes e.message, "Did you mean? data" if
       defined?(::DidYouMean::SpellChecker)
   end
@@ -79,7 +79,10 @@ class TestScopingPolicy < Minitest::Test
       policy.apply_scope(users, type: :data, name: :own)
     end
 
-    assert_equal "Unknown named scope :own for type :data", e.message
+    assert_equal(
+      "Unknown named scope :own for type :data for TestScopingPolicy::UserPolicy",
+      e.message
+    )
   end
 
   def test_missing_named_scope_suggestion
@@ -89,7 +92,11 @@ class TestScopingPolicy < Minitest::Test
       policy.apply_scope(users, type: :data, name: :owned)
     end
 
-    assert_includes e.message, "Unknown named scope :owned for type :data"
+    assert_includes(
+      e.message,
+      "Unknown named scope :owned for type :data for TestScopingPolicy::GuestPolicy"
+    )
+
     assert_includes e.message, "Did you mean? own" if
       defined?(::DidYouMean::SpellChecker)
   end
