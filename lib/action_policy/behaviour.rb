@@ -60,6 +60,9 @@ module ActionPolicy
     def authorized(target, type: nil, as: :default, with: nil, **options)
       policy = with || policy_for(record: target, allow_nil: true, **options)
       policy ||= policy_for(record: implicit_authorization_target, **options)
+
+      type ||= authorization_scope_type_for(policy, target)
+
       policy.apply_scope(target, type: type, name: as)
     end
 
@@ -77,6 +80,12 @@ module ActionPolicy
     # otherwise fallback to :manage? rule.
     def authorization_rule_for(policy, rule)
       policy.resolve_rule(rule)
+    end
+
+    # Infer scope type for target if none provided.
+    # Raises an exception if type couldn't be inferred.
+    def authorization_scope_type_for(policy, target)
+      policy.resolve_scope_type(target)
     end
 
     # Override this method to provide implicit authorization target

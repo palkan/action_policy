@@ -145,42 +145,18 @@ class TestPolicyScopeMatchers < Minitest::Test
 
     policy = UserPolicy.new(user: User.new("guest"))
 
-    scoped_users = policy.apply_scope(users)
+    scope_type = policy.resolve_scope_type(users)
 
-    assert_equal 1, scoped_users.size
-    assert_equal "jack", scoped_users.first.name
-
-    policy = UserPolicy.new(user: User.new("admin"))
-
-    scoped_users = policy.apply_scope(users)
-    assert_equal 2, scoped_users.size
-
-    users_hash = { a: User.new("jack"), b: User.new("admin") }
-
-    policy = UserPolicy.new(user: User.new("guest"))
-
-    scoped_users = policy.apply_scope(users_hash)
-
-    assert_equal({ a: User.new("jack") }, scoped_users)
+    assert_equal :hash_or_array, scope_type
   end
 
   def test_class_matcher
     payload = Payload.new("a", 2)
-    payload2 = Payload.new("a", 0)
-
     policy = GuestPolicy.new(user: User.new("guest"))
-    scoped_payload = policy.apply_scope(payload)
 
-    assert_nil scoped_payload
+    scope_type = policy.resolve_scope_type(payload)
 
-    scoped_payload = policy.apply_scope(payload2)
-
-    assert_equal payload2, scoped_payload
-
-    policy = GuestPolicy.new(user: User.new("admin"))
-    scoped_payload = policy.apply_scope(payload)
-
-    assert_equal payload, scoped_payload
+    assert_equal :payload, scope_type
   end
 
   def test_no_matching_type
@@ -188,7 +164,7 @@ class TestPolicyScopeMatchers < Minitest::Test
     policy = UserPolicy.new(user: User.new("guest"))
 
     e = assert_raises ActionPolicy::UnrecognizedScopeTarget do
-      policy.apply_scope(payload)
+      policy.resolve_scope_type(payload)
     end
 
     assert_includes e.message,
