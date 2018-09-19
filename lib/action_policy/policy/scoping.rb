@@ -89,11 +89,7 @@ module ActionPolicy
       # If `name` is not specified then `:default` name is used.
       # If `type` is not specified then we try to infer the type from the
       # target class.
-      def apply_scope(target, type: nil, name: :default)
-        type = lookup_type_from_target(target) if type.nil?
-
-        raise ActionPolicy::UnrecognizedScopeTarget, target if type.nil?
-
+      def apply_scope(target, type:, name: :default)
         raise ActionPolicy::UnknownScopeType.new(self.class, type) unless
           self.class.scoping_handlers.key?(type)
 
@@ -101,6 +97,11 @@ module ActionPolicy
           self.class.scoping_handlers[type].key?(name)
 
         send(:"__scoping__#{type}__#{name}", target)
+      end
+
+      def resolve_scope_type(target)
+        lookup_type_from_target(target) ||
+          raise(ActionPolicy::UnrecognizedScopeTarget, target)
       end
 
       def lookup_type_from_target(target)
