@@ -5,6 +5,8 @@ require "action_policy/behaviours/memoized"
 require "action_policy/behaviours/thread_memoized"
 require "action_policy/behaviours/namespaced"
 
+require "action_policy/authorizer"
+
 module ActionPolicy
   # Provides `authorize!` and `allowed_to?` methods and
   # `authorize` class method to define authorization context.
@@ -63,7 +65,7 @@ module ActionPolicy
 
       type ||= authorization_scope_type_for(policy, target)
 
-      policy.apply_scope(target, type: type, name: as)
+      Authorizer.scopify(target, policy, type: type, name: as, **options)
     end
 
     def authorization_context
