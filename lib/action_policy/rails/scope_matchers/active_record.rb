@@ -3,17 +3,17 @@
 module ActionPolicy
   module ScopeMatchers
     # Adds `relation_scope` method as an alias
-    # for `scope_for :ar_relation`
+    # for `scope_for :active_record_relation`
     module ActiveRecord
       def relation_scope(*args, &block)
-        scope_for :ar_relation, *args, &block
+        scope_for :active_record_relation, *args, &block
       end
     end
   end
 end
 
 # Register relation scope matcher
-ActionPolicy::Base.scope_matcher :ar_relation, ActiveRecord::Relation
+ActionPolicy::Base.scope_matcher :active_record_relation, ActiveRecord::Relation
 
 # Add alias to base policy
 ActionPolicy::Base.extend ActionPolicy::ScopeMatchers::ActiveRecord
