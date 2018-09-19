@@ -20,7 +20,6 @@ module ActionPolicy
   require "action_policy/version"
   require "action_policy/base"
   require "action_policy/lookup_chain"
-  require "action_policy/authorizer"
   require "action_policy/behaviour"
 
   class << self
