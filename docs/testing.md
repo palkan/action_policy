@@ -157,3 +157,26 @@ end
 You can also specify `as` option.
 
 **NOTE:** both `type` and `with` params are required.
+
+### RSpec
+
+Add the following to your `rails_helper.rb` (or `spec_helper.rb`):
+
+```ruby
+require "action_policy/rspec"
+```
+
+Now you can use `have_authorized_scope` matcher:
+
+```ruby
+describe UsersController do
+  subject { get :index }
+
+  it "has authorized scope" do
+    expect { subject }.to have_authorized_scope(:active_record_relation)
+      .with(PostPolicy)
+  end
+end
+```
+
+You can also add `.as(:named_scope)` option.
