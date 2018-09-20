@@ -42,5 +42,37 @@ module ActionPolicy
       )
     end
     # rubocop: enable Metrics/MethodLength
+
+    # Asserts that the given policy was used for scoping.
+    #
+    #   def test_authorize
+    #     assert_have_authorized_scope(type: :active_record_relation, with: UserPolicy) do
+    #       get :index
+    #     end
+    #   end
+    #
+    # You can also specify `as` option.
+    #
+    # NOTE: `type` and `with` must be specified.
+    #
+    # rubocop: disable Metrics/MethodLength
+    def assert_have_authorized_scope(type:, with:, as: :default)
+      raise ArgumentError, "Block is required" unless block_given?
+
+      policy = with
+
+      ActionPolicy::Testing::AuthorizeTracker.tracking { yield }
+
+      actual_scopes = ActionPolicy::Testing::AuthorizeTracker.scopings
+
+      assert(
+        actual_scopes.any? { |scope| scope.matches?(policy, type, as) },
+        "Expected a scoping named :#{as} for :#{type} type from #{policy} to have been applied, " \
+        "but no such scoping has been made.\n" \
+        "Registered scopings: " \
+        "#{actual_scopes.empty? ? 'none' : actual_scopes.map(&:inspect).join(',')}"
+      )
+    end
+    # rubocop: enable Metrics/MethodLength
   end
 end
