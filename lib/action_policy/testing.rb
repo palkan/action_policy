@@ -24,11 +24,32 @@ module ActionPolicy
         end
       end
 
+      class Scoping # :nodoc:
+        attr_reader :policy, :type, :name
+
+        def initialize(policy, type, name)
+          @policy = policy
+          @type = type
+          @name = name
+        end
+
+        def matches?(policy_class, actual_type, actual_name)
+          policy_class == policy.class &&
+            type == actual_type &&
+            name == actual_name
+        end
+
+        def inspect
+          "#{policy.class} :#{name} for :#{type}"
+        end
+      end
+
       class << self
         # Wrap code under inspection into this method
         # to track authorize! calls
         def tracking
           calls.clear
+          scopings.clear
           Thread.current[:__action_policy_tracking] = true
           yield
         ensure
@@ -41,8 +62,18 @@ module ActionPolicy
           calls << Call.new(policy, rule)
         end
 
+        # Called from Authorizer
+        def track_scope(_target, policy, type:, name:)
+          return unless tracking?
+          scopings << Scoping.new(policy, type, name)
+        end
+
         def calls
           Thread.current[:__action_policy_calls] ||= []
+        end
+
+        def scopings
+          Thread.current[:__action_policy_scopings] ||= []
         end
 
         def tracking?
@@ -55,6 +86,11 @@ module ActionPolicy
     module AuthorizerExt
       def call(*args)
         AuthorizeTracker.track(*args)
+        super
+      end
+
+      def scopify(*args)
+        AuthorizeTracker.track_scope(*args)
         super
       end
     end

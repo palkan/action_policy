@@ -3,8 +3,44 @@
 Authorization is one of the crucial parts of your application. Hence, it should be thoroughly tested (that is the place where 100% coverage makes sense).
 
 When you use policies for authorization, it is possible to split testing into two parts:
-- Test that **the required authorization is performed** within your authorization layer (controller, channel, etc.);
-- Test the policy class itself.
+- Test the policy class itself
+- Test that **the required authorization is performed** within your authorization layer (controller, channel, etc.)
+- Test that **the required scoping has been applied**.
+
+## Testing policies
+
+You can test policies as plain-old Ruby classes, no special tooling is required.
+
+Consider an RSpec example:
+
+```ruby
+describe PostPolicy do
+  let(:user) { build_stubbed(:user) }
+  let(:post) { build_stubbed(:post) }
+
+  let(:policy) { described_class.new(post, user: user) }
+
+  describe "#update?" do
+    subject { policy.apply(:update?) }
+
+    it "returns false when the user is not admin nor author" do
+      is_expected.to eq false
+    end
+
+    context "when the user is admin" do
+      let(:user) { build_stubbed(:user, :admin) }
+
+      it { is_expected.to eq true }
+    end
+
+    context "when the user is an author" do
+      let(:post) { build_stubbed(:post, user: user) }
+
+      it { is_expected.to eq true }
+    end
+  end
+end
+```
 
 ## Testing authorization
 
@@ -80,37 +116,44 @@ end
 
 If you omit `.with(PostPolicy)` then the inferred policy for the target (`post`) would be used.
 
-## Testing policies
+## Testing scoping
 
-You can test policies as plain-old Ruby classes, no special tooling is required.
+Action Policy provides a way to test that a correct scoping has been applied during the code execution.
 
-Consider an RSpec example:
+For example, you can test that in your `#index` action the correct scoping is used:
 
 ```ruby
-describe PostPolicy do
-  let(:user) { build_stubbed(:user) }
-  let(:post) { build_stubbed(:post) }
+class UsersController < ApplicationController
+  def index
+    @user = authorized(User.all)
+  end
+end
+```
 
-  let(:policy) { described_class.new(post, user: user) }
+**NOTE:** it's not possible to test that a scoped has been applied to a particular _target_. Thus there could be false positives.
 
-  describe "#update?" do
-    subject { policy.apply(:update?) }
+### Minitest
 
-    it "returns false when the user is not admin nor author" do
-      is_expected.to eq false
-    end
+Include `ActionPolicy::TestHelper` to your test class and you'll be able to use
+`assert_have_authorized_scope` assertion:
 
-    context "when the user is admin" do
-      let(:user) { build_stubbed(:user, :admin) }
+```ruby
+# in your test
+require "action_policy/test_helper"
 
-      it { is_expected.to eq true }
-    end
+class UsersControllerTest < ActionDispatch::IntegrationTest
+  include ActionPolicy::TestHelper
 
-    context "when the user is an author" do
-      let(:post) { build_stubbed(:post, user: user) }
+  test "index has authorized scope" do
+    sign_in users(:john)
 
-      it { is_expected.to eq true }
+    assert_have_authorized_scope(type: :active_record_relation, with: UserPolicy) do
+      get :index
     end
   end
 end
 ```
+
+You can also specify `as` option.
+
+**NOTE:** both `type` and `with` params are required.

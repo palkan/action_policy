@@ -28,6 +28,14 @@ class TestHelperTest < Minitest::Test
       authorize! user, to: :update?, with: CustomPolicy
       "OK"
     end
+
+    def filter(users)
+      authorized users, type: :data, with: CustomPolicy
+    end
+
+    def own(users)
+      authorized users, type: :data, as: :own, with: CustomPolicy
+    end
   end
 
   def setup
@@ -63,5 +71,44 @@ class TestHelperTest < Minitest::Test
     end
 
     assert_match(%r{Expected.+to be authorized with UserPolicy#manage?}, error.message)
+  end
+
+  def test_assert_have_authorized_scope
+    assert_have_authorized_scope(type: :data, with: CustomPolicy) do
+      subject.filter([user])
+    end
+  end
+
+  def test_assert_have_authorized_scope_with_name
+    assert_have_authorized_scope(type: :data, with: CustomPolicy, as: :own) do
+      subject.own([user])
+    end
+  end
+
+  def test_assert_have_authorized_scope_raised_when_policy_mismatch
+    error = assert_raises Minitest::Assertion do
+      assert_have_authorized_scope(type: :data, with: ::UserPolicy) do
+        subject.filter([user])
+      end
+    end
+
+    assert_match(
+      %r{Expected a scoping named :default for :data type from UserPolicy to have been applied},
+      error.message
+    )
+  end
+
+  def test_assert_have_authorized_scope_raised_when_scope_name_mismatch
+    error = assert_raises Minitest::Assertion do
+      assert_have_authorized_scope(type: :data, with: ::UserPolicy, as: :own) do
+        subject.filter([user])
+      end
+    end
+
+    assert_match(
+      %r{Expected a scoping named :own for :data type from UserPolicy to have been applied},
+      error.message
+    )
+    assert_match(%r{Registered scopings: .*CustomPolicy :default for :data}, error.message)
   end
 end

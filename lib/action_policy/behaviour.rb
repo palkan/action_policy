@@ -59,13 +59,13 @@ module ActionPolicy
     #   - first, check whether `with` option is present
     #   - secondly, try to infer policy class from `target` (non-raising lookup)
     #   - use `implicit_authorization_target` if none of the above works.
-    def authorized(target, type: nil, as: :default, with: nil, **options)
-      policy = with || policy_for(record: target, allow_nil: true, **options)
+    def authorized(target, type: nil, as: :default, **options)
+      policy = policy_for(record: target, allow_nil: true, **options)
       policy ||= policy_for(record: implicit_authorization_target, **options)
 
       type ||= authorization_scope_type_for(policy, target)
 
-      Authorizer.scopify(target, policy, type: type, name: as, **options)
+      Authorizer.scopify(target, policy, type: type, name: as)
     end
 
     def authorization_context
