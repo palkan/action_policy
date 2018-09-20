@@ -1,5 +1,27 @@
 ## master
 
+- Added testing for scopes. ([@palkan][])
+
+  Example:
+
+  ```ruby
+  # users_controller.rb
+  class UsersController < ApplicationController
+    def index
+      @user = authorized(User.all)
+    end
+  end
+
+  # users_controller_spec.rb
+  describe UsersController do
+    subject { get :index }
+    it "has authorized scope" do
+      expect { subject }.to have_authorized_scope(:active_record_relation)
+        .with(PostPolicy)
+    end
+  end
+  ```
+
 - Added scoping support. ([@palkan][])
 
   See [#5](https://github.com/palkan/action_policy/issues/5).
