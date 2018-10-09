@@ -36,11 +36,11 @@ Why did we decide to build our own authorization gem instead of using the existi
 
 [Pundit][] has been our framework of choice for a long time. Being too _dead-simple_, it required a lot of hacking to fulfill business logic requirements.
 
-These _hacks_ later become into Action Policy (initially, we even called it "Pundit, re-visited").
+These _hacks_ later became Action Policy (initially, we even called it "Pundit, re-visited").
 
 We also took a few ideas from [CanCanCan][]—such as [default rules and rule aliases](./aliases.md).
 
-It is also worth noting that Action Policy (despite from a _Railsy_ name) is designed to be **Rails-free**. On the other hand, it contains some Rails-specific extensions and seamlessly integrates into the framework.
+It is also worth noting that Action Policy (despite having a _Railsy_ name) is designed to be **Rails-free**. On the other hand, it contains some Rails-specific extensions and seamlessly integrates into the framework.
 
 So, what are the main reasons to consider Action Policy as your authorization tool?
 
@@ -50,7 +50,7 @@ So, what are the main reasons to consider Action Policy as your authorization to
 
 - **Code Organization**: use [namespaces](./namespaces.md) to organize your policies (for example, when you have multiple authorization strategies); add [pre-checks](./pre_checks.md) to make rules more readable and better express your business-logic.
 
-- ...and more: [testability](./testing.md), [i18n](./i18n.md) integrations, [actionable errors](./reasons.md).
+- **...and more**: [testability](./testing.md), [i18n](./i18n.md) integrations, [actionable errors](./reasons.md).
 
 Learn more about the motivation behind the Action Policy and its features by watching this [RailsConf talk](https://www.youtube.com/watch?v=NVwx0DARDis).
 
