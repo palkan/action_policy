@@ -2,13 +2,13 @@
 
 ## Installation
 
-To install Action Policy with RubyGems:
+Install Action Policy with RubyGems:
 
 ```ruby
 gem install action_policy
 ```
 
-Or add this line to your application's `Gemfile`:
+Or add `action_policy` to your application's `Gemfile`:
 
 ```ruby
 gem "action_policy"
@@ -22,7 +22,7 @@ And then execute:
 
 The core component of Action Policy is a _policy class_. Policy class describes how you control access to resources.
 
-We suggest that you have a separate policy class for each resource and encourage you to follow the conventions:
+We suggest having a separate policy class for each resource and encourage you to follow these conventions:
 - put policies into the `app/policies` folder (when using with Rails);
 - name policies using the corresponding resource name (model name) with a `Policy` suffix, e.g. `Post -> PostPolicy`;
 - name rules using a predicate form of the corresponding activity (typically, a controller's action), e.g. `PostsController#update -> PostsPolicy#update?`.
