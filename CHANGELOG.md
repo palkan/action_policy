@@ -1,5 +1,16 @@
 ## master
 
+- Added Symbol lookup to the lookup chain ([@DmitryTsepelev][])
+
+  For instance, lookup will implicitly use `AdminPolicy` in a following case:
+
+  ```ruby
+  # admin_controller.rb
+  class AdminController < ApplicationController
+    authorize! :admin, to: :update_settings
+  end
+  ```
+
 - Added testing for scopes. ([@palkan][])
 
   Example:
@@ -146,3 +157,4 @@
 [@palkan]: https://github.com/palkan
 [@ilyasgaraev]: https://github.com/ilyasgaraev
 [@brendon]: https://github.com/brendon
+[@DmitryTsepelev]: https://github.com/DmitryTsepelev
