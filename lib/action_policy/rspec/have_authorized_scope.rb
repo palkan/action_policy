@@ -20,11 +20,12 @@ module ActionPolicy
     #   end
     #
     class HaveAuthorizedScope < ::RSpec::Matchers::BuiltIn::BaseMatcher
-      attr_reader :type, :name, :policy, :actual_scopes
+      attr_reader :type, :name, :policy, :scope_options, :actual_scopes
 
       def initialize(type)
         @type = type
         @name = :default
+        @scope_options = nil
       end
 
       def with(policy)
@@ -37,6 +38,11 @@ module ActionPolicy
         self
       end
 
+      def with_options(scope_options)
+        @scope_options = scope_options
+        self
+      end
+
       def match(_expected, actual)
         raise "This matcher only supports block expectations" unless actual.is_a?(Proc)
 
@@ -44,7 +50,7 @@ module ActionPolicy
 
         @actual_scopes = ActionPolicy::Testing::AuthorizeTracker.scopings
 
-        actual_scopes.any? { |scope| scope.matches?(policy, type, name) }
+        actual_scopes.any? { |scope| scope.matches?(policy, type, name, scope_options) }
       end
 
       def does_not_match?(*)
