@@ -34,11 +34,11 @@ module ActionPolicy
           @scope_options = scope_options
         end
 
-        def matches?(policy_class, actual_type, actual_name, actual_scoping)
+        def matches?(policy_class, actual_type, actual_name, actual_scope_options)
           policy_class == policy.class &&
             type == actual_type &&
             name == actual_name &&
-            scope_options == actual_scoping
+            scope_options == actual_scope_options
         end
 
         def inspect

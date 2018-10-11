@@ -56,7 +56,7 @@ module ActionPolicy
     # NOTE: `type` and `with` must be specified.
     #
     # rubocop: disable Metrics/MethodLength
-    def assert_have_authorized_scope(type:, with:, as: :default)
+    def assert_have_authorized_scope(type:, with:, as: :default, scope_options: nil)
       raise ArgumentError, "Block is required" unless block_given?
 
       policy = with
@@ -66,7 +66,7 @@ module ActionPolicy
       actual_scopes = ActionPolicy::Testing::AuthorizeTracker.scopings
 
       assert(
-        actual_scopes.any? { |scope| scope.matches?(policy, type, as) },
+        actual_scopes.any? { |scope| scope.matches?(policy, type, as, scope_options) },
         "Expected a scoping named :#{as} for :#{type} type from #{policy} to have been applied, " \
         "but no such scoping has been made.\n" \
         "Registered scopings: " \
