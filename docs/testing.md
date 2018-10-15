@@ -154,7 +154,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 end
 ```
 
-You can also specify `as` option.
+You can also specify `as` and `scope_options` options.
 
 **NOTE:** both `type` and `with` params are required.
 
@@ -179,4 +179,11 @@ describe UsersController do
 end
 ```
 
-You can also add `.as(:named_scope)` option.
+You can also add `.as(:named_scope)` and `with_scope_options(options_hash)` options.
+
+RSpec composed matchers are available as scope options:
+
+```ruby
+expect { subject }.to have_authorized_scope(:scope)
+  .with_scope_options(matching(with_deleted: a_falsey_value))
+```

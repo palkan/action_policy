@@ -71,6 +71,31 @@ end
 
 When the second argument is not speficied, the `:default` is implied as the scope name.
 
+Also, there are cases where it might be easier to add options to existing scope than create a new one.
+
+For example, if you use soft-deletion and your logic inside a scope depends on if deleted records are included, you can add `with_deleted` option:
+
+```ruby
+class PostPolicy < ApplicationPolicy
+  scope_for :relation do |relation, with_deleted: false|
+    if with_deleted
+      # Code that runs if deleted records are included
+    else
+      # Code that runs if deleted records are not included
+    end
+  end
+end
+```
+
+You can add as many options as you want:
+
+```ruby
+class PostPolicy < ApplicationPolicy
+  scope_for :relation do |relation, with_deleted: false, magic_number: 42, some_required_option:|
+    # Your code
+  end
+end
+```
 ## Apply scopes
 
 Action Policy behaviour (`ActionPolicy::Behaviour`) provides an `authorized` method which allows you to use scoping:
@@ -86,6 +111,9 @@ class PostsController < ApplicationController
     #
     # For named scopes provide `as` option
     @events = authorized(Event, type: :relation, as: :own)
+    #
+    # If you want to specify scope options provide `scope_options` option
+    @events = authorized(Event, type: :relation, scope_options: { with_deleted: true })
   end
 end
 ```
