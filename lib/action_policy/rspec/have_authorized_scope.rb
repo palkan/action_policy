@@ -70,7 +70,12 @@ module ActionPolicy
 
       def scope_options_message
         if scope_options
-          "with scope options #{scope_options}"
+          if defined?(::RSpec::Matchers::Composable) &&
+             scope_options.is_a?(::RSpec::Matchers::Composable)
+            "with scope options #{scope_options.description}"
+          else
+            "with scope options #{scope_options}"
+          end
         else
           "without scope options"
         end

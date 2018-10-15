@@ -38,7 +38,7 @@ module ActionPolicy
           policy_class == policy.class &&
             type == actual_type &&
             name == actual_name &&
-            scope_options == actual_scope_options
+            actual_scope_options === scope_options # rubocop:disable Style/CaseEquality
         end
 
         def inspect
@@ -49,7 +49,12 @@ module ActionPolicy
 
         def scope_options_message
           if scope_options
-            "with scope options #{scope_options}"
+            if defined?(::RSpec::Matchers::Composable) &&
+               scope_options.is_a?(::RSpec::Matchers::Composable)
+              "with scope options #{scope_options.description}"
+            else
+              "with scope options #{scope_options}"
+            end
           else
             "without scope options"
           end
