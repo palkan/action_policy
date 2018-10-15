@@ -1,5 +1,30 @@
 ## master
 
+- Added scope options to scopes. ([@korolvs][])
+
+  See [#47](https://github.com/palkan/action_policy/pull/47).
+
+  Example:
+  ```ruby
+  # users_controller.rb
+  class UsersController < ApplicationController
+    def index
+      @user = authorized(User.all, scope_options: { with_deleted: true })
+    end
+  end
+
+  # user_policy.rb
+  describe UserPolicy < Application do
+    relation_scope do |relation, with_deleted: false|
+      if with_deleted
+        some_logic(relation)
+      else
+        another_logic(relation)
+      end
+    end
+  end
+  ```
+
 - Added testing for scopes. ([@palkan][])
 
   Example:
@@ -146,3 +171,4 @@
 [@palkan]: https://github.com/palkan
 [@ilyasgaraev]: https://github.com/ilyasgaraev
 [@brendon]: https://github.com/brendon
+[@korolvs]: https://github.com/korolvs
