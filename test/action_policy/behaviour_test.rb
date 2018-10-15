@@ -96,6 +96,19 @@ class TestAuthorizedBehaviour < Minitest::Test
     assert_equal 2, scoped_users.size
   end
 
+  def test_default_authorized_with_scope_options
+    chat = ChatChannel.new("guest")
+
+    scoped_users = chat.authorized(users, type: :data)
+
+    assert_equal 1, scoped_users.size
+    assert_equal "jack", scoped_users.first.name
+
+    scoped_users = chat.authorized(users, type: :data, scope_options: { with_admins: true })
+
+    assert_equal 2, scoped_users.size
+  end
+
   def test_named_authorized
     chat = ChatChannel.new("guest")
 

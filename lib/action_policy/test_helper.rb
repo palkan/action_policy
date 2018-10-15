@@ -65,9 +65,17 @@ module ActionPolicy
 
       actual_scopes = ActionPolicy::Testing::AuthorizeTracker.scopings
 
+      scope_options_message = if scope_options
+                                "with scope options #{scope_options}"
+                              else
+                                "without scope options"
+                              end
+
       assert(
         actual_scopes.any? { |scope| scope.matches?(policy, type, as, scope_options) },
-        "Expected a scoping named :#{as} for :#{type} type from #{policy} to have been applied, " \
+        "Expected a scoping named :#{as} for :#{type} type " \
+        "#{scope_options_message} " \
+        "from #{policy} to have been applied, " \
         "but no such scoping has been made.\n" \
         "Registered scopings: " \
         "#{actual_scopes.empty? ? 'none' : actual_scopes.map(&:inspect).join(',')}"

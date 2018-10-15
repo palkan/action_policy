@@ -38,7 +38,7 @@ module ActionPolicy
         self
       end
 
-      def with_options(scope_options)
+      def with_scope_options(scope_options)
         @scope_options = scope_options
         self
       end
@@ -63,8 +63,17 @@ module ActionPolicy
 
       def failure_message
         "expected a scoping named :#{name} for type :#{type} " \
+        "#{scope_options_message} " \
         "from #{policy} to have been applied, " \
         "but #{actual_scopes_message}"
+      end
+
+      def scope_options_message
+        if scope_options
+          "with scope options #{scope_options}"
+        else
+          "without scope options"
+        end
       end
 
       def actual_scopes_message

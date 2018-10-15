@@ -15,6 +15,12 @@ class TestScopingPolicy < Minitest::Test
 
       users.reject(&:admin?)
     end
+
+    scope_for :data, :with_options do |users, with_admins:|
+      next users if with_admins
+
+      users.reject(&:admin?)
+    end
   end
 
   class GuestPolicy < UserPolicy
@@ -99,6 +105,35 @@ class TestScopingPolicy < Minitest::Test
 
     assert_includes e.message, "Did you mean? own" if
       defined?(::DidYouMean::SpellChecker)
+  end
+
+  def test_missing_scope_options
+    policy = UserPolicy.new(user: User.new("guest"))
+
+    e = assert_raises ArgumentError do
+      policy.apply_scope(users, type: :data, name: :with_options)
+    end
+
+    assert_includes e.message, "missing keyword: with_admins"
+  end
+
+  def test_scope_options
+    policy = UserPolicy.new(user: User.new("guest"))
+
+    scoped_users = policy.apply_scope(users,
+                                      type: :data,
+                                      name: :with_options,
+                                      scope_options: { with_admins: false })
+
+    assert_equal 1, scoped_users.size
+    assert_equal "jack", scoped_users.first.name
+
+    scoped_users = policy.apply_scope(users,
+                                      type: :data,
+                                      name: :with_options,
+                                      scope_options: { with_admins: true })
+
+    assert_equal 2, scoped_users.size
   end
 end
 

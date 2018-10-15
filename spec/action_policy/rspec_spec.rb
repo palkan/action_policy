@@ -44,6 +44,10 @@ class TestService # :nodoc:
     authorized users, type: :data, with: CustomPolicy
   end
 
+  def filter_with_options(users, with_admins: false)
+    authorized users, type: :data, with: CustomPolicy, scope_options: { with_admins: with_admins }
+  end
+
   def own(users)
     authorized users, type: :data, as: :own, with: UserPolicy
   end
@@ -169,6 +173,11 @@ describe "ActionPolicy RSpec matchers" do
         expect { subject.own(target) }
           .to have_authorized_scope(:data).with(UserPolicy).as(:own)
       end
+
+      specify "with scope options" do
+        expect { subject.filter_with_options(target, with_admins: true) }
+          .to have_authorized_scope(:data).with(TestService::CustomPolicy).with_scope_options(with_admins: true)
+      end
     end
 
     context "when no scoping performed" do
@@ -178,7 +187,8 @@ describe "ActionPolicy RSpec matchers" do
             .to have_authorized_scope(:datum).with(TestService::CustomPolicy)
         end.to raise_error(
           RSpec::Expectations::ExpectationNotMetError,
-          %r{expected a scoping named :default for type :datum from TestService::CustomPolicy to have been applied}
+          Regexp.new("expected a scoping named :default for type :datum without scope options " \
+                     "from TestService::CustomPolicy to have been applied")
         )
       end
 
@@ -188,7 +198,8 @@ describe "ActionPolicy RSpec matchers" do
             .to have_authorized_scope(:data).with(UserPolicy)
         end.to raise_error(
           RSpec::Expectations::ExpectationNotMetError,
-          %r{expected a scoping named :default for type :data from UserPolicy to have been applied}
+          Regexp.new("expected a scoping named :default for type :data without scope options " \
+                     "from UserPolicy to have been applied")
         )
       end
 
@@ -198,7 +209,20 @@ describe "ActionPolicy RSpec matchers" do
             .to have_authorized_scope(:data).with(UserPolicy)
         end.to raise_error(
           RSpec::Expectations::ExpectationNotMetError,
-          %r{expected a scoping named :default for type :data from UserPolicy to have been applied}
+          Regexp.new("expected a scoping named :default for type :data without scope options " \
+                     "from UserPolicy to have been applied")
+        )
+      end
+
+      specify "scope options mismatch" do
+        expect do
+          expect { subject.filter_with_options(target, with_admins: true) }
+            .to have_authorized_scope(:data).with(UserPolicy).with_scope_options(with_admins: false)
+        end.to raise_error(
+          RSpec::Expectations::ExpectationNotMetError,
+          Regexp.new("expected a scoping named :default for type :data " \
+                     "with scope options {:with_admins=>false} " \
+                     "from UserPolicy to have been applied")
         )
       end
     end

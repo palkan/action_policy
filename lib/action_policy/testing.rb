@@ -42,7 +42,17 @@ module ActionPolicy
         end
 
         def inspect
-          "#{policy.class} :#{name} for :#{type}"
+          "#{policy.class} :#{name} for :#{type} #{scope_options_message}"
+        end
+
+        private
+
+        def scope_options_message
+          if scope_options
+            "with scope options #{scope_options}"
+          else
+            "without scope options"
+          end
         end
       end
 
