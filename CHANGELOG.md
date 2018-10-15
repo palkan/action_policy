@@ -22,7 +22,9 @@
         another_logic(relation)
       end
     end
-    
+  end
+  ```
+
 - Added Symbol lookup to the lookup chain ([@DmitryTsepelev][])
 
   For instance, lookup will implicitly use `AdminPolicy` in a following case:

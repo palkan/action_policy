@@ -79,9 +79,9 @@ For example, if you use soft-deletion and your logic inside a scope depends on i
 class PostPolicy < ApplicationPolicy
   scope_for :relation do |relation, with_deleted: false|
     if with_deleted
-      # Code that runs if deleted records are included
+      some_logic(relation) # Code that runs if deleted records are included
     else
-      # Code that runs if deleted records are not included
+      another_logic(relation) # Code that runs if deleted records are not included
     end
   end
 end
