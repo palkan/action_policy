@@ -50,8 +50,7 @@ module ActionPolicy
 
       private
 
-      def lookup_within_namespace(record, namespace)
-        policy_name = policy_class_name_for(record)
+      def lookup_within_namespace(policy_name, namespace)
         NamespaceCache.fetch(namespace.name, policy_name) do
           mod = namespace
 
@@ -99,7 +98,8 @@ module ActionPolicy
     NAMESPACE_LOOKUP = ->(record, namespace: nil, **) {
       next if namespace.nil?
 
-      lookup_within_namespace(record, namespace)
+      policy_name = policy_class_name_for(record)
+      lookup_within_namespace(policy_name, namespace)
     }
 
     # Infer from class name
@@ -107,7 +107,20 @@ module ActionPolicy
       policy_class_name_for(record).safe_constantize
     }
 
+    # Infer from passed symbol
+    SYMBOL_LOOKUP = ->(record, namespace: nil, **) {
+      next unless record.is_a?(Symbol)
+
+      policy_name = "#{record.to_s.classify}Policy"
+      if namespace.nil?
+        policy_name.safe_constantize
+      else
+        lookup_within_namespace(policy_name, namespace)
+      end
+    }
+
     self.chain = [
+      SYMBOL_LOOKUP,
       INSTANCE_POLICY_CLASS,
       CLASS_POLICY_CLASS,
       NAMESPACE_LOOKUP,

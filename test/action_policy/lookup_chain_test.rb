@@ -47,6 +47,20 @@ class TestLookupChain < Minitest::Test
     assert_match /Couldn't find policy class for/, e.message
   end
 
+  def test_symbol
+    assert_equal(
+      LookupAPolicy,
+      ActionPolicy.lookup(:lookup_a)
+    )
+  end
+
+  def test_symbol_namespaced
+    assert_equal(
+      LookupNamespace::LookupAPolicy,
+      ActionPolicy.lookup(:lookup_a, namespace: LookupNamespace)
+    )
+  end
+
   def test_instance_defined
     a = LookupB.new("a")
     policy = ActionPolicy.lookup(a)
