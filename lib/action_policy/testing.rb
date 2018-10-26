@@ -25,22 +25,39 @@ module ActionPolicy
       end
 
       class Scoping # :nodoc:
-        attr_reader :policy, :type, :name
+        attr_reader :policy, :type, :name, :scope_options
 
-        def initialize(policy, type, name)
+        def initialize(policy, type, name, scope_options)
           @policy = policy
           @type = type
           @name = name
+          @scope_options = scope_options
         end
 
-        def matches?(policy_class, actual_type, actual_name)
+        def matches?(policy_class, actual_type, actual_name, actual_scope_options)
           policy_class == policy.class &&
             type == actual_type &&
-            name == actual_name
+            name == actual_name &&
+            actual_scope_options === scope_options # rubocop:disable Style/CaseEquality
         end
 
         def inspect
-          "#{policy.class} :#{name} for :#{type}"
+          "#{policy.class} :#{name} for :#{type} #{scope_options_message}"
+        end
+
+        private
+
+        def scope_options_message
+          if scope_options
+            if defined?(::RSpec::Matchers::Composable) &&
+               scope_options.is_a?(::RSpec::Matchers::Composable)
+              "with scope options #{scope_options.description}"
+            else
+              "with scope options #{scope_options}"
+            end
+          else
+            "without scope options"
+          end
         end
       end
 
@@ -63,9 +80,9 @@ module ActionPolicy
         end
 
         # Called from Authorizer
-        def track_scope(_target, policy, type:, name:)
+        def track_scope(_target, policy, type:, name:, scope_options:)
           return unless tracking?
-          scopings << Scoping.new(policy, type, name)
+          scopings << Scoping.new(policy, type, name, scope_options)
         end
 
         def calls

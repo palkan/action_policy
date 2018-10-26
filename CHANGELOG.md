@@ -1,5 +1,27 @@
 ## master
 
+- Added scope options to scopes. ([@korolvs][])
+
+  See [#47](https://github.com/palkan/action_policy/pull/47).
+
+  Example:
+  ```ruby
+  # users_controller.rb
+  class UsersController < ApplicationController
+    def index
+      @user = authorized(User.all, scope_options: { with_deleted: true })
+    end
+  end
+
+  # user_policy.rb
+  describe UserPolicy < Application do
+    relation_scope do |relation, with_deleted: false|
+      rel = some_logic(relation)
+      with_deleted ? rel.with_deleted : rel
+    end
+  end
+  ```
+
 - Added Symbol lookup to the lookup chain ([@DmitryTsepelev][])
 
   For instance, lookup will implicitly use `AdminPolicy` in a following case:
@@ -158,3 +180,4 @@
 [@ilyasgaraev]: https://github.com/ilyasgaraev
 [@brendon]: https://github.com/brendon
 [@DmitryTsepelev]: https://github.com/DmitryTsepelev
+[@korolvs]: https://github.com/korolvs

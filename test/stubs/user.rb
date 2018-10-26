@@ -20,8 +20,8 @@ class User
 end
 
 class UserPolicy < ActionPolicy::Base
-  scope_for :data do |users|
-    next users if user.admin?
+  scope_for :data do |users, with_admins: false|
+    next users if user.admin? || with_admins
     users.reject(&:admin?)
   end
 
