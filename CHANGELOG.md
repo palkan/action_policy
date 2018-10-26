@@ -16,10 +16,8 @@
   # user_policy.rb
   describe UserPolicy < Application do
     relation_scope do |relation, with_deleted: false|
-      if with_deleted
-        some_logic(relation)
-      else
-        another_logic(relation)
+      some_logic(relation).yield_self do |rel|
+        with_deleted ? rel.with_deleted : rel
       end
     end
   end
