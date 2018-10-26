@@ -78,9 +78,8 @@ For example, if you use soft-deletion and your logic inside a scope depends on i
 ```ruby
 class PostPolicy < ApplicationPolicy
   scope_for :relation do |relation, with_deleted: false|
-    some_logic(relation).yield_self do |rel|
-      with_deleted ? rel.with_deleted : rel
-    end
+    rel = some_logic(relation)
+    with_deleted ? rel.with_deleted : rel
   end
 end
 ```
