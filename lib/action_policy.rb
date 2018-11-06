@@ -21,6 +21,7 @@ module ActionPolicy
   require "action_policy/base"
   require "action_policy/lookup_chain"
   require "action_policy/behaviour"
+  require "action_policy/i18n" if defined?(::I18n)
 
   class << self
     attr_accessor :cache_store

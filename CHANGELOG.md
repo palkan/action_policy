@@ -1,5 +1,18 @@
 ## master
 
+- Added I18n support ([@DmitryTsepelev][])
+
+  Example:
+
+  ```ruby
+  class ApplicationController < ActionController::Base
+    rescue_from ActionPolicy::Unauthorized do |ex|
+      p ex.result.message #=> "You do not have access to the stage"
+      p ex.result.reasons.full_messages #=> ["You do not have access to the stage"]
+    end
+  end
+  ```
+
 - Added scope options to scopes. ([@korolvs][])
 
   See [#47](https://github.com/palkan/action_policy/pull/47).
