@@ -32,8 +32,6 @@ end
 
 The reason key is the corresponding policy [identifier](writing_policies.md#identifiers).
 
-**NOTE:** `full_messages` support hasn't been released yet. See [the issue](https://github.com/palkan/action_policy/issues/15).
-
 You can also wrap _local_ rules into `allowed_to?` to populate reasons:
 
 ```ruby
