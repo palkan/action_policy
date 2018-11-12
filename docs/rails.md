@@ -1,6 +1,6 @@
 # Using with Rails
 
-Action Policy seamlessly integrates Ruby on Rails applications seamlessly.
+Action Policy seamlessly integrates with Ruby on Rails applications.
 
 In most cases, you do not have to do anything except writing policy files and adding `authorize!` calls.
 
