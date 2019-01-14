@@ -1,5 +1,33 @@
 ## master
 
+- Added RSpec DSL for writing policy specs. ([@palkan])
+
+  The goal of this DSL is to reduce the boilerplate when writing
+  policies specs.
+
+  Example:
+
+  ```ruby
+  describe PostPolicy do
+    let(:user) { build_stubbed :user }
+    let(:record) { build_stubbed :post, draft: false }
+
+    let(:context) { { user: user } }
+
+    describe_rule :show? do
+      succeed "when post is published"
+
+      failed "when post is draft" do
+        before { post.draft = false }
+
+        succeed "when user is a manager" do
+          before { user.role = "manager" }
+        end
+      end
+    end
+  end
+  ```
+
 - Added I18n support ([@DmitryTsepelev][])
 
   Example:

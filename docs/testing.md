@@ -42,6 +42,94 @@ describe PostPolicy do
 end
 ```
 
+### RSpec DSL
+
+We also provide a simple RSpec DSL which aims to reduce the boilerplate when writing
+policies specs.
+
+Example:
+
+```ruby
+# Add this to your spec_helper.rb / rails_helper.rb
+require "action_policy/rspec/dsl"
+
+describe PostPolicy do
+  let(:user) { build_stubbed :user }
+  # `record` must be defined – it is the authorization target
+  let(:record) { build_stubbed :post, draft: false }
+
+  # `context` is the authorization context
+  let(:context) { { user: user } }
+
+  # `describe_rule` is a combination of
+  # `describe` and `subject { ... }` (returns the result of
+  # applying the rule to the record)
+  describe_rule :show? do
+    # `succeed` is `context` + `specify`, which checks
+    # that the result of application is successful
+    succeed "when post is published"
+
+    # `succeed` is `context` + `specify`, which checks
+    # that the result of application wasn't successful
+    failed "when post is draft" do
+      before { post.draft = false }
+
+      succeed "when user is a manager" do
+        before { user.role = "manager" }
+      end
+    end
+  end
+end
+```
+
+**NOTE:** the DSL is included only to example with the tag `type: :policy` or in the `spec/policies` folder. If you want to add this DSL to other examples, add `include ActionPolicy::RSpec::PolicyExampleGroup`.
+
+### Testing scopes
+
+There is no single rule on how to test scopes, 'cause it dependes on the _nature_ of the scope.
+
+Here's an example of RSpec tests for Active Record scoping rules:
+
+```ruby
+describe PostPolicy do
+  describe "relation scope" do
+    let(:user) { build_stubbed :user }
+    let(:context) { { user: user } }
+
+    # Feel free to replace with `before_all` from `test-prof`:
+    # https://test-prof.evilmartians.io/#/before_all
+    before do
+      create(:post, name: "A")
+      create(:post, name: "B", draft: true)
+    end
+
+    let(:target) do
+      # We want to make sure that only the records created
+      # for this test are affected, and they have a deterministic order
+      Post.where(name: %w[A B]).order(name: :asc)
+    end
+
+    subject { policy.apply_scope(target, type: :active_record_relation).pluck(:name) }
+
+    context "as user" do
+      it { is_expected.to eq(%w[A]) }
+    end
+
+    context "as manager" do
+      before { user.update!(role: :manager) }
+
+      it { is_expected.to eq(%w[A B]) }
+    end
+
+    context "as banned user" do
+      before { user.update!(banned: true) }
+
+      it { is_expected.to be_empty }
+    end
+  end
+end
+```
+
 ## Testing authorization
 
 To test the act of authorization you have to make sure that the `authorize!` method is called with the appropriate arguments.
