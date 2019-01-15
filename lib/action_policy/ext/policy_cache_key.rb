@@ -59,7 +59,7 @@ module ActionPolicy
         end
       end
 
-      if RUBY_PLATFORM =~ /java/i
+      if RUBY_PLATFORM.match?(/java/i)
         refine Integer do
           def _policy_cache_key(*)
             to_s

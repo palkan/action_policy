@@ -1,5 +1,7 @@
 ## master
 
+- Ruby 2.4+ is required. ([@palkan][])
+
 - Added RSpec DSL for writing policy specs. ([@palkan])
 
   The goal of this DSL is to reduce the boilerplate when writing
