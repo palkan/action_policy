@@ -4,7 +4,7 @@ notifications:
   email: false
 
 before_install:
-  - gem update --system
+  - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
   - gem install bundler -v '< 2'
 
 matrix:
@@ -12,7 +12,9 @@ matrix:
   include:
     - rvm: ruby-head
       gemfile: gemfiles/railsmaster.gemfile
-    - rvm: jruby-9.2.0.0
+    - rvm: jruby-9.1.15.0
+      gemfile: gemfiles/jruby.gemfile
+    - rvm: jruby-9.2.5.0
       gemfile: gemfiles/jruby.gemfile
     - rvm: 2.5.3
       gemfile: Gemfile
@@ -21,5 +23,7 @@ matrix:
   allow_failures:
     - rvm: ruby-head
       gemfile: gemfiles/railsmaster.gemfile
-    - rvm: jruby-9.2.0.0
+    - rvm: jruby-9.2.5.0
+      gemfile: gemfiles/jruby.gemfile
+    - rvm: jruby-9.1.15.0
       gemfile: gemfiles/jruby.gemfile
