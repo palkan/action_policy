@@ -1,5 +1,12 @@
 # Scoping
 
+**NOTE:** this feature hasn't been released yet and planned for 0.3.0 release.
+You can use it now by installing the gem from GitHub master:
+
+```ruby
+gem "action_policy", github: "palkan/action_policy"
+```
+
 By _scoping_ we mean an ability to use policies to _scope data_ (or _filter/modify/transform/choose-your-verb_).
 
 The most common situation is when you want to _scope_ ActiveRecord relations depending
