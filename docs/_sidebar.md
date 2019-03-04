@@ -18,6 +18,7 @@
   * [I18n Support](i18n.md)
 * Tips & Tricks
   * [From Pundit to Action Policy](./pundit_migration.md)
+  * [Dealing with Decorators](./decorators.md)
   * [Controller Action Aliases](controller_action_aliases.md)
 * Customize
   * [Base Policy](custom_policy.md)
