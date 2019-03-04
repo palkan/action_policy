@@ -31,3 +31,44 @@ class ApplicationController < ActionController::Base
   authorize :account, through: :current_account
 end
 ```
+
+## Nested Policies vs Contexts
+
+See also: [action_policy#36](https://github.com/palkan/action_policy/issues/36) and [action_policy#37](https://github.com/palkan/action_policy/pull/37)
+
+When you call another policy from the policy object (e.g. via `allowed_to?` method),
+the context of the current policy is passed to the _nested_ policy.
+
+That means that if the nested policy has a different authorization context, we won't be able
+to build it (event if you configure all the required keys in the controller).
+
+For example:
+
+```ruby
+class UserPolicy < ActionPolicy::Base
+  authorize :user
+
+  def show?
+    allowed_to?(:show?, record.profile)
+  end
+end
+
+class ProfilePolicy < ActionPolicy::Base
+  authorize :user, :account
+end
+
+class ApplicationController < ActionController::Base
+  authorize :user, through: :current_user
+  authorize :account, through: :current_account
+end
+
+class UsersController < ApplicationController
+  def show?
+    user = User.find(params[:id])
+
+    authorize! user #=> raises "Missing policy authorization context: account"
+  end
+end
+```
+
+That means that **all the policies that could be used together MUST share the same set of authorization contexts** (or at least the _parent_ policies contexts must be subsets of the nested policies contexts).
