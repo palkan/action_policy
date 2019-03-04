@@ -146,6 +146,6 @@ class TestPreCheck < Minitest::Test
 
     refute policy.apply(:index?)
 
-    assert_equal({ reasons: [:user_is_nil] }, policy.result.reasons.details)
+    assert_equal({reasons: [:user_is_nil]}, policy.result.reasons.details)
   end
 end

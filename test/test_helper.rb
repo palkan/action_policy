@@ -8,7 +8,7 @@ ENV["RAILS_ENV"] = "test"
 
 begin
   require "pry-byebug"
-rescue LoadError # rubocop: disable Lint/HandleExceptions
+rescue LoadError
 end
 
 require "action_policy"

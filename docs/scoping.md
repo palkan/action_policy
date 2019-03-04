@@ -117,7 +117,7 @@ class PostsController < ApplicationController
     @events = authorized(Event, type: :relation, as: :own)
     #
     # If you want to specify scope options provide `scope_options` option
-    @events = authorized(Event, type: :relation, scope_options: { with_deleted: true })
+    @events = authorized(Event, type: :relation, scope_options: {with_deleted: true})
   end
 end
 ```
@@ -175,7 +175,7 @@ class PostPolicy < ApplicationPolicy
     if super_user? || admin?
       scope
     else
-      scope.joins(:accesses).where(accesses: { user_id: user.id })
+      scope.joins(:accesses).where(accesses: {user_id: user.id})
     end
   end
 

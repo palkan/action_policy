@@ -74,7 +74,7 @@ class TestComplexFailuresPolicy < Minitest::Test
 
     details = policy.result.reasons.details
 
-    assert_equal({ user_failures: [:manage?] }, details)
+    assert_equal({user_failures: [:manage?]}, details)
   end
 
   def test_or_condition
@@ -85,9 +85,9 @@ class TestComplexFailuresPolicy < Minitest::Test
     details = policy.result.reasons.details
 
     assert_equal({
-                   complex: [:kill?],
-                   user: [:create?]
-                 }, details)
+      complex: [:kill?],
+      user: [:create?]
+    }, details)
   end
 
   def test_or_condition_2
@@ -98,7 +98,7 @@ class TestComplexFailuresPolicy < Minitest::Test
     details = policy.result.reasons.details
 
     assert_equal({
-                   complex: [:kill?, :feed?]
-                 }, details)
+      complex: [:kill?, :feed?]
+    }, details)
   end
 end

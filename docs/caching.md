@@ -139,10 +139,10 @@ class StagePolicy < ApplicationPolicy
   def full_access?
     !record.funnel.is_private? ||
       user.permissions
-          .where(
-            funnel_id: record.funnel_id,
-            full_access: true
-          ).exists?
+        .where(
+          funnel_id: record.funnel_id,
+          full_access: true
+        ).exists?
   end
 end
 ```

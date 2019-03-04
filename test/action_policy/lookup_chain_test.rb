@@ -44,7 +44,7 @@ class TestLookupChain < Minitest::Test
       ActionPolicy.lookup(nil)
     end
 
-    assert_match /Couldn't find policy class for/, e.message
+    assert_match %r{Couldn't find policy class for}, e.message
   end
 
   def test_symbol

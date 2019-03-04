@@ -76,11 +76,14 @@ class SuperPolicy < ApplicationPolicy
 
   alias_rule :update?, :destroy?, :create?, to: :edit?
 
-  def manage?; end
+  def manage?
+  end
 
-  def edit?; end
+  def edit?
+  end
 
-  def index?; end
+  def index?
+  end
 end
 
 class SubPolicy < AbstractPolicy
@@ -88,7 +91,8 @@ class SubPolicy < AbstractPolicy
 
   alias_rule :index?, :update?, to: :manage?
 
-  def create?; end
+  def create?
+  end
 end
 ```
 

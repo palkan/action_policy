@@ -22,7 +22,7 @@ class InMemoryCache
   end
 
   def deserialize(val)
-    Marshal.load(val) # rubocop:disable Security/MarshalLoad
+    Marshal.load(val)
   end
 end
 
@@ -131,12 +131,12 @@ class TestCache < Minitest::Test
     policy = TestPolicy.new guest, user: user
 
     refute policy.apply(:save?)
-    assert_equal({ test: [:manage?] }, policy.result.reasons.details)
+    assert_equal({test: [:manage?]}, policy.result.reasons.details)
 
     policy = TestPolicy.new guest, user: user
 
     refute policy.apply(:save?)
-    assert_equal({ test: [:manage?] }, policy.result.reasons.details)
+    assert_equal({test: [:manage?]}, policy.result.reasons.details)
 
     assert_equal 1, TestPolicy.managed_count
     assert_equal 1, TestPolicy.saved_count

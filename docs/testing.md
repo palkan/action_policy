@@ -59,7 +59,7 @@ describe PostPolicy do
   let(:record) { build_stubbed :post, draft: false }
 
   # `context` is the authorization context
-  let(:context) { { user: user } }
+  let(:context) { {user: user} }
 
   # `describe_rule` is a combination of
   # `describe` and `subject { ... }` (returns the result of
@@ -94,7 +94,7 @@ Here's an example of RSpec tests for Active Record scoping rules:
 describe PostPolicy do
   describe "relation scope" do
     let(:user) { build_stubbed :user }
-    let(:context) { { user: user } }
+    let(:context) { {user: user} }
 
     # Feel free to replace with `before_all` from `test-prof`:
     # https://test-prof.evilmartians.io/#/before_all

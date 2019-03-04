@@ -123,7 +123,7 @@ class TestScopingPolicy < Minitest::Test
     scoped_users = policy.apply_scope(users,
                                       type: :data,
                                       name: :with_options,
-                                      scope_options: { with_admins: false })
+                                      scope_options: {with_admins: false})
 
     assert_equal 1, scoped_users.size
     assert_equal "jack", scoped_users.first.name
@@ -131,7 +131,7 @@ class TestScopingPolicy < Minitest::Test
     scoped_users = policy.apply_scope(users,
                                       type: :data,
                                       name: :with_options,
-                                      scope_options: { with_admins: true })
+                                      scope_options: {with_admins: true})
 
     assert_equal 2, scoped_users.size
   end

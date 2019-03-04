@@ -104,7 +104,7 @@ class TestAuthorizedBehaviour < Minitest::Test
     assert_equal 1, scoped_users.size
     assert_equal "jack", scoped_users.first.name
 
-    scoped_users = chat.authorized(users, type: :data, scope_options: { with_admins: true })
+    scoped_users = chat.authorized(users, type: :data, scope_options: {with_admins: true})
 
     assert_equal 2, scoped_users.size
   end

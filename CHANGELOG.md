@@ -14,7 +14,7 @@
     let(:user) { build_stubbed :user }
     let(:record) { build_stubbed :post, draft: false }
 
-    let(:context) { { user: user } }
+    let(:context) { {user: user} }
 
     describe_rule :show? do
       succeed "when post is published"
@@ -52,7 +52,7 @@
   # users_controller.rb
   class UsersController < ApplicationController
     def index
-      @user = authorized(User.all, scope_options: { with_deleted: true })
+      @user = authorized(User.all, scope_options: {with_deleted: true})
     end
   end
 

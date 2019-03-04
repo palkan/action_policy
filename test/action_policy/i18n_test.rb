@@ -43,7 +43,7 @@ end
 
 class TestI18nGlobalDefaults < Minitest::Test
   def setup
-    I18n.backend.store_translations(:en, action_policy: { policy: {} })
+    I18n.backend.store_translations(:en, action_policy: {policy: {}})
     @user = User.new("guest")
   end
 

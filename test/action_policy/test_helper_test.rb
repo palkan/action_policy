@@ -34,7 +34,7 @@ class TestHelperTest < Minitest::Test
     end
 
     def filter_with_options(users, with_admins: false)
-      authorized users, type: :data, with: CustomPolicy, scope_options: { with_admins: with_admins }
+      authorized users, type: :data, with: CustomPolicy, scope_options: {with_admins: with_admins}
     end
 
     def own(users)
@@ -91,7 +91,7 @@ class TestHelperTest < Minitest::Test
 
   def test_assert_have_authorized_scope_with_options
     assert_have_authorized_scope(type: :data, with: CustomPolicy,
-                                 scope_options: { with_admins: true }) do
+                                 scope_options: {with_admins: true}) do
       subject.filter_with_options([user], with_admins: true)
     end
   end
@@ -131,7 +131,7 @@ class TestHelperTest < Minitest::Test
   def test_assert_have_authorized_scope_raised_when_scope_options_mismatch
     error = assert_raises Minitest::Assertion do
       assert_have_authorized_scope(type: :data, with: ::UserPolicy,
-                                   scope_options: { with_admins: false }) do
+                                   scope_options: {with_admins: false}) do
         subject.filter_with_options([user], with_admins: true)
       end
     end

@@ -51,13 +51,13 @@ class TestSimpleControllerIntegration < ActionController::TestCase
   tests UsersController
 
   def test_index
-    get :index, params: { user: "guest" }
+    get :index, params: {user: "guest"}
     assert_equal "OK", response.body
   end
 
   def test_create_failed
     e = assert_raises(ActionPolicy::Unauthorized) do
-      post :create, params: { user: "guest" }
+      post :create, params: {user: "guest"}
     end
 
     assert_equal UserPolicy, e.policy
@@ -66,28 +66,28 @@ class TestSimpleControllerIntegration < ActionController::TestCase
   end
 
   def test_create_succeed
-    post :create, params: { user: "admin" }
+    post :create, params: {user: "admin"}
     assert_equal "OK", response.body
   end
 
   def test_update_failed
     assert_raises(ActionPolicy::Unauthorized) do
-      patch :update, params: { user: "admin", target: "admin" }
+      patch :update, params: {user: "admin", target: "admin"}
     end
   end
 
   def test_update_succeed
-    patch :update, params: { user: "admin", target: "guest" }
+    patch :update, params: {user: "admin", target: "guest"}
     assert_equal "OK", response.body
   end
 
   def test_show
-    get :show, params: { user: "admin", target: "guest" }
+    get :show, params: {user: "admin", target: "guest"}
     assert_equal "OK", response.body
   end
 
   def test_show_admin
-    get :show, params: { user: "admin", target: "admin" }
+    get :show, params: {user: "admin", target: "admin"}
     assert_equal "Read-only", response.body
   end
 end
@@ -192,13 +192,13 @@ class TestNamespacedControllerIntegration < ActionController::TestCase
   end
 
   def test_index_authorized
-    get :index, params: { user: "guest" }
+    get :index, params: {user: "guest"}
     assert_equal "OK", response.body
   end
 
   def test_show_unauthorized
     e = assert_raises(ActionPolicy::Unauthorized) do
-      get :show, params: { user: "guest" }
+      get :show, params: {user: "guest"}
     end
 
     assert_equal Admin::UserPolicy, e.policy
@@ -206,7 +206,7 @@ class TestNamespacedControllerIntegration < ActionController::TestCase
   end
 
   def test_show_authorized
-    get :show, params: { user: "admin" }
+    get :show, params: {user: "admin"}
     assert_equal "OK", response.body
   end
 end

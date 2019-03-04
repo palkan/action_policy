@@ -45,7 +45,7 @@ class TestService # :nodoc:
   end
 
   def filter_with_options(users, with_admins: false)
-    authorized users, type: :data, with: CustomPolicy, scope_options: { with_admins: with_admins }
+    authorized users, type: :data, with: CustomPolicy, scope_options: {with_admins: with_admins}
   end
 
   def own(users)
@@ -236,9 +236,9 @@ describe "ActionPolicy RSpec matchers" do
 
       specify "composed scope options mismatch" do
         expect do
-        expect { subject.filter_with_options(target, with_admins: true) }
-          .to have_authorized_scope(:data).with(TestService::CustomPolicy)
-          .with_scope_options(matching(with_admins: a_falsey_value))
+          expect { subject.filter_with_options(target, with_admins: true) }
+            .to have_authorized_scope(:data).with(TestService::CustomPolicy)
+            .with_scope_options(matching(with_admins: a_falsey_value))
         end.to raise_error(
           RSpec::Expectations::ExpectationNotMetError,
           Regexp.new("expected a scoping named :default for type :data " \

@@ -39,7 +39,7 @@ module ActionPolicy
 
         begin
           ActionPolicy::Testing::AuthorizeTracker.tracking { actual.call }
-        rescue ActionPolicy::Unauthorized # rubocop: disable Lint/HandleExceptions
+        rescue ActionPolicy::Unauthorized
           # we don't want to care about authorization result
         end
 

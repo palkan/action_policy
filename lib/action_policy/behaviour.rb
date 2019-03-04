@@ -73,7 +73,7 @@ module ActionPolicy
         instance_variable_defined?(:@__authorization_context)
 
       @__authorization_context = self.class.authorization_targets
-                                     .each_with_object({}) do |(key, meth), obj|
+        .each_with_object({}) do |(key, meth), obj|
         obj[key] = send(meth)
       end
     end

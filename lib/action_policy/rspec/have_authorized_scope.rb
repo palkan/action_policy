@@ -71,7 +71,7 @@ module ActionPolicy
       def scope_options_message
         if scope_options
           if defined?(::RSpec::Matchers::Composable) &&
-             scope_options.is_a?(::RSpec::Matchers::Composable)
+              scope_options.is_a?(::RSpec::Matchers::Composable)
             "with scope options #{scope_options.description}"
           else
             "with scope options #{scope_options}"
@@ -101,7 +101,7 @@ end
 
 RSpec.configure do |config|
   config.include(Module.new do
-    def have_authorized_scope(type) # rubocop:disable Naming/PredicateName
+    def have_authorized_scope(type)
       ActionPolicy::RSpec::HaveAuthorizedScope.new(type)
     end
   end)
