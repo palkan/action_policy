@@ -1,5 +1,6 @@
 sudo: false
 language: ruby
+cache: bundler
 notifications:
   email: false
 
@@ -12,10 +13,10 @@ matrix:
   include:
     - rvm: ruby-head
       gemfile: gemfiles/railsmaster.gemfile
-    - rvm: jruby-9.1.15.0
-      gemfile: gemfiles/jruby.gemfile
     - rvm: jruby-9.2.5.0
       gemfile: gemfiles/jruby.gemfile
+    - rvm: 2.6.0
+      gemfile: gemfiles/rails6.gemfile
     - rvm: 2.5.3
       gemfile: Gemfile
     - rvm: 2.4.3
@@ -24,6 +25,4 @@ matrix:
     - rvm: ruby-head
       gemfile: gemfiles/railsmaster.gemfile
     - rvm: jruby-9.2.5.0
-      gemfile: gemfiles/jruby.gemfile
-    - rvm: jruby-9.1.15.0
       gemfile: gemfiles/jruby.gemfile
