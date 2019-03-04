@@ -96,14 +96,14 @@ class TestRailsScopeMatchers < ActionController::TestCase
   end
 
   def test_authorized_relation_guest
-    get :index, params: { user_id: guest.id }
+    get :index, params: {user_id: guest.id}
 
     assert_equal 1, json_body.size
     assert_equal "Jack", json_body.first["name"]
   end
 
   def test_authorized_relation_admin
-    get :index, params: { user_id: admin.id }
+    get :index, params: {user_id: admin.id}
 
     assert_equal 2, json_body.size
   end
@@ -112,7 +112,7 @@ class TestRailsScopeMatchers < ActionController::TestCase
     AR::Post.create!(draft: true, title: "[wip]", user: guest)
     AR::Post.create!(draft: false, title: "Good news!", user: guest)
 
-    get :posts, params: { user_id: guest.id }
+    get :posts, params: {user_id: guest.id}
 
     assert_equal 1, json_body.size
     assert_equal "Good news!", json_body.first["title"]
@@ -123,13 +123,13 @@ class TestRailsScopeMatchers < ActionController::TestCase
     AR::Post.create!(draft: false, title: "Admin news", user: admin)
     AR::Post.create!(draft: false, title: "Good news!", user: guest)
 
-    get :posts, params: { user_id: guest.id }
+    get :posts, params: {user_id: guest.id}
 
     assert_equal 2, json_body.size
   end
 
   def test_filtered_params_guest
-    post :create, params: { user_id: guest.id, user: { name: "Alice", role: "admin" } }
+    post :create, params: {user_id: guest.id, user: {name: "Alice", role: "admin"}}
 
     alice = AR::User.find_by!(name: "Alice")
 
@@ -137,7 +137,7 @@ class TestRailsScopeMatchers < ActionController::TestCase
   end
 
   def test_filtered_params_admin
-    post :create, params: { user_id: admin.id, user: { name: "Alice", role: "admin" } }
+    post :create, params: {user_id: admin.id, user: {name: "Alice", role: "admin"}}
 
     alice = AR::User.find_by!(name: "Alice")
 
@@ -145,7 +145,7 @@ class TestRailsScopeMatchers < ActionController::TestCase
   end
 
   def test_named_filtered_params_admin
-    patch :update, params: { user_id: admin.id, user: { name: "Deadmin", role: "guest" } }
+    patch :update, params: {user_id: admin.id, user: {name: "Deadmin", role: "guest"}}
 
     admin.reload
 

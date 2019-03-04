@@ -107,7 +107,7 @@ module ActionPolicy
 
       def lookup_type_from_target(target)
         self.class.scope_matchers.detect do |(_type, matcher)|
-          matcher === target # rubocop:disable Style/CaseEquality
+          matcher === target
         end&.first
       end
 

@@ -46,10 +46,10 @@ class TestCachedApply < Minitest::Test
     policy = TestPolicy.new false
 
     refute policy.apply(:kill?)
-    assert_equal({ test: [:manage?] }, policy.result.reasons.details)
+    assert_equal({test: [:manage?]}, policy.result.reasons.details)
 
     refute policy.apply(:kill?)
-    assert_equal({ test: [:manage?] }, policy.result.reasons.details)
+    assert_equal({test: [:manage?]}, policy.result.reasons.details)
 
     assert_equal 1, policy.managed_count
   end

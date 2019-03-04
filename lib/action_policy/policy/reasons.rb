@@ -89,8 +89,6 @@ module ActionPolicy
           base.result_class.include(ResultFailureReasons)
         end
       end
-
-      # rubocop: disable Metrics/MethodLength
       def allowed_to?(rule, record = :__undef__, **options)
         policy = nil
 
@@ -107,7 +105,6 @@ module ActionPolicy
         result.reasons.add(policy, rule) unless succeed
         succeed
       end
-      # rubocop: enable Metrics/MethodLength
     end
   end
 end

@@ -19,7 +19,6 @@ module ActionPolicy
     #       get :show, id: user.id
     #     end
     #
-    # rubocop: disable Metrics/MethodLength
     def assert_authorized_to(rule, target, with: nil)
       raise ArgumentError, "Block is required" unless block_given?
 
@@ -27,7 +26,7 @@ module ActionPolicy
 
       begin
         ActionPolicy::Testing::AuthorizeTracker.tracking { yield }
-      rescue ActionPolicy::Unauthorized # rubocop: disable Lint/HandleExceptions
+      rescue ActionPolicy::Unauthorized
         # we don't want to care about authorization result
       end
 
@@ -38,10 +37,9 @@ module ActionPolicy
         "Expected #{target.inspect} to be authorized with #{policy}##{rule}, " \
         "but no such authorization has been made.\n" \
         "Registered authorizations: " \
-        "#{actual_calls.empty? ? 'none' : actual_calls.map(&:inspect).join(',')}"
+        "#{actual_calls.empty? ? "none" : actual_calls.map(&:inspect).join(",")}"
       )
     end
-    # rubocop: enable Metrics/MethodLength
 
     # Asserts that the given policy was used for scoping.
     #
@@ -55,7 +53,6 @@ module ActionPolicy
     #
     # NOTE: `type` and `with` must be specified.
     #
-    # rubocop: disable Metrics/MethodLength
     def assert_have_authorized_scope(type:, with:, as: :default, scope_options: nil)
       raise ArgumentError, "Block is required" unless block_given?
 
@@ -66,10 +63,10 @@ module ActionPolicy
       actual_scopes = ActionPolicy::Testing::AuthorizeTracker.scopings
 
       scope_options_message = if scope_options
-                                "with scope options #{scope_options}"
-                              else
-                                "without scope options"
-                              end
+        "with scope options #{scope_options}"
+      else
+        "without scope options"
+      end
 
       assert(
         actual_scopes.any? { |scope| scope.matches?(policy, type, as, scope_options) },
@@ -78,9 +75,8 @@ module ActionPolicy
         "from #{policy} to have been applied, " \
         "but no such scoping has been made.\n" \
         "Registered scopings: " \
-        "#{actual_scopes.empty? ? 'none' : actual_scopes.map(&:inspect).join(',')}"
+        "#{actual_scopes.empty? ? "none" : actual_scopes.map(&:inspect).join(",")}"
       )
     end
-    # rubocop: enable Metrics/MethodLength
   end
 end

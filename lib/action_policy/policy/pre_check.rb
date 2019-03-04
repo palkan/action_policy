@@ -88,8 +88,6 @@ module ActionPolicy
           end
         end
 
-        # rubocop: disable Metrics/AbcSize, Metrics/CyclomaticComplexity
-        # rubocop: disable Metrics/PerceivedComplexity, Metrics/MethodLength
         def skip!(except: nil, only: nil)
           if !except.nil? && !only.nil?
             raise ArgumentError,
@@ -114,8 +112,8 @@ module ActionPolicy
 
           rebuild_filter
         end
-        # rubocop: enable Metrics/AbcSize, Metrics/CyclomaticComplexity
-        # rubocop: enable Metrics/PerceivedComplexity, Metrics/MethodLength
+        # rubocop: enable
+        # rubocop: enable
 
         def dup
           self.class.new(policy_class, name, except: blacklist&.dup, only: whitelist&.dup)

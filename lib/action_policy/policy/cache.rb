@@ -4,7 +4,7 @@ require "action_policy/version"
 
 module ActionPolicy # :nodoc:
   # By default cache namespace (or prefix) contains major and minor version of the gem
-  CACHE_NAMESPACE = "acp:#{ActionPolicy::VERSION.split('.').take(2).join('.')}"
+  CACHE_NAMESPACE = "acp:#{ActionPolicy::VERSION.split(".").take(2).join(".")}"
 
   require "action_policy/ext/yield_self_then"
   require "action_policy/ext/policy_cache_key"
@@ -51,7 +51,7 @@ module ActionPolicy # :nodoc:
 
       def apply(rule)
         return super if ActionPolicy.cache_store.nil? ||
-                        !self.class.cached_rules.key?(rule)
+          !self.class.cached_rules.key?(rule)
 
         apply_with_cache(rule) { super }
       end

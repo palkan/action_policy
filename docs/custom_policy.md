@@ -4,7 +4,6 @@
 
 It looks like this:
 
-<span style="display:none;"># rubocop:disable Style/ClassAndModuleChildren</span>
 
 ```ruby
 class ActionPolicy::Base
@@ -38,7 +37,7 @@ class ActionPolicy::Base
 end
 ```
 
-<span style="display:none;"># rubocop:enable Style/ClassAndModuleChildren</span>
+
 
 You can write your `ApplicationPolicy` from scratch instead of inheriting from `ActionPolicy::Base`
 if the defaults above do not fit your needs. The only required component is `ActionPolicy::Policy::Core`:

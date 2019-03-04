@@ -31,7 +31,7 @@ class TestViewsIntegration < ActionController::TestCase
   tests UsersController
 
   def test_index_as_admin
-    get :index, params: { user: "admin" }
+    get :index, params: {user: "admin"}
 
     assert_includes response.body, "guest (editable)"
     assert_includes response.body, "admin (read-only)"
@@ -39,7 +39,7 @@ class TestViewsIntegration < ActionController::TestCase
   end
 
   def test_index_as_guest
-    get :index, params: { user: "guest" }
+    get :index, params: {user: "guest"}
 
     assert_includes response.body, "guest (read-only)"
     assert_includes response.body, "admin (read-only)"
@@ -99,7 +99,7 @@ class TestControllerViewsMemoization < ActionController::TestCase
   tests UsersController
 
   def test_memoize_policies
-    get :index, params: { user: "admin" }
+    get :index, params: {user: "admin"}
 
     assert_includes response.body, "guest (editable)"
     assert_includes response.body, "guest (editable)"

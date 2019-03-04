@@ -7,7 +7,7 @@ class TestRailtie < Minitest::Test
   def test_default_configuration
     assert_includes ActionController::Base, ActionPolicy::Controller
 
-    assert_equal({ user: :current_user }, ActionController::Base.authorization_targets)
+    assert_equal({user: :current_user}, ActionController::Base.authorization_targets)
 
     refute ActionPolicy::LookupChain.namespace_cache_enabled?
   end

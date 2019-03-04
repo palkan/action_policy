@@ -43,6 +43,6 @@ RSpec.configure do |config|
   config.include(
     ActionPolicy::RSpec::PunditSyntax::PolicyExampleGroup,
     type: :policy,
-    example_group: { file_path: %r{spec/policies} }
+    example_group: {file_path: %r{spec/policies}}
   )
 end
