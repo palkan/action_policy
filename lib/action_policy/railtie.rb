@@ -88,6 +88,7 @@ module ActionPolicy # :nodoc:
       end
 
       ActiveSupport.on_load(:active_record) do
+        require "action_policy/rails/ext/active_record"
         require "action_policy/rails/scope_matchers/active_record"
       end
     end

@@ -23,6 +23,7 @@ module ActionPolicy
 
       # JRuby doesn't support _global_ modules refinements (see https://github.com/jruby/jruby/issues/5220)
       # Fallback to monkey-patching.
+      # TODO: remove after 9.2.7.0 (See https://github.com/jruby/jruby/pull/5627)
       ::Object.include(ObjectExt) if RUBY_PLATFORM =~ /java/i
 
       refine Object do

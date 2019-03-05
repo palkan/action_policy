@@ -177,6 +177,8 @@ Where `cache_namespace` is equal to `"acp:#{MAJOR_GEM_VERSION}.#{MINOR_GEM_VERSI
 
 If any object does not respond to `#policy_cache_key`, we fallback to `#cache_key`. If `#cache_key` is not defined, an `ArgumentError` is raised.
 
+**NOTE:** if your `#cache_key` method is performance-heavy (e.g. like the `ActiveRecord::Relation`'s one), we recommend to explicitly define the `#policy_cache_key` method on the corresponding class to avoid unnecessary load. See also [action_policy#55](https://github.com/palkan/action_policy/issues/55).
+
 You can define your own `cache_key` / `cache_namespace` / `context_cache_key` methods for policy class to override this logic.
 
 #### Invalidation
