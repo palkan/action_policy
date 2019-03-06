@@ -16,7 +16,7 @@ module ActionPolicy
 
       module Ext
         def namespace
-          return unless name.match?(/[^^]::/)
+          return unless name&.match?(/[^^]::/)
 
           name.sub(/::[^:]+$/, "").safe_constantize
         end
