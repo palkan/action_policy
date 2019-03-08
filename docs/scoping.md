@@ -76,7 +76,7 @@ class EventPolicy < ApplictionPolicy
 end
 ```
 
-When the second argument is not speficied, the `:default` is implied as the scope name.
+When the second argument is not specified, the `:default` is implied as the scope name.
 
 Also, there are cases where it might be easier to add options to existing scope than create a new one.
 

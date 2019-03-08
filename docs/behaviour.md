@@ -77,7 +77,7 @@ authorize! post, to: :destroy?, namespace: Admin
 
 ## Implicit authorization target
 
-You can ommit the authorization target for all the methods by defining an _implicit authorization target_:
+You can omit the authorization target for all the methods by defining an _implicit authorization target_:
 
 ```ruby
 class PostActions
