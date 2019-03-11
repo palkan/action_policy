@@ -197,3 +197,65 @@ class TestI18nPolicies < Minitest::Test
                     "You are not authorized to access feed according to policy including core"
   end
 end
+
+class I18nNestedPolicy < ActionPolicy::Base
+  authorize :account
+
+  def show?
+    allowed_to?(:manage?, account) || check?(:admin?)
+  end
+
+  def admin?
+    details[:role] = user.name
+    user.admin?
+  end
+end
+
+class TestI18nNestedPolicies < Minitest::Test
+  def setup
+    I18n.backend.store_translations(
+      :en,
+      action_policy: {
+        policy: {
+          i18n_nested: {
+            show?: "Stop looking at me!",
+            admin?: "Only for admins but you are: %{role}"
+          },
+          account: {
+            manage?: "You're not allowed to manage this account"
+          }
+        }
+      }
+    )
+
+    @user = User.new("guest")
+    @account = Account.new("admin")
+    @policy = I18nNestedPolicy.new(user: @user, account: @account)
+  end
+
+  attr_reader :policy
+
+  def teardown
+    I18n.backend.reload!
+  end
+
+  def test_result_message
+    refute policy.apply(:show?)
+    assert_includes policy.result.message,
+                    "Stop looking at me!"
+  end
+
+  def test_result_message_with_interpolation
+    refute policy.apply(:admin?)
+    assert_includes policy.result.message,
+                    "Only for admins but you are: guest"
+  end
+
+  def test_full_messages_for_nested_policy
+    refute policy.apply(:show?)
+    assert_includes policy.result.reasons.full_messages,
+                    "You're not allowed to manage this account"
+    assert_includes policy.result.reasons.full_messages,
+                    "Only for admins but you are: guest"
+  end
+end

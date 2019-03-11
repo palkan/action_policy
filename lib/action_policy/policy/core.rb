@@ -85,10 +85,10 @@ module ActionPolicy
 
       # Wrap code that could modify result
       # to prevent the current result modification
-      def with_clean_result
+      def with_clean_result # :nodoc:
         was_result = @result
-        res = yield
-        @result = was_result
+        yield
+        res, @result = @result, was_result
         res
       end
 

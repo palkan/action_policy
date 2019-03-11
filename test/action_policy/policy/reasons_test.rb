@@ -102,3 +102,86 @@ class TestComplexFailuresPolicy < Minitest::Test
     }, details)
   end
 end
+
+class FailuresWithDetailsPolicy < ActionPolicy::Base
+  self.identifier = :detailed
+
+  def kill?
+    details[:role] = user.name
+    (user.name == "admin") && allowed_to?(:manage?, user, with: UserFailuresPolicy)
+  end
+
+  def save?
+    allowed_to?(:kill?) || (
+      allowed_to?(:create?, user) && check?(:feed?)
+    )
+  end
+
+  def feed?
+    details[:some] = "stuff"
+    false
+  end
+end
+
+class TestFailuresWithDetailsPolicy < Minitest::Test
+  User = Struct.new(:name)
+
+  class UserPolicy < ActionPolicy::Base
+    self.identifier = :user
+
+    def create?
+      check?(:admin?) || check?(:manager?) || check?(:superman?)
+    end
+
+    def admin?
+      details[:name] = user.name
+      user.name == "admin"
+    end
+
+    def manager?
+      false
+    end
+
+    def superman?
+      details[:superhero] = "spiderman"
+      false
+    end
+  end
+
+  def test_and_condition_nested_check_details
+    policy = FailuresWithDetailsPolicy.new user: User.new("guest")
+
+    refute policy.apply(:save?)
+
+    details = policy.result.reasons.details
+
+    assert_equal({
+      detailed: [{kill?: {role: "guest"}}],
+      user: [:create?]
+    }, details)
+  end
+
+  def test_detailed_and_not_detailed_reasons
+    policy = UserPolicy.new user: User.new("gusto")
+
+    refute policy.apply(:create?)
+
+    details = policy.result.reasons.details
+
+    assert_equal({
+      user: [:manager?, {admin?: {name: "gusto"}, superman?: {superhero: "spiderman"}}]
+    }, details)
+  end
+
+  def test_multiple_details
+    policy = FailuresWithDetailsPolicy.new user: User.new("admin")
+
+    refute policy.apply(:save?)
+
+    details = policy.result.reasons.details
+
+    assert_equal({
+      detailed: [{kill?: {role: "admin"}, feed?: {some: "stuff"}}]
+    }, details)
+  end
+end
