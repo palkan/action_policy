@@ -10,10 +10,15 @@ module ActionPolicy
         @reasons = {}
       end
 
-      def add(policy_or_class, rule)
+      def add(policy_or_class, rule, details = nil)
         policy_class = policy_or_class.is_a?(Module) ? policy_or_class : policy_or_class.class
         reasons[policy_class] ||= []
-        reasons[policy_class] << rule
+
+        if details.nil?
+          add_non_detailed_reason reasons[policy_class], rule
+        else
+          add_detailed_reason reasons[policy_class], with_details(rule, details)
+        end
       end
 
       # Return Hash of the form:
@@ -29,12 +34,42 @@ module ActionPolicy
       def present?
         !empty?
       end
+
+      private
+
+      def add_non_detailed_reason(store, rule)
+        index =
+          if store.last.is_a?(::Hash)
+            store.size - 1
+          else
+            store.size
+          end
+
+        store.insert(index, rule)
+      end
+
+      def add_detailed_reason(store, detailed_rule)
+        store.last.is_a?(::Hash) || store << {}
+        store.last.merge!(detailed_rule)
+      end
+
+      def with_details(rule, details)
+        return rule if details.nil?
+
+        {rule => details}
+      end
     end
 
     # Extend ExecutionResult with `reasons` method
     module ResultFailureReasons
       def reasons
         @reasons ||= FailureReasons.new
+      end
+
+      attr_accessor :details
+
+      def clear_details
+        @details = nil
       end
     end
 
@@ -58,7 +93,7 @@ module ActionPolicy
     #   rescue_from ActionPolicy::Unauthorized do |ex|
     #     ex.policy #=> ApplicantPolicy
     #     ex.rule #=> :show?
-    #     ex.result.reasons.details  #=> { stage: [:show?] }
+    #     ex.result.reasons.details  #=> {stage: [:show?]}
     #   end
     #
     # NOTE: the reason key (`stage`) is a policy identifier (underscored class name by default).
@@ -68,7 +103,7 @@ module ActionPolicy
     #     # ..
     #   end
     #
-    #   reasons.details #=> { :"admin/user" => [:show?] }
+    #   reasons.details #=> {:"admin/user" => [:show?]}
     #
     #
     # You can also wrap _local_ rules into `allowed_to?` to populate reasons:
@@ -83,16 +118,49 @@ module ActionPolicy
     #       user.has_permission?(:view_applicants)
     #     end
     #   end
+    #
+    # NOTE: there is `check?` alias for `allowed_to?`.
+    #
+    # You can provide additional details to your failure reasons by using
+    # a `details: { ... }` option:
+    #
+    #   class ApplicantPolicy < ApplicationPolicy
+    #     def show?
+    #       allowed_to?(:show?, object.stage)
+    #     end
+    #   end
+    #
+    #   class StagePolicy < ApplicationPolicy
+    #     def show?
+    #       # Add stage title to the failure reason (if any)
+    #       # (could be used by client to show more descriptive message)
+    #       details[:title] = record.title
+    #
+    #       # then perform the checks
+    #       user.stages.where(id: record.id).exists?
+    #     end
+    #   end
+    #
+    #   # when accessing the reasons
+    #   p ex.result.reasons.details #=> { stage: [{show?: {title: "Onboarding"}] }
+    #
+    # NOTE: when using detailed reasons, the `details` array contains as the last element
+    # a hash with ALL details reasons for the policy (in a form of <rule> => <details>).
+    #
     module Reasons
       class << self
         def included(base)
           base.result_class.include(ResultFailureReasons)
         end
       end
-      def allowed_to?(rule, record = :__undef__, **options)
-        policy = nil
 
-        succeed =
+      # Add additional details to the failure reason
+      def details
+        result.details ||= {}
+      end
+
+      def allowed_to?(rule, record = :__undef__, **options)
+        res =
           if record == :__undef__
             policy = self
             with_clean_result { apply(rule) }
@@ -100,10 +168,14 @@ module ActionPolicy
             policy = policy_for(record: record, **options)
 
             policy.apply(rule)
+            policy.result
           end
 
-        result.reasons.add(policy, rule) unless succeed
-        succeed
+        result.reasons.add(policy, rule, res.details) if res.fail?
+
+        res.clear_details
+
+        res.success?
       end
     end
   end

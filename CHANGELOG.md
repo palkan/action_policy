@@ -1,5 +1,32 @@
 ## master
 
+- Added ability to provide additional failure reasons details. ([@palkan][])
+
+  Example:
+
+  ```ruby
+  class ApplicantPolicy < ApplicationPolicy
+    def show?
+      allowed_to?(:show?, object.stage)
+    end
+  end
+
+  class StagePolicy < ApplicationPolicy
+    def show?
+      # Add stage title to the failure reason (if any)
+      # (could be used by client to show more descriptive message)
+      details[:title] = record.title
+      # then perform the checks
+      user.stages.where(id: record.id).exists?
+    end
+  end
+
+  # when accessing the reasons
+  p ex.result.reasons.details #=> { stage: [{show?: {title: "Onboarding"}] }
+  ```
+
+  See https://github.com/palkan/action_policy/pull/58
+
 - Ruby 2.4+ is required. ([@palkan][])
 
 - Added RSpec DSL for writing policy specs. ([@palkan])
