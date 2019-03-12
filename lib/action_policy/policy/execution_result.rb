@@ -26,6 +26,10 @@ module ActionPolicy
       def fail?
         @value == false
       end
+
+      def inspect
+        "<#{policy}##{rule}: #{@value}>"
+      end
     end
   end
 end

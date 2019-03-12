@@ -82,6 +82,8 @@ describe PostPolicy do
 end
 ```
 
+**NOTE:** DSL for focusing or skipping examples and groups is also available (e.g. `xdescribe_rule`, `fsucceed`, etc.).
+
 **NOTE:** the DSL is included only to example with the tag `type: :policy` or in the `spec/policies` folder. If you want to add this DSL to other examples, add `include ActionPolicy::RSpec::PolicyExampleGroup`.
 
 ### Testing scopes

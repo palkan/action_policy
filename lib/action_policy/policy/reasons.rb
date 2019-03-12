@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "action_policy/ext/yield_self_then"
+using ActionPolicy::Ext::YieldSelfThen
+
 module ActionPolicy
   module Policy
     # Failures reasons store
@@ -70,6 +73,14 @@ module ActionPolicy
 
       def clear_details
         @details = nil
+      end
+
+      # Add reasons to inspect
+      def inspect
+        super.then do |str|
+          next str if reasons.empty?
+          str.sub(/>$/, " (reasons: #{reasons.details})")
+        end
       end
     end
 
@@ -150,7 +161,7 @@ module ActionPolicy
     module Reasons
       class << self
         def included(base)
-          base.result_class.include(ResultFailureReasons)
+          base.result_class.prepend(ResultFailureReasons)
         end
       end
 
