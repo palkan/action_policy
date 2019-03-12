@@ -3,32 +3,43 @@
 module ActionPolicy
   module RSpec # :nodoc: all
     module DSL
-      def describe_rule(rule, *args, **kwargs)
-        describe("##{rule}", *args, **kwargs) do
-          subject { policy.apply(rule) }
+      %w[describe fdescribe xdescribe].each do |meth|
+        class_eval <<~CODE, __FILE__, __LINE__ + 1
+          def #{meth}_rule(policy_rule, *args, **kwargs)
+            #{meth}("#\#{policy_rule}", *args, **kwargs) do
+              let(:rule) { policy_rule }
 
-          instance_eval(&Proc.new) if block_given?
-        end
+              subject do
+                policy.apply(rule)
+                policy.result
+              end
+
+              instance_eval(&Proc.new) if block_given?
+            end
+          end
+        CODE
       end
 
-      def succeed(*args)
-        context(*args) do
-          instance_eval(&Proc.new) if block_given?
-
-          it "succeeds" do
-            is_expected.to eq true
+      ["", "f", "x"].each do |prefix|
+        class_eval <<~CODE, __FILE__, __LINE__ + 1
+          def #{prefix}succeed(*args, **kwargs)
+            context(*args) do
+              instance_eval(&Proc.new) if block_given?
+              #{prefix}it "succeeds", kwargs do
+                is_expected.to be_success, "Expected succeed but failed: \#{policy.result.inspect}"
+              end
+            end
           end
-        end
-      end
 
-      def failed(*args)
-        context(*args) do
-          instance_eval(&Proc.new) if block_given?
-
-          it "fails" do
-            is_expected.to eq false
+          def #{prefix}failed(*args, **kwargs)
+            context(*args) do
+              instance_eval(&Proc.new) if block_given?
+              #{prefix}it "fails", kwargs do
+                is_expected.to be_fail, "Expected to fail but succeed: \#{policy.result.inspect}"
+              end
+            end
           end
-        end
+        CODE
       end
     end
 
