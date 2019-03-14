@@ -96,6 +96,14 @@ class TestHelperTest < Minitest::Test
     end
   end
 
+  def test_assert_have_authorized_scope_with_target_block
+    assert_have_authorized_scope(type: :data, with: CustomPolicy) do
+      subject.filter([user])
+    end.with_target do |target|
+      assert_equal [user], target
+    end
+  end
+
   def test_assert_have_authorized_scope_raised_when_policy_mismatch
     error = assert_raises Minitest::Assertion do
       assert_have_authorized_scope(type: :data, with: ::UserPolicy) do

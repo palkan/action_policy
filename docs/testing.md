@@ -220,8 +220,6 @@ class UsersController < ApplicationController
 end
 ```
 
-**NOTE:** it's not possible to test that a scoped has been applied to a particular _target_. Thus there could be false positives.
-
 ### Minitest
 
 Include `ActionPolicy::TestHelper` to your test class and you'll be able to use
@@ -247,6 +245,22 @@ end
 You can also specify `as` and `scope_options` options.
 
 **NOTE:** both `type` and `with` params are required.
+
+It's not possible to test that a scoped has been applied to a particular _target_ but we provide
+a way to perform additional assertions against the matching target (if the assertion didn't fail):
+
+```ruby
+test "index has authorized scope" do
+  sign_in users(:john)
+
+  assert_have_authorized_scope(type: :active_record_relation, with: UserPolicy) do
+    get :index
+  end.with_target do |target|
+    # target is a object passed to `authorized` call
+    assert_equal User.all, target
+  end
+end
+```
 
 ### RSpec
 
@@ -276,4 +290,14 @@ RSpec composed matchers are available as scope options:
 ```ruby
 expect { subject }.to have_authorized_scope(:scope)
   .with_scope_options(matching(with_deleted: a_falsey_value))
+```
+
+You can use the `with_target` modifier to run additional expectations against the matching target (if the matcher didn't fail):
+
+```ruby
+expect { subject }.to have_authorized_scope(:scope)
+  .with_scope_options(matching(with_deleted: a_falsey_value))
+  .with_target { |target|
+    expect(target).to eq(User.all)
+  }
 ```

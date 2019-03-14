@@ -25,10 +25,11 @@ module ActionPolicy
       end
 
       class Scoping # :nodoc:
-        attr_reader :policy, :type, :name, :scope_options
+        attr_reader :policy, :target, :type, :name, :scope_options
 
-        def initialize(policy, type, name, scope_options)
+        def initialize(policy, target, type, name, scope_options)
           @policy = policy
+          @target = target
           @type = type
           @name = name
           @scope_options = scope_options
@@ -80,9 +81,9 @@ module ActionPolicy
         end
 
         # Called from Authorizer
-        def track_scope(_target, policy, type:, name:, scope_options:)
+        def track_scope(target, policy, type:, name:, scope_options:)
           return unless tracking?
-          scopings << Scoping.new(policy, type, name, scope_options)
+          scopings << Scoping.new(policy, target, type, name, scope_options)
         end
 
         def calls

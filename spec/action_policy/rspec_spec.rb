@@ -185,6 +185,14 @@ describe "ActionPolicy RSpec matchers" do
           .to have_authorized_scope(:data).with(TestService::CustomPolicy)
           .with_scope_options(matching(with_admins: a_truthy_value))
       end
+
+      specify "with block" do
+        expect { subject.own(target) }.to have_authorized_scope(:data)
+          .with(UserPolicy).as(:own)
+          .with_target { |target|
+            expect(target.first.name).to eq "admin"
+          }
+      end
     end
 
     context "when no scoping performed" do
@@ -244,6 +252,19 @@ describe "ActionPolicy RSpec matchers" do
           Regexp.new("expected a scoping named :default for type :data " \
                      'with scope options matching {:with_admins=>\(a falsey value\)} ' \
                      "from TestService::CustomPolicy to have been applied")
+        )
+      end
+
+      specify "block expectation failed" do
+        expect do
+          expect { subject.own(target) }.to have_authorized_scope(:data)
+            .with(UserPolicy).as(:own)
+            .with_target { |target|
+              expect(target.first.name).to eq "Guest"
+            }
+        end.to raise_error(
+          RSpec::Expectations::ExpectationNotMetError,
+          /^\s+expected: "Guest"\n\s+got: "admin"/
         )
       end
     end

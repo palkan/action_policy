@@ -20,7 +20,8 @@ module ActionPolicy
     #   end
     #
     class HaveAuthorizedScope < ::RSpec::Matchers::BuiltIn::BaseMatcher
-      attr_reader :type, :name, :policy, :scope_options, :actual_scopes
+      attr_reader :type, :name, :policy, :scope_options, :actual_scopes,
+                  :target_expectations
 
       def initialize(type)
         @type = type
@@ -43,6 +44,11 @@ module ActionPolicy
         self
       end
 
+      def with_target
+        @target_expectations = Proc.new
+        self
+      end
+
       def match(_expected, actual)
         raise "This matcher only supports block expectations" unless actual.is_a?(Proc)
 
@@ -50,7 +56,19 @@ module ActionPolicy
 
         @actual_scopes = ActionPolicy::Testing::AuthorizeTracker.scopings
 
-        actual_scopes.any? { |scope| scope.matches?(policy, type, name, scope_options) }
+        matching_scopes = actual_scopes.select { |scope| scope.matches?(policy, type, name, scope_options) }
+
+        return false if matching_scopes.empty?
+
+        return true unless target_expectations
+
+        if matching_scopes.size > 1
+          raise "Too many matching scopings (#{matching_scopes.size}), " \
+                "you can run `.with_target` only when there is the only one match"
+        end
+
+        target_expectations.call(matching_scopes.first.target)
+        true
       end
 
       def does_not_match?(*)

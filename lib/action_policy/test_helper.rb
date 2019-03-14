@@ -5,6 +5,22 @@ require "action_policy/testing"
 module ActionPolicy
   # Provides assertions for policies usage
   module TestHelper
+    class WithScopeTarget
+      attr_reader :scopes
+
+      def initialize(scopes)
+        @scopes = scopes
+      end
+
+      def with_target
+        if scopes.size > 1
+          raise "Too many matching scopings (#{copes.size}), " \
+                "you can run `.with_target` only when there is the only one match"
+        end
+
+        yield scopes.first.target
+      end
+    end
     # Asserts that the given policy was used to authorize the given target.
     #
     #   def test_authorize
@@ -53,6 +69,17 @@ module ActionPolicy
     #
     # NOTE: `type` and `with` must be specified.
     #
+    # You can run additional assertions for the matching target (the object passed
+    # to the `authorized` method) by calling `with_target`:
+    #
+    #   def test_authorize
+    #     assert_have_authorized_scope(type: :active_record_relation, with: UserPolicy) do
+    #       get :index
+    #     end.with_target do |target|
+    #       assert_equal User.all, target
+    #     end
+    #   end
+    #
     def assert_have_authorized_scope(type:, with:, as: :default, scope_options: nil)
       raise ArgumentError, "Block is required" unless block_given?
 
@@ -77,6 +104,8 @@ module ActionPolicy
         "Registered scopings: " \
         "#{actual_scopes.empty? ? "none" : actual_scopes.map(&:inspect).join(",")}"
       )
+
+      WithScopeTarget.new(actual_scopes)
     end
   end
 end
