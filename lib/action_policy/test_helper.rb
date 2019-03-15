@@ -14,7 +14,7 @@ module ActionPolicy
 
       def with_target
         if scopes.size > 1
-          raise "Too many matching scopings (#{copes.size}), " \
+          raise "Too many matching scopings (#{scopes.size}), " \
                 "you can run `.with_target` only when there is the only one match"
         end
 
