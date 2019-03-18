@@ -106,7 +106,7 @@ Authorizing against the SuperPolicy:
 * `index?` will resolve to `index?`
 * `something?` will resolve to `manage?`
 
-Authorizing against the SuBPolicy:
+Authorizing against the SubPolicy:
 
 * `index?` will resolve to `manage?`
 * `update?` will resolve to `manage?`
