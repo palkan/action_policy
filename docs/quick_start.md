@@ -24,8 +24,8 @@ The core component of Action Policy is a _policy class_. Policy class describes 
 
 We suggest having a separate policy class for each resource and encourage you to follow these conventions:
 - put policies into the `app/policies` folder (when using with Rails);
-- name policies using the corresponding resource name (model name) with a `Policy` suffix, e.g. `Post -> PostPolicy`;
-- name rules using a predicate form of the corresponding activity (typically, a controller's action), e.g. `PostsController#update -> PostsPolicy#update?`.
+- name policies using the corresponding singular resource name (model name) with a `Policy` suffix, e.g. `Post -> PostPolicy`;
+- name rules using a predicate form of the corresponding activity (typically, a controller's action), e.g. `PostsController#update -> PostPolicy#update?`.
 
 We also recommend to use an application-specific `ApplicationPolicy` with a global configuration to inherit from:
 
