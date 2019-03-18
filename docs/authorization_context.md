@@ -8,7 +8,7 @@ You must configure authorization context in **two places**: in the policy itself
 
 By default, `ActionPolicy::Base` includes `user` as authorization context. If you don't need it, you have to [build your own base policy](custom_policy.md).
 
-To specify additional contexts, you should use `authorize` method:
+To specify additional contexts, you should use the `authorize` method:
 
 ```ruby
 class ApplicationPolicy < ActionPolicy::Base
