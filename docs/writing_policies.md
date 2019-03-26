@@ -20,7 +20,7 @@ end
 
 ## Initializing policies
 
-**NOTE**: it is not recommended to manually initialize policy objects and use them directly (one exclusion–[tests](testing.md)). Use `authorize!` / `allowed_to?` methods instead.
+**NOTE**: it is not recommended to manually initialize policy objects and use them directly (one exclusion–[tests](testing.md)). Use [`authorize!` / `allowed_to?` methods](./behaviour.md#authorize) instead.
 
 To initialize policy object, you should specify target record and context:
 
