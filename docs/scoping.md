@@ -128,6 +128,20 @@ You can also specify additional options for policy class inference (see [behavio
 @posts = authorized_scope(Post, with: CustomPostPolicy)
 ```
 
+## Using scopes within policy
+
+You can also use scopes within policy classes using the same `authorized_scope` method.
+For example:
+
+```ruby
+relation_scope(:edit) do |scope|
+  teachers = authorized_scope(Teacher.all, as: :edit)
+  scope
+    .joins(:teachers)
+    .where(teacher_id: teachers)
+end
+```
+
 ## Using scopes explicitly
 
 To use scopes without including Action Policy [behaviour](behaviour)

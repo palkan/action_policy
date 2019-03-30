@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "action_policy/behaviours/scoping"
+
 require "action_policy/utils/suggest_message"
 
 require "action_policy/ext/proc_case_eq"
@@ -84,6 +86,8 @@ module ActionPolicy
           base.extend ClassMethods
         end
       end
+
+      include ActionPolicy::Behaviours::Scoping
 
       # Pass target to the scope handler of the specified type and name.
       # If `name` is not specified then `:default` name is used.

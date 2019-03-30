@@ -18,6 +18,15 @@ module ActionPolicy
       def authorization_namespace
         # override to provide specific authorization namespace
       end
+
+      # Override this method to provide implicit authorization target
+      # that would be used in case `record` is not specified in
+      # `authorize!` and `allowed_to?` call.
+      #
+      # It is also used to infer a policy for scoping (in `authorized_scope` method).
+      def implicit_authorization_target
+        # no-op
+      end
     end
   end
 end
