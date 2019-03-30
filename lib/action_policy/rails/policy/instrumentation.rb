@@ -5,9 +5,9 @@ module ActionPolicy # :nodoc:
     module Rails
       # Add ActiveSupport::Notifications support.
       #
-      # Fires `action_policy.apply` event on every `#apply` call.
+      # Fires `action_policy.apply_rule` event on every `#apply` call.
       module Instrumentation
-        EVENT_NAME = "action_policy.apply"
+        EVENT_NAME = "action_policy.apply_rule"
 
         def apply(rule)
           event = {policy: self.class.name, rule: rule.to_s}

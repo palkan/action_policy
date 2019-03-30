@@ -20,8 +20,12 @@ module ActionPolicy
     class << self
       # Performs authorization, raises an exception when check failed.
       def call(policy, rule)
-        policy.apply(rule) ||
+        authorize(policy, rule) ||
           raise(::ActionPolicy::Unauthorized.new(policy, rule))
+      end
+
+      def authorize(policy, rule)
+        policy.apply(rule)
       end
 
       # Applies scope to the target

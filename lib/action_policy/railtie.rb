@@ -46,13 +46,13 @@ module ActionPolicy # :nodoc:
       self.controller_authorize_current_user = true
       self.auto_inject_into_channel = true
       self.channel_authorize_current_user = true
-      self.namespace_cache_enabled = Rails.env.production?
+      self.namespace_cache_enabled = ::Rails.env.production?
     end
 
     config.action_policy = Config
 
     initializer "action_policy.clear_per_thread_cache" do |app|
-      if Rails::VERSION::MAJOR >= 5
+      if ::Rails::VERSION::MAJOR >= 5
         app.executor.to_run { ActionPolicy::PerThreadCache.clear_all }
         app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
       else
@@ -63,32 +63,34 @@ module ActionPolicy # :nodoc:
 
     initializer "action_policy.instrumentation" do |_app|
       require "action_policy/rails/policy/instrumentation"
+      require "action_policy/rails/authorizer"
 
       ActionPolicy::Base.include ActionPolicy::Policy::Rails::Instrumentation
+      ActionPolicy::Authorizer.singleton_class.prepend ActionPolicy::Rails::Authorizer
     end
 
     config.to_prepare do |_app|
       ActionPolicy::LookupChain.namespace_cache_enabled =
-        Rails.application.config.action_policy.namespace_cache_enabled
+        ::Rails.application.config.action_policy.namespace_cache_enabled
 
       ActiveSupport.on_load(:action_controller) do
         require "action_policy/rails/scope_matchers/action_controller_params"
 
-        next unless Rails.application.config.action_policy.auto_inject_into_controller
+        next unless ::Rails.application.config.action_policy.auto_inject_into_controller
 
         ActionController::Base.include ActionPolicy::Controller
 
-        next unless Rails.application.config.action_policy.controller_authorize_current_user
+        next unless ::Rails.application.config.action_policy.controller_authorize_current_user
 
         ActionController::Base.authorize :user, through: :current_user
       end
 
       ActiveSupport.on_load(:action_cable) do
-        next unless Rails.application.config.action_policy.auto_inject_into_channel
+        next unless ::Rails.application.config.action_policy.auto_inject_into_channel
 
         ActionCable::Channel::Base.include ActionPolicy::Channel
 
-        next unless Rails.application.config.action_policy.channel_authorize_current_user
+        next unless ::Rails.application.config.action_policy.channel_authorize_current_user
 
         ActionCable::Channel::Base.authorize :user, through: :current_user
       end
