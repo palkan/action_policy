@@ -1,5 +1,9 @@
 ## master
 
+- Renamed `#authorized` to `#authorized_scope`. ([@palkan][])
+
+  **NOTE:** `#authorized` alias is also available.
+
 - Added `Policy#pp(rule)` method to print annotated rule source code. ([@palkan][])
 
   Example (debugging):

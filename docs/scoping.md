@@ -27,12 +27,12 @@ end
 
 That's a very simplified example. In practice scoping rules might be more complex, and it's likely that we would use them in multiple places.
 
-Action Policy allows you to define scoping rules within a policy class and use them with the help of `authorized` method:
+Action Policy allows you to define scoping rules within a policy class and use them with the help of `authorized_scope` method (`authorized` alias is also available):
 
 ```ruby
 class PostsController < ApplicationController
   def index
-    @posts = authorized(Post.all)
+    @posts = authorized_scope(Post.all)
   end
 end
 
@@ -111,21 +111,33 @@ class PostsController < ApplicationController
     # which is passed to the scope block
     #
     # The second argument is the scope type
-    @posts = authorized(Post, type: :relation)
+    @posts = authorized_scope(Post, type: :relation)
     #
     # For named scopes provide `as` option
-    @events = authorized(Event, type: :relation, as: :own)
+    @events = authorized_scope(Event, type: :relation, as: :own)
     #
     # If you want to specify scope options provide `scope_options` option
-    @events = authorized(Event, type: :relation, scope_options: {with_deleted: true})
+    @events = authorized_scope(Event, type: :relation, scope_options: {with_deleted: true})
   end
 end
 ```
 
-You can also specify additional options for policy class inference (see [behaviour docs](./behaviour.md)). For example, to explicitly specify the policy class use:
+You can also specify additional options for policy class inference (see [behaviour docs](behaviour)). For example, to explicitly specify the policy class use:
 
 ```ruby
-@posts = authorized(Post, with: CustomPostPolicy)
+@posts = authorized_scope(Post, with: CustomPostPolicy)
+```
+
+## Using scopes explicitly
+
+To use scopes without including Action Policy [behaviour](behaviour)
+do the following:
+
+```ruby
+# initialize policy
+policy = ApplicantPolicy.new(user: user)
+# apply scope
+policy.apply_scope(User.all, type: :relation)
 ```
 
 ## Scope type inference
@@ -156,7 +168,7 @@ class ApplicationPolicy < ActionPolicy::Base
 end
 ```
 
-When `authorized` is called without the explicit scope type, Action Policy uses matchers (in the order they're defined) to infer the type.
+When `authorized_scope` is called without the explicit scope type, Action Policy uses matchers (in the order they're defined) to infer the type.
 
 ## Rails integration
 
@@ -192,10 +204,10 @@ end
 ```ruby
 def index
   # BAD: Post is not a relation; raises an exception
-  @posts = authorized(Post)
+  @posts = authorized_scope(Post)
 
   # GOOD:
-  @posts = authorized(Post.all)
+  @posts = authorized_scope(Post.all)
 end
 ```
 
@@ -221,13 +233,15 @@ end
 
 class UsersController < ApplicationController
   def create
-    # Call `authorized` on `params` object
+    # Call `authorized_scope` on `params` object
+    @user = User.create!(authorized_scope(params.require(:user)))
+    # Or you can use `authorized` alias which fits this case better
     @user = User.create!(authorized(params.require(:user)))
     head :ok
   end
 
   def update
-    @user.update!(authorized(params.require(:user), as: :update))
+    @user.update!(authorized_scope(params.require(:user), as: :update))
     head :ok
   end
 end
