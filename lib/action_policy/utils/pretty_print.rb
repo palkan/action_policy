@@ -1,11 +1,18 @@
 # frozen_string_literal: true
 
+old_verbose = $VERBOSE
+
 begin
   require "method_source"
+  # Ignore parse warnings when patch
+  # Ruby version mismatches
+  $VERBOSE = nil
   require "parser/current"
   require "unparser"
 rescue LoadError
   # do nothing
+ensure
+  $VERBOSE = old_verbose
 end
 
 module ActionPolicy

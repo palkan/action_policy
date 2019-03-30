@@ -35,6 +35,11 @@ describe UserPolicy, type: :policy do
   let(:admin) { User.new("admin") }
   let(:context) { {user: user} }
 
+  # test skip rule
+  xdescribe_rule :manage? do
+    succeed
+  end
+
   describe_rule :manage? do
     let(:record) { User.new("guest") }
 
@@ -59,6 +64,12 @@ describe UserPolicy, type: :policy do
       end
 
       failed do
+        let(:user) { admin }
+      end
+    end
+
+    context "test skip" do
+      xfailed do
         let(:user) { admin }
       end
     end
