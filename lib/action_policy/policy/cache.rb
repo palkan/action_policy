@@ -9,7 +9,10 @@ module ActionPolicy # :nodoc:
   require "action_policy/ext/yield_self_then"
   require "action_policy/ext/policy_cache_key"
 
-  using ActionPolicy::Ext::YieldSelfThen
+  unless "".respond_to?(:then)
+    require "action_policy/ext/yield_self_then"
+    using ActionPolicy::Ext::YieldSelfThen
+  end
   using ActionPolicy::Ext::PolicyCacheKey
 
   module Policy

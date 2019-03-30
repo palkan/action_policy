@@ -1,7 +1,14 @@
 # frozen_string_literal: true
 
-require "action_policy/ext/yield_self_then"
-using ActionPolicy::Ext::YieldSelfThen
+unless "".respond_to?(:then)
+  require "action_policy/ext/yield_self_then"
+  using ActionPolicy::Ext::YieldSelfThen
+end
+
+unless {}.respond_to?(:transform_keys)
+  require "action_policy/ext/hash_transform_keys"
+  using ActionPolicy::Ext::HashTransformKeys
+end
 
 module ActionPolicy
   module Policy

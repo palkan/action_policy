@@ -9,8 +9,10 @@ rescue LoadError
 end
 
 module ActionPolicy
-  require "action_policy/ext/yield_self_then"
-  using ActionPolicy::Ext::YieldSelfThen
+  unless "".respond_to?(:then)
+    require "action_policy/ext/yield_self_then"
+    using ActionPolicy::Ext::YieldSelfThen
+  end
 
   # Takes the object and a method name,
   # and returns the "annotated" source code for the method:
