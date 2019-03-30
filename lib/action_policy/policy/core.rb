@@ -3,6 +3,7 @@
 require "action_policy/behaviours/policy_for"
 require "action_policy/policy/execution_result"
 require "action_policy/utils/suggest_message"
+require "action_policy/utils/pretty_print"
 
 unless "".respond_to?(:underscore)
   require "action_policy/ext/string_underscore"
@@ -119,6 +120,26 @@ module ActionPolicy
         raise UnknownRule.new(self, activity) unless
           respond_to?(activity)
         activity
+      end
+
+      # Return annotated source code for the rule
+      # NOTE: require "method_source" and "unparser" gems to be installed.
+      # Otherwise returns empty string.
+      def inspect_rule(rule)
+        PrettyPrint.print_method(self, rule)
+      end
+
+      # Helper for printing the annotated rule source.
+      # Useful for debugging: type `pp :show?` within the context of the policy
+      # to preview the rule.
+      def pp(rule)
+        with_clean_result do
+          # We need result to exist for `allowed_to?` to work correctly
+          @result = self.class.result_class.new(self.class, rule)
+          header = "#{self.class.name}##{rule}"
+          source = inspect_rule(rule)
+          $stdout.puts "#{header}\n#{source}"
+        end
       end
     end
   end

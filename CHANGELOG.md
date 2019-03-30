@@ -1,5 +1,33 @@
 ## master
 
+- Added `Policy#pp(rule)` method to print annotated rule source code. ([@palkan][])
+
+  Example (debugging):
+
+  ```ruby
+  def edit?
+    binding.pry # rubocop:disable Lint/Debugger
+    (user.name == "John") && (admin? || access_feed?)
+  end
+  ```
+
+  ```sh
+  pry> pp :edit?
+  MyPolicy#edit?
+  ↳ (
+      user.name == "John" #=> false
+    )
+    AND
+    (
+      admin? #=> false
+      OR
+      access_feed? #=> true
+    )
+  )
+  ```
+
+  See [PR#63](https://github.com/palkan/action_policy/pull/63)
+
 - Added ability to provide additional failure reasons details. ([@palkan][])
 
   Example:

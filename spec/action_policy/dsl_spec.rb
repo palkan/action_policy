@@ -47,5 +47,20 @@ describe UserPolicy, type: :policy do
         let(:record) { User.new("admin") }
       end
     end
+
+    context "test errors" do
+      after do |ex|
+        msg = ex.exception.message
+        # mark as not failed
+        ex.remove_instance_variable(:@exception)
+
+        expect(msg).to include("<UserPolicy#manage?: true>")
+        expect(msg).to include("↳ user.admin? #=> true") if ActionPolicy::PrettyPrint.available?
+      end
+
+      failed do
+        let(:user) { admin }
+      end
+    end
   end
 end
