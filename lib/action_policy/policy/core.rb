@@ -65,7 +65,7 @@ module ActionPolicy
 
       attr_reader :record, :result
 
-      def initialize(record = nil)
+      def initialize(record = nil, **_opts)
         @record = record
       end
 
