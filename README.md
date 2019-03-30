@@ -22,6 +22,9 @@ Add this line to your application's `Gemfile`:
 
 ```ruby
 gem "action_policy"
+# or start from the new version,
+# which is coming soon (it contains much more useful features)
+gem "action_policy", "0.3.0.beta1"
 ```
 
 And then execute:

@@ -55,13 +55,6 @@ p ex.result.reasons.details #=> { stage: [:show?] }
 
 ## Detailed Reasons
 
-**NOTE:** this feature hasn't been released yet and planned for 0.3.0 release.
-You can use it now by installing the gem from GitHub master:
-
-```ruby
-gem "action_policy", github: "palkan/action_policy"
-```
-
 You can provide additional details to your failure reasons by using a `details: { ... }` option:
 
 ```ruby
