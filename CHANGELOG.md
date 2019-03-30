@@ -1,5 +1,9 @@
 ## master
 
+- Added ActiveSupport-based instrumentation. ([@palkan][])
+
+  See [PR#4](https://github.com/palkan/action_policy/pull/4)
+
 - Allow passing authorization context explicitly. ([@palkan][])
 
   Closes [#3](https://github.com/palkan/action_policy/issues/3).
