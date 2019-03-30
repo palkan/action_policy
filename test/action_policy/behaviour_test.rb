@@ -11,14 +11,22 @@ class TestBehaviour < Minitest::Test
 
     authorize :user
 
-    def initialize(name)
-      @user = User.new(name)
+    def initialize(name = nil)
+      @user = User.new(name) unless name.nil?
     end
 
     def talk(name)
       user = User.new(name)
 
       authorize! user, to: :update?
+
+      "OK"
+    end
+
+    def talk_as(name, another_user)
+      user = User.new(name)
+
+      authorize! user, to: :update?, context: {user: another_user}
 
       "OK"
     end
@@ -49,6 +57,13 @@ class TestBehaviour < Minitest::Test
   def test_allowed_to
     assert ChatChannel.new("admin").talk?("guest")
     refute ChatChannel.new("guest").talk?("admin")
+  end
+
+  def test_authorize_explicit_context
+    chat = ChatChannel.new
+    admin = User.new("admin")
+
+    assert "OK", chat.talk_as("guest", admin)
   end
 end
 

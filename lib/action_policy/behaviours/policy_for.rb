@@ -5,10 +5,10 @@ module ActionPolicy
     # Adds `policy_for` method
     module PolicyFor
       # Returns policy instance for the record.
-      def policy_for(record:, with: nil, namespace: nil, **options)
+      def policy_for(record:, with: nil, namespace: nil, context: nil, **options)
         namespace ||= authorization_namespace
         policy_class = with || ::ActionPolicy.lookup(record, namespace: namespace, **options)
-        policy_class&.new(record, authorization_context)
+        policy_class&.new(record, authorization_context.tap { |ctx| ctx.merge!(context) if context })
       end
 
       def authorization_context

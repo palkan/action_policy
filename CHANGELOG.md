@@ -1,5 +1,17 @@
 ## master
 
+- Allow passing authorization context explicitly. ([@palkan][])
+
+  Closes [#3](https://github.com/palkan/action_policy/issues/3).
+
+  Now it's possible to override implicit authorization context
+  via `context` option:
+
+  ```ruby
+  authorize! target, to: :show?, context: {user: another_user}
+  authorized_scope User.all, context: {user: another_user}
+  ```
+
 - Renamed `#authorized` to `#authorized_scope`. ([@palkan][])
 
   **NOTE:** `#authorized` alias is also available.
