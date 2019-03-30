@@ -16,6 +16,7 @@
   * [Failure Reasons](reasons.md)
   * [Instrumentation](instrumentation.md)
   * [I18n Support](i18n.md)
+  * [Debugging](debugging.md)
 * Tips & Tricks
   * [From Pundit to Action Policy](./pundit_migration.md)
   * [Dealing with Decorators](./decorators.md)
