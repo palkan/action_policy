@@ -206,3 +206,63 @@ class TestPolicyScopeMatchers < Minitest::Test
                     "Couldn't infer scope type for TestPolicyScopeMatchers::Payload instance"
   end
 end
+
+class TestNestedPolicyScope < Minitest::Test
+  class Post < Struct.new(:user); end
+
+  class UserPolicy
+    include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::Authorization
+    include ActionPolicy::Policy::Scoping
+
+    authorize :user
+
+    scope_matcher :array, Array
+
+    scope_for :array do |users|
+      next users if user.admin?
+
+      users.reject(&:admin?)
+    end
+  end
+
+  class PostPolicy
+    include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::Authorization
+    include ActionPolicy::Policy::Scoping
+
+    authorize :user, :all_users
+
+    scope_for :array do |posts|
+      accessible_users = authorized_scope(all_users, with: UserPolicy)
+      posts.select { |post| post.user.nil? || accessible_users.include?(post.user) }
+    end
+  end
+
+  def test_nested_policy_authorized_scope
+    user = User.new("jack")
+    admin = User.new("admin")
+
+    users = [user, admin]
+
+    post = Post.new(user)
+    post2 = Post.new(admin)
+    post3 = Post.new(nil)
+
+    posts = [post, post2, post3]
+
+    policy = PostPolicy.new(user: User.new("guest"), all_users: users)
+
+    scoped_posts = policy.apply_scope(posts, type: :array)
+
+    assert_equal 2, scoped_posts.size
+    assert_includes scoped_posts, post
+    assert_includes scoped_posts, post3
+
+    policy = PostPolicy.new(user: User.new("admin"), all_users: users)
+
+    scoped_posts = policy.apply_scope(posts, type: :array)
+
+    assert_equal 3, scoped_posts.size
+  end
+end

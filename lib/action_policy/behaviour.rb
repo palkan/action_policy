@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "action_policy/behaviours/policy_for"
+require "action_policy/behaviours/scoping"
 require "action_policy/behaviours/memoized"
 require "action_policy/behaviours/thread_memoized"
 require "action_policy/behaviours/namespaced"
@@ -14,6 +15,7 @@ module ActionPolicy
   # Could be included anywhere to perform authorization.
   module Behaviour
     include ActionPolicy::Behaviours::PolicyFor
+    include ActionPolicy::Behaviours::Scoping
 
     def self.included(base)
       # Handle ActiveSupport::Concern differently
@@ -53,24 +55,6 @@ module ActionPolicy
       policy.apply(authorization_rule_for(policy, rule))
     end
 
-    # Apply scope to the target of the specified type.
-    #
-    # NOTE: policy lookup consists of the following steps:
-    #   - first, check whether `with` option is present
-    #   - secondly, try to infer policy class from `target` (non-raising lookup)
-    #   - use `implicit_authorization_target` if none of the above works.
-    def authorized_scope(target, type: nil, as: :default, scope_options: nil, **options)
-      policy = policy_for(record: target, allow_nil: true, **options)
-      policy ||= policy_for(record: implicit_authorization_target, **options)
-
-      type ||= authorization_scope_type_for(policy, target)
-
-      Authorizer.scopify(target, policy, type: type, name: as, scope_options: scope_options)
-    end
-
-    # For backward compatibility
-    alias authorized authorized_scope
-
     def authorization_context
       return @__authorization_context if
         instance_variable_defined?(:@__authorization_context)
@@ -85,21 +69,6 @@ module ActionPolicy
     # otherwise fallback to :manage? rule.
     def authorization_rule_for(policy, rule)
       policy.resolve_rule(rule)
-    end
-
-    # Infer scope type for target if none provided.
-    # Raises an exception if type couldn't be inferred.
-    def authorization_scope_type_for(policy, target)
-      policy.resolve_scope_type(target)
-    end
-
-    # Override this method to provide implicit authorization target
-    # that would be used in case `record` is not specified in
-    # `authorize!` and `allowed_to?` call.
-    #
-    # It is also used to infer a policy for scoping (in `authorized_scope` method).
-    def implicit_authorization_target
-      # no-op
     end
 
     module ClassMethods # :nodoc:
