@@ -63,7 +63,7 @@ class ApplicationController < ActionController::Base
 end
 
 class UsersController < ApplicationController
-  def show?
+  def show
     user = User.find(params[:id])
 
     authorize! user #=> raises "Missing policy authorization context: account"
@@ -72,3 +72,20 @@ end
 ```
 
 That means that **all the policies that could be used together MUST share the same set of authorization contexts** (or at least the _parent_ policies contexts must be subsets of the nested policies contexts).
+
+
+## Explicit context
+
+You can override the _implicit_ authorization context (generated with `authorize` method) in-place
+by passing the `context` option:
+
+```ruby
+def show
+  user = User.find(params[:id])
+
+  authorize! user, context: {account: user.account}
+end
+```
+
+**NOTE:** the explictly provided context is merged with the implicit one (i.e. you can specify
+only the keys you want to override).
