@@ -1,5 +1,7 @@
 ## master
 
+## 0.3.0.beta1 (2019-03-30)
+
 - Added ActiveSupport-based instrumentation. ([@palkan][])
 
   See [PR#4](https://github.com/palkan/action_policy/pull/4)
