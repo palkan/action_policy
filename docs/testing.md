@@ -82,6 +82,30 @@ describe PostPolicy do
 end
 ```
 
+If test failed the exception message includes the result and [failure reasons](reasons) (if any):
+
+```
+1) PostPolucy#show? when post is draft
+Failure/Error:  ...
+
+Expected to fail but succeed:
+<PostPolicy#show?: true (reasons: ...)>
+```
+
+If you have [debugging utils](debugging) installed the message also includes the _annotated_
+source code of the policy rule:
+
+```
+1) UserPolucy#manage? when post is draft
+Failure/Error:  ...
+
+Expected to fail but succeed:
+<PostPolicy#show?: true (reasons: ...)>
+↳ user.admin? #=> true
+OR
+!record.draft? #=> false
+```
+
 **NOTE:** DSL for focusing or skipping examples and groups is also available (e.g. `xdescribe_rule`, `fsucceed`, etc.).
 
 **NOTE:** the DSL is included only to example with the tag `type: :policy` or in the `spec/policies` folder. If you want to add this DSL to other examples, add `include ActionPolicy::RSpec::PolicyExampleGroup`.
