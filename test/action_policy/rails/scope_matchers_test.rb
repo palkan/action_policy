@@ -46,11 +46,11 @@ class TestRailsScopeMatchers < ActionController::TestCase
     authorize :user, through: :current_user
 
     def index
-      render json: authorized(AR::User.all)
+      render json: authorized_scope(AR::User.all)
     end
 
     def posts
-      render json: authorized(current_user.posts)
+      render json: authorized_scope(current_user.posts)
     end
 
     def create

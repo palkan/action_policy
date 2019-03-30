@@ -70,7 +70,7 @@ module ActionPolicy
     # NOTE: `type` and `with` must be specified.
     #
     # You can run additional assertions for the matching target (the object passed
-    # to the `authorized` method) by calling `with_target`:
+    # to the `authorized_scope` method) by calling `with_target`:
     #
     #   def test_authorize
     #     assert_have_authorized_scope(type: :active_record_relation, with: UserPolicy) do

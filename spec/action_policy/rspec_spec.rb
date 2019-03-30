@@ -41,15 +41,15 @@ class TestService # :nodoc:
   end
 
   def filter(users)
-    authorized users, type: :data, with: CustomPolicy
+    authorized_scope users, type: :data, with: CustomPolicy
   end
 
   def filter_with_options(users, with_admins: false)
-    authorized users, type: :data, with: CustomPolicy, scope_options: {with_admins: with_admins}
+    authorized_scope users, type: :data, with: CustomPolicy, scope_options: {with_admins: with_admins}
   end
 
   def own(users)
-    authorized users, type: :data, as: :own, with: UserPolicy
+    authorized_scope users, type: :data, as: :own, with: UserPolicy
   end
 end
 

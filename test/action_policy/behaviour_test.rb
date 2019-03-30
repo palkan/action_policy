@@ -84,14 +84,14 @@ class TestAuthorizedBehaviour < Minitest::Test
   def test_default_authorized
     chat = ChatChannel.new("guest")
 
-    scoped_users = chat.authorized(users, type: :data)
+    scoped_users = chat.authorized_scope(users, type: :data)
 
     assert_equal 1, scoped_users.size
     assert_equal "jack", scoped_users.first.name
 
     chat = ChatChannel.new("admin")
 
-    scoped_users = chat.authorized(users, type: :data)
+    scoped_users = chat.authorized_scope(users, type: :data)
 
     assert_equal 2, scoped_users.size
   end
@@ -99,12 +99,12 @@ class TestAuthorizedBehaviour < Minitest::Test
   def test_default_authorized_with_scope_options
     chat = ChatChannel.new("guest")
 
-    scoped_users = chat.authorized(users, type: :data)
+    scoped_users = chat.authorized_scope(users, type: :data)
 
     assert_equal 1, scoped_users.size
     assert_equal "jack", scoped_users.first.name
 
-    scoped_users = chat.authorized(users, type: :data, scope_options: {with_admins: true})
+    scoped_users = chat.authorized_scope(users, type: :data, scope_options: {with_admins: true})
 
     assert_equal 2, scoped_users.size
   end
@@ -112,13 +112,13 @@ class TestAuthorizedBehaviour < Minitest::Test
   def test_named_authorized
     chat = ChatChannel.new("guest")
 
-    scoped_users = chat.authorized(users, type: :data, as: :own)
+    scoped_users = chat.authorized_scope(users, type: :data, as: :own)
 
     assert_equal 0, scoped_users.size
 
     chat = ChatChannel.new("admin")
 
-    scoped_users = chat.authorized(users, type: :data, as: :own)
+    scoped_users = chat.authorized_scope(users, type: :data, as: :own)
 
     assert_equal 1, scoped_users.size
     assert_equal "admin", scoped_users.first.name
@@ -128,17 +128,17 @@ class TestAuthorizedBehaviour < Minitest::Test
     chat = ChatChannel.new("jack")
 
     assert_raises(ActionPolicy::UnknownScopeType) do
-      chat.authorized(users, type: :users)
+      chat.authorized_scope(users, type: :users)
     end
 
     users.define_singleton_method(:policy_class) { CustomPolicy }
 
-    scoped_users = chat.authorized(users, type: :users)
+    scoped_users = chat.authorized_scope(users, type: :users)
     assert_equal "jack", scoped_users.first.name
 
     chat = ChatChannel.new("admin")
 
-    scoped_users = chat.authorized(users, type: :users)
+    scoped_users = chat.authorized_scope(users, type: :users)
 
     assert_equal 1, scoped_users.size
     assert_equal "admin", scoped_users.first.name
