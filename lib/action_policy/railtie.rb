@@ -30,6 +30,10 @@ module ActionPolicy # :nodoc:
         # Enabled only in production by default.
         attr_accessor :namespace_cache_enabled
 
+        # Define whether to include instrumentation functionality.
+        # Enabled by default.
+        attr_accessor :instrumentation_enabled
+
         def cache_store=(store)
           # Handle both:
           #   store = :memory
@@ -47,6 +51,7 @@ module ActionPolicy # :nodoc:
       self.auto_inject_into_channel = true
       self.channel_authorize_current_user = true
       self.namespace_cache_enabled = ::Rails.env.production?
+      self.instrumentation_enabled = true
     end
 
     config.action_policy = Config
@@ -61,11 +66,13 @@ module ActionPolicy # :nodoc:
       end
     end
 
-    initializer "action_policy.instrumentation" do |_app|
+    config.after_initialize do
+      next unless ::Rails.application.config.action_policy.instrumentation_enabled
+
       require "action_policy/rails/policy/instrumentation"
       require "action_policy/rails/authorizer"
 
-      ActionPolicy::Base.include ActionPolicy::Policy::Rails::Instrumentation
+      ActionPolicy::Base.prepend ActionPolicy::Policy::Rails::Instrumentation
       ActionPolicy::Authorizer.singleton_class.prepend ActionPolicy::Rails::Authorizer
     end
 

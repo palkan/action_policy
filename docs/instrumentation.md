@@ -37,15 +37,25 @@ end
 
 ### `action_policy.authorize`
 
-This event is identitical to `action_policy.apply_rule` with the one difference:
+This event is identical to `action_policy.apply_rule` with the one difference:
 **it's only triggered when `authorize!` method is called**.
 
 The motivation behind having a separate event for this method is to monitor the number of failed
-authorizations: the very high number of failed authorization usually means that we do not take
-into account authorization rules in the application UI (e.g. we show a "Delete" button to the user not
+authorizations: the high number of failed authorizations usually means that we do not take
+into account authorization rules in the application UI (e.g., we show a "Delete" button to the user not
 permitted to do that).
 
 The `action_policy.apply_rule` might have a large number of failures, 'cause it also tracks the usage of non-raising applications (i.e. `allowed_to?`).
+
+## Turn off instrumentation
+
+Instrumentation is enabled by default. To turn it off add to your configuration:
+
+```ruby
+config.action_policy.instrumentation_enabled = false
+```
+
+**NOTE:** changing this setting after the application has been initialized doesn't take any effect.
 
 ## Non-Rails usage
 

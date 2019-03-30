@@ -13,7 +13,7 @@ class TestRailsInstrumentation < Minitest::Test
   class TestPolicy
     include ActionPolicy::Policy::Core
     include ActionPolicy::Policy::Cache
-    include ActionPolicy::Policy::Rails::Instrumentation
+    prepend ActionPolicy::Policy::Rails::Instrumentation
 
     cache :manage?
 
