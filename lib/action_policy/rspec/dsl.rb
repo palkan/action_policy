@@ -26,7 +26,7 @@ module ActionPolicy
             context(*args) do
               instance_eval(&Proc.new) if block_given?
               #{prefix}it "succeeds", kwargs do
-                is_expected.to be_success, "Expected succeed but failed: \#{policy.result.inspect}"
+                is_expected.to be_success, "Expected succeed but failed:\n\#{formatted_policy(policy)}"
               end
             end
           end
@@ -35,7 +35,7 @@ module ActionPolicy
             context(*args) do
               instance_eval(&Proc.new) if block_given?
               #{prefix}it "fails", kwargs do
-                is_expected.to be_fail, "Expected to fail but succeed: \#{policy.result.inspect}"
+                is_expected.to be_fail, "Expected to fail but succeed:\n\#{formatted_policy(policy)}"
               end
             end
           end
@@ -50,6 +50,10 @@ module ActionPolicy
         base.let(:record) { nil }
         base.let(:policy) { described_class.new(record, context) }
         super
+      end
+
+      def formatted_policy(policy)
+        "#{policy.result.inspect}\n#{policy.inspect_rule(policy.result.rule)}"
       end
     end
   end
