@@ -12,6 +12,9 @@ module ActionPolicy
       using ActionPolicy::Ext::StringConstantize
     end
 
+    require "action_policy/ext/symbol_classify"
+    using ActionPolicy::Ext::SymbolClassify
+
     require "action_policy/ext/module_namespace"
     using ActionPolicy::Ext::ModuleNamespace
 
@@ -111,7 +114,7 @@ module ActionPolicy
     SYMBOL_LOOKUP = ->(record, namespace: nil, **) {
       next unless record.is_a?(Symbol)
 
-      policy_name = "#{record.to_s.classify}Policy"
+      policy_name = "#{record.classify}Policy"
       if namespace.nil?
         policy_name.safe_constantize
       else
