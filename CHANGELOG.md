@@ -1,6 +1,6 @@
 ## master
 
-## 0.3.0.beta1 (2019-03-30)
+## 0.3.0 (2019-04-02)
 
 - Added ActiveSupport-based instrumentation. ([@palkan][])
 

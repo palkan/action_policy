@@ -17,7 +17,6 @@ def feed?
   (admin? || allowed_to?(:access_feed?)) &&
     (user.name == "Jack" || user.name == "Kate")
 end
-
 ```
 
 Suppose that you want to debug this rule ("Why does it return false?").
