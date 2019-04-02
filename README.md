@@ -21,10 +21,7 @@ Action Policy is an authorization framework for Ruby and Rails applications.
 Add this line to your application's `Gemfile`:
 
 ```ruby
-gem "action_policy"
-# or start from the new version,
-# which is coming soon (it contains much more useful features)
-gem "action_policy", "0.3.0.beta1"
+gem "action_policy", "~> 0.3.0"
 ```
 
 And then execute:

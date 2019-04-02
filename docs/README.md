@@ -5,7 +5,7 @@
 
 > Action Policy is an authorization framework for Ruby and Rails applications.
 
-**NOTE:** this documentation covers the _coming-soon_ version "0.3.0" ([first beta](https://rubygems.org/gems/action_policy) is out!).
+**NOTE:** this documentation is for the version "0.3.0+".
 
 ## What is it?
 
