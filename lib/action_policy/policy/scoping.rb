@@ -4,10 +4,6 @@ require "action_policy/behaviours/scoping"
 
 require "action_policy/utils/suggest_message"
 
-require "action_policy/ext/proc_case_eq"
-
-using ActionPolicy::Ext::ProcCaseEq
-
 module ActionPolicy
   class UnknownScopeType < Error # :nodoc:
     include ActionPolicy::SuggestMessage
