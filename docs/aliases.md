@@ -41,15 +41,19 @@ You can add a _default_ rule–the rule that would be applied if the rule specif
 
 ```ruby
 class PostPolicy < ApplicationPolicy
+  # For an ApplicationPolicy, makes :manage? match anything that is
+  # not :index?, :create? or :new?
   default_rule :manage?
 
+  # If you want manage? to catch really everything, place this alias
+  #alias_rule :index?, :create?, :new?, to: :manage?
   def manage?
     # ...
   end
 end
 ```
 
-Now when you call `authorize! post` with any rule not explicitly defined in policy class, the `manage?` rule is applied.
+Now when you call `authorize! post` with any rule not defined in the policy class, the `manage?` rule is applied.  Note that `index?` `create?` and `new?` are already defined in the [superclass by default](custom_policy.md) (returning `false`) - if you want the same behaviour for *all* actions, define aliases like in the example above (commented out).
 
 By default, `ActionPolicy::Base` sets `manage?` as a default rule.
 
