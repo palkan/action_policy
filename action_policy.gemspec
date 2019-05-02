@@ -27,9 +27,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.3"
-  spec.add_development_dependency "rubocop", "~> 0.65.0"
+  spec.add_development_dependency "rubocop", "~> 0.67.0"
   spec.add_development_dependency "rubocop-md", "~> 0.2"
-  spec.add_development_dependency "standard", "~> 0.0.36"
+  spec.add_development_dependency "standard", "~> 0.0.39"
   spec.add_development_dependency "benchmark-ips", "~> 2.7.0"
   spec.add_development_dependency "i18n"
 end
