@@ -19,6 +19,14 @@ Gem::Specification.new do |spec|
     f.match(%r{^(test|spec|features)/})
   end
 
+  spec.metadata = {
+    "bug_tracker_uri" => "http://github.com/palkan/action_policy/issues",
+    "changelog_uri" => "https://github.com/palkan/action_policy/blob/master/CHANGELOG.md",
+    "documentation_uri" => "https://actionpolicy.evilmartians.io/",
+    "homepage_uri" => "https://actionpolicy.evilmartians.io/",
+    "source_code_uri" => "http://github.com/palkan/action_policy"
+  }
+
   spec.require_paths = ["lib"]
 
   spec.required_ruby_version = ">= 2.4.0"
