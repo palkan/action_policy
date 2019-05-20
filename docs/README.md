@@ -22,7 +22,7 @@ Action Policy provides flexible tools to build an _authorization layer_ for your
 
 ## Project State
 
-The project is in active development phase. Check out our [development board](https://github.com/palkan/action_policy/projects/1) to see what's coming next.
+The project is being used in production since mid 2018. Major features have been implemented, API has been stabilized. Check out our [development board](https://github.com/palkan/action_policy/projects/1) to see what's coming next.
 
 ## History
 
@@ -57,6 +57,8 @@ So, what are the main reasons to consider Action Policy as your authorization to
 Learn more about the motivation behind the Action Policy and its features by watching this [RailsConf talk](https://www.youtube.com/watch?v=NVwx0DARDis).
 
 ## Resources
+
+- Seattle.rb, 2019 "A Denial!" talk [[slides](https://speakerdeck.com/palkan/seattle-dot-rb-2019-a-denial)]
 
 - RailsConf, 2018 "Access Denied" talk [[video](https://www.youtube.com/watch?v=NVwx0DARDis), [slides](https://speakerdeck.com/palkan/railsconf-2018-access-denied-the-missing-guide-to-authorization-in-rails)]
 
