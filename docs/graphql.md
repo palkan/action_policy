@@ -56,7 +56,7 @@ You can use authorization options to customize the behaviour, e.g. `authorize: {
 
 By default, if a user is not authorized to access the field, an `ActionPolicy::Unauthorized` exception is raised.
 
-If you want to return a `nil` instaed you should add `raise: false` to the options:
+If you want to return a `nil` instead, you should add `raise: false` to the options:
 
 ```ruby
 # NOTE: don't forget to mark your field as nullable
@@ -94,7 +94,7 @@ end
 
 ## Authorizing Mutations
 
-Mutation is just a Ruby class with a single API method. There is nothing specific in authorizing mutations: from the Action Policy point of view they are just [_behaviours_](./behaviour.md).
+Mutation is just a Ruby class with a single API method. There is nothing specific in authorizing mutations: from the Action Policy point of view, they are just [_behaviours_](./behaviour.md).
 
 If you want to authorize the mutation, you call `authorize!` method. For example:
 
@@ -105,7 +105,7 @@ class Mutations::DestroyUser < Types::BaseMutation
   def resolve(id:)
     user = User.find(id)
 
-    # Raise an exception if user has not enough permissions
+    # Raise an exception if the user has not enough permissions
     authorize! user, to: :destroy?
     # Or check without raising and do what you want
     #
