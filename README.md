@@ -20,7 +20,7 @@ Action Policy is an authorization framework for Ruby and Rails applications.
 
 ## Integrations
 
-- GraphQL Ruby ([`action_policy-graphql](https://github.com/palkan/action_policy-graphql))
+- GraphQL Ruby ([`action_policy-graphql`](https://github.com/palkan/action_policy-graphql))
 
 ## Installation
 
