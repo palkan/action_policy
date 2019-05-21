@@ -2,7 +2,8 @@
 
 When you have complex policy rules, it could be helpful to have an ability to define an exact reason for why a specific authorization was rejected.
 
-It is especially helpful when you compose policies (i.e., use one policy within another).
+It is especially helpful when you compose policies (i.e., use one policy within another) or want
+to expose permissions to client applications (see [GraphQL](./graphql)).
 
 Action Policy allows you to track failed `allowed_to?` checks in your rules.
 

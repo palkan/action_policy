@@ -3,6 +3,7 @@
   * [Writing Policies](writing_policies.md)
   * [Rails Integration](rails.md)
   * [Non-Rails Usage](non_rails.md)
+  * [GraphQL Integration](graphql.md)
   * [Testing](testing.md)
 * Features
   * [Authorization Behaviour](behaviour.md)
