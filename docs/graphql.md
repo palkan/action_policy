@@ -5,7 +5,7 @@ You can use Action Policy as an authorization library for you [GraphQL Ruby](htt
 This integration provides the following features:
 - Fields & mutations authorization
 - List and connections scoping
-- **Exposing permissions/authorization rules in the API**.
+- [**Exposing permissions/authorization rules in the API**](https://dev.to/evilmartians/exposing-permissions-in-graphql-apis-with-action-policy-1mfh).
 
 ## Getting Started
 
