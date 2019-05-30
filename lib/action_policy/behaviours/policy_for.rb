@@ -27,6 +27,20 @@ module ActionPolicy
       def implicit_authorization_target
         # no-op
       end
+
+      # Return implicit authorization target or raises an exception if it's nil
+      def implicit_authorization_target!
+        implicit_authorization_target || raise(
+          NotFound,
+          [
+            self,
+            "Couldn't find implicit authorization target " \
+            "for #{self.class}. " \
+            "Please, provide policy class explicitly using `with` option or " \
+            "define the `implicit_authorization_target` method."
+          ]
+        )
+      end
     end
   end
 end

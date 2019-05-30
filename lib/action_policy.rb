@@ -11,9 +11,9 @@ module ActionPolicy
   class NotFound < Error
     attr_reader :target, :message
 
-    def initialize(target)
+    def initialize(target, message = nil)
       @target = target
-      @message = "Couldn't find policy class for #{target.inspect}"
+      @message = message || "Couldn't find policy class for #{target.inspect}"
     end
   end
 

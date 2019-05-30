@@ -159,3 +159,31 @@ class TestAuthorizedBehaviour < Minitest::Test
     assert_equal "admin", scoped_users.first.name
   end
 end
+
+class TestMissingImplicitTarget < Minitest::Test
+  class ChatChannel
+    include ActionPolicy::Behaviour
+
+    def ping
+      authorize! to: :ping?
+      "pong"
+    end
+
+    def implicit_authorization_target
+      nil
+    end
+  end
+
+  def test_implicit_authorization_target_is_included_in_failure_message
+    channel = ChatChannel.new
+
+    e = assert_raises ActionPolicy::NotFound do
+      channel.ping
+    end
+
+    assert_includes e.message, "Couldn't find implicit authorization target " \
+                               "for TestMissingImplicitTarget::ChatChannel. " \
+                               "Please, provide policy class explicitly using `with` option or " \
+                               "define the `implicit_authorization_target` method."
+  end
+end

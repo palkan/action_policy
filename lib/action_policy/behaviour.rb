@@ -35,7 +35,7 @@ module ActionPolicy
     #
     # Raises `ActionPolicy::Unauthorized` if check failed.
     def authorize!(record = :__undef__, to:, **options)
-      record = implicit_authorization_target if record == :__undef__
+      record = implicit_authorization_target! if record == :__undef__
       raise ArgumentError, "Record must be specified" if record.nil?
 
       policy = policy_for(record: record, **options)
@@ -47,7 +47,7 @@ module ActionPolicy
     #
     # Returns true of false.
     def allowed_to?(rule, record = :__undef__, **options)
-      record = implicit_authorization_target if record == :__undef__
+      record = implicit_authorization_target! if record == :__undef__
       raise ArgumentError, "Record must be specified" if record.nil?
 
       policy = policy_for(record: record, **options)

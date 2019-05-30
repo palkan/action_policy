@@ -12,7 +12,7 @@ module ActionPolicy
       #   - use `implicit_authorization_target` if none of the above works.
       def authorized_scope(target, type: nil, as: :default, scope_options: nil, **options)
         policy = policy_for(record: target, allow_nil: true, **options)
-        policy ||= policy_for(record: implicit_authorization_target, **options)
+        policy ||= policy_for(record: implicit_authorization_target!, **options)
 
         type ||= authorization_scope_type_for(policy, target)
 
