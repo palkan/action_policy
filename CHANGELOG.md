@@ -1,5 +1,11 @@
 ## master
 
+## 0.3.1 (2019-05-30)
+
+- Fixed bug with missing implicit target and hash like scoping data. ([@palkan][])
+
+  Fixes [#70](https://github.com/palkan/action_policy/issues/70).
+
 ## 0.3.0 (2019-04-02)
 
 - Added ActiveSupport-based instrumentation. ([@palkan][])
