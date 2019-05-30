@@ -153,3 +153,51 @@ class TestRailsScopeMatchers < ActionController::TestCase
     assert_equal "admin", admin.role
   end
 end
+
+class TestRailsScopeMatchersWithoutImplicitTarget < ActionController::TestCase
+  class UserPolicy < ActionPolicy::Base
+    authorize :user
+
+    params_filter(:update) do |params|
+      params.permit(:name)
+    end
+  end
+
+  class CurrentUsersController < ActionController::Base
+    authorize :user, through: :current_user
+
+    def update
+      current_user.update!(authorized(params.require(:current_user), with: UserPolicy, as: :update))
+      render json: current_user
+    end
+
+    private
+
+    def current_user
+      @current_user ||= AR::User.find(params[:user_id])
+    end
+  end
+
+  tests CurrentUsersController
+
+  attr_reader :admin, :guest
+
+  def setup
+    ActiveRecord::Base.connection.begin_transaction(joinable: false)
+    @guest = AR::User.create!(name: "Jack")
+    @admin = AR::User.create!(name: "John", role: "admin")
+  end
+
+  def teardown
+    ActiveRecord::Base.connection.rollback_transaction
+  end
+
+  def test_params_filtering_with_no_implicit_target
+    patch :update, params: {user_id: admin.id, current_user: {name: "Deadmin", role: "guest"}}
+
+    admin.reload
+
+    assert_equal "Deadmin", admin.name
+    assert_equal "admin", admin.role
+  end
+end
