@@ -153,3 +153,91 @@ class TestRailsScopeMatchers < ActionController::TestCase
     assert_equal "admin", admin.role
   end
 end
+
+class TestRailsScopeMatchersWithCustomPolicy < ActionController::TestCase
+  class UserPolicy < ActionPolicy::Base
+    authorize :user
+
+    params_filter do |params|
+      if user.role == "admin"
+        params.permit(:name, :role)
+      else
+        params.permit(:name)
+      end
+    end
+
+    params_filter(:update) do |params|
+      params.permit(:name)
+    end
+  end
+
+  class UsersController < ActionController::Base
+    authorize :user, through: :current_user
+
+    def create
+      user = AR::User.create!(authorized(params.require(:user)))
+      render json: user
+    end
+
+    def update
+      current_user.update!(authorized(params.require(:user), as: :update))
+      render json: current_user
+    end
+
+    private
+
+    def current_user
+      @current_user ||= AR::User.find(params[:user_id])
+    end
+
+    # Make sure that we do not fallback to implicit target
+    # when testing relations
+    def implicit_authorization_target
+      return nil if request.get?
+      super
+    end
+  end
+
+  class CurrentUsersController < UsersController
+    def create
+      user = AR::User.create!(authorized(params.require(:current_user)))
+      render json: user
+    end
+
+    def update
+      current_user.update!(authorized(params.require(:current_user), with: UserPolicy, as: :update))
+      render json: current_user
+    end
+  end
+
+  tests CurrentUsersController
+
+  attr_reader :admin, :guest
+
+  def setup
+    ActiveRecord::Base.connection.begin_transaction(joinable: false)
+    @guest = AR::User.create!(name: "Jack")
+    @admin = AR::User.create!(name: "John", role: "admin")
+  end
+
+  def teardown
+    ActiveRecord::Base.connection.rollback_transaction
+  end
+
+  def test_implicit_authorization_target_is_included_in_failure_message
+    e = assert_raises ActionPolicy::NotFound do
+      post :create, params: {user_id: admin.id, current_user: {name: "Alice", role: "admin"}}
+    end
+
+    assert_includes e.message, "Couldn't find policy class for CurrentUser"
+  end
+
+  def test_allows_setting_custom_policy
+    patch :update, params: {user_id: admin.id, current_user: {name: "Deadmin", role: "guest"}}
+
+    admin.reload
+
+    assert_equal "Deadmin", admin.name
+    assert_equal "admin", admin.role
+  end
+end
