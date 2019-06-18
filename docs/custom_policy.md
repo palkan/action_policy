@@ -12,6 +12,7 @@ class ActionPolicy::Base
   include ActionPolicy::Policy::PreCheck
   include ActionPolicy::Policy::Reasons
   include ActionPolicy::Policy::Aliases
+  include ActionPolicy::Policy::Scoping
   include ActionPolicy::Policy::Cache
   include ActionPolicy::Policy::CachedApply
   include ActionPolicy::Policy::Defaults
