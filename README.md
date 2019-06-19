@@ -4,7 +4,9 @@
 
 # ActionPolicy
 
-Action Policy is an authorization framework for Ruby and Rails applications.
+Authorization framework for Ruby and Rails applications.
+
+Composable. Extensible. Performant.
 
 📑 [Documentation](https://actionpolicy.evilmartians.io)
 

@@ -3,7 +3,8 @@
 
 ## Action Policy
 
-> Action Policy is an authorization framework for Ruby and Rails applications.
+> Authorization framework for Ruby and Rails.
+<br>Composable. Extensible. Performant.
 
 **NOTE:** this documentation is for the version "0.3.0+".
 
@@ -19,6 +20,12 @@ Action Policy provides flexible tools to build an _authorization layer_ for your
 </div>
 
 **NOTE:** Action Policy does not force you to use a specific authorization model (i.e., roles, permissions, etc.) and does not provide one. It only answers a single question: **How to verify access?**
+
+## Where to go from here?
+- [Quick start](./quick_start.md)
+- [Using with Rails](./rails.md)
+- [Using with other Ruby frameworks](./non_rails.md)
+- [Using with GraphQL Ruby](./graphql.md)
 
 ## Project State
 
