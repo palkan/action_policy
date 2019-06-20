@@ -13,7 +13,10 @@ module ActionPolicy
 
     def initialize(target, message = nil)
       @target = target
-      @message = message || "Couldn't find policy class for #{target.inspect}"
+      @message =
+        message ||
+        "Couldn't find policy class for #{target.inspect}" \
+        "#{target.is_a?(Module) ? "" : " (#{target.class})"}"
     end
   end
 
