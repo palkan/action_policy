@@ -56,16 +56,21 @@ a {
   text-align: center;
 }
 
-
-aside.sidebar {
+.sidebar {
   border: none;
   background-color: var(--theme-color-secondary);
   color: #fff;
   width: 20%;
+  display: flex;
+  flex-direction: column;
 }
 
 body.close .sidebar {
   transform: translateX(-100%);
+}
+
+.sidebar .sidebar-nav {
+  order: 3;
 }
 
 .sidebar ul li a {
@@ -89,7 +94,32 @@ body.close .sidebar {
 }
 
 .sidebar > h1 {
+  order: 1;
   font-size: 2rem;
+  margin-top: 1.5rem;
+}
+
+/* search plugin related */
+
+.sidebar .search {
+  order: 2;
+  margin: 1.5rem 0 0 0;
+  border: none;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 6px;
+}
+
+.sidebar .search .input-wrap {
+  border: none;
+  position: relative;
+}
+
+.sidebar .search .clear-button.show {
+  display: block;
+  position: absolute;
+  right: 4px;
+  top: 8px;
 }
 
 body .sidebar-toggle {
