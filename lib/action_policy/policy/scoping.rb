@@ -124,15 +124,14 @@ module ActionPolicy
         def scoping_handlers
           return @scoping_handlers if instance_variable_defined?(:@scoping_handlers)
 
-          @scoping_handlers = Hash.new { |h, k| h[k] = {} }
-
-          if superclass.respond_to?(:scoping_handlers)
-            superclass.scoping_handlers.each do |k, v|
-              @scoping_handlers[k] = v.dup
+          @scoping_handlers =
+            Hash.new { |h, k| h[k] = {} }.tap do |handlers|
+              if superclass.respond_to?(:scoping_handlers)
+                superclass.scoping_handlers.each do |k, v|
+                  handlers[k] = v.dup
+                end
+              end
             end
-          end
-
-          @scoping_handlers
         end
 
         # Define scope type matcher.
@@ -149,11 +148,12 @@ module ActionPolicy
         def scope_matchers
           return @scope_matchers if instance_variable_defined?(:@scope_matchers)
 
-          @scope_matchers = []
-
-          @scope_matchers = superclass.scope_matchers.dup if superclass.respond_to?(:scope_matchers)
-
-          @scope_matchers
+          @scope_matchers =
+            if superclass.respond_to?(:scope_matchers)
+              superclass.scope_matchers.dup
+            else
+              []
+            end
         end
       end
     end
