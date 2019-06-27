@@ -1,5 +1,11 @@
 ## master
 
+## 0.3.2 (2019-05-26) 👶
+
+- Fixed thread-safety issues with scoping configs. ([@palkan][])
+
+  Fixes [#75](https://github.com/palkan/action_policy/issues/75).
+
 ## 0.3.1 (2019-05-30)
 
 - Fixed bug with missing implicit target and hash like scoping data. ([@palkan][])
