@@ -1,6 +1,6 @@
 # GraphQL integration
 
-You can use Action Policy as an authorization library for you [GraphQL Ruby](https://graphql-ruby.org/) application via the [`action_policy-graphql` gem](https://github.com/palkan/action_policy-graphql).
+You can use Action Policy as an authorization library for your [GraphQL Ruby](https://graphql-ruby.org/) application via the [`action_policy-graphql` gem](https://github.com/palkan/action_policy-graphql).
 
 This integration provides the following features:
 - Fields & mutations authorization
@@ -9,7 +9,7 @@ This integration provides the following features:
 
 ## Getting Started
 
-First, add `action_policy-graphql` gem to your Gemfile (see [installation instructions](https://github.com/palkan/action_policy-graphql#installation)).
+First, add the `action_policy-graphql` gem to your Gemfile (see [installation instructions](https://github.com/palkan/action_policy-graphql#installation)).
 
 Then, include `ActionPolicy::GraphQL::Behaviour` to your base type (or any other type/mutation where you want to use authorization features):
 
@@ -27,7 +27,7 @@ end
 
 ## Authorization Context
 
-By default, Action Policy use `context[:current_user]` as the `user` [authorization context](./authoriation_context.md).
+By default, Action Policy uses `context[:current_user]` as the `user` [authorization context](./authorization_context.md).
 
 **NOTE:** see below for more information on what's included into `ActionPolicy::GraphQL::Behaviour`.
 
@@ -94,7 +94,7 @@ end
 
 ## Authorizing Mutations
 
-Mutation is just a Ruby class with a single API method. There is nothing specific in authorizing mutations: from the Action Policy point of view, they are just [_behaviours_](./behaviour.md).
+A mutation is just a Ruby class with a single API method. There is nothing specific in authorizing mutations: from the Action Policy point of view, they are just [_behaviours_](./behaviour.md).
 
 If you want to authorize the mutation, you call `authorize!` method. For example:
 
