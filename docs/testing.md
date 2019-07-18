@@ -85,7 +85,7 @@ end
 If test failed the exception message includes the result and [failure reasons](reasons) (if any):
 
 ```
-1) PostPolucy#show? when post is draft
+1) PostPolicy#show? when post is draft
 Failure/Error:  ...
 
 Expected to fail but succeed:
@@ -96,7 +96,7 @@ If you have [debugging utils](debugging) installed the message also includes the
 source code of the policy rule:
 
 ```
-1) UserPolucy#manage? when post is draft
+1) UserPolicy#manage? when post is draft
 Failure/Error:  ...
 
 Expected to fail but succeed:
