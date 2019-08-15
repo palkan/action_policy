@@ -23,6 +23,11 @@ end
 class Types::BaseMutation < GraphQL::Schema::Mutation
   include ActionPolicy::GraphQL::Behaviour
 end
+
+# For using authorization helpers in resolvers
+class Types::BaseResolver < GraphQL::Schema::Resolver
+  include ActionPolicy::GraphQL::Behaviour
+end
 ```
 
 ## Authorization Context
@@ -219,6 +224,16 @@ You can override a custom authorization field prefix (`can_`):
 
 ```ruby
 ActionPolicy::GraphQL.default_authorization_field_prefix = "allowed_to_"
+```
+
+You can specify a custom field name as well (only for a single rule):
+
+```ruby
+class ProfileType < ::Common::Graphql::Type
+  # Adds can_create_post field.
+
+  expose_authorization_rules :create?, with: PostPolicy, field_name: "can_create_post"
+end
 ```
 
 ## Custom Behaviour
