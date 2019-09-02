@@ -87,9 +87,10 @@ The additional details are especially helpful when combined with localization, '
 
 ```yml
 en:
-  policy:
-    stage:
-      show?: "The %{title} stage is not accessible"
+  action_policy:
+    policy:
+      stage:
+        show?: "The %{title} stage is not accessible"
 ```
 
 And then when you call `full_messages`:
