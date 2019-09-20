@@ -1,5 +1,10 @@
 ## master
 
+- Improve pretty print functionality. ([@palkan][])
+
+  Colorize true/false values.
+  Handle multiline expressions and debug statements (i.e., `binding.pry`).
+
 ## 0.3.2 (2019-05-26) 👶
 
 - Fixed thread-safety issues with scoping configs. ([@palkan][])

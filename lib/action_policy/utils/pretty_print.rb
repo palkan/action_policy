@@ -41,6 +41,9 @@ module ActionPolicy
   #  #=> AND
   #  #=> access_feed? #=> true
   module PrettyPrint
+    TRUE =  "\e[32mtrue\e[0m"
+    FALSE = "\e[31mfalse\e[0m"
+
     class Visitor
       attr_reader :lines, :object
       attr_accessor :indent
@@ -68,10 +71,11 @@ module ActionPolicy
 
       def expression_with_result(sexp)
         expression = Unparser.unparse(sexp)
-        "#{expression} #=> #{eval_exp(expression)}"
+        "#{expression} #=> #{colorize(eval_exp(expression))}"
       end
 
       def eval_exp(exp)
+        return "<skipped>" if ignore_exp?(exp)
         object.instance_eval(exp)
       rescue => e
         "Failed: #{e.message}"
@@ -89,13 +93,22 @@ module ActionPolicy
         visit_node(ast.children[1])
       end
 
-      # Parens
       def visit_begin(ast)
-        lines << indented("(")
-        self.indent += 2
-        visit_node(ast.children[0])
-        self.indent -= 2
-        lines << indented(")")
+        #  Parens
+        if ast.children.size == 1
+          lines << indented("(")
+          self.indent += 2
+          visit_node(ast.children[0])
+          self.indent -= 2
+          lines << indented(")")
+        else
+          # Multiple expressions
+          ast.children.each do |node|
+            visit_node(node)
+            # restore indent after each expression
+            self.indent -= 2
+          end
+        end
       end
 
       def visit_missing(ast)
@@ -107,6 +120,18 @@ module ActionPolicy
           # increase indent after the first expression
           self.indent += 2 if indent.zero?
         end
+      end
+
+      # Some lines should not be evaled
+      def ignore_exp?(exp)
+        exp.match?(/^\s*binding\.(pry|irb)\s*$/)
+      end
+
+      def colorize(val)
+        return val unless $stdout.isatty
+        return TRUE if val.eql?(true)
+        return FALSE if val.eql?(false)
+        val
       end
     end
 

@@ -23,6 +23,11 @@ class PrettyPrintPolicy < ActionPolicy::Base
   def access_feed?
     true
   end
+
+  def admind?
+    binding.irb # rubocop:disable Lint/Debugger
+    user.admin?
+  end
 end
 
 class TestPrettyPrint < Minitest::Test
@@ -88,5 +93,15 @@ class TestPrettyPrint < Minitest::Test
     EXPECTED
 
     assert_output(expected) { policy.pp(:feed?) }
+  end
+
+  def test_single_expression_rule_with_debug
+    expected = <<~EXPECTED
+      PrettyPrintPolicy#admind?
+      ↳ binding.irb #=> <skipped>
+      ↳ user.admin? #=> false
+    EXPECTED
+
+    assert_output(expected) { policy.pp(:admind?) }
   end
 end
