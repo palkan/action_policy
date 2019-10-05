@@ -77,4 +77,4 @@ When everything is green, it's time to fully migrate to ActionPolicy:
 - migrate view helpers (from `policy(..)` to `allowed_to?`, from `policy_scope` to `authorized`)
 - re-write specs using simple non-DSL syntax (or [Action Policy RSpec syntax](testing#rspec-dsl))
 - add [authorization tests](testing#testing-authorization) (add `require 'action_policy/rspec'`)
-- use [Reasons](), [I18n integration](i18n), [cache](caching) and other Action Policy features!
+- use [Reasons](reasons), [I18n integration](i18n), [cache](caching) and other Action Policy features!
