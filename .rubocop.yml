@@ -12,6 +12,7 @@ AllCops:
     - 'Gemfile'
     - 'vendor/**/*'
     - 'gemfiles/**/*'
+    - 'lib/generators/**/*'
   DisplayCopNames: true
   TargetRubyVersion: 2.4
 
@@ -20,8 +21,6 @@ Standard/SemanticBlocks:
 
 Style/FrozenStringLiteralComment:
   Enabled: true
-  Exclude:
-    - 'lib/generators/**/*'
 
 Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: no_comma
@@ -53,9 +52,3 @@ Naming/FileName:
 Layout/InitialIndentation:
   Exclude:
     - 'CHANGELOG.md'
-
-# Generators related
-# See: https://github.com/palkan/action_policy/pull/87
-Lint/Syntax:
-  Exlude:
-    - 'lib/generators/**/*'
