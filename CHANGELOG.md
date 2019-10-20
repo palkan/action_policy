@@ -7,7 +7,7 @@
 
 - Add Rails generators. ([@nicolas-brousse][])
 
-  Adds `action_policy:install` and `action_policy:policy MODEL` Raisl generators.
+  Adds `action_policy:install` and `action_policy:policy MODEL` Rails generators.
 
 ## 0.3.2 (2019-05-26) 👶
 
