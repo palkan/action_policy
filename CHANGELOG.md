@@ -5,6 +5,10 @@
   Colorize true/false values.
   Handle multiline expressions and debug statements (i.e., `binding.pry`).
 
+- Add Rails generators. ([@nicolas-brousse][])
+
+  Adds `action_policy:install` and `action_policy:policy MODEL` Raisl generators.
+
 ## 0.3.2 (2019-05-26) 👶
 
 - Fixed thread-safety issues with scoping configs. ([@palkan][])
@@ -318,3 +322,4 @@
 [@brendon]: https://github.com/brendon
 [@DmitryTsepelev]: https://github.com/DmitryTsepelev
 [@korolvs]: https://github.com/korolvs
+[@nicolas-brousse]: https://github.com/nicolas-brousse
