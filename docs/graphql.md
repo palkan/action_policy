@@ -80,6 +80,38 @@ You can also change the default `show?` rule globally:
 ActionPolicy::GraphQL.default_authorize_rule = :show_graphql_field?
 ```
 
+If you want to perform authorization before resolving the field value, you can use `preauthorize: *` option:
+
+```ruby
+field :homes, [Home], null: false, preauthorize: {with: HomePolicy}
+
+def homes
+  Home.all
+end
+```
+
+The code above is equal to:
+
+```ruby
+field :homes, [Home], null: false
+
+def homes
+  authorize! "homes", to: :index?, with: HomePolicy
+  Home.all
+end
+```
+
+**NOTE:** we pass the field's name as the `record` to the policy rule. We assume that preauthorization rules do not depend on
+the record itself and pass the field's name for debugging purposes only.
+
+You can customize the authorization options, e.g. `authorize: {to: :preview?, with: CustomPolicy}`.
+
+**NOTE:** unlike `authorize: *` you MUST specify the `with: SomePolicy` option.
+The default authorization rule depends on the type of the field:
+
+- for lists we use `index?` (configured by `ActionPolicy::GraphQL.default_preauthorize_list_rule` parameter)
+- for _singleton_ fields we use `show?` (configured by `ActionPolicy::GraphQL.default_preauthorize_node_rule` parameter)
+
 ### Class-level authorization
 
 You can use Action Policy in the class-level [authorization hooks](https://graphql-ruby.org/authorization/authorization.html) (`self.authorized?`) like this:
@@ -170,6 +202,8 @@ class CityType < ::Common::Graphql::Type
   end
 end
 ```
+
+**NOTE:** you cannot use `authorize: *` and `authorized_scope: *` at the same time but you can combine `preauthorize: *` with `authorized_scope: *`.
 
 See the documenation on [scoping](./scoping.md).
 
