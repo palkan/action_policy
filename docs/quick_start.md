@@ -34,7 +34,7 @@ class ApplicationPolicy < ActionPolicy::Base
 end
 ```
 
-You could use the following command to genete it.
+You could use the following command to generate it.
 
     $ rails generate action_policy:install
 
