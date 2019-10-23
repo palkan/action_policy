@@ -120,9 +120,10 @@ You can use Action Policy in the class-level [authorization hooks](https://graph
 class Types::Friendship < Types::BaseObject
   def self.authorized?(object, context)
     super &&
-      object.allowed_to?(
+      allowed_to?(
         :show?,
         object,
+        # NOTE: you must provide context explicitly
         context: {user: context[:current_user]}
       )
   end
