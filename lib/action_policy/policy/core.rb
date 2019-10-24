@@ -90,8 +90,9 @@ module ActionPolicy
       def with_clean_result # :nodoc:
         was_result = @result
         yield
-        res, @result = @result, was_result
-        res
+        @result
+      ensure
+        @result = was_result
       end
 
       # Returns a result of applying the specified rule to the specified record.
