@@ -8,6 +8,8 @@ begin
 rescue LoadError
 end
 
+require "ammeter"
+
 require_relative "../test/stubs/user"
 
 require "action_policy/rspec"
