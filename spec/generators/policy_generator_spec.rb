@@ -16,7 +16,7 @@ describe ActionPolicy::Generators::PolicyGenerator, type: :generator do
   describe "policy" do
     subject { file("app/policies/user_policy.rb") }
 
-    it { is_expected_to exist }
-    it { is_expected_to contain(/class UserPolicy < ApplicationPolicy/) }
+    it { is_expected.to exist }
+    it { is_expected.to contain(/class UserPolicy < ApplicationPolicy/) }
   end
 end

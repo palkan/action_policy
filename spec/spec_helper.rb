@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+ENV["RAILS_ENV"] = "test"
+
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 
 require "action_policy"
@@ -8,11 +10,12 @@ begin
 rescue LoadError
 end
 
-require "ammeter"
-
 require_relative "../test/stubs/user"
 
+require "ammeter"
 require "action_policy/rspec"
+
+require File.expand_path("dummy/config/environment", __dir__)
 
 RSpec.configure do |config|
   config.mock_with :rspec
