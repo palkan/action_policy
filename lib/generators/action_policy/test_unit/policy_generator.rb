@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rails/generators"
+
 module TestUnit
   module Generators
     class PolicyGenerator < ::Rails::Generators::NamedBase

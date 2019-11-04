@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rails/generators"
+
 module ActionPolicy
   module Generators
     class PolicyGenerator < ::Rails::Generators::NamedBase
