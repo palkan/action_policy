@@ -47,6 +47,8 @@ class ApplicationPolicy < ActionPolicy::Base
 end
 ```
 
+This may be done with `rails generate action_policy:install` generator.
+
 Then write a policy for a resource. For example:
 
 ```ruby
@@ -63,6 +65,8 @@ class PostPolicy < ApplicationPolicy
   end
 end
 ```
+
+This may be done with `rails generate action_policy:policy Post` generator.
 
 Now you can easily add authorization to your Rails\* controller:
 

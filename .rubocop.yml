@@ -12,6 +12,7 @@ AllCops:
     - 'Gemfile'
     - 'vendor/**/*'
     - 'gemfiles/**/*'
+    - 'lib/generators/**/templates/**/*'
   DisplayCopNames: true
   TargetRubyVersion: 2.4
 
