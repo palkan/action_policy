@@ -12,6 +12,13 @@ class SubAuthorizeTestPolicy < AuthorizeTestPolicy
   authorize :role, allow_nil: true
 end
 
+class OptionalRoleTestPolicy
+  include ActionPolicy::Policy::Core
+  include ActionPolicy::Policy::Authorization
+
+  authorize :role, optional: true
+end
+
 class AuthorizationTest < Minitest::Test
   def test_target_is_missing
     e = assert_raises ActionPolicy::AuthorizationContextMissing do
@@ -47,6 +54,11 @@ class AuthorizationTest < Minitest::Test
   def test_context_allow_nil
     policy = SubAuthorizeTestPolicy.new(account: "EvilMartians", role: nil)
     assert_equal "EvilMartians", policy.account
+    assert_nil policy.role
+  end
+
+  def test_context_optional
+    policy = OptionalRoleTestPolicy.new
     assert_nil policy.role
   end
 end

@@ -49,11 +49,15 @@ module ActionPolicy
         @authorization_context = {}
 
         self.class.authorization_targets.each do |id, opts|
-          raise AuthorizationContextMissing, id unless params.key?(id)
+          if opts[:optional] == true
+            val = nil
+          else
+            raise AuthorizationContextMissing, id unless params.key?(id)
 
-          val = params.fetch(id)
+            val = params.fetch(id)
 
-          raise AuthorizationContextMissing, id if val.nil? && opts[:allow_nil] != true
+            raise AuthorizationContextMissing, id if val.nil? && opts[:allow_nil] != true
+          end
 
           authorization_context[id] = instance_variable_set("@#{id}", val)
         end

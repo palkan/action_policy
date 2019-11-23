@@ -19,6 +19,7 @@ end
 Now you must provide `account` during policy initialization. When authorization key is missing or equals to `nil`, `ActionPolicy::AuthorizationContextMissing` error is raised.
 
 **NOTE:** if you want to allow passing `nil` as `account` value, you must add `allow_nil: true` option to `authorize`.
+If you want to be able not to pass `account` at all, you must add `optional: true`
 
 To do that automatically in your `authorize!` and `allowed_to?` calls, you must also configure authorization context. For example, in your controller:
 

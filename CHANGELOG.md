@@ -9,6 +9,17 @@
 
   Adds `action_policy:install` and `action_policy:policy MODEL` Rails generators.
 
+- Optional authorization target. ([@somenugget][])
+
+  Allows making authorization context optional:
+  ```ruby
+  class OptionalRolePolicy < ActionPolicy::Base
+    authorize :role, optional: true
+  end
+
+  policy = OptionalRolePolicy.new
+  policy.role #=> nil
+  ```
 ## 0.3.2 (2019-05-26) 👶
 
 - Fixed thread-safety issues with scoping configs. ([@palkan][])
