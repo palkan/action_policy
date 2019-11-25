@@ -50,7 +50,7 @@ module ActionPolicy
 
         self.class.authorization_targets.each do |id, opts|
           if opts[:optional] == true
-            val = nil
+            val = params.fetch(id, nil)
           else
             raise AuthorizationContextMissing, id unless params.key?(id)
 

@@ -61,6 +61,11 @@ class AuthorizationTest < Minitest::Test
     policy = OptionalRoleTestPolicy.new
     assert_nil policy.role
   end
+
+  def test_context_optional_with_value
+    policy = OptionalRoleTestPolicy.new(role: "human")
+    assert_equal "human", policy.role
+  end
 end
 
 class ProxyAuthorizationToSubPoliciesTest < Minitest::Test
