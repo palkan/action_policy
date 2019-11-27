@@ -1,5 +1,7 @@
 ## master
 
+## 0.3.3 (2019-11-27)
+
 - Improve pretty print functionality. ([@palkan][])
 
   Colorize true/false values.
@@ -12,6 +14,7 @@
 - Optional authorization target. ([@somenugget][])
 
   Allows making authorization context optional:
+
   ```ruby
   class OptionalRolePolicy < ActionPolicy::Base
     authorize :role, optional: true
@@ -20,6 +23,7 @@
   policy = OptionalRolePolicy.new
   policy.role #=> nil
   ```
+
 ## 0.3.2 (2019-05-26) 👶
 
 - Fixed thread-safety issues with scoping configs. ([@palkan][])
