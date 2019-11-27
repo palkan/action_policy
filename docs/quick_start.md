@@ -34,9 +34,11 @@ class ApplicationPolicy < ActionPolicy::Base
 end
 ```
 
-You could use the following command to generate it.
+You could use the following command to generate it when using Rails:
 
-    $ rails generate action_policy:install
+```sh
+rails generate action_policy:install
+```
 
 **NOTE:** it is not necessary to inherit from `ActionPolicy::Base`; instead, you can [construct basic policy](custom_policy.md) choosing only the components you need.
 

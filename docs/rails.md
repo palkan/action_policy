@@ -6,6 +6,13 @@ In most cases, you do not have to do anything except writing policy files and ad
 
 **NOTE:** both controllers and channels extensions are built on top of the Action Policy [behaviour](./behaviour.md) mixin.
 
+## Generators
+
+Action Policy provides a couple of useful Rails generators:
+
+- `rails g action_policy:install` — adds `app/policies/application_policy.rb` file
+- `rails g action_policy:policy MODEL_NAME` — adds a policy file and a policy test file for a given model (also creates an `application_policy.rb` if it's missing)
+
 ## Controllers integration
 
 Action Policy assumes that you have a `current_user` method which specifies the current authenticated subject (`user`).
