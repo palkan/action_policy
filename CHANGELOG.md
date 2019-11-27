@@ -1,5 +1,7 @@
 ## master
 
+## 0.3.4 (2019-11-27)
+
 - Fix Rails generators. ([@palkan][])
 
   Only invoke install generator if `application_policy.rb` is missing.
