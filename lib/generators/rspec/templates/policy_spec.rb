@@ -1,6 +1,8 @@
-require '<%= File.exists?("spec/rails_helper.rb") ? "rails_helper" : "spec_helper" %>'
+require "<%= File.exists?('spec/rails_helper.rb') ? 'rails_helper' : 'spec_helper' %>"
 
 RSpec.describe <%= class_name %>Policy, type: :policy do
+  # See https://actionpolicy.evilmartians.io/#/testing?id=rspec-dsl
+  #
   # let(:user) { build_stubbed :user }
   # let(:record) { build_stubbed :post, draft: false }
   # let(:context) { {user: user} }

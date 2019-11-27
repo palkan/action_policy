@@ -1,5 +1,6 @@
-require 'test_helper'
+require "test_helper"
 
+# See https://actionpolicy.evilmartians.io/#/testing?id=testing-policies
 class <%= class_name %>PolicyTest < ActiveSupport::TestCase
   def test_index
   end

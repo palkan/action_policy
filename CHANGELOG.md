@@ -1,5 +1,10 @@
 ## master
 
+- Fix Rails generators. ([@palkan][])
+
+  Only invoke install generator if `application_policy.rb` is missing.
+  Fix hooking into test frameworks.
+
 ## 0.3.3 (2019-11-27)
 
 - Improve pretty print functionality. ([@palkan][])
