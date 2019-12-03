@@ -56,7 +56,7 @@ You can also specify all the usual options (such as `with`).
 
 There is also a `check?` method which is just an "alias"\* for `allowed_to?` added for better readability:
 
-```
+```ruby
 class PostPolicy < ApplicationPolicy
   def show?
     user.admin? || check?(:publicly_visible?)
