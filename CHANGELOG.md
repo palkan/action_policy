@@ -1,5 +1,13 @@
 ## master
 
+- Support composed matchers for authorization target testing. ([@palkan][])
+
+  Now you can write tests like this:
+
+  ```ruby
+  expect { subject }.to be_authorized_to(:show?, an_instance_of(User))
+  ```
+
 ## 0.3.4 (2019-11-27)
 
 - Fix Rails generators. ([@palkan][])

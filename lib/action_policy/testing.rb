@@ -15,7 +15,7 @@ module ActionPolicy
 
         def matches?(policy_class, actual_rule, target)
           policy_class == policy.class &&
-            target == policy.record &&
+            target === policy.record &&
             rule == actual_rule
         end
 

@@ -80,6 +80,13 @@ describe "ActionPolicy RSpec matchers" do
             .to be_authorized_to(:manage?, target).with(TestService::CustomPolicy)
         end
       end
+
+      context "with compose target matcher" do
+        specify do
+          expect { subject.talk("admin") }
+            .to be_authorized_to(:manage?, an_instance_of(User)).with(UserPolicy)
+        end
+      end
     end
 
     context "when authorization hasn't been performed" do

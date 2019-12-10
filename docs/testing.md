@@ -230,6 +230,12 @@ end
 
 If you omit `.with(PostPolicy)` then the inferred policy for the target (`post`) would be used.
 
+RSpec composed matchers are available as target:
+
+```ruby
+expect { subject }.to be_authorized_to(:show?, an_instance_of(Post))
+```
+
 ## Testing scoping
 
 Action Policy provides a way to test that a correct scoping has been applied during the code execution.
