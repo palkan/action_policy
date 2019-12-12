@@ -1,4 +1,11 @@
+# Change log
+
 ## master
+
+- Fix policy memoization with explicit context. ([@palkan][])
+
+  Explicit context (`authorize! context: {}`) wasn't considered during
+  policies memoization. Not this is fixed.
 
 - Support composed matchers for authorization target testing. ([@palkan][])
 

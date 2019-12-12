@@ -38,6 +38,8 @@ module ActionPolicy
       record = implicit_authorization_target! if record == :__undef__
       raise ArgumentError, "Record must be specified" if record.nil?
 
+      options[:context] && (options[:context] = authorization_context.merge(options[:context]))
+
       policy = policy_for(record: record, **options)
 
       Authorizer.call(policy, authorization_rule_for(policy, to))
@@ -49,6 +51,8 @@ module ActionPolicy
     def allowed_to?(rule, record = :__undef__, **options)
       record = implicit_authorization_target! if record == :__undef__
       raise ArgumentError, "Record must be specified" if record.nil?
+
+      options[:context] && (options[:context] = authorization_context.merge(options[:context]))
 
       policy = policy_for(record: record, **options)
 

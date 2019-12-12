@@ -37,9 +37,6 @@ module ActionPolicy
     #
     # NOTE: don't forget to clear thread cache with ActionPolicy::PerThreadCache.clear_all
     module ThreadMemoized
-      require "action_policy/ext/policy_cache_key"
-      using ActionPolicy::Ext::PolicyCacheKey
-
       class << self
         def prepended(base)
           base.prepend InstanceMethods
@@ -50,13 +47,12 @@ module ActionPolicy
 
       module InstanceMethods # :nodoc:
         def policy_for(record:, **opts)
-          __policy_thread_memoize__(record, opts) { super(record: record, **opts) }
+          __policy_thread_memoize__(record, **opts) { super(record: record, **opts) }
         end
       end
 
-      def __policy_thread_memoize__(record, with: nil, namespace: nil, **_opts)
-        record_key = record._policy_cache_key(use_object_id: true)
-        cache_key = "#{namespace}/#{with}/#{record_key}"
+      def __policy_thread_memoize__(record, **options)
+        cache_key = policy_for_cache_key(record: record, **options)
 
         ActionPolicy::PerThreadCache.fetch(cache_key) { yield }
       end

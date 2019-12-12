@@ -4,11 +4,13 @@ module ActionPolicy
   module Behaviours
     # Adds `policy_for` method
     module PolicyFor
+      require "action_policy/ext/policy_cache_key"
+      using ActionPolicy::Ext::PolicyCacheKey
+
       # Returns policy instance for the record.
-      def policy_for(record:, with: nil, namespace: nil, context: nil, **options)
-        namespace ||= authorization_namespace
-        policy_class = with || ::ActionPolicy.lookup(record, namespace: namespace, **options)
-        policy_class&.new(record, authorization_context.tap { |ctx| ctx.merge!(context) if context })
+      def policy_for(record:, with: nil, namespace: authorization_namespace, context: authorization_context, allow_nil: false)
+        policy_class = with || ::ActionPolicy.lookup(record, namespace: namespace, context: context, allow_nil: allow_nil)
+        policy_class&.new(record, context)
       end
 
       def authorization_context
@@ -40,6 +42,13 @@ module ActionPolicy
             "define the `implicit_authorization_target` method."
           ]
         )
+      end
+
+      def policy_for_cache_key(record:, with: nil, namespace: nil, context: authorization_context, **)
+        record_key = record._policy_cache_key(use_object_id: true)
+        context_key = context.values.map { |v| v._policy_cache_key(use_object_id: true) }.join(".")
+
+        "#{namespace}/#{with}/#{context_key}/#{record_key}"
       end
     end
   end

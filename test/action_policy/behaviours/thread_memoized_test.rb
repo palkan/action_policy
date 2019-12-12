@@ -43,7 +43,7 @@ class TestThreadMemoized < Minitest::Test
     authorize :user
 
     def initialize(name)
-      @user = User.new(name)
+      @user = CacheableUser.new(name)
     end
 
     def talk(user)
@@ -58,6 +58,10 @@ class TestThreadMemoized < Minitest::Test
 
     def talk?(user)
       allowed_to?(:talk?, user)
+    end
+
+    def talk_as?(user, current_user)
+      allowed_to?(:talk?, user, context: {user: current_user})
     end
   end
 
@@ -104,11 +108,10 @@ class TestThreadMemoized < Minitest::Test
     channel = ChatChannel.new("admin")
     assert channel.talk?(user)
 
-    # NOTE: we assume that context don't change within "request"
     channel_2 = ChatChannel.new("guest")
-    assert channel_2.talk?(user)
+    refute channel_2.talk?(user)
 
-    assert_equal 1, UserPolicy.policies.size
+    assert_equal 2, UserPolicy.policies.size
   end
 
   def test_different_threads
@@ -162,5 +165,24 @@ class TestThreadMemoized < Minitest::Test
 
     channel.talk(CacheableUser.new("guest"))
     assert_equal 1, UserPolicy.policies.size
+  end
+
+  def test_instance_cache_with_context
+    channel = ChatChannel.new("admin")
+    user = User.new("guest")
+
+    assert channel.talk?(user)
+    assert_equal 1, UserPolicy.policies.size
+
+    refute channel.talk_as?(user, user)
+    assert_equal 2, UserPolicy.policies.size
+
+    refute channel.talk_as?(user, user)
+    assert_equal 2, UserPolicy.policies.size
+
+    # Make sure explicit and implicit context are
+    # treated as the same context for policies
+    assert channel.talk_as?(user, channel.user)
+    assert_equal 2, UserPolicy.policies.size
   end
 end

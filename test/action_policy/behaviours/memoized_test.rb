@@ -59,6 +59,10 @@ class TestMemoized < Minitest::Test
     def talk?(user)
       allowed_to?(:talk?, user)
     end
+
+    def talk_as?(user, current_user)
+      allowed_to?(:talk?, user, context: {user: current_user})
+    end
   end
 
   def setup
@@ -111,5 +115,23 @@ class TestMemoized < Minitest::Test
 
     subject.talk(CacheableUser.new("guest"))
     assert_equal 1, UserPolicy.policies.size
+  end
+
+  def test_instance_cache_with_context
+    user = User.new("guest")
+
+    assert subject.talk?(user)
+    assert_equal 1, UserPolicy.policies.size
+
+    refute subject.talk_as?(user, user)
+    assert_equal 2, UserPolicy.policies.size
+
+    refute subject.talk_as?(user, user)
+    assert_equal 2, UserPolicy.policies.size
+
+    # Make sure explicit and implicit context are
+    # treated as the same context for policies
+    assert subject.talk_as?(user, subject.user)
+    assert_equal 2, UserPolicy.policies.size
   end
 end
