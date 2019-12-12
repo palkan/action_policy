@@ -168,7 +168,7 @@ module ActionPolicy
             check = pre_checks.find { |c| c.name == name }
             raise "Pre-check already defined: #{name}" unless check.nil?
 
-            pre_checks << Check.new(self, name, options)
+            pre_checks << Check.new(self, name, **options)
           end
         end
 
@@ -181,7 +181,7 @@ module ActionPolicy
             next pre_checks.delete(check) if options.empty?
 
             # otherwise duplicate and apply skip options
-            pre_checks[pre_checks.index(check)] = check.dup.tap { |c| c.skip! options }
+            pre_checks[pre_checks.index(check)] = check.dup.tap { |c| c.skip!(**options) }
           end
         end
 

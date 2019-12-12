@@ -13,18 +13,18 @@ module ActionPolicy
 
       ["", "f", "x"].each do |prefix|
         class_eval <<~CODE, __FILE__, __LINE__ + 1
-          def #{prefix}succeed(msg = "succeeds", *args, **kwargs)
+          def #{prefix}succeed(msg = "succeeds", *args, **kwargs, &block)
             the_caller = caller
             #{prefix}context(msg, *args, **kwargs) do
-              instance_eval(&Proc.new) if block_given?
+              instance_eval(&block) if block_given?
               find_and_eval_shared("examples", "action_policy:policy_rule_example", the_caller.first, true, the_caller)
             end
           end
 
-          def #{prefix}failed(msg = "fails", *args, **kwargs)
+          def #{prefix}failed(msg = "fails", *args, **kwargs, &block)
             the_caller = caller
             #{prefix}context(msg, *args, **kwargs) do
-              instance_eval(&Proc.new) if block_given?
+              instance_eval(&block) if block_given?
               find_and_eval_shared("examples", "action_policy:policy_rule_example", the_caller.first, false, the_caller)
             end
           end

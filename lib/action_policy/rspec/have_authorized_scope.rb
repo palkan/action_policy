@@ -44,8 +44,8 @@ module ActionPolicy
         self
       end
 
-      def with_target
-        @target_expectations = Proc.new
+      def with_target(&block)
+        @target_expectations = block
         self
       end
 

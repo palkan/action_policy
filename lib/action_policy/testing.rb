@@ -107,8 +107,8 @@ module ActionPolicy
         super
       end
 
-      def scopify(*args)
-        AuthorizeTracker.track_scope(*args)
+      def scopify(*args, **kwargs)
+        AuthorizeTracker.track_scope(*args, **kwargs)
         super
       end
     end

@@ -45,7 +45,7 @@ module ActionPolicy
 
       def call(record, **opts)
         chain.each do |probe|
-          val = probe.call(record, opts)
+          val = probe.call(record, **opts)
           return val unless val.nil?
         end
         nil
@@ -88,12 +88,12 @@ module ActionPolicy
       !ENV["RACK_ENV"].nil? ? ENV["RACK_ENV"] == "production" : true
 
     # By self `policy_class` method
-    INSTANCE_POLICY_CLASS = ->(record, _) {
+    INSTANCE_POLICY_CLASS = ->(record, **) {
       record.policy_class if record.respond_to?(:policy_class)
     }
 
     # By record's class `policy_class` method
-    CLASS_POLICY_CLASS = ->(record, _) {
+    CLASS_POLICY_CLASS = ->(record, **) {
       record.class.policy_class if record.class.respond_to?(:policy_class)
     }
 
@@ -106,7 +106,7 @@ module ActionPolicy
     }
 
     # Infer from class name
-    INFER_FROM_CLASS = ->(record, _) {
+    INFER_FROM_CLASS = ->(record, **) {
       policy_class_name_for(record).safe_constantize
     }
 

@@ -28,7 +28,7 @@ module QueriesAssertions
     assert_equal num, queries.size, queries.size.zero? ? "No queries were made" : "The following queries were made: #{queries.join(", ")}"
   end
 
-  def assert_no_queries(pattern = nil)
-    assert_queries 0, pattern, &Proc.new
+  def assert_no_queries(pattern = nil, &block)
+    assert_queries 0, pattern, &block
   end
 end

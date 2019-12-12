@@ -66,7 +66,7 @@ module ActionPolicy
       attr_reader :record, :result
 
       # NEXT_RELEASE: deprecate `record` arg, migrate to `record: nil`
-      def initialize(record = nil, _opts = nil)
+      def initialize(record = nil, *)
         @record = record
       end
 

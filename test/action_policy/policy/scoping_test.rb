@@ -114,7 +114,7 @@ class TestScopingPolicy < Minitest::Test
       policy.apply_scope(users, type: :data, name: :with_options)
     end
 
-    assert_includes e.message, "missing keyword: with_admins"
+    assert_match %r{missing keyword: :?with_admins}, e.message
   end
 
   def test_scope_options
