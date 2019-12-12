@@ -179,7 +179,7 @@ module ActionPolicy
 
       def allowed_to?(rule, record = :__undef__, **options)
         res =
-          if record == :__undef__
+          if (record == :__undef__ || record == self.record) && options.empty?
             policy = self
             with_clean_result { apply(rule) }
           else
