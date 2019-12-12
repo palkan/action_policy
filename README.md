@@ -15,9 +15,11 @@ Composable. Extensible. Performant.
 
 ## Resources
 
-- Seattle.rb, 2019 "A Denial!" talk [[slides](https://speakerdeck.com/palkan/seattle-dot-rb-2019-a-denial)]
+- RubyRussia, 2019 "Welcome, or access denied?" talk ([video](https://www.youtube.com/watch?v=y15a2g7v8i0) [RU], [slides](https://speakerdeck.com/palkan/rubyrussia-2019-welcome-or-access-denied))
 
-- RailsConf, 2018 "Access Denied" talk [[video](https://www.youtube.com/watch?v=NVwx0DARDis), [slides](https://speakerdeck.com/palkan/railsconf-2018-access-denied-the-missing-guide-to-authorization-in-rails)]
+- Seattle.rb, 2019 "A Denial!" talk ([slides](https://speakerdeck.com/palkan/seattle-dot-rb-2019-a-denial))
+
+- RailsConf, 2018 "Access Denied" talk ([video](https://www.youtube.com/watch?v=NVwx0DARDis), [slides](https://speakerdeck.com/palkan/railsconf-2018-access-denied-the-missing-guide-to-authorization-in-rails))
 
 
 ## Integrations
@@ -29,7 +31,7 @@ Composable. Extensible. Performant.
 Add this line to your application's `Gemfile`:
 
 ```ruby
-gem "action_policy", "~> 0.3.0"
+gem "action_policy", "~> 0.4.0"
 ```
 
 And then execute:

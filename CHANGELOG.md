@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.4.0 (2019-12-11)
+
 - Add `action_policy.init` instrumentation event. ([@palkan][])
 
   Triggered every time a new policy object is initialized.
