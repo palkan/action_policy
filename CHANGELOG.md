@@ -2,6 +2,10 @@
 
 ## master
 
+- Add `action_policy.init` instrumentation event. ([@palkan][])
+
+  Triggered every time a new policy object is initialized.
+
 - Fix policy memoization with explicit context. ([@palkan][])
 
   Explicit context (`authorize! context: {}`) wasn't considered during

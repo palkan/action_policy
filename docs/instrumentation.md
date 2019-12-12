@@ -47,6 +47,17 @@ permitted to do that).
 
 The `action_policy.apply_rule` might have a large number of failures, 'cause it also tracks the usage of non-raising applications (i.e. `allowed_to?`).
 
+### `action_policy.init`
+
+This event is triggered every time a new policy object is initialized.
+
+The event contains the following information:
+
+- `:policy` – policy class name.
+
+This event is useful if you want to track the number of initialized policies per _action_ (for example, when you want to ensure that
+the [memoization](caching.md) works as expected).
+
 ## Turn off instrumentation
 
 Instrumentation is enabled by default. To turn it off add to your configuration:

@@ -62,6 +62,9 @@ class TestRailsInstrumentation < Minitest::Test
   def test_instrument_apply
     policy = TestPolicy.new false
 
+    # drop init event
+    events.shift
+
     refute policy.apply(:show?)
 
     assert_equal 1, events.size
@@ -77,6 +80,9 @@ class TestRailsInstrumentation < Minitest::Test
 
   def test_instrument_cached_apply
     policy = TestPolicy.new true
+
+    # drop init event
+    events.shift
 
     assert policy.apply(:manage?)
 
@@ -102,7 +108,11 @@ class TestRailsInstrumentation < Minitest::Test
     service = Service.new
 
     assert_equal "OK", service.call
-    assert_equal 2, events.size
+
+    assert_equal 3, events.size
+
+    # drop init event
+    events.shift
 
     event, data = events.shift
 
@@ -122,7 +132,10 @@ class TestRailsInstrumentation < Minitest::Test
 
     refute service.visible?(false)
 
-    assert_equal 1, events.size
+    assert_equal 2, events.size
+
+    # drop init event
+    events.shift
 
     event, data = events.shift
 
@@ -132,5 +145,15 @@ class TestRailsInstrumentation < Minitest::Test
     assert_equal "show?", data[:rule]
     refute data[:value]
     refute data[:cached]
+  end
+
+  def test_instrument_initialize
+    TestPolicy.new true
+    assert_equal 1, events.size
+
+    event, data = events.shift
+
+    assert_equal "action_policy.init", event
+    assert_equal TestPolicy.name, data[:policy]
   end
 end
