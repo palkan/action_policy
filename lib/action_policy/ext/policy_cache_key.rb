@@ -13,6 +13,7 @@ module ActionPolicy
       module ObjectExt
         def _policy_cache_key(use_object_id: false)
           return policy_cache_key if respond_to?(:policy_cache_key)
+          return cache_key_with_version if respond_to?(:cache_key_with_version)
           return cache_key if respond_to?(:cache_key)
 
           return object_id if use_object_id == true
