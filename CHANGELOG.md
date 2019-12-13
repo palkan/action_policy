@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.4.1 (2019-12-13)
+
+- Fix regression introduced in 0.4.0 which broke testing Class targets. ([@palkan][])
+
 ## 0.4.0 (2019-12-11)
 
 - Add `action_policy.init` instrumentation event. ([@palkan][])
