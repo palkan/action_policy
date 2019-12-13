@@ -2,7 +2,7 @@
 
 ## master
 
-## 0.4.1 (2019-12-13)
+## 0.4.2 (2019-12-13)
 
 - Fix regression introduced in 0.4.0 which broke testing Class targets. ([@palkan][])
 

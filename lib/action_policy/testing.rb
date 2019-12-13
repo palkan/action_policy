@@ -3,17 +3,6 @@
 module ActionPolicy
   # Testing utils
   module Testing
-    # Hack to match both classes and composed matchers:
-    #  be_authorized_to(:create?, User)
-    #  be_authorized_to(:maanage?, an_instance_of(User))
-    using(Module.new do
-      refine Module do
-        def ===(other)
-          self == other
-        end
-      end
-    end)
-
     # Collects all Authorizer calls
     module AuthorizeTracker
       class Call # :nodoc:
@@ -26,7 +15,7 @@ module ActionPolicy
 
         def matches?(policy_class, actual_rule, target)
           policy_class == policy.class &&
-            target === policy.record &&
+            (target.is_a?(Class) ? target == policy.record : target === policy.record) &&
             rule == actual_rule
         end
 
