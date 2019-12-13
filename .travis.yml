@@ -18,11 +18,11 @@ matrix:
       gemfile: gemfiles/railsmaster.gemfile
     - rvm: jruby-9.2.8.0
       gemfile: gemfiles/jruby.gemfile
-    - rvm: 2.6.0
+    - rvm: 2.6.5
       gemfile: gemfiles/rails6.gemfile
     - rvm: 2.5.3
       gemfile: Gemfile
-    - rvm: 2.4.3
+    - rvm: 2.5.3
       gemfile: gemfiles/rails42.gemfile
   allow_failures:
     - rvm: ruby-head
