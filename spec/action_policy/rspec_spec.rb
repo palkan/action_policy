@@ -35,6 +35,10 @@ class TestService # :nodoc:
     "The Truth is #{text}"
   end
 
+  def create?
+    authorize! User, to: :create?
+  end
+
   def talk?(name)
     user = User.new(name)
     allowed_to?(:talk?, user)
@@ -85,6 +89,13 @@ describe "ActionPolicy RSpec matchers" do
         specify do
           expect { subject.talk("admin") }
             .to be_authorized_to(:manage?, an_instance_of(User)).with(UserPolicy)
+        end
+      end
+
+      context "when target is a class" do
+        specify do
+          expect { subject.create? }
+            .to be_authorized_to(:create?, User).with(UserPolicy)
         end
       end
     end
