@@ -30,9 +30,20 @@ module ActionPolicy # :nodoc:
         ActionPolicy::CACHE_NAMESPACE
       end
 
-      def cache_key(rule)
-        "#{cache_namespace}/#{context_cache_key}/" \
-        "#{record._policy_cache_key}/#{self.class.name}/#{rule}"
+      def cache_key(*parts)
+        [
+          cache_namespace,
+          *parts
+        ].map { |part| part._policy_cache_key }.join("/")
+      end
+
+      def rule_cache_key(rule)
+        cache_key(
+          context_cache_key,
+          record,
+          self.class,
+          rule
+        )
       end
 
       def context_cache_key
@@ -41,7 +52,7 @@ module ActionPolicy # :nodoc:
 
       def apply_with_cache(rule)
         options = self.class.cached_rules.fetch(rule)
-        key = cache_key(rule)
+        key = rule_cache_key(rule)
 
         ActionPolicy.cache_store.then do |store|
           @result = store.read(key)
@@ -60,6 +71,17 @@ module ActionPolicy # :nodoc:
           !self.class.cached_rules.key?(rule)
 
         apply_with_cache(rule) { super }
+      end
+
+      def cache(*parts, **options)
+        key = cache_key(*parts)
+        ActionPolicy.cache_store.then do |store|
+          res = store.read(key)
+          next res unless res.nil?
+          res = yield
+          store.write(key, res, **options)
+          res
+        end
       end
 
       module ClassMethods # :nodoc:

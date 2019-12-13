@@ -32,7 +32,7 @@ class TestPolicyCacheKey < Minitest::Test
   def test_object_id_fallback
     obj = Base.new
 
-    assert_equal obj.object_id, obj._policy_cache_key(use_object_id: true)
+    assert_equal obj.object_id.to_s, obj._policy_cache_key(use_object_id: true)
   end
 
   def test_raise_without_fallback

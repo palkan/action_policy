@@ -2,6 +2,11 @@
 
 ## master
 
+- Add `#cache(*parts, **options) { ... }` method. ([@palkan][])
+
+  Allows you to cache anything in policy classes using the Action Policy
+  cache key generation mechanism.
+
 - Handle versioned Rails cache keys. ([@palkan][])
 
   Use `#cache_with_version` as a cache key if defined.

@@ -166,7 +166,7 @@ Cache store must provide at least a `#read(key)` and `write(key, value, **option
 
 **NOTE:** cache store also should take care of serialiation/deserialization since the `value` is `ExecutionResult` instance (which contains also some additional information, e.g. failure reasons). Rails cache store supports serialization/deserialization out-of-the-box.
 
-By default, Action Policy builds a cache key using the following scheme:
+By default, Action Policy builds a cache key using the following scheme (defined in `#rule_cache_key(rule)` method):
 
 ```ruby
 "#{cache_namespace}/#{context_cache_key}" \
@@ -175,11 +175,29 @@ By default, Action Policy builds a cache key using the following scheme:
 
 Where `cache_namespace` is equal to `"acp:#{MAJOR_GEM_VERSION}.#{MINOR_GEM_VERSION}"`, and `context_cache_key` is a concatenation of all authorization contexts cache keys (in the same order as they are defined in the policy class).
 
-If any object does not respond to `#policy_cache_key`, we fallback to `#cache_key`. If `#cache_key` is not defined, an `ArgumentError` is raised.
+If any object does not respond to `#policy_cache_key`, we fallback to `#cache_key` (or `#cache_key_with_version` for modern Rails versions). If `#cache_key` is not defined, an `ArgumentError` is raised.
 
 **NOTE:** if your `#cache_key` method is performance-heavy (e.g. like the `ActiveRecord::Relation`'s one), we recommend to explicitly define the `#policy_cache_key` method on the corresponding class to avoid unnecessary load. See also [action_policy#55](https://github.com/palkan/action_policy/issues/55).
 
-You can define your own `cache_key` / `cache_namespace` / `context_cache_key` methods for policy class to override this logic.
+You can define your own `rule_cache_key` / `cache_namespace` / `context_cache_key` methods for policy class to override this logic.
+
+You can also use the `#cache` instance method to cache arbitrary values in you policies:
+
+```ruby
+class ApplicationPolicy < ActionPolicy::Base
+  # Suppose that a user has many roles each having an array of permissions
+  def permissions
+    cache(user) { user.roles.pluck(:permissions).flatten.uniq }
+  end
+
+  # You can pass multiple cache key "parts"
+  def account_permissions(account)
+    cache(user, account) { user.account_roles.where(account: account).pluck(:permissions).flatten.uniq }
+  end
+end
+```
+
+**NOTE:** `#cache` method uses the same cache key generation logic as rules caching (described above).
 
 #### Invalidation
 

@@ -16,7 +16,7 @@ module ActionPolicy
           return cache_key_with_version if respond_to?(:cache_key_with_version)
           return cache_key if respond_to?(:cache_key)
 
-          return object_id if use_object_id == true
+          return object_id.to_s if use_object_id == true
 
           raise ArgumentError, "object is not cacheable"
         end
@@ -84,6 +84,12 @@ module ActionPolicy
       refine Time do
         def _policy_cache_key(*)
           to_s
+        end
+      end
+
+      refine Module do
+        def _policy_cache_key(*)
+          name
         end
       end
     end

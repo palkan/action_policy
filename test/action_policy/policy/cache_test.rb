@@ -14,41 +14,50 @@ class TestCache < Minitest::Test
     self.identifier = :test
 
     class << self
-      attr_accessor :managed_count, :shown_count, :saved_count
+      attr_accessor :managed_count, :shown_count, :saved_count, :custom_count
 
       def reset
         @managed_count = 0
         @shown_count = 0
         @saved_count = 0
+        @custom_count = 0
       end
     end
+
+    reset
 
     authorize :user
 
     cache :manage?, :save?
 
     def manage?
-      self.class.managed_count ||= 0
       self.class.managed_count += 1
 
       user.admin? && !record.admin?
     end
 
     def show?
-      self.class.shown_count ||= 0
       self.class.shown_count += 1
 
       user.admin? || !record.admin?
     end
 
     def save?
-      self.class.saved_count ||= 0
       self.class.saved_count += 1
       allowed_to?(:manage?)
+    end
+
+    def create?
+      cache(user, record, :custom) do
+        self.class.custom_count += 1
+        true
+      end
     end
   end
 
   class MultipleContextPolicy < TestPolicy
+    reset
+
     authorize :account
 
     cache :show?
@@ -101,6 +110,23 @@ class TestCache < Minitest::Test
 
     assert_equal 1, TestPolicy.managed_count
     assert_equal 3, TestPolicy.shown_count
+  end
+
+  def test_custom_cache
+    user = CacheableUser.new("guest")
+
+    policy = TestPolicy.new nil, user: user
+
+    assert policy.apply(:create?)
+    assert policy.apply(:create?)
+
+    assert_equal 1, TestPolicy.custom_count
+
+    policy_2 = TestPolicy.new nil, user: user
+
+    assert policy_2.apply(:create?)
+
+    assert_equal 1, TestPolicy.custom_count
   end
 
   def test_cache_with_reasons
