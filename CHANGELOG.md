@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.4.3 (2019-12-14)
+
 - Add `#cache(*parts, **options) { ... }` method. ([@palkan][])
 
   Allows you to cache anything in policy classes using the Action Policy
