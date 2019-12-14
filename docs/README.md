@@ -65,6 +65,8 @@ Learn more about the motivation behind the Action Policy and its features by wat
 
 ## Resources
 
+- RubyRussia, 2019 "Welcome, or access denied?" talk ([video](https://www.youtube.com/watch?v=y15a2g7v8i0) [RU], [slides](https://speakerdeck.com/palkan/rubyrussia-2019-welcome-or-access-denied))
+
 - Seattle.rb, 2019 "A Denial!" talk [[slides](https://speakerdeck.com/palkan/seattle-dot-rb-2019-a-denial)]
 
 - RailsConf, 2018 "Access Denied" talk [[video](https://www.youtube.com/watch?v=NVwx0DARDis), [slides](https://speakerdeck.com/palkan/railsconf-2018-access-denied-the-missing-guide-to-authorization-in-rails)]
