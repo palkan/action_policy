@@ -2,6 +2,17 @@
 
 ## master
 
+- Add `from_record` option to `Policy.authorize`. ([@palkan][])
+
+  This option allows you to _tell_ the policy to infer the context
+  from the record being authorized (instead of explicitly setting it):
+
+  ```ruby
+  authorize :course, from_record: ->(record) { record.task.course }
+  # or
+  authorize :course, from_record: true #=> == ->(record) { record.course }
+  ```
+
 - Add `#cache(*parts, **options) { ... }` method. ([@palkan][])
 
   Allows you to cache anything in policy classes using the Action Policy

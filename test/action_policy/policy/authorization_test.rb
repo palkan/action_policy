@@ -99,3 +99,67 @@ class ProxyAuthorizationToSubPoliciesTest < Minitest::Test
     assert policy.apply(:manage?)
   end
 end
+
+class FromRecordAuthorizationTest < Minitest::Test
+  class User < ::User
+    attr_accessor :account
+  end
+
+  class TestPolicy
+    include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::Authorization
+
+    authorize :user
+    authorize :account, from_record: true
+    authorize :type, from_record: ->(record) { record.account.type }
+  end
+
+  def setup
+    @user = User.new("admin")
+    @account = Account.new("test")
+    @record = User.new("guest")
+    @record.account = @account
+  end
+
+  attr_reader :user, :account, :record
+
+  def test_delegation
+    policy = TestPolicy.new(record, user: user)
+
+    assert_equal account, policy.account
+  end
+
+  def test_lambda
+    policy = TestPolicy.new(record, user: user)
+
+    assert_equal "test", policy.type
+  end
+
+  def test_class_target
+    policy = TestPolicy.new(User, user: user, account: account, type: "missing")
+
+    assert_equal "missing", policy.type
+    assert_equal account, policy.account
+  end
+
+  def test_class_target_missing_context
+    e = assert_raises ActionPolicy::AuthorizationContextMissing do
+      TestPolicy.new(User, user: user, account: account)
+    end
+
+    assert_equal "Missing policy authorization context: type", e.message
+
+    e = assert_raises ActionPolicy::AuthorizationContextMissing do
+      TestPolicy.new(User, user: user, type: "missing")
+    end
+
+    assert_equal "Missing policy authorization context: account", e.message
+  end
+
+  def test_explicit_context
+    policy = TestPolicy.new(record, user: user, type: "not_good", account: Account.new("fake"))
+
+    assert_equal "test", policy.type
+    assert_equal account, policy.account
+  end
+end

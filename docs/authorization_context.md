@@ -74,7 +74,6 @@ end
 
 That means that **all the policies that could be used together MUST share the same set of authorization contexts** (or at least the _parent_ policies contexts must be subsets of the nested policies contexts).
 
-
 ## Explicit context
 
 You can override the _implicit_ authorization context (generated with `authorize` method) in-place
@@ -90,3 +89,68 @@ end
 
 **NOTE:** the explictly provided context is merged with the implicit one (i.e. you can specify
 only the keys you want to override).
+
+## Setting context from the record being authorized
+
+When the record being authorized already contains the information about the context, it could make sense to not provide it from the [behaviour](behaviour.md) but infer from the record instead.
+
+For that, you can use `from_record` option in the policy's `authorize` method:
+
+```ruby
+class Task < ApplicationRecord
+  belongs_to :course
+end
+
+class TaskPolicy < ApplicationPolicy
+  authorize :course, from_record: true
+
+  def create?
+    course.owner_id == user.id
+  end
+
+  def manage?
+    course.moderators.where(user: user).exists?
+  end
+end
+```
+
+Now you don't have to provide `course` context when calling `manage?` rule:
+
+```ruby
+class TasksController < ApplicationController
+  # only configure `user` context
+  authorize :user, through: :current_user
+
+  def edit
+    authorize! task, to: :manage?
+    # ...
+  end
+end
+```
+
+However, when the record is a Class (or more precicely, Module), you must provide the context:
+
+```ruby
+def create
+  authorize! to: :create?, context: {course: @course}
+end
+
+```
+
+**NOTE:** when you infer authorization context from the record, explicitly passed context is ignored:
+
+```ruby
+def edit
+  # the policy will use `task.course` as the context, not `another_course`
+  authorize! task, to: :manage?, context: {course: another_course}
+  # ...
+end
+```
+
+You can also use procs as `from_record` values for more flexibility:
+
+```ruby
+class SubmissionPolicy < ApplicationPolicy
+  authorize :course, from_record: ->(record) { record.task.course }
+end
+```
