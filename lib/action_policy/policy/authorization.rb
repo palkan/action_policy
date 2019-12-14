@@ -43,21 +43,17 @@ module ActionPolicy
 
       attr_reader :authorization_context
 
-      def initialize(*args, **params)
-        super(*args)
+      def initialize(record = nil, **params)
+        super(record)
 
         @authorization_context = {}
 
         self.class.authorization_targets.each do |id, opts|
-          if opts[:optional] == true
-            val = params.fetch(id, nil)
-          else
-            raise AuthorizationContextMissing, id unless params.key?(id)
+          raise AuthorizationContextMissing, id unless params.key?(id) || opts[:optional]
 
-            val = params.fetch(id)
+          val = params.fetch(id, nil)
 
-            raise AuthorizationContextMissing, id if val.nil? && opts[:allow_nil] != true
-          end
+          raise AuthorizationContextMissing, id if val.nil? && opts[:allow_nil] != true
 
           authorization_context[id] = instance_variable_set("@#{id}", val)
         end
@@ -66,9 +62,9 @@ module ActionPolicy
       end
 
       module ClassMethods # :nodoc:
-        def authorize(*ids, **opts)
+        def authorize(*ids, allow_nil: false, optional: false)
           ids.each do |id|
-            authorization_targets[id] = opts
+            authorization_targets[id] = {allow_nil: allow_nil || optional, optional: optional}
           end
 
           attr_reader(*ids)
