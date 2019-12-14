@@ -24,12 +24,18 @@ ActiveRecord::Schema.define do
   end
 end
 
+ActiveRecord::Base.cache_versioning = true if ActiveRecord::Base.respond_to?(:cache_versioning)
+
 module AR
   class User < ActiveRecord::Base
     has_many :posts, foreign_key: :user_id, class_name: "AR::Post"
 
     def self.policy_name
       "UserPolicy"
+    end
+
+    def admin?
+      role == "admin"
     end
   end
 

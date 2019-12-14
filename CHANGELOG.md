@@ -2,6 +2,15 @@
 
 ## master
 
+- Add `#cache(*parts, **options) { ... }` method. ([@palkan][])
+
+  Allows you to cache anything in policy classes using the Action Policy
+  cache key generation mechanism.
+
+- Handle versioned Rails cache keys. ([@palkan][])
+
+  Use `#cache_with_version` as a cache key if defined.
+
 ## 0.4.2 (2019-12-13)
 
 - Fix regression introduced in 0.4.0 which broke testing Class targets. ([@palkan][])

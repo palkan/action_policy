@@ -13,18 +13,14 @@ module ActionPolicy
       module ObjectExt
         def _policy_cache_key(use_object_id: false)
           return policy_cache_key if respond_to?(:policy_cache_key)
+          return cache_key_with_version if respond_to?(:cache_key_with_version)
           return cache_key if respond_to?(:cache_key)
 
-          return object_id if use_object_id == true
+          return object_id.to_s if use_object_id == true
 
           raise ArgumentError, "object is not cacheable"
         end
       end
-
-      # JRuby doesn't support _global_ modules refinements (see https://github.com/jruby/jruby/issues/5220)
-      # Fallback to monkey-patching.
-      # TODO: remove after 9.2.7.0 (See https://github.com/jruby/jruby/pull/5627)
-      ::Object.include(ObjectExt) if RUBY_PLATFORM =~ /java/i
 
       refine Object do
         include ObjectExt
@@ -83,6 +79,12 @@ module ActionPolicy
       refine Time do
         def _policy_cache_key(*)
           to_s
+        end
+      end
+
+      refine Module do
+        def _policy_cache_key(*)
+          name
         end
       end
     end
