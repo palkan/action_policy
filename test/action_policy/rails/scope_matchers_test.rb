@@ -154,6 +154,56 @@ class TestRailsScopeMatchers < ActionController::TestCase
   end
 end
 
+# See https://github.com/palkan/action_policy/issues/101
+class TestRelationMutability < ActionController::TestCase
+  class UserPolicy < ActionPolicy::Base
+    authorize :user
+
+    relation_scope { |scope| scope }
+  end
+
+  class UsersController < ActionController::Base
+    authorize :user, through: :current_user
+
+    def index
+      users = authorized_scope(AR::User.all)
+      users.order!(name: :asc)
+      render json: users
+    end
+
+    private
+
+    def current_user
+      @current_user ||= AR::User.find(params[:user_id])
+    end
+  end
+
+  tests UsersController
+
+  attr_reader :admin, :guest
+
+  def setup
+    ActiveRecord::Base.connection.begin_transaction(joinable: false)
+    @guest = AR::User.create!(name: "Jack")
+    @admin = AR::User.create!(name: "John", role: "admin")
+  end
+
+  def teardown
+    ActiveRecord::Base.connection.rollback_transaction
+  end
+
+  def json_body
+    @json_body ||= JSON.parse(response.body)
+  end
+
+  def test_do_not_raise_immutable_relation
+    get :index, params: {user_id: admin.id}
+
+    assert_equal 2, json_body.size
+    assert_equal "John", json_body.last["name"]
+  end
+end
+
 class TestRailsScopeMatchersWithoutImplicitTarget < ActionController::TestCase
   class UserPolicy < ActionPolicy::Base
     authorize :user
