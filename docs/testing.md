@@ -110,7 +110,7 @@ OR
 
 **NOTE:** the DSL is included only to example with the tag `type: :policy` or in the `spec/policies` folder. If you want to add this DSL to other examples, add `include ActionPolicy::RSpec::PolicyExampleGroup`.
 
-### Testing scopes
+### Testing relation scopes
 
 There is no single rule on how to test scopes, 'cause it dependes on the _nature_ of the scope.
 
@@ -151,6 +151,35 @@ describe PostPolicy do
       before { user.update!(banned: true) }
 
       it { is_expected.to be_empty }
+    end
+  end
+end
+```
+
+### Testing params scopes
+
+Here's an example of RSpec tests for Action Controller parameters scoping rules:
+
+```ruby
+describe PostPolicy do
+  describe "params scope" do
+    let(:user) { build_stubbed :user }
+    let(:context) { {user: user} }
+
+    let(:params) { {name: "a", password: "b"} }
+    let(:target) { ActionController::Parameters.new(params) }
+
+    # it's easier to asses the hash representation, not the AC::Params object
+    subject { policy.apply_scope(target, type: :action_controller_params).to_h }
+
+    context "as user" do
+      it { is_expected.to eq({name: "a"}) }
+    end
+
+    context "as manager" do
+      before { user.update!(role: :manager) }
+
+      it { is_expected.to eq({name: "a", password: "b"})  }
     end
   end
 end
