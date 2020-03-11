@@ -360,3 +360,30 @@ expect { subject }.to have_authorized_scope(:scope)
     expect(target).to eq(User.all)
   }
 ```
+
+
+## Testing views
+
+When you test views that call policies methods as `allowed_to?`, your may have `Missing policy authorization context: user` error.
+You may need to stub `current_user` to resolve the issue.
+
+Consider an RSpec example:
+
+```ruby
+RSpec.describe "users/index.html.slim", type: :view do
+  let(:user) { build_stubbed :user }
+  let(:users) { create_list(:user, 2) }
+
+  before do
+    allow(controller).to receive(:current_user).and_return(user)
+
+    assign :users, users
+    render
+  end
+
+  describe "displays user#index correctly" do
+    it { expect(rendered).to have_link(users.first.email, href: edit_user_path(users.first)) }
+  end
+end
+```
+
