@@ -110,7 +110,7 @@ OR
 
 **NOTE:** the DSL is included only to example with the tag `type: :policy` or in the `spec/policies` folder. If you want to add this DSL to other examples, add `include ActionPolicy::RSpec::PolicyExampleGroup`.
 
-### Testing relation scopes
+#### Active Record relation example
 
 There is no single rule on how to test scopes, 'cause it dependes on the _nature_ of the scope.
 
@@ -156,7 +156,7 @@ describe PostPolicy do
 end
 ```
 
-### Testing params scopes
+#### Action Controller params example
 
 Here's an example of RSpec tests for Action Controller parameters scoping rules:
 
