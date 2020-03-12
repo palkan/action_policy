@@ -2,7 +2,7 @@
 [![Build Status](https://travis-ci.org/palkan/action_policy.svg?branch=master)](https://travis-ci.org/palkan/action_policy)
 [![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)](https://actionpolicy.evilmartians.io)
 
-# ActionPolicy
+# Action Policy
 
 Authorization framework for Ruby and Rails applications.
 
@@ -121,8 +121,3 @@ Bug reports and pull requests are welcome on GitHub at https://github.com/palkan
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
 [Documentation]: http://actionpolicy.evilmartians.io
-
-## Security Contact
-
-To report a security vulnerability, please use the [Tidelift security contact](https://tidelift.com/security). Tidelift will coordinate the fix and disclosure.
-
