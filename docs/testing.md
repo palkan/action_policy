@@ -112,6 +112,8 @@ OR
 
 ### Testing scopes
 
+#### Active Record relation example
+
 There is no single rule on how to test scopes, 'cause it dependes on the _nature_ of the scope.
 
 Here's an example of RSpec tests for Active Record scoping rules:
@@ -151,6 +153,35 @@ describe PostPolicy do
       before { user.update!(banned: true) }
 
       it { is_expected.to be_empty }
+    end
+  end
+end
+```
+
+#### Action Controller params example
+
+Here's an example of RSpec tests for Action Controller parameters scoping rules:
+
+```ruby
+describe PostPolicy do
+  describe "params scope" do
+    let(:user) { build_stubbed :user }
+    let(:context) { {user: user} }
+
+    let(:params) { {name: "a", password: "b"} }
+    let(:target) { ActionController::Parameters.new(params) }
+
+    # it's easier to asses the hash representation, not the AC::Params object
+    subject { policy.apply_scope(target, type: :action_controller_params).to_h }
+
+    context "as user" do
+      it { is_expected.to eq({name: "a"}) }
+    end
+
+    context "as manager" do
+      before { user.update!(role: :manager) }
+
+      it { is_expected.to eq({name: "a", password: "b"}) }
     end
   end
 end
@@ -330,4 +361,30 @@ expect { subject }.to have_authorized_scope(:scope)
   .with_target { |target|
     expect(target).to eq(User.all)
   }
+```
+
+
+## Testing views
+
+When you test views that call policies methods as `allowed_to?`, your may have `Missing policy authorization context: user` error.
+You may need to stub `current_user` to resolve the issue.
+
+Consider an RSpec example:
+
+```ruby
+describe "users/index.html.slim" do
+  let(:user) { build_stubbed :user }
+  let(:users) { create_list(:user, 2) }
+
+  before do
+    allow(controller).to receive(:current_user).and_return(user)
+
+    assign :users, users
+    render
+  end
+
+  describe "displays user#index correctly" do
+    it { expect(rendered).to have_link(users.first.email, href: edit_user_path(users.first)) }
+  end
+end
 ```
