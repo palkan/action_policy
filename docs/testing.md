@@ -370,7 +370,7 @@ You may need to stub `current_user` to resolve the issue.
 Consider an RSpec example:
 
 ```ruby
-RSpec.describe "users/index.html.slim", type: :view do
+describe "users/index.html.slim" do
   let(:user) { build_stubbed :user }
   let(:users) { create_list(:user, 2) }
 
@@ -386,4 +386,3 @@ RSpec.describe "users/index.html.slim", type: :view do
   end
 end
 ```
-
