@@ -181,7 +181,7 @@ describe PostPolicy do
     context "as manager" do
       before { user.update!(role: :manager) }
 
-      it { is_expected.to eq({name: "a", password: "b"})  }
+      it { is_expected.to eq({name: "a", password: "b"}) }
     end
   end
 end
