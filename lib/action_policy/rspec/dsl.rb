@@ -68,7 +68,7 @@ if defined?(::RSpec)
 
   ::RSpec.shared_examples_for "action_policy:policy_rule_example" do |success, the_caller|
     if success
-      specify do
+      specify "is allowed" do
         next if subject.success?
         raise(
           RSpec::Expectations::ExpectationNotMetError,
@@ -77,7 +77,7 @@ if defined?(::RSpec)
         )
       end
     else
-      specify do
+      specify "is disallowed" do
         next if subject.fail?
         raise(
           RSpec::Expectations::ExpectationNotMetError,
