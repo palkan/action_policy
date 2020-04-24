@@ -98,7 +98,7 @@ There is also an `allowed_to?` method which returns `true` or `false`, and could
 <% @posts.each do |post| %>
   <li><%= post.title %>
     <% if allowed_to?(:edit?, post) %>
-      = link_to post, "Edit"
+      <%= link_to post, "Edit">
     <% end %>
   </li>
 <% end %>
