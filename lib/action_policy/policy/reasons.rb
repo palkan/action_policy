@@ -189,7 +189,7 @@ module ActionPolicy
             policy.result
           end
 
-        result.reasons.add(policy, rule, res.details) if res.fail?
+        result&.reasons&.add(policy, rule, res.details) if res.fail?
 
         res.clear_details
 

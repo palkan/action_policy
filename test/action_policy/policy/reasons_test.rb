@@ -101,6 +101,13 @@ class TestComplexFailuresPolicy < Minitest::Test
       complex: [:kill?, :feed?]
     }, details)
   end
+
+  def test_no_result
+    policy = ComplexFailuresTestPolicy.new user: User.new("admin")
+
+    refute policy.save?
+    assert_nil policy.result
+  end
 end
 
 class FailuresWithDetailsPolicy < ActionPolicy::Base

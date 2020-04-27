@@ -2,6 +2,10 @@
 
 ## master
 
+- Fix calling rules with `allowed_to?` directly. ([@palkan][])
+
+  Fixes [#113](https://github.com/palkan/action_policy/issues/113)
+
 ## 0.4.3 (2019-12-14)
 
 - Add `#cache(*parts, **options) { ... }` method. ([@palkan][])
