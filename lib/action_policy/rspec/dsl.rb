@@ -77,7 +77,7 @@ if defined?(::RSpec)
         )
       end
     else
-      specify "is disallowed" do
+      specify "is denied" do
         next if subject.fail?
         raise(
           RSpec::Expectations::ExpectationNotMetError,
