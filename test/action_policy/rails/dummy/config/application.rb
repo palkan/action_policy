@@ -4,6 +4,7 @@ require File.expand_path("boot", __dir__)
 
 require "rails"
 require "action_controller/railtie"
+require "action_policy"
 require "action_policy/railtie"
 
 Bundler.require(*Rails.groups)

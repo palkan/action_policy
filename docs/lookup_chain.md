@@ -2,7 +2,12 @@
 
 Action Policy tries to automatically infer policy class from the target using the following _probes_:
 
-1. If the target is a `Symbol`, then use `"#{target.to_s.classify}Policy"` as a `policy_name` (see below);
+1. If the target is a `Symbol`:
+
+    a) Try `"#{target.to_s.camelize}Policy"` as a `policy_name` (see below);
+
+    b) If `String#classify` is available, e.g. when using Rails' ActiveSupport, try `"#{target.to_s.classify}Policy"`;
+
 2. If the target responds to `policy_class`, then use it;
 3. If the target's class responds to `policy_class`, then use it;
 4. If the target or the target's class responds to `policy_name`, then use it (the `policy_name` should end with `Policy` as it's not appended automatically);
