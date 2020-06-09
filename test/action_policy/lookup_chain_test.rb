@@ -25,6 +25,7 @@ end
 
 class LookupAPolicy; end
 class LookupBPolicy; end
+class LookupBsPolicy; end
 
 module LookupNamespace
   class LookupAPolicy; end
@@ -51,6 +52,13 @@ class TestLookupChain < Minitest::Test
     assert_equal(
       LookupAPolicy,
       ActionPolicy.lookup(:lookup_a)
+    )
+  end
+
+  def test_symbol_exact_match
+    assert_equal(
+      LookupBsPolicy,
+      ActionPolicy.lookup(:lookup_bs)
     )
   end
 

@@ -2,15 +2,15 @@
 
 module ActionPolicy
   module Ext
-    # Add `classify` to Symbol
-    module SymbolClassify
+    # Add `camelize` to Symbol
+    module SymbolCamelize
       refine Symbol do
-        if "".respond_to?(:classify)
-          def classify
-            to_s.classify
+        if "".respond_to?(:camelize)
+          def camelize
+            to_s.camelize
           end
         else
-          def classify
+          def camelize
             word = to_s.capitalize
             word.gsub!(/(?:_)([a-z\d]*)/) { $1.capitalize }
             word
