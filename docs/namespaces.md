@@ -6,7 +6,7 @@ Consider an example:
 
 ```ruby
 module Admin
-  class UsersController < ApplictionController
+  class UsersController < ApplicationController
     def index
       # uses Admin::UserPolicy if any, otherwise fallbacks to UserPolicy
       authorize!
@@ -20,7 +20,7 @@ Module nesting is also supported:
 ```ruby
 module Admin
   module Client
-    class UsersController < ApplictionController
+    class UsersController < ApplicationController
       def index
         # lookup for Admin::Client::UserPolicy -> Admin::UserPolicy -> UserPolicy
         authorize!
