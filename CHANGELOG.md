@@ -2,6 +2,13 @@
 
 ## master
 
+- Separated `#classify`-based and `#camelize`-based symbol lookups. ([Be-ngt-oH][])
+
+Only affects Rails apps. Now lookup for `:users` tries to find `UsersPolicy` first (camelize),
+and only then search for `UserPolicy` (classify).
+
+See [PR#118](https://github.com/palkan/action_policy/pull/118).
+
 - Fix calling rules with `allowed_to?` directly. ([@palkan][])
 
   Fixes [#113](https://github.com/palkan/action_policy/issues/113)
@@ -386,3 +393,4 @@
 [@korolvs]: https://github.com/korolvs
 [@nicolas-brousse]: https://github.com/nicolas-brousse
 [@somenugget]: https://github.com/somenugget
+[@Be-ngt-oH]: https://github.com/Be-ngt-oH
