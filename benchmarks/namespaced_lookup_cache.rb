@@ -39,6 +39,9 @@ if ENV["NO_CACHE"]
   ActionPolicy::LookupChain.namespace_cache_enabled = false
 end
 
+results_path = File.join(__dir__, "../tmp/#{__FILE__.sub(/\.rb$/, ".txt")}")
+FileUtils.mkdir_p File.dirname(results_path)
+
 Benchmark.ips do |x|
   x.warmup = 0
 
@@ -58,14 +61,14 @@ Benchmark.ips do |x|
     ActionPolicy.lookup(b, namespace: X::Y::Z)
   end
 
-  x.hold! "temp_results"
+  x.hold! results_path
 
   x.compare!
 end
 
 #
 # Comparison:
-#             cache B:   178577.4 i/s
-#             cache A:   173061.4 i/s - same-ish: difference falls within error
-#         no cache A:    97991.7 i/s - same-ish: difference falls within error
-#         no cache B:    42505.4 i/s - 4.20x  slower
+#             cache A:   204788.3 i/s
+#             cache B:   202536.9 i/s - same-ish: difference falls within error
+#          no cache A:   127772.8 i/s - same-ish: difference falls within error
+#          no cache B:    63487.2 i/s - 3.23x  slower
