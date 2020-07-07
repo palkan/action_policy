@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.4.4 (2020-07-07)
+
 - Fix symbol lookup with namespaces. ([@palkan][])
 
 Fixes [#122](https://github.com/palkan/action_policy/issues/122).
