@@ -2,6 +2,10 @@
 
 ## master
 
+- Fix symbol lookup with namespaces. ([@palkan][])
+
+Fixes [#122](https://github.com/palkan/action_policy/issues/122).
+
 - Separated `#classify`-based and `#camelize`-based symbol lookups. ([Be-ngt-oH][])
 
 Only affects Rails apps. Now lookup for `:users` tries to find `UsersPolicy` first (camelize),

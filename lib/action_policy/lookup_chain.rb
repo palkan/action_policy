@@ -54,6 +54,7 @@ module ActionPolicy
       private
 
       def lookup_within_namespace(policy_name, namespace)
+        return unless namespace
         NamespaceCache.fetch(namespace.name, policy_name) do
           mod = namespace
 
@@ -115,11 +116,7 @@ module ActionPolicy
       next unless record.is_a?(Symbol)
 
       policy_name = "#{record.camelize}Policy"
-      if namespace.nil?
-        policy_name.safe_constantize
-      else
-        lookup_within_namespace(policy_name, namespace)
-      end
+      lookup_within_namespace(policy_name, namespace) || policy_name.safe_constantize
     }
 
     # (Optional) Infer using String#classify if available
@@ -127,11 +124,7 @@ module ActionPolicy
       next unless record.is_a?(Symbol)
 
       policy_name = "#{record.to_s.classify}Policy"
-      if namespace.nil?
-        policy_name.safe_constantize
-      else
-        lookup_within_namespace(policy_name, namespace)
-      end
+      lookup_within_namespace(policy_name, namespace) || policy_name.safe_constantize
     }
 
     self.chain = [

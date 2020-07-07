@@ -35,7 +35,7 @@ class BPolicy < APolicy
     catch :policy_fulfilled do
       self.class.pre_checks.each do |check|
         next unless check.applicable?(rule)
-        res = check.call(self)
+        check.call(self)
       end
 
       return yield if block_given?
@@ -51,7 +51,6 @@ class BPolicy < APolicy
 end
 
 a = A.new
-b = B.new
 
 (APolicy.new(record: a).apply(:show?) == BPolicy.new(record: a).apply(:show?)) || raise("Implementations are not equal")
 
@@ -68,7 +67,6 @@ Benchmark.ips do |x|
 
   x.compare!
 end
-
 
 # Comparison:
 # catch/throw pre-check:   286094.2 i/s

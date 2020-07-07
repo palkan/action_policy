@@ -67,6 +67,10 @@ class TestLookupChain < Minitest::Test
       LookupNamespace::LookupAPolicy,
       ActionPolicy.lookup(:lookup_a, namespace: LookupNamespace)
     )
+    assert_equal(
+      LookupBPolicy,
+      ActionPolicy.lookup(:lookup_b, namespace: LookupNamespace)
+    )
   end
 
   def test_instance_defined
