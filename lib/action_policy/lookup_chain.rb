@@ -24,14 +24,27 @@ module ActionPolicy
       class << self
         attr_reader :store
 
-        def fetch(namespace, policy)
+        def put_if_absent(scope, namespace, policy)
+          local_store = store[scope][namespace]
+          return local_store[policy] if local_store[policy].present?
+          local_store[policy] ||= yield
+        end
+
+        def fetch(namespace, policy, strict:, &block)
           return yield unless LookupChain.namespace_cache_enabled?
-          return store[namespace][policy] if store[namespace].key?(policy)
-          store[namespace][policy] ||= yield
+
+          if strict
+            put_if_absent(:strict, namespace, policy, &block)
+          else
+            cached_policy = put_if_absent(:strict, namespace, policy, &block)
+            put_if_absent(:flexible, namespace, policy) { cached_policy }
+          end
         end
 
         def clear
-          @store = Hash.new { |h, k| h[k] = {} }
+          @store = Hash.new { |h, k| h[k] = {} }.then do |base|
+            { strict: base, flexible: base.clone }
+          end
         end
       end
 
@@ -53,21 +66,21 @@ module ActionPolicy
 
       private
 
-      def lookup_within_namespace(policy_name, namespace)
+      def lookup_within_namespace(policy_name, namespace, strict: false)
         return unless namespace
-        NamespaceCache.fetch(namespace.name, policy_name) do
+        NamespaceCache.fetch(namespace.name, policy_name, strict: strict) do
           mod = namespace
-
           loop do
             policy = "#{mod.name}::#{policy_name}".safe_constantize
-
             break policy unless policy.nil?
-
             mod = mod.namespace
-
-            break if mod.nil?
+            break if mod.nil? || strict
           end
         end
+      end
+
+      def objectify_policy(policy_name, strict: false)
+        policy_name.safe_constantize unless strict
       end
 
       def policy_class_name_for(record)
@@ -112,19 +125,21 @@ module ActionPolicy
     }
 
     # Infer from passed symbol
-    SYMBOL_LOOKUP = ->(record, namespace: nil, **) {
+    SYMBOL_LOOKUP = ->(record, namespace: nil, strict_namespace: false, **) {
       next unless record.is_a?(Symbol)
 
       policy_name = "#{record.camelize}Policy"
-      lookup_within_namespace(policy_name, namespace) || policy_name.safe_constantize
+      lookup_within_namespace(policy_name, namespace, strict: strict_namespace) ||
+        objectify_policy(policy_name, strict: strict_namespace)
     }
 
     # (Optional) Infer using String#classify if available
-    CLASSIFY_SYMBOL_LOOKUP = ->(record, namespace: nil, **) {
+    CLASSIFY_SYMBOL_LOOKUP = ->(record, namespace: nil, strict_namespace: false, **) {
       next unless record.is_a?(Symbol)
 
       policy_name = "#{record.to_s.classify}Policy"
-      lookup_within_namespace(policy_name, namespace) || policy_name.safe_constantize
+      lookup_within_namespace(policy_name, namespace, strict: strict_namespace) ||
+        objectify_policy(policy_name, strict: strict_namespace)
     }
 
     self.chain = [
