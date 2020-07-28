@@ -11,7 +11,7 @@ class TestRailtie < Minitest::Test
   include QueriesAssertions
 
   def test_default_configuration
-    assert_includes ActionController::Base, ActionPolicy::Controller
+    assert(ActionController::Base <= ActionPolicy::Controller, "#{ActionController::Base.ancestors} must include ActionPolicy::Controller")
 
     assert_equal({user: :current_user}, ActionController::Base.authorization_targets)
 
