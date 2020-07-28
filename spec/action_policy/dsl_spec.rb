@@ -60,7 +60,7 @@ describe UserPolicy, type: :policy do
         ex.remove_instance_variable(:@exception)
 
         expect(msg).to include("<UserPolicy#manage?: true>")
-        expect(msg).to include("↳ user.admin? #=> \e[32mtrue\e[0m") if ActionPolicy::PrettyPrint.available?
+        expect(msg).to include("↳ user.admin? #=> #{ActionPolicy::PrettyPrint.colorize(true)}") if ActionPolicy::PrettyPrint.available?
       end
 
       failed do

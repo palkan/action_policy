@@ -71,7 +71,7 @@ module ActionPolicy
 
       def expression_with_result(sexp)
         expression = Unparser.unparse(sexp)
-        "#{expression} #=> #{colorize(eval_exp(expression))}"
+        "#{expression} #=> #{PrettyPrint.colorize(eval_exp(expression))}"
       end
 
       def eval_exp(exp)
@@ -126,13 +126,6 @@ module ActionPolicy
       def ignore_exp?(exp)
         exp.match?(/^\s*binding\.(pry|irb)\s*$/)
       end
-
-      def colorize(val)
-        return val unless $stdout.isatty
-        return TRUE if val.eql?(true)
-        return FALSE if val.eql?(false)
-        val
-      end
     end
 
     class << self
@@ -156,6 +149,13 @@ module ActionPolicy
         def print_method(_, _)
           ""
         end
+      end
+
+      def colorize(val)
+        return val unless $stdout.isatty
+        return TRUE if val.eql?(true)
+        return FALSE if val.eql?(false)
+        val
       end
     end
   end
