@@ -83,7 +83,7 @@ describe PostPolicy do
 end
 ```
 
-If test failed the exception message includes the result and [failure reasons](reasons) (if any):
+If test failed the exception message includes the result and [failure reasons](reasons.md) (if any):
 
 ```sh
 1) PostPolicy#show? when post is draft
@@ -93,7 +93,7 @@ Expected to fail but succeed:
 <PostPolicy#show?: true (reasons: ...)>
 ```
 
-If you have [debugging utils](debugging) installed the message also includes the _annotated_
+If you have [debugging utils](debugging.md) installed the message also includes the _annotated_
 source code of the policy rule:
 
 ```sh

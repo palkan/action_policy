@@ -9,7 +9,7 @@ Action Policy integrates with [Rails instrumentation system](https://guides.ruby
 This event is triggered every time a policy rule is applied:
 
 - when `authorize!` is called
-- when `allowed_to?` is called within the policy or the [behaviour](behaviour)
+- when `allowed_to?` is called within the policy or the [behaviour](behaviour.md)
 - when `apply_rule` is called explicitly (i.e. `SomePolicy.new(record, context).apply_rule(record)`).
 
 The event contains the following information:
@@ -17,7 +17,7 @@ The event contains the following information:
 - `:policy` – policy class name
 - `:rule` – applied rule (String)
 - `:value` – the result of the rule application (true of false)
-- `:cached` – whether we hit the [cache](caching)\*.
+- `:cached` – whether we hit the [cache](caching.md)\*.
 
 \* This parameter tracks only the cache store usage, not memoization.
 

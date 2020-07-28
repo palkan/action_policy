@@ -54,7 +54,7 @@ It is also worth noting that Action Policy (despite having a _Railsy_ name) is d
 
 So, what are the main reasons to consider Action Policy as your authorization tool?
 
-- **Performance**: multiple [caching strategies](./caching.md) out-of-the-box make authorization overhead as small as possible–especially useful when your rules involve DB queries; you can also monitor the performance and detect the bottlenecks using the built-in [instrumentation](./instrumentation) features.
+- **Performance**: multiple [caching strategies](./caching.md) out-of-the-box make authorization overhead as small as possible–especially useful when your rules involve DB queries; you can also monitor the performance and detect the bottlenecks using the built-in [instrumentation](./instrumentation.md) features.
 
 - **Composition & Customization**: use [only the features you need](./custom_policy.md) or easily extend the functionality–it's just Ruby classes and modules, (almost) zero magic! And you can add authorization [anywhere in your code](./non_rails.md), not only in controllers.
 

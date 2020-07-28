@@ -116,7 +116,7 @@ class PostsController < ApplicationController
 end
 ```
 
-You can also specify additional options for policy class inference (see [behaviour docs](behaviour)). For example, to explicitly specify the policy class use:
+You can also specify additional options for policy class inference (see [behaviour docs](behaviour.md)). For example, to explicitly specify the policy class use:
 
 ```ruby
 @posts = authorized_scope(Post, with: CustomPostPolicy)
@@ -138,7 +138,7 @@ end
 
 ## Using scopes explicitly
 
-To use scopes without including Action Policy [behaviour](behaviour)
+To use scopes without including Action Policy [behaviour](behaviour.md)
 do the following:
 
 ```ruby
