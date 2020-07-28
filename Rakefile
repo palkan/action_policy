@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require "rake/testtask"
-require "rubocop/rake_task"
 require "rspec/core/rake_task"
 
-RuboCop::RakeTask.new
+begin
+  require "rubocop/rake_task"
+  RuboCop::RakeTask.new
+rescue LoadError
+end
 
 RSpec::Core::RakeTask.new(:spec)
 
@@ -21,7 +24,7 @@ namespace :test do
     end || raise("Failures")
   end
 
-  task ci: %w[rubocop test:isolated spec]
+  task ci: %w[test:isolated spec]
 end
 
 task default: [:rubocop, :test, :spec]
