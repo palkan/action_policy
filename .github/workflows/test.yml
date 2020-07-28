@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  rspec:
+  test:
     runs-on: ubuntu-latest
     env:
       BUNDLE_JOBS: 4
@@ -17,6 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         ruby: ["2.5", "2.6", "2.7"]
+        bundler: ["2"]
         gemfile: [
           "gemfiles/railsmaster.gemfile",
           "gemfiles/rails6.gemfile"
@@ -24,11 +25,14 @@ jobs:
         exclude:
         - ruby: "2.5"
           gemfile: "gemfiles/railsmaster.gemfile"
+          bundler: "2"
         - ruby: "2.5"
           gemfile: gemfiles/railsmaster.gemfile"
+          bundler: "2"
         include:
         - ruby: "2.4"
           gemfile: "gemfiles/rails42.gemfile"
+          bundler: "1"
     steps:
     - uses: actions/checkout@v2
     - uses: actions/cache@v1
@@ -40,12 +44,20 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
+        bundler: ${{ matrix.bundler }}
     - name: Bundle install
       run: |
         bundle config path /home/runner/bundle
         bundle config --global gemfile ${{ matrix.gemfile }}
         bundle install
         bundle update
-    - name: Run tests
+    - name: Run Minitest tests
       run: |
-        bundle exec rake test:ci
+        bundle exec rake test
+    - name: Run RSpec tests
+      run: |
+        bundle exec rspec --force-color
+    - name: Run Minitest tests in isolation
+      run: |
+        bundle exec rake test:isolated
+

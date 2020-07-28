@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  rspec:
+  test:
     runs-on: ubuntu-latest
     env:
       BUNDLE_JOBS: 4
@@ -30,6 +30,12 @@ jobs:
         bundle config path /home/runner/bundle
         bundle install
         bundle update
-    - name: Run tests
+    - name: Run Minitest tests
       run: |
-        bundle exec rake test:ci
+        bundle exec rake test
+    - name: Run RSpec tests
+      run: |
+        bundle exec rspec --force-color
+    - name: Run Minitest tests in isolation
+      run: |
+        bundle exec rake test:isolated
