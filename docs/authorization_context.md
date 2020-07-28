@@ -74,7 +74,6 @@ end
 
 That means that **all the policies that could be used together MUST share the same set of authorization contexts** (or at least the _parent_ policies contexts must be subsets of the nested policies contexts).
 
-
 ## Explicit context
 
 You can override the _implicit_ authorization context (generated with `authorize` method) in-place

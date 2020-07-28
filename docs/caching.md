@@ -41,6 +41,7 @@ end
 In the above example, we need to use the same policy three times. Action Policy re-uses the policy instance to avoid unnecessary object allocation.
 
 We rely on the following assumptions:
+
 - parent object (e.g., a controller instance) is _ephemeral_, i.e., it is a short-lived object
 - all authorizations use the same [authorization context](authorization_context.md).
 
@@ -212,6 +213,7 @@ Let's consider an example.
 Suppose that your users have _roles_ (i.e. `User.belongs_to :role`) and you give access to resources through the `Access` model (i.e. `Resource.has_many :accesses`).
 
 Then you can do the following:
+
 - Keep tracking the last `Access` added/updated/deleted for resource (e.g. `Access.belongs_to :accessessable, touch: :access_updated_at`)
 - Use the following cache keys:
 

@@ -4,7 +4,6 @@
 
 It looks like this:
 
-
 ```ruby
 class ActionPolicy::Base
   include ActionPolicy::Policy::Core
@@ -37,8 +36,6 @@ class ActionPolicy::Base
   end
 end
 ```
-
-
 
 You can write your `ApplicationPolicy` from scratch instead of inheriting from `ActionPolicy::Base`
 if the defaults above do not fit your needs. The only required component is `ActionPolicy::Policy::Core`:

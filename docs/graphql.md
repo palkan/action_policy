@@ -3,6 +3,7 @@
 You can use Action Policy as an authorization library for your [GraphQL Ruby](https://graphql-ruby.org/) application via the [`action_policy-graphql` gem](https://github.com/palkan/action_policy-graphql).
 
 This integration provides the following features:
+
 - Fields & mutations authorization
 - List and connections scoping
 - [**Exposing permissions/authorization rules in the API**](https://evilmartians.com/chronicles/exposing-permissions-in-graphql-apis-with-action-policy).

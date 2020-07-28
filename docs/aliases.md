@@ -66,7 +66,7 @@ Rules in `action_policy` can only be public methods. Trying to use a private met
 Here's the order in which aliases and concrete rule methods are resolved in regards to subclasses:
 
 1. If there is a concrete rule method on the subclass, this is called, else
-2. If there is a matching alias then this is called, else
+1. If there is a matching alias then this is called, else
   * When aliases are defined on the subclass they will overwrite matching aliases on the superclass.
 3. If there is a concrete rule method on the superclass, then this is called, else
 4. If there is a default rule defined, then this is called, else

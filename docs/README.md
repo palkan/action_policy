@@ -1,7 +1,7 @@
 [![Gem Version](https://badge.fury.io/rb/action_policy.svg)](https://badge.fury.io/rb/action_policy)
 [![Build Status](https://travis-ci.org/palkan/action_policy.svg?branch=master)](https://travis-ci.org/palkan/action_policy)
 
-## Action Policy
+# Action Policy
 
 > Authorization framework for Ruby and Rails.
 <br>Composable. Extensible. Performant.
@@ -22,6 +22,7 @@ Action Policy provides flexible tools to build an _authorization layer_ for your
 **NOTE:** Action Policy does not force you to use a specific authorization model (i.e., roles, permissions, etc.) and does not provide one. It only answers a single question: **How to verify access?**
 
 ## Where to go from here?
+
 - [Quick start](./quick_start.md)
 - [Using with Rails](./rails.md)
 - [Using with other Ruby frameworks](./non_rails.md)

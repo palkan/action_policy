@@ -1,6 +1,6 @@
 # Controller Action Aliases
 
-**This is a feature proposed here: https://github.com/palkan/action_policy/issues/25**
+**NOTE:** This is a feature proposed here: https://github.com/palkan/action_policy/issues/25.
 
 If you'd like to see this feature implemented, please comment on the issue to show your support.
 
@@ -48,7 +48,6 @@ end
 We can safely add aliases for the common REST actions in the policy.
 
 You may then want to include a concern in your subclass controller(s) that add extra actions to the controller.
-
 
 ```ruby
 class ConcreteController < AbstractController
