@@ -21,7 +21,7 @@ module ActionPolicy
     #
     class HaveAuthorizedScope < ::RSpec::Matchers::BuiltIn::BaseMatcher
       attr_reader :type, :name, :policy, :scope_options, :actual_scopes,
-                  :target_expectations
+        :target_expectations
 
       def initialize(type)
         @type = type

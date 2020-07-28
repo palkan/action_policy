@@ -41,7 +41,7 @@ module ActionPolicy
   #  #=> AND
   #  #=> access_feed? #=> true
   module PrettyPrint
-    TRUE =  "\e[32mtrue\e[0m"
+    TRUE = "\e[32mtrue\e[0m"
     FALSE = "\e[31mfalse\e[0m"
 
     class Visitor

@@ -13,7 +13,7 @@ end
 
 require "action_policy"
 
-Dir["#{__dir__}/helpers/**/*.rb"].each { |f| require f }
-Dir["#{__dir__}/stubs/**/*.rb"].each { |f| require f }
+Dir["#{__dir__}/helpers/**/*.rb"].sort.each { |f| require f }
+Dir["#{__dir__}/stubs/**/*.rb"].sort.each { |f| require f }
 
 require "minitest/autorun"
