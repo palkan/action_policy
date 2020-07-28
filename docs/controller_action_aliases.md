@@ -101,7 +101,7 @@ end
 
 When `authorize!` is called in a controller, it will first check the action aliases for a corresponding
 rule. If one is found, it will execute that rule instead of a rule matching the name of the current action.
-The rule may point at a concrete rule in the policy, or a rule alias in the policy, it doens't matter, the
+The rule may point at a concrete rule in the policy, or a rule alias in the policy, it doesn't matter, the
 alias in the policy will be resolved like normal.
 
 If you'd like to see this feature implemented, please show your support on the

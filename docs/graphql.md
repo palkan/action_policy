@@ -102,7 +102,7 @@ def homes
 end
 ```
 
-**NOTE:** we pass the field's name as the `record` to the policy rule. We assume that preauthorization rules do not depend on
+**NOTE:** we pass the field's name as the `record` to the policy rule. We assume that pre-authorization rules do not depend on
 the record itself and pass the field's name for debugging purposes only.
 
 You can customize the authorization options, e.g. `authorize: {to: :preview?, with: CustomPolicy}`.
@@ -207,7 +207,7 @@ end
 
 **NOTE:** you cannot use `authorize: *` and `authorized_scope: *` at the same time but you can combine `preauthorize: *` with `authorized_scope: *`.
 
-See the documenation on [scoping](./scoping.md).
+See the documentation on [scoping](./scoping.md).
 
 ## Exposing Authorization Rules
 

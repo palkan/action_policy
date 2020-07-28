@@ -87,5 +87,5 @@ def show
 end
 ```
 
-**NOTE:** the explictly provided context is merged with the implicit one (i.e. you can specify
+**NOTE:** the explicitly provided context is merged with the implicit one (i.e. you can specify
 only the keys you want to override).

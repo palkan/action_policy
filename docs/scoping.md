@@ -180,7 +180,7 @@ When `authorized_scope` is called without the explicit scope type, Action Policy
 
 ## Rails integration
 
-Action Policy provides a couple of _scope matchers_ out-of-the-box for Active Record relations and Action Controller paramters.
+Action Policy provides a couple of _scope matchers_ out-of-the-box for Active Record relations and Action Controller parameters.
 
 ### Active Record scopes
 
@@ -221,7 +221,7 @@ end
 
 ### Action Controller parameters
 
-Use scopes of type `:params` if your strong parameters filterings depend on the current user:
+Use scopes of type `:params` if your strong parameters filtering depends on the current user:
 
 ```ruby
 class UserPolicy < ApplicationPolicy

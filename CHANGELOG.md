@@ -345,7 +345,7 @@ See [PR#118](https://github.com/palkan/action_policy/pull/118).
 - Use `send` instead of `public_send` to get the `authorization_context` so that contexts such as
   `current_user` can be `private` in the controller. ([@brendon][])
 
-- Fix railtie initialisation for Rails < 5. ([@brendon][])
+- Fix railtie initialization for Rails < 5. ([@brendon][])
 
 ## 0.2.1 (yanked)
 
