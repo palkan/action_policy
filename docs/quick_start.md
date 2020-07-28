@@ -107,7 +107,7 @@ There is also an `allowed_to?` method which returns `true` or `false` and could 
 <% end %>
 ```
 
-Although Action Policy tries to [infer the corresponding policy class](policy_lookup.md) and rule itself, there could be a situation when you want to specify those values explicitly:
+Although Action Policy tries to [infer the corresponding policy class](lookup_chain.md) and rule itself, there could be a situation when you want to specify those values explicitly:
 
 ```ruby
 # specify the rule to verify access
