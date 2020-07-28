@@ -187,13 +187,13 @@ class CityType < ::Common::Graphql::Type
   # It would automatically apply the relation scope from the EventPolicy to
   # the relation (city.events)
   field :events, EventType.connection_type,
-        null: false,
-        authorized_scope: true
+    null: false,
+    authorized_scope: true
 
   # you can specify the policy explicitly
   field :events, EventType.connection_type,
-        null: false,
-        authorized_scope: {with: CustomEventPolicy}
+    null: false,
+    authorized_scope: {with: CustomEventPolicy}
 
   # without the option you would write the following code
   def events

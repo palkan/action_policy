@@ -13,6 +13,8 @@ gem 'sqlite3', "~> 1.3.0", platform: :mri
 gem 'activerecord-jdbcsqlite3-adapter', '~> 50.0', platform: :jruby
 gem 'jdbc-sqlite3', platform: :jruby
 
+eval_gemfile "gemfiles/rubocop.gemfile"
+
 local_gemfile = File.join(__dir__, "Gemfile.local")
 
 if File.exist?(local_gemfile)

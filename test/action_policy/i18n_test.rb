@@ -51,14 +51,14 @@ class TestI18nGlobalDefaults < Minitest::Test
     policy = I18nDefaultPolicy.new(user: @user)
     refute policy.apply(:edit?)
     assert_equal policy.result.message,
-                 ActionPolicy::I18n::DEFAULT_UNAUTHORIZED_MESSAGE
+      ActionPolicy::I18n::DEFAULT_UNAUTHORIZED_MESSAGE
   end
 
   def test_full_messages_fallback_to_global_default
     policy = I18nDefaultPolicy.new(user: @user)
     refute policy.apply(:feed?)
     assert_includes policy.result.reasons.full_messages,
-                    ActionPolicy::I18n::DEFAULT_UNAUTHORIZED_MESSAGE
+      ActionPolicy::I18n::DEFAULT_UNAUTHORIZED_MESSAGE
   end
 end
 
@@ -104,7 +104,7 @@ class TestI18nAppDefaults < Minitest::Test
     policy = I18nDefaultPolicy.new(user: @user)
     refute policy.apply(:edit?)
     assert_includes policy.result.reasons.full_messages,
-                    "Only admins are authorized to view this data"
+      "Only admins are authorized to view this data"
   end
 end
 
@@ -145,56 +145,56 @@ class TestI18nPolicies < Minitest::Test
     policy = I18nLocalizedPolicy.new(user: @user)
     refute policy.apply(:edit?)
     assert_includes policy.result.message,
-                    "You are not authorized to read this data according to custom policy"
+      "You are not authorized to read this data according to custom policy"
   end
 
   def test_full_messages_for_localized_policy
     policy = I18nLocalizedPolicy.new(user: @user)
     refute policy.apply(:edit?)
     assert_includes policy.result.reasons.full_messages,
-                    "You are not authorized to access feed according to custom policy"
+      "You are not authorized to access feed according to custom policy"
   end
 
   def test_result_message_for_inherited_localized_policy
     policy = I18nInheritedFromLocalizedPolicy.new(user: @user)
     refute policy.apply(:edit?)
     assert_includes policy.result.message,
-                    "You are not authorized to read this data according to custom inherited policy"
+      "You are not authorized to read this data according to custom inherited policy"
   end
 
   def test_full_messages_for_inherited_localized_policy
     policy = I18nInheritedFromLocalizedPolicy.new(user: @user)
     refute policy.apply(:edit?)
     assert_includes policy.result.reasons.full_messages,
-                    "You are not authorized to access feed according to inherited policy"
+      "You are not authorized to access feed according to inherited policy"
   end
 
   def test_result_message_for_identified_localized_policy
     policy = I18nLocalizedIdentifiedPolicy.new(user: @user)
     refute policy.apply(:edit?)
     assert_includes policy.result.message,
-                    "You are not authorized to read this data according to identified policy"
+      "You are not authorized to read this data according to identified policy"
   end
 
   def test_full_messages_message_for_identified_localized_policy
     policy = I18nLocalizedIdentifiedPolicy.new(user: @user)
     refute policy.apply(:edit?)
     assert_includes policy.result.reasons.full_messages,
-                    "You are not authorized to access feed according to identified policy"
+      "You are not authorized to access feed according to identified policy"
   end
 
   def test_result_message_for_localized_policy_including_core
     policy = I18nIncludingCoreLocalizedPolicy.new
     refute policy.apply(:edit?)
     assert_includes policy.result.message,
-                    "You are not authorized to read this data according to policy including core"
+      "You are not authorized to read this data according to policy including core"
   end
 
   def test_full_messages_message_for_localized_policy_including_core
     policy = I18nIncludingCoreLocalizedPolicy.new
     refute policy.apply(:edit?)
     assert_includes policy.result.reasons.full_messages,
-                    "You are not authorized to access feed according to policy including core"
+      "You are not authorized to access feed according to policy including core"
   end
 end
 
@@ -242,20 +242,20 @@ class TestI18nNestedPolicies < Minitest::Test
   def test_result_message
     refute policy.apply(:show?)
     assert_includes policy.result.message,
-                    "Stop looking at me!"
+      "Stop looking at me!"
   end
 
   def test_result_message_with_interpolation
     refute policy.apply(:admin?)
     assert_includes policy.result.message,
-                    "Only for admins but you are: guest"
+      "Only for admins but you are: guest"
   end
 
   def test_full_messages_for_nested_policy
     refute policy.apply(:show?)
     assert_includes policy.result.reasons.full_messages,
-                    "You're not allowed to manage this account"
+      "You're not allowed to manage this account"
     assert_includes policy.result.reasons.full_messages,
-                    "Only for admins but you are: guest"
+      "Only for admins but you are: guest"
   end
 end

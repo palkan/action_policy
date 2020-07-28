@@ -64,7 +64,7 @@ module ActionPolicy
         def initialize(policy, name, except: nil, only: nil)
           if !except.nil? && !only.nil?
             raise ArgumentError,
-                  "Only one of `except` and `only` may be specified for pre-check"
+              "Only one of `except` and `only` may be specified for pre-check"
           end
 
           @policy_class = policy
@@ -91,12 +91,12 @@ module ActionPolicy
         def skip!(except: nil, only: nil)
           if !except.nil? && !only.nil?
             raise ArgumentError,
-                  "Only one of `except` and `only` may be specified when skipping pre-check"
+              "Only one of `except` and `only` may be specified when skipping pre-check"
           end
 
           if except.nil? && only.nil?
             raise ArgumentError,
-                  "At least one of `except` and `only` must be specified when skipping pre-check"
+              "At least one of `except` and `only` must be specified when skipping pre-check"
           end
 
           if except

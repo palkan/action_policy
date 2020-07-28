@@ -15,7 +15,7 @@ module ActionPolicy
       end
 
       # See https://github.com/jruby/jruby/issues/5220
-      ::Object.include(Ext) if RUBY_PLATFORM =~ /java/i
+      ::Object.include(Ext) if RUBY_PLATFORM.match?(/java/i)
 
       refine Object do
         include Ext

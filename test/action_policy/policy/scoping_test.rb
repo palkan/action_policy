@@ -121,17 +121,17 @@ class TestScopingPolicy < Minitest::Test
     policy = UserPolicy.new(user: User.new("guest"))
 
     scoped_users = policy.apply_scope(users,
-                                      type: :data,
-                                      name: :with_options,
-                                      scope_options: {with_admins: false})
+      type: :data,
+      name: :with_options,
+      scope_options: {with_admins: false})
 
     assert_equal 1, scoped_users.size
     assert_equal "jack", scoped_users.first.name
 
     scoped_users = policy.apply_scope(users,
-                                      type: :data,
-                                      name: :with_options,
-                                      scope_options: {with_admins: true})
+      type: :data,
+      name: :with_options,
+      scope_options: {with_admins: true})
 
     assert_equal 2, scoped_users.size
   end
@@ -203,7 +203,7 @@ class TestPolicyScopeMatchers < Minitest::Test
     end
 
     assert_includes e.message,
-                    "Couldn't infer scope type for TestPolicyScopeMatchers::Payload instance"
+      "Couldn't infer scope type for TestPolicyScopeMatchers::Payload instance"
   end
 end
 
