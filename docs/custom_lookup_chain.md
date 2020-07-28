@@ -3,6 +3,7 @@
 Action Policy's lookup chain is just an array of _probes_ (lambdas with a specific interface).
 
 The lookup process itself is pretty simple:
+
 - Call the first probe;
 - Return the result if it is not `nil`;
 - Go to the next probe.

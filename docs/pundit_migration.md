@@ -2,9 +2,9 @@
 
 Migration from Pundit to Action Policy could be done in a progressive way: first, we make Pundit polices and authorization helpers use Action Policy under the hood, then you can rewrite policies in the Action Policy way.
 
-### Phase 1. Quacking like a Pundit.
+## Phase 1. Quacking like a Pundit
 
-#### Step 1. Prepare controllers.
+### Step 1. Prepare controllers
 
 - Remove `include Pundit` from ApplicationController
 
@@ -39,11 +39,12 @@ end
 
 **NOTE**: `policy` defined above is not equal to `allowed_to?` since it doesn't take into account pre-checks.
 
-#### Step 2. Prepare policies.
+### Step 2. Prepare policies
 
 We assume that you have a base class for all your policies, e.g. `ApplicationPolicy`.
 
 Then do the following:
+
 - Add `include ActionPolicy::Policy::Core` to `ApplicationPolicy`
 
 - Update `ApplicationPolicy#initialize`:
@@ -58,7 +59,7 @@ end
 
 Unfortunately, there is no easy way to migrate Pundit class-based scope to Action Policies scopes.
 
-#### Step 3. Replace RSpec helper:
+### Step 3. Replace RSpec helper
 
 We provide a Pundit-compatibile syntax for RSpec tests:
 
@@ -70,9 +71,10 @@ We provide a Pundit-compatibile syntax for RSpec tests:
 require "action_policy/rspec/pundit_syntax"
 ```
 
-### Phase 2. No more Pundit.
+## Phase 2. No more Pundit
 
 When everything is green, it's time to fully migrate to ActionPolicy:
+
 - make ApplicationPolicy inherit from `ActionPolicy::Base`
 - migrate view helpers (from `policy(..)` to `allowed_to?`, from `policy_scope` to `authorized`)
 - re-write specs using simple non-DSL syntax (or [Action Policy RSpec syntax](testing#rspec-dsl))

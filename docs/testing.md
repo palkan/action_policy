@@ -3,6 +3,7 @@
 Authorization is one of the crucial parts of your application. Hence, it should be thoroughly tested (that is the place where 100% coverage makes sense).
 
 When you use policies for authorization, it is possible to split testing into two parts:
+
 - Test the policy class itself
 - Test that **the required authorization is performed** within your authorization layer (controller, channel, etc.)
 - Test that **the required scoping has been applied**.
@@ -84,7 +85,7 @@ end
 
 If test failed the exception message includes the result and [failure reasons](reasons) (if any):
 
-```
+```sh
 1) PostPolicy#show? when post is draft
 Failure/Error:  ...
 
@@ -95,7 +96,7 @@ Expected to fail but succeed:
 If you have [debugging utils](debugging) installed the message also includes the _annotated_
 source code of the policy rule:
 
-```
+```sh
 1) UserPolicy#manage? when post is draft
 Failure/Error:  ...
 
@@ -362,7 +363,6 @@ expect { subject }.to have_authorized_scope(:scope)
     expect(target).to eq(User.all)
   }
 ```
-
 
 ## Testing views
 

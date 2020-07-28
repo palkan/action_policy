@@ -93,6 +93,7 @@ class PostPolicy < ApplicationPolicy
   end
 end
 ```
+
 ## Apply scopes
 
 Action Policy behaviour (`ActionPolicy::Behaviour`) provides an `authorized` method which allows you to use scoping:

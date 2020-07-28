@@ -21,7 +21,6 @@ Composable. Extensible. Performant.
 
 - RailsConf, 2018 "Access Denied" talk ([video](https://www.youtube.com/watch?v=NVwx0DARDis), [slides](https://speakerdeck.com/palkan/railsconf-2018-access-denied-the-missing-guide-to-authorization-in-rails))
 
-
 ## Integrations
 
 - GraphQL Ruby ([`action_policy-graphql`](https://github.com/palkan/action_policy-graphql))
@@ -36,7 +35,9 @@ gem "action_policy", "~> 0.4.0"
 
 And then execute:
 
-    $ bundle
+```sh
+bundle install
+```
 
 ## Usage
 
@@ -88,7 +89,6 @@ end
 ```
 
 \* See [Non-Rails Usage](docs/non_rails.md) on how to add `authorize!` to any Ruby project.
-
 
 When authorization is successful (i.e., the corresponding rule returns `true`), nothing happens, but in case of authorization failure `ActionPolicy::Unauthorized` error is raised.
 

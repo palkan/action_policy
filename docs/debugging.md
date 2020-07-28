@@ -1,6 +1,7 @@
 # Debug Helpers
 
 **NOTE:** this functionality requires two additional gems to be available in the app:
+
 - [unparser](https://github.com/mbj/unparser)
 - [method_source](https://github.com/banister/method_source).
 
