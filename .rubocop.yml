@@ -30,7 +30,3 @@ Style/TrailingCommaInHashLiteral:
 Naming/FileName:
   Exclude:
    - '**/*.md'
-
-Layout/InitialIndentation:
-  Exclude:
-    - 'CHANGELOG.md'
