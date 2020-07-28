@@ -115,7 +115,7 @@ OR
 
 #### Active Record relation example
 
-There is no single rule on how to test scopes, 'cause it dependes on the _nature_ of the scope.
+There is no single rule on how to test scopes, 'cause it depends on the _nature_ of the scope.
 
 Here's an example of RSpec tests for Active Record scoping rules:
 

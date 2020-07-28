@@ -61,7 +61,7 @@ Unfortunately, there is no easy way to migrate Pundit class-based scope to Actio
 
 ### Step 3. Replace RSpec helper
 
-We provide a Pundit-compatibile syntax for RSpec tests:
+We provide a Pundit-compatible syntax for RSpec tests:
 
 ```
 # Remove DSL
