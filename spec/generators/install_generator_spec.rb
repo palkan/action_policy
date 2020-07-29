@@ -14,7 +14,9 @@ describe ActionPolicy::Generators::InstallGenerator, type: :generator do
   describe "application policy" do
     subject { file("app/policies/application_policy.rb") }
 
-    it { is_expected.to exist }
-    it { is_expected.to contain(/class ApplicationPolicy < ActionPolicy::Base/) }
+    specify do
+      is_expected.to exist
+      is_expected.to contain(/class ApplicationPolicy < ActionPolicy::Base/)
+    end
   end
 end

@@ -8,7 +8,10 @@ module ActionPolicy
       source_root File.expand_path("templates", __dir__)
 
       def run_install_if_needed
-        return if ::Rails.root.join("app/policies/application_policy.rb").exist?
+        in_root do
+          return if File.exist?("app/policies/application_policy.rb")
+        end
+
         generate "action_policy:install"
       end
 

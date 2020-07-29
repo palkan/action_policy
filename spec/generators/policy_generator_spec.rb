@@ -10,13 +10,19 @@ describe ActionPolicy::Generators::PolicyGenerator, type: :generator do
 
   before do
     prepare_destination
-    run_generator(args)
+
+    gen = generator(args)
+    expect(gen).to receive(:generate).with("action_policy:install")
+
+    silence_stream(STDOUT) { gen.invoke_all }
   end
 
   describe "policy" do
     subject { file("app/policies/user_policy.rb") }
 
-    it { is_expected.to exist }
-    it { is_expected.to contain(/class UserPolicy < ApplicationPolicy/) }
+    specify do
+      is_expected.to exist
+      is_expected.to contain(/class UserPolicy < ApplicationPolicy/)
+    end
   end
 end
