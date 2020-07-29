@@ -79,7 +79,7 @@ module ActionPolicy # :nodoc:
           res = store.read(key)
           next res unless res.nil?
           res = yield
-          store.write(key, res, **options)
+          store.write(key, res, options)
           res
         end
       end

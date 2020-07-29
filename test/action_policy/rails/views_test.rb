@@ -59,7 +59,7 @@ class TestControllerViewsMemoization < ActionController::TestCase
       end
     end
 
-    def initialize(*)
+    def initialize(record = nil, **params)
       super
       self.class.policies << self
     end
