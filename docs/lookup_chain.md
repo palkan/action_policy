@@ -13,7 +13,7 @@ Action Policy tries to automatically infer policy class from the target using th
 4. If the target or the target's class responds to `policy_name`, then use it (the `policy_name` should end with `Policy` as it's not appended automatically);
 5. Otherwise, use `#{target.class.name}Policy`.
 
-> \* [Namespaces](namespaces.md) could be also be considered when `namespace` option is set.
+> \* [Namespaces](namespaces.md) could be also be considered when `namespace` option is set. You can also set the `strict_namespace` option to disable constant cascade lookup.
 
 You can call `ActionPolicy.lookup(record, options)` to infer policy class for the record.
 

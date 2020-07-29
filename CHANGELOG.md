@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.4.5 (2020-07-29)
+
+- Add strict_namespace option to lookup chain. (@rainerborene)
+
 ## 0.4.4 (2020-07-07)
 
 - Fix symbol lookup with namespaces. ([@palkan][])
