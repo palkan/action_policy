@@ -26,7 +26,7 @@ module ActionPolicy
 
         def put_if_absent(scope, namespace, policy)
           local_store = store[scope][namespace]
-          return local_store[policy] if local_store[policy].present?
+          return local_store[policy] if local_store[policy]
           local_store[policy] ||= yield
         end
 
@@ -42,9 +42,8 @@ module ActionPolicy
         end
 
         def clear
-          @store = Hash.new { |h, k| h[k] = {} }.then do |base|
-            { strict: base, flexible: base.clone }
-          end
+          hash = Hash.new { |h, k| h[k] = {} }
+          @store = {strict: hash, flexible: hash.clone}
         end
       end
 
