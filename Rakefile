@@ -15,12 +15,13 @@ Rake::TestTask.new(:test) do |t|
   t.libs << "test"
   t.libs << "lib"
   t.test_files = FileList["test/**/*_test.rb"]
+  t.warning = false
 end
 
 namespace :test do
   task :isolated do
     Dir.glob("test/**/*_test.rb").all? do |file|
-      sh(Gem.ruby, "-w", "-Ilib:test", file)
+      sh(Gem.ruby, "-Ilib:test", file)
     end || raise("Failures")
   end
 
