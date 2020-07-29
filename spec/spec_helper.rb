@@ -27,5 +27,20 @@ RSpec.configure do |config|
   config.example_status_persistence_file_path = "tmp/.rspec-status"
 
   # For silence_stream
-  include ActiveSupport::Testing::Stream
+  # TODO: Drop after deprecating Rails 4.2
+  if defined?(ActiveSupport::Testing::Stream)
+    include ActiveSupport::Testing::Stream
+  else
+    include(Module.new do
+      def silence_stream(stream)
+        old_stream = stream.dup
+        stream.reopen(IO::NULL)
+        stream.sync = true
+        yield
+      ensure
+        stream.reopen(old_stream)
+        old_stream.close
+      end
+    end)
+  end
 end
