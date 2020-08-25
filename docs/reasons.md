@@ -118,3 +118,58 @@ Please, ask your manager to grant access to this stage.
 ```
 
 Much more useful than just showing "You are not authorized to perform this action," isn't it?
+
+## Reason Set
+
+You can provide additional information for later error handling.
+
+For example, if you use ActiveRecord::RecordNotFound exception, any unauthorized user will recognize `post` is not found.
+
+```ruby
+post = current_user.posts.published.find(params[:id]) # => raise ActiveRecord::RecordNotFound
+```
+
+But sometimes, you may pass `post` directly into the policy.
+
+```ruby
+class PostPolicy < ApplicationPolicy
+  def edit?
+    record.published?
+  end
+end
+
+post = find_post_by_some_complex_logic
+allowed_to?(:edit?, post)
+```
+
+In this case, you want to handle `ActionPolicy::Unauthorized` as `NotFound`, not `Forbidden` because user infer `post.id` is present.
+
+So, `reason_set` is useful.
+
+```ruby
+class PostPolicy < ApplicationPolicy
+  def edit?
+    published?
+  end
+
+  private
+
+  def published?
+    reason_set << :unpublished
+    record.published?
+  end
+end
+
+class ApplicationController < ActionController::Base
+  rescue_from ActionPolicy::Unauthorized do |ex|
+    p ex.result.reasons.set #=> #<Set: {:unpublished}>
+
+    # You can handle this reason as `NotFound`.
+    if ex.result.reasons.set.include?(:unpublished)
+      head :not_found
+    else
+      head :forbidden
+    end
+  end
+end
+```

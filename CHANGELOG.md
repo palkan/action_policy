@@ -2,6 +2,8 @@
 
 ## master
 
+- Add reason_set feature for handling failure reasons. (@ykpythemind)
+
 ## 0.4.5 (2020-07-29)
 
 - Add strict_namespace option to lookup chain. (@rainerborene)
