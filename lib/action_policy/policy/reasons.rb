@@ -10,6 +10,8 @@ unless {}.respond_to?(:transform_keys)
   using ActionPolicy::Ext::HashTransformKeys
 end
 
+require "set"
+
 module ActionPolicy
   module Policy
     # Failures reasons store
@@ -18,6 +20,10 @@ module ActionPolicy
 
       def initialize
         @reasons = {}
+      end
+
+      def set
+        @set ||= Set.new
       end
 
       def add(policy_or_class, rule, details = nil)
@@ -177,6 +183,10 @@ module ActionPolicy
         result.details ||= {}
       end
 
+      def reason_set
+        result.reasons.set
+      end
+
       def allowed_to?(rule, record = :__undef__, **options)
         res =
           if (record == :__undef__ || record == self.record) && options.empty?
@@ -189,7 +199,10 @@ module ActionPolicy
             policy.result
           end
 
-        result&.reasons&.add(policy, rule, res.details) if res.fail?
+        if res.fail?
+          result&.reasons&.add(policy, rule, res.details)
+          result&.reasons&.set&.merge(res.reasons.set) unless res.reasons.set.empty?
+        end
 
         res.clear_details
 

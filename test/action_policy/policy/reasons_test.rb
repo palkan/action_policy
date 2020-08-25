@@ -153,6 +153,17 @@ class TestFailuresWithDetailsPolicy < Minitest::Test
       details[:superhero] = "spiderman"
       false
     end
+
+    def player?
+      reason_set << :invalid_player
+      false
+    end
+  end
+
+  class PlayerPolicy < ActionPolicy::Base
+    def run?
+      allowed_to?(:player?, user)
+    end
   end
 
   def test_and_condition_nested_check_details
@@ -190,5 +201,19 @@ class TestFailuresWithDetailsPolicy < Minitest::Test
     assert_equal({
       detailed: [{kill?: {role: "admin"}, feed?: {some: "stuff"}}]
     }, details)
+  end
+
+  def test_result_set
+    policy = UserPolicy.new user: User.new("guest")
+    refute policy.apply(:player?)
+
+    assert policy.result.reasons.set.include?(:invalid_player)
+  end
+
+  def test_nested_policy_result_set
+    policy = PlayerPolicy.new user: User.new("guest")
+    refute policy.apply(:run?)
+
+    assert policy.result.reasons.set.include?(:invalid_player)
   end
 end
