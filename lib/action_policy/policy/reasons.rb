@@ -74,6 +74,25 @@ module ActionPolicy
         @details = nil
       end
 
+      # Returns all the details merged together
+      def all_details
+        return @all_details if defined?(@all_details)
+
+        @all_details = {}.tap do |all|
+          next unless defined?(@reasons)
+
+          reasons.reasons.each_value do |rules|
+            detailed_reasons = rules.last
+
+            next unless detailed_reasons.is_a?(Hash)
+
+            detailed_reasons.each_value do |details|
+              all.merge!(details)
+            end
+          end
+        end
+      end
+
       # Add reasons to inspect
       def inspect
         super.then do |str|

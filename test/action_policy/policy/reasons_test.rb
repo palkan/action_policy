@@ -191,4 +191,14 @@ class TestFailuresWithDetailsPolicy < Minitest::Test
       detailed: [{kill?: {role: "admin"}, feed?: {some: "stuff"}}]
     }, details)
   end
+
+  def test_all_details
+    policy = UserPolicy.new user: User.new("gusto")
+
+    refute policy.apply(:create?)
+
+    details = policy.result.all_details
+
+    assert_equal({name: "gusto", superhero: "spiderman"}, details)
+  end
 end

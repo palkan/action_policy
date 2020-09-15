@@ -2,6 +2,8 @@
 
 ## master
 
+- Add `Result#all_details` to return all collected details in a single hash. ([@palkan][])
+
 - Add `default` option to lookup and `default_authorization_policy_class` callback to behaviour. ([@palkan][])
 
 - Add `skip_verify_authorized!` to Rails controllers integration. ([@palkan][])

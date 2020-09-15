@@ -99,6 +99,24 @@ And then when you call `full_messages`:
 p ex.result.reasons.full_messages #=> The Onboarding stage is not accessible
 ```
 
+### `result.all_details`
+
+Sometimes details could be useful not only to provide more context to the user, but to handle failures differently.
+
+In this cases, digging through the `ex.result.reasons.details` could be cumbersome (see [this PR](https://github.com/palkan/action_policy/pull/130) for discussion). We provide a helper method, `result.all_details`, which could be used to get all details merged into a single Hash:
+
+```ruby
+rescue_from ActionPolicy::Unauthorized do |ex|
+  if ex.result.all_details[:not_found]
+    head :not_found
+  else
+    head :unauthorized
+  end
+end
+```
+
+----
+
 **P.S. What is the point of failure reasons?**
 
 Failure reasons helps you to write _actionable_ error messages, i.e. to provide a user with helpful feedback.
