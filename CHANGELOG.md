@@ -2,6 +2,10 @@
 
 ## master
 
+- Add `allowance_to` method to authorization behaviour. ([@palkan][])
+
+This method is similar to `allowed_to?` but returns an authorization result object.
+
 - Support aliases in `allowed_to?` / `check?` calls within policies. ([@palkan][])
 
 ## 0.4.5 (2020-07-29)

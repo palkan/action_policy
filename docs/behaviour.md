@@ -29,7 +29,7 @@ class PostUpdateAction
 end
 ```
 
-`ActionPolicy::Behaviour` provides `authorize` class-level method to configure [authorization context](authorization_context.md) and the instance-level methods: `authorize!`, `allowed_to?` and `authorized`:
+`ActionPolicy::Behaviour` provides `authorize` class-level method to configure [authorization context](authorization_context.md) and the instance-level methods: `authorize!`, `allowed_to?`, `allowance_to`, and `authorized`:
 
 ### `authorize!`
 
@@ -51,6 +51,17 @@ This is a _predicate_ version of `authorize!`: it returns true if authorization 
 if allowed_to?(:edit?, post)
   # ...
 end
+```
+
+### `allowance_to`
+
+This method is similar to `allowed_to?` but returns an authorization result instead. It's especially useful for APIs when you want to
+return not only true or false but also, for example, [failure reasons](./reasons.md):
+
+```ruby
+result = allowance_to(:edit?, post)
+
+{value: result.value, fullMessages: result.reasons.full_messages, details: result.reasons.details}.to_json
 ```
 
 ### `authorized`

@@ -35,6 +35,11 @@ class TestBehaviour < Minitest::Test
       user = User.new(name)
       allowed_to?(:talk?, user)
     end
+
+    def talk_allowance(name)
+      user = User.new(name)
+      allowance_to(:talk?, user)
+    end
   end
 
   def test_authorize_succeed
@@ -64,6 +69,18 @@ class TestBehaviour < Minitest::Test
     admin = User.new("admin")
 
     assert "OK", chat.talk_as("guest", admin)
+  end
+
+  def test_allowance
+    result = ChatChannel.new("admin").talk_allowance("guest")
+
+    assert result.success?
+    assert_equal :manage?, result.rule
+
+    result = ChatChannel.new("admin").talk_allowance("admin")
+
+    assert result.fail?
+    assert_equal :manage?, result.rule
   end
 end
 

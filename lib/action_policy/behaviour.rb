@@ -35,12 +35,7 @@ module ActionPolicy
     #
     # Raises `ActionPolicy::Unauthorized` if check failed.
     def authorize!(record = :__undef__, to:, **options)
-      record = implicit_authorization_target! if record == :__undef__
-      raise ArgumentError, "Record must be specified" if record.nil?
-
-      options[:context] && (options[:context] = authorization_context.merge(options[:context]))
-
-      policy = policy_for(record: record, **options)
+      policy = lookup_authorization_policy(record, **options)
 
       Authorizer.call(policy, authorization_rule_for(policy, to))
     end
@@ -49,14 +44,17 @@ module ActionPolicy
     #
     # Returns true of false.
     def allowed_to?(rule, record = :__undef__, **options)
-      record = implicit_authorization_target! if record == :__undef__
-      raise ArgumentError, "Record must be specified" if record.nil?
-
-      options[:context] && (options[:context] = authorization_context.merge(options[:context]))
-
-      policy = policy_for(record: record, **options)
+      policy = lookup_authorization_policy(record, **options)
 
       policy.apply(authorization_rule_for(policy, rule))
+    end
+
+    # Returns the authorization result object after applying a specified rule to a record.
+    def allowance_to(rule, record = :__undef__, **options)
+      policy = lookup_authorization_policy(record, **options)
+
+      policy.apply(authorization_rule_for(policy, rule))
+      policy.result
     end
 
     def authorization_context
@@ -73,6 +71,15 @@ module ActionPolicy
     # otherwise fallback to :manage? rule.
     def authorization_rule_for(policy, rule)
       policy.resolve_rule(rule)
+    end
+
+    def lookup_authorization_policy(record, **options) # :nodoc:
+      record = implicit_authorization_target! if record == :__undef__
+      raise ArgumentError, "Record must be specified" if record.nil?
+
+      options[:context] && (options[:context] = authorization_context.merge(options[:context]))
+
+      policy_for(record: record, **options)
     end
 
     module ClassMethods # :nodoc:
