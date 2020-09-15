@@ -13,6 +13,8 @@ end
 
 require "action_policy"
 
+ActionPolicy::PrettyPrint.ignore_expressions << /\bjard\b/
+
 Dir["#{__dir__}/helpers/**/*.rb"].sort.each { |f| require f }
 Dir["#{__dir__}/stubs/**/*.rb"].sort.each { |f| require f }
 

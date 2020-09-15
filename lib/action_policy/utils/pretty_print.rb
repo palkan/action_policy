@@ -121,11 +121,13 @@ module ActionPolicy
 
       # Some lines should not be evaled
       def ignore_exp?(exp)
-        exp.match?(/^\s*binding\.(pry|irb)\s*$/)
+        PrettyPrint.ignore_expressions.any? { |pattern| exp.match?(pattern) }
       end
     end
 
     class << self
+      attr_accessor :ignore_expressions
+
       if defined?(::Unparser) && defined?(::MethodSource)
         def available?
           true
@@ -155,5 +157,9 @@ module ActionPolicy
         val
       end
     end
+
+    self.ignore_expressions = [
+      /^\s*binding\.(pry|irb)\s*$/s
+    ]
   end
 end

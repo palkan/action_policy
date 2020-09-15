@@ -28,6 +28,11 @@ class PrettyPrintPolicy < ActionPolicy::Base
     binding.irb # rubocop:disable Lint/Debugger
     user.admin?
   end
+
+  def admind_jard?
+    jard
+    user.admin?
+  end
 end
 
 class TestPrettyPrint < Minitest::Test
@@ -103,5 +108,15 @@ class TestPrettyPrint < Minitest::Test
     EXPECTED
 
     assert_output(expected) { policy.pp(:admind?) }
+  end
+
+  def test_single_expression_rule_with_jard
+    expected = <<~EXPECTED
+      PrettyPrintPolicy#admind_jard?
+      ↳ jard #=> <skipped>
+      ↳ user.admin? #=> false
+    EXPECTED
+
+    assert_output(expected) { policy.pp(:admind_jard?) }
   end
 end

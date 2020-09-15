@@ -54,3 +54,12 @@ pry> pp :admin?
 MyPolicy#admin?
 ↳ user.admin? #=> false
 ```
+
+## Compatibility with debugging tools
+
+Since we partially evaluate code within a policy rule, pretty printing could get stuck if you have debugging breakpoints.
+By default, we ignore `binding.pry` and `binding.irb` expressions (you will see a `<skipped>` comment in the output). If you're using an alternative debugging technique, you can add a regexp to ignore the corresponding expression:
+
+```ruby
+ActionPolicy::PrettyPrint.ignore_expressions << /\bdebug\b/
+```
