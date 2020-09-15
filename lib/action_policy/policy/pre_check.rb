@@ -31,34 +31,6 @@ module ActionPolicy
       #
       # Implements filtering logic.
       class Check
-        # Wrapper over check result
-        class Result
-          DENY = :__deny__
-          ALLOW = :__allow__
-
-          KINDS = {
-            DENY => false,
-            ALLOW => true
-          }.freeze
-
-          attr_reader :fulfilled
-
-          def initialize(val)
-            @fulfilled = KINDS.key?(val)
-            @value = val
-          end
-
-          alias fulfilled? fulfilled
-
-          def denied?
-            @value == DENY
-          end
-
-          def value
-            KINDS.fetch(@value)
-          end
-        end
-
         attr_reader :name, :policy_class
 
         def initialize(policy, name, except: nil, only: nil)
@@ -81,11 +53,7 @@ module ActionPolicy
         end
 
         def call(policy)
-          Result.new(policy.send(name)).tap do |res|
-            # add denial reason if Reasons included
-            policy.result.reasons.add(policy, name) if
-              res.denied? && policy.result.respond_to?(:reasons)
-          end
+          policy.send(name)
         end
 
         def skip!(except: nil, only: nil)
@@ -142,19 +110,10 @@ module ActionPolicy
       def run_pre_checks(rule)
         self.class.pre_checks.each do |check|
           next unless check.applicable?(rule)
-          res = check.call(self)
-          return res.value if res.fulfilled?
+          check.call(self)
         end
 
         yield if block_given?
-      end
-
-      def deny!
-        Check::Result::DENY
-      end
-
-      def allow!
-        Check::Result::ALLOW
       end
 
       def __apply__(rule)

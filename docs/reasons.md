@@ -54,6 +54,20 @@ p ex.result.reasons.details #=> { applicant: [:view_applicants?] }
 p ex.result.reasons.details #=> { stage: [:show?] }
 ```
 
+Reason could also be specified for `deny!` calls:
+
+```ruby
+class TeamPolicy < ApplicationPolicy
+  def show?
+    deny!(:no_user) if user.anonymous?
+
+    user.has_permission?(:view_teams)
+  end
+end
+
+p ex.result.reasons.details #=> { applicant: [:no_user] }
+```
+
 ## Detailed Reasons
 
 You can provide additional details to your failure reasons by using a `details: { ... }` option:
