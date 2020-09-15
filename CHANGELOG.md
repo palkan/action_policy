@@ -2,6 +2,8 @@
 
 ## master
 
+- Support aliases in `allowed_to?` / `check?` calls within policies. ([@palkan][])
+
 ## 0.4.5 (2020-07-29)
 
 - Add strict_namespace option to lookup chain. (@rainerborene)

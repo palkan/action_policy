@@ -10,6 +10,11 @@ unless "".respond_to?(:underscore)
   using ActionPolicy::Ext::StringUnderscore
 end
 
+unless "".respond_to?(:then)
+  require "action_policy/ext/yield_self_then"
+  using ActionPolicy::Ext::YieldSelfThen
+end
+
 module ActionPolicy
   # Raised when `resolve_rule` failed to find an approriate
   # policy rule method for the activity
@@ -102,9 +107,11 @@ module ActionPolicy
       # If record is `nil` then we uses the current policy.
       def allowed_to?(rule, record = :__undef__, **options)
         if (record == :__undef__ || record == self.record) && options.empty?
-          __apply__(rule)
+          __apply__(resolve_rule(rule))
         else
-          policy_for(record: record, **options).apply(rule)
+          policy_for(record: record, **options).then do |policy|
+            policy.apply(policy.resolve_rule(rule))
+          end
         end
       end
 

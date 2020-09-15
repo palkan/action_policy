@@ -11,12 +11,19 @@ class AliasesRuleTestPolicy
   alias_rule :update?, :destroy?, :create?, to: :edit?
 
   def manage?
+    true
   end
 
   def edit?
+    true
   end
 
   def index?
+    true
+  end
+
+  def update_or_destroy?
+    allowed_to?(:update?) || allowed_to?(:destroy?)
   end
 
   class NoDefault < self
@@ -25,6 +32,7 @@ class AliasesRuleTestPolicy
     alias_rule :index?, :update?, to: :manage?
 
     def create?
+      true
     end
   end
 end
@@ -55,6 +63,10 @@ class TestPolicyAliasesRule < Minitest::Test
     assert_raises(ActionPolicy::UnknownRule) do
       policy.resolve_rule(:show?)
     end
+  end
+
+  def test_alias_rule_within_policy
+    assert policy.apply(:update_or_destroy?)
   end
 
   if defined?(::DidYouMean::SpellChecker)
