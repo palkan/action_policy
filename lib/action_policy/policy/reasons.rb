@@ -1,16 +1,8 @@
 # frozen_string_literal: true
 
-unless "".respond_to?(:then)
-  require "action_policy/ext/yield_self_then"
-  using ActionPolicy::Ext::YieldSelfThen
-end
-
-unless {}.respond_to?(:transform_keys)
-  require "action_policy/ext/hash_transform_keys"
-  using ActionPolicy::Ext::HashTransformKeys
-end
-
 module ActionPolicy
+  using RubyNext
+
   module Policy
     # Failures reasons store
     class FailureReasons

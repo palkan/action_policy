@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "ruby-next"
+
 # ActionPolicy is an authorization framework for Ruby/Rails applications.
 #
 # It provides a way to write access policies and helpers to check these policies

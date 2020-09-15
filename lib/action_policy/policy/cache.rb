@@ -3,16 +3,13 @@
 require "action_policy/version"
 
 module ActionPolicy # :nodoc:
+  using RubyNext
+
   # By default cache namespace (or prefix) contains major and minor version of the gem
   CACHE_NAMESPACE = "acp:#{ActionPolicy::VERSION.split(".").take(2).join(".")}"
 
-  require "action_policy/ext/yield_self_then"
   require "action_policy/ext/policy_cache_key"
 
-  unless "".respond_to?(:then)
-    require "action_policy/ext/yield_self_then"
-    using ActionPolicy::Ext::YieldSelfThen
-  end
   using ActionPolicy::Ext::PolicyCacheKey
 
   module Policy

@@ -16,10 +16,7 @@ ensure
 end
 
 module ActionPolicy
-  unless "".respond_to?(:then)
-    require "action_policy/ext/yield_self_then"
-    using ActionPolicy::Ext::YieldSelfThen
-  end
+  using RubyNext
 
   # Takes the object and a method name,
   # and returns the "annotated" source code for the method:

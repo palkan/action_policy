@@ -10,12 +10,9 @@ unless "".respond_to?(:underscore)
   using ActionPolicy::Ext::StringUnderscore
 end
 
-unless "".respond_to?(:then)
-  require "action_policy/ext/yield_self_then"
-  using ActionPolicy::Ext::YieldSelfThen
-end
-
 module ActionPolicy
+  using RubyNext
+
   # Raised when `resolve_rule` failed to find an approriate
   # policy rule method for the activity
   class UnknownRule < Error

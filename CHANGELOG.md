@@ -2,6 +2,8 @@
 
 ## master
 
+- **Drop Ruby 2.4 support**. ([@palkan][])
+
 - Add `allowance_to` method to authorization behaviour. ([@palkan][])
 
 This method is similar to `allowed_to?` but returns an authorization result object.
