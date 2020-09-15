@@ -8,8 +8,14 @@ module ActionPolicy
       using ActionPolicy::Ext::PolicyCacheKey
 
       # Returns policy instance for the record.
-      def policy_for(record:, with: nil, namespace: authorization_namespace, context: authorization_context, allow_nil: false)
-        policy_class = with || ::ActionPolicy.lookup(record, namespace: namespace, context: context, allow_nil: allow_nil)
+      def policy_for(record:, with: nil, namespace: authorization_namespace, context: authorization_context, allow_nil: false, default: default_authorization_policy_class)
+        policy_class = with || ::ActionPolicy.lookup(
+          record,
+          namespace: namespace,
+          context: context,
+          allow_nil: allow_nil,
+          default: default
+        )
         policy_class&.new(record, **context)
       end
 
@@ -19,6 +25,10 @@ module ActionPolicy
 
       def authorization_namespace
         # override to provide specific authorization namespace
+      end
+
+      def default_authorization_policy_class
+        # override to provide a policy class use when no policy found
       end
 
       # Override this method to provide implicit authorization target

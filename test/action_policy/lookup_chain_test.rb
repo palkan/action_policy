@@ -48,6 +48,13 @@ class TestLookupChain < Minitest::Test
     assert_match %r{Couldn't find policy class for}, e.message
   end
 
+  def test_default
+    assert_equal(
+      LookupAPolicy,
+      ActionPolicy.lookup(nil, default: LookupAPolicy)
+    )
+  end
+
   def test_symbol
     assert_equal(
       LookupAPolicy,

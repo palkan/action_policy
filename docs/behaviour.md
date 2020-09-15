@@ -86,6 +86,18 @@ allowed_to?(:edit?, post, with: SpecialPostPolicy)
 authorize! post, to: :destroy?, namespace: Admin
 ```
 
+- Define a default policy to use in case lookup finds nothing:
+
+```ruby
+# either explicitly
+authorize! post, to: :destroy?, default: GuestPolicy
+
+# or by overriding a specific behavior method
+def default_authorization_policy_class
+  logged_in? ? DefaultUserPolicy : GuestPolicy
+end
+```
+
 ## Implicit authorization target
 
 You can omit the authorization target for all the methods by defining an _implicit authorization target_:

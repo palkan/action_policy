@@ -2,6 +2,8 @@
 
 ## master
 
+- Add `default` option to lookup and `default_authorization_policy_class` callback to behaviour. ([@palkan][])
+
 - Add `skip_verify_authorized!` to Rails controllers integration. ([@palkan][])
 
 This method allows you to skip the `verify_authorized` callback dynamically.

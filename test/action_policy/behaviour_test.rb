@@ -204,3 +204,50 @@ class TestMissingImplicitTarget < Minitest::Test
                                "define the `implicit_authorization_target` method."
   end
 end
+
+class TestDefaultAuthorizationPolicy < Minitest::Test
+  class UserPolicy
+    include ActionPolicy::Policy::Core
+
+    def ping?
+      true
+    end
+  end
+
+  class GuestPolicy < UserPolicy
+    def ping?
+      false
+    end
+  end
+
+  class RoomChannel
+    include ActionPolicy::Behaviour
+
+    attr_reader :user
+
+    def initialize(user = nil)
+      @user = user
+    end
+
+    def ping
+      authorize! self, to: :ping?
+      "pong"
+    end
+
+    def default_authorization_policy_class
+      user ? UserPolicy : GuestPolicy
+    end
+  end
+
+  def test_default_authorization_policy_class
+    guest_channel = RoomChannel.new
+
+    assert_raises ActionPolicy::Unauthorized do
+      guest_channel.ping
+    end
+
+    user_channel = RoomChannel.new(User.new("bob"))
+
+    assert_equal "pong", user_channel.ping
+  end
+end
