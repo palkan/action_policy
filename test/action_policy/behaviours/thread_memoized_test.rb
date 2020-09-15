@@ -4,6 +4,8 @@ require "test_helper"
 
 class TestThreadMemoized < Minitest::Test
   class UserPolicy < ::UserPolicy
+    MUTEX = Mutex.new
+
     class << self
       def policies
         @policies ||= []
@@ -16,7 +18,9 @@ class TestThreadMemoized < Minitest::Test
 
     def initialize(record = nil, **params)
       super
-      self.class.policies << self
+      MUTEX.synchronize do
+        self.class.policies << self
+      end
     end
   end
 
@@ -117,16 +121,19 @@ class TestThreadMemoized < Minitest::Test
   def test_different_threads
     user = User.new("guest")
 
+    channel = ChatChannel.new("admin")
+    channel_2 = ChatChannel.new("guest")
+    channel_3 = ChatChannel.new("guest")
+
     threads = []
 
     threads << Thread.new do
-      channel = ChatChannel.new("admin")
       assert channel.talk?(user)
     end
 
     threads << Thread.new do
-      channel_2 = ChatChannel.new("guest")
       refute channel_2.talk?(user)
+      refute channel_3.talk?(user)
     end
 
     threads.map(&:join)
