@@ -70,6 +70,26 @@ end
 
 \* It's not a Ruby _alias_ but a wrapper; we can't use `alias` or `alias_method`, 'cause `allowed_to?` could be extended by some extensions.
 
+## Fail-fast or pass-fast
+
+For better readability, we provide an alternative API (originally introduced for [pre-checks](./pre_checks.md)) to allow or deny a particular action. There are two methods—`allow!` and `deny!`:
+
+```ruby
+class PostPolicy < ApplicationPolicy
+  def show?
+    allow! if user.admin?
+
+    check?(:publicly_visible?)
+  end
+
+  def destroy?
+    deny! if record.subscribers.any?
+
+    # some general logic
+  end
+end
+```
+
 ## Identifiers
 
 Each policy class has an `identifier`, which is by default just an underscored class name:

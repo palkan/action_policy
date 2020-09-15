@@ -47,6 +47,10 @@ class ComplexFailuresTestPolicy < ActionPolicy::Base
   def feed?
     false
   end
+
+  def sing?
+    deny!(:no_singing_today)
+  end
 end
 
 class TestComplexFailuresPolicy < Minitest::Test
@@ -107,6 +111,18 @@ class TestComplexFailuresPolicy < Minitest::Test
 
     refute policy.save?
     assert_nil policy.result
+  end
+
+  def test_deny
+    policy = ComplexFailuresTestPolicy.new user: User.new("guest")
+
+    refute policy.apply(:sing?)
+
+    details = policy.result.reasons.details
+
+    assert_equal({
+      complex: [:no_singing_today]
+    }, details)
   end
 end
 

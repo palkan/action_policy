@@ -77,7 +77,22 @@ module ActionPolicy
       # `apply` also calls pre-checks.
       def apply(rule)
         @result = self.class.result_class.new(self.class, rule)
-        @result.load __apply__(rule)
+
+        catch :policy_fulfilled do
+          result.load __apply__(rule)
+        end
+
+        result.value
+      end
+
+      def deny!
+        result&.load false
+        throw :policy_fulfilled
+      end
+
+      def allow!
+        result&.load true
+        throw :policy_fulfilled
       end
 
       # This method performs the rule call.

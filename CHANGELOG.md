@@ -2,6 +2,13 @@
 
 ## master
 
+- Move `deny!` / `allow!` to core. ([@palkan][])
+
+Now you can call `deny!` and `allow!` in policy rules to fail- or pass-fast.
+
+**BREAKING.** Pre-check name is no longer added automatically to failure reasons. You should specify the reason
+explicitly: `deny!(:my_reason)`.
+
 - Add `Result#all_details` to return all collected details in a single hash. ([@palkan][])
 
 - Add `default` option to lookup and `default_authorization_policy_class` callback to behaviour. ([@palkan][])
