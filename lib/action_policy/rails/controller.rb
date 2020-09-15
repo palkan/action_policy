@@ -26,6 +26,7 @@ module ActionPolicy
       helper_method :allowed_to? if respond_to?(:helper_method)
 
       attr_writer :authorize_count
+      attr_reader :verify_authorized_skipped
 
       protected :authorize_count=, :authorize_count
     end
@@ -57,11 +58,15 @@ module ActionPolicy
 
     def verify_authorized
       raise UnauthorizedAction.new(controller_path, action_name) if
-        authorize_count.zero?
+        authorize_count.zero? && !verify_authorized_skipped
     end
 
     def authorize_count
       @authorize_count ||= 0
+    end
+
+    def skip_verify_authorized!
+      @verify_authorized_skipped = true
     end
 
     class_methods do

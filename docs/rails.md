@@ -51,6 +51,11 @@ You can skip this check when necessary:
 ```ruby
 class PostsController < ApplicationController
   skip_verify_authorized only: :show
+
+  def index
+    # or dynamically within an action
+    skip_verify_authorized! if some_condition
+  end
 end
 ```
 

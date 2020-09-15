@@ -2,6 +2,10 @@
 
 ## master
 
+- Add `skip_verify_authorized!` to Rails controllers integration. ([@palkan][])
+
+This method allows you to skip the `verify_authorized` callback dynamically.
+
 - **Drop Ruby 2.4 support**. ([@palkan][])
 
 - Add `allowance_to` method to authorization behaviour. ([@palkan][])

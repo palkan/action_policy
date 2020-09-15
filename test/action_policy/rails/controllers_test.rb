@@ -110,6 +110,7 @@ class TestControllerHookIntegration < ActionController::TestCase
     end
 
     def create
+      skip_verify_authorized! if params[:skip_authorization]
       render plain: "OK"
     end
 
@@ -138,6 +139,11 @@ class TestControllerHookIntegration < ActionController::TestCase
     assert_raises(ActionPolicy::UnauthorizedAction) do
       get :create
     end
+  end
+
+  def test_skip_verify_authorized_dynamically
+    get :create, params: {skip_authorization: "Y"}
+    assert_equal "OK", response.body
   end
 
   def test_skipped_verify_show
