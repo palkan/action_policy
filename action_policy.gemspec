@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-lib = File.expand_path("lib", __dir__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "action_policy/version"
+require_relative "lib/action_policy/version"
 
 Gem::Specification.new do |spec|
   spec.name = "action_policy"
@@ -15,9 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/palkan/action_policy"
   spec.license = "MIT"
 
-  spec.files = `git ls-files -z`.split("\x0").reject do |f|
-    f.match(%r{^(test|spec|features)/})
-  end
+  spec.files = Dir.glob("lib/**/*") + %w[README.md LICENSE.txt CHANGELOG.md]
 
   spec.metadata = {
     "bug_tracker_uri" => "http://github.com/palkan/action_policy/issues",
