@@ -98,9 +98,7 @@ module ActionPolicy
       # This method performs the rule call.
       # Override or extend it to provide custom functionality
       # (such as caching, pre checks, etc.)
-      def __apply__(rule)
-        public_send(rule)
-      end
+      def __apply__(rule) = public_send(rule)
 
       # Wrap code that could modify result
       # to prevent the current result modification
@@ -128,9 +126,7 @@ module ActionPolicy
       end
 
       # An alias for readability purposes
-      def check?(*args)
-        allowed_to?(*args)
-      end
+      def check?(*args) = allowed_to?(*args)
 
       # Returns a rule name (policy method name) for activity.
       #
@@ -146,9 +142,7 @@ module ActionPolicy
       # Return annotated source code for the rule
       # NOTE: require "method_source" and "unparser" gems to be installed.
       # Otherwise returns empty string.
-      def inspect_rule(rule)
-        PrettyPrint.print_method(self, rule)
-      end
+      def inspect_rule(rule) = PrettyPrint.print_method(self, rule)
 
       # Helper for printing the annotated rule source.
       # Useful for debugging: type `pp :show?` within the context of the policy

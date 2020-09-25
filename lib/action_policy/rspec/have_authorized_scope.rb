@@ -56,7 +56,7 @@ module ActionPolicy
 
         @actual_scopes = ActionPolicy::Testing::AuthorizeTracker.scopings
 
-        matching_scopes = actual_scopes.select { |scope| scope.matches?(policy, type, name, scope_options) }
+        matching_scopes = actual_scopes.select { _1.matches?(policy, type, name, scope_options) }
 
         return false if matching_scopes.empty?
 
@@ -75,9 +75,7 @@ module ActionPolicy
         raise "This matcher doesn't support negation"
       end
 
-      def supports_block_expectations?
-        true
-      end
+      def supports_block_expectations?() = true
 
       def failure_message
         "expected a scoping named :#{name} for type :#{type} " \
@@ -109,8 +107,8 @@ module ActionPolicy
       end
 
       def formatted_scopings
-        actual_scopes.map do |ascope|
-          " - #{ascope.inspect}"
+        actual_scopes.map do
+          " - #{_1.inspect}"
         end.join("\n")
       end
     end

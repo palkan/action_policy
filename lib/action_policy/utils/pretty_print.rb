@@ -121,7 +121,7 @@ module ActionPolicy
 
       # Some lines should not be evaled
       def ignore_exp?(exp)
-        PrettyPrint.ignore_expressions.any? { |pattern| exp.match?(pattern) }
+        PrettyPrint.ignore_expressions.any? { exp.match?(_1) }
       end
     end
 
@@ -129,25 +129,19 @@ module ActionPolicy
       attr_accessor :ignore_expressions
 
       if defined?(::Unparser) && defined?(::MethodSource)
-        def available?
-          true
-        end
+        def available?() = true
 
         def print_method(object, method_name)
-          ast = object.method(method_name).source.then(&Unparser.method(:parse))
+          ast = object.method(method_name).source.then(&Unparser.:parse)
           # outer node is a method definition itself
           body = ast.children[2]
 
           Visitor.new(object).collect(body)
         end
       else
-        def available?
-          false
-        end
+        def available?() = false
 
-        def print_method(_, _)
-          ""
-        end
+        def print_method(_, _) = ""
       end
 
       def colorize(val)

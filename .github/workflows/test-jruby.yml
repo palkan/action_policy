@@ -30,6 +30,8 @@ jobs:
         bundle config path /home/runner/bundle
         bundle install
         bundle update
+    - name: Run Ruby Next
+      run: bundle exec rake nextify
     - name: Run Minitest tests
       run: |
         bundle exec rake test

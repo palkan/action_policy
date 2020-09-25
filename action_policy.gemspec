@@ -27,7 +27,13 @@ Gem::Specification.new do |spec|
 
   spec.required_ruby_version = ">= 2.5.0"
 
-  spec.add_dependency "ruby-next-core", ">= 0.10.0"
+  # When gem is installed from source, we add `ruby-next` as a dependency
+  # to auto-transpile source files during the first load
+  if ENV["RELEASING_GEM"].nil? && File.directory?(File.join(__dir__, ".git"))
+    spec.add_runtime_dependency "ruby-next", ">= 0.10.3"
+  else
+    spec.add_dependency "ruby-next-core", ">= 0.10.3"
+  end
 
   spec.add_development_dependency "ammeter", "~> 1.1.3"
   spec.add_development_dependency "bundler", ">= 1.15"

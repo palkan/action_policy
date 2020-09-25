@@ -46,23 +46,18 @@ module ActionPolicy
           end
         end
 
-        def lookup_alias(rule)
-          rules_aliases[rule]
-        end
+        def lookup_alias(rule) = rules_aliases[rule]
 
-        def lookup_default_rule
-          rules_aliases[DEFAULT]
-        end
+        def lookup_default_rule() = rules_aliases[DEFAULT]
 
         def rules_aliases
           return @rules_aliases if instance_variable_defined?(:@rules_aliases)
 
-          @rules_aliases =
-            if superclass.respond_to?(:rules_aliases)
-              superclass.rules_aliases.dup
-            else
-              {}
-            end
+          if superclass.respond_to?(:rules_aliases)
+            superclass.rules_aliases.dup
+          else
+            {}
+          end => @rules_aliases
         end
 
         def method_added(name)

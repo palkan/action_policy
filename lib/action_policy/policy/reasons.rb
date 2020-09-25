@@ -25,17 +25,11 @@ module ActionPolicy
 
       # Return Hash of the form:
       #   { policy_identifier => [rules, ...] }
-      def details
-        reasons.transform_keys(&:identifier)
-      end
+      def details() = reasons.transform_keys(&:identifier)
 
-      def empty?
-        reasons.empty?
-      end
+      def empty?() = reasons.empty?
 
-      def present?
-        !empty?
-      end
+      def present?() = !empty?
 
       private
 
@@ -78,7 +72,7 @@ module ActionPolicy
       def all_details
         return @all_details if defined?(@all_details)
 
-        @all_details = {}.tap do |all|
+        {}.tap do |all|
           next unless defined?(@reasons)
 
           reasons.reasons.each_value do |rules|
@@ -90,7 +84,7 @@ module ActionPolicy
               all.merge!(details)
             end
           end
-        end
+        end => @all_details
       end
 
       # Add reasons to inspect

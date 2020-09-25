@@ -11,10 +11,7 @@ module ActionPolicy
       def policy_for(record:, with: nil, namespace: authorization_namespace, context: authorization_context, allow_nil: false, default: default_authorization_policy_class)
         policy_class = with || ::ActionPolicy.lookup(
           record,
-          namespace: namespace,
-          context: context,
-          allow_nil: allow_nil,
-          default: default
+          **{namespace, context, allow_nil, default}
         )
         policy_class&.new(record, **context)
       end
@@ -56,7 +53,7 @@ module ActionPolicy
 
       def policy_for_cache_key(record:, with: nil, namespace: nil, context: authorization_context, **)
         record_key = record._policy_cache_key(use_object_id: true)
-        context_key = context.values.map { |v| v._policy_cache_key(use_object_id: true) }.join(".")
+        context_key = context.values.map { _1._policy_cache_key(use_object_id: true) }.join(".")
 
         "#{namespace}/#{with}/#{context_key}/#{record_key}"
       end

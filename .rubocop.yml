@@ -1,5 +1,6 @@
 require:
   - standard/cop/semantic_blocks
+  - ruby-next/rubocop
 
 inherit_gem:
   standard: config/base.yml
@@ -13,7 +14,7 @@ AllCops:
     - 'gemfiles/**/*'
     - 'lib/generators/**/templates/**/*'
   DisplayCopNames: true
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: next
 
 Standard/SemanticBlocks:
   Enabled: false

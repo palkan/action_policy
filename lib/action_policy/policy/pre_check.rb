@@ -52,9 +52,7 @@ module ActionPolicy
           filter.call(rule)
         end
 
-        def call(policy)
-          policy.send(name)
-        end
+        def call(policy) = policy.send(name)
 
         def skip!(except: nil, only: nil)
           if !except.nil? && !only.nil?
@@ -84,7 +82,12 @@ module ActionPolicy
         # rubocop: enable
 
         def dup
-          self.class.new(policy_class, name, except: blacklist&.dup, only: whitelist&.dup)
+          self.class.new(
+            policy_class,
+            name,
+            except: blacklist&.dup,
+            only: whitelist&.dup
+          )
         end
 
         private
@@ -124,7 +127,7 @@ module ActionPolicy
         def pre_check(*names, **options)
           names.each do |name|
             # do not allow pre-check override
-            check = pre_checks.find { |c| c.name == name }
+            check = pre_checks.find { _1.name == name }
             raise "Pre-check already defined: #{name}" unless check.nil?
 
             pre_checks << Check.new(self, name, **options)
@@ -133,26 +136,25 @@ module ActionPolicy
 
         def skip_pre_check(*names, **options)
           names.each do |name|
-            check = pre_checks.find { |c| c.name == name }
+            check = pre_checks.find { _1.name == name }
             raise "Pre-check not found: #{name}" if check.nil?
 
             # when no options provided we remove this check completely
             next pre_checks.delete(check) if options.empty?
 
             # otherwise duplicate and apply skip options
-            pre_checks[pre_checks.index(check)] = check.dup.tap { |c| c.skip!(**options) }
+            pre_checks[pre_checks.index(check)] = check.dup.tap { _1.skip!(**options) }
           end
         end
 
         def pre_checks
           return @pre_checks if instance_variable_defined?(:@pre_checks)
 
-          @pre_checks =
-            if superclass.respond_to?(:pre_checks)
-              superclass.pre_checks.dup
-            else
-              []
-            end
+          if superclass.respond_to?(:pre_checks)
+            superclass.pre_checks.dup
+          else
+            []
+          end => @pre_checks
         end
       end
     end
