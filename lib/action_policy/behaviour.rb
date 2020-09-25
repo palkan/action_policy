@@ -104,12 +104,11 @@ module ActionPolicy
       def authorization_targets
         return @authorization_targets if instance_variable_defined?(:@authorization_targets)
 
-        @authorization_targets =
-          if superclass.respond_to?(:authorization_targets)
-            superclass.authorization_targets.dup
-          else
-            {}
-          end
+        if superclass.respond_to?(:authorization_targets)
+          superclass.authorization_targets.dup
+        else
+          {}
+        end => @authorization_targets
       end
     end
   end

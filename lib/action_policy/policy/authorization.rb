@@ -63,8 +63,10 @@ module ActionPolicy
 
       module ClassMethods # :nodoc:
         def authorize(*ids, allow_nil: false, optional: false)
+          allow_nil ||= optional
+
           ids.each do |id|
-            authorization_targets[id] = {allow_nil: allow_nil || optional, optional: optional}
+            authorization_targets[id] = {allow_nil, optional}
           end
 
           attr_reader(*ids)
@@ -73,12 +75,11 @@ module ActionPolicy
         def authorization_targets
           return @authorization_targets if instance_variable_defined?(:@authorization_targets)
 
-          @authorization_targets =
-            if superclass.respond_to?(:authorization_targets)
-              superclass.authorization_targets.dup
-            else
-              {}
-            end
+          if superclass.respond_to?(:authorization_targets)
+            superclass.authorization_targets.dup
+          else
+            {}
+          end => @authorization_targets
         end
       end
     end

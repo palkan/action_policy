@@ -13,9 +13,7 @@ module ActionPolicy
         suggestion ? "\nDid you mean? #{suggestion}" : ""
       end
     else
-      def suggest(*)
-        ""
-      end
+      def suggest(*) = ""
     end
   end
 end

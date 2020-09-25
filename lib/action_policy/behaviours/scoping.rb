@@ -17,8 +17,9 @@ module ActionPolicy
         policy ||= policy_for(record: implicit_authorization_target!, **options)
 
         type ||= authorization_scope_type_for(policy, target)
+        name = as
 
-        Authorizer.scopify(target, policy, type: type, name: as, scope_options: scope_options)
+        Authorizer.scopify(target, policy, **{type, name, scope_options})
       end
 
       # For backward compatibility

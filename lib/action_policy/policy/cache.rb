@@ -23,15 +23,13 @@ module ActionPolicy # :nodoc:
         end
       end
 
-      def cache_namespace
-        ActionPolicy::CACHE_NAMESPACE
-      end
+      def cache_namespace() = ActionPolicy::CACHE_NAMESPACE
 
       def cache_key(*parts)
         [
           cache_namespace,
           *parts
-        ].map { |part| part._policy_cache_key }.join("/")
+        ].map { _1._policy_cache_key }.join("/")
       end
 
       def rule_cache_key(rule)
@@ -44,7 +42,7 @@ module ActionPolicy # :nodoc:
       end
 
       def context_cache_key
-        authorization_context.map { |_k, v| v._policy_cache_key.to_s }.join("/")
+        authorization_context.map { _2._policy_cache_key.to_s }.join("/")
       end
 
       def apply_with_cache(rule)
@@ -91,12 +89,11 @@ module ActionPolicy # :nodoc:
         def cached_rules
           return @cached_rules if instance_variable_defined?(:@cached_rules)
 
-          @cached_rules =
-            if superclass.respond_to?(:cached_rules)
-              superclass.cached_rules.dup
-            else
-              {}
-            end
+          if superclass.respond_to?(:cached_rules)
+            superclass.cached_rules.dup
+          else
+            {}
+          end => @cached_rules
         end
       end
     end

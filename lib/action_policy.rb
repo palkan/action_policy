@@ -2,6 +2,9 @@
 
 require "ruby-next"
 
+require "ruby-next/language/setup"
+RubyNext::Language.setup_gem_load_path(transpile: true)
+
 # ActionPolicy is an authorization framework for Ruby/Rails applications.
 #
 # It provides a way to write access policies and helpers to check these policies

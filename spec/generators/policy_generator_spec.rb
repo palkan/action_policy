@@ -14,7 +14,7 @@ describe ActionPolicy::Generators::PolicyGenerator, type: :generator do
     gen = generator(args)
     expect(gen).to receive(:generate).with("action_policy:install")
 
-    silence_stream(STDOUT) { gen.invoke_all }
+    silence_stream($stdout) { gen.invoke_all }
   end
 
   describe "policy" do

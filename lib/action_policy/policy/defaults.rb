@@ -21,17 +21,11 @@ module ActionPolicy
         base.authorize :user
       end
 
-      def index?
-        false
-      end
+      def index?() = false
 
-      def create?
-        false
-      end
+      def create?() = false
 
-      def manage?
-        false
-      end
+      def manage?() = false
     end
   end
 end

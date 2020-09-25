@@ -21,7 +21,7 @@ module ActionPolicy
       private
 
       def candidates_for(policy_class, rule)
-        policy_hierarchy = policy_class.ancestors.select { |klass| klass.respond_to?(:identifier) }
+        policy_hierarchy = policy_class.ancestors.select { _1.respond_to?(:identifier) }
         [
           *policy_hierarchy.map { |klass| :"policy.#{klass.identifier}.#{rule}" },
           :"policy.#{rule}",

@@ -45,16 +45,14 @@ module ActionPolicy
 
         @actual_calls = ActionPolicy::Testing::AuthorizeTracker.calls
 
-        actual_calls.any? { |call| call.matches?(policy, rule, target) }
+        actual_calls.any? { _1.matches?(policy, rule, target) }
       end
 
       def does_not_match?(*)
         raise "This matcher doesn't support negation"
       end
 
-      def supports_block_expectations?
-        true
-      end
+      def supports_block_expectations?() = true
 
       def failure_message
         "expected #{formatted_record} " \
@@ -72,14 +70,12 @@ module ActionPolicy
       end
 
       def formatted_calls
-        actual_calls.map do |acall|
-          " - #{acall.inspect}"
+        actual_calls.map do
+          " - #{_1.inspect}"
         end.join("\n")
       end
 
-      def formatted_record(record = target)
-        ::RSpec::Support::ObjectFormatter.format(record)
-      end
+      def formatted_record(record = target) = ::RSpec::Support::ObjectFormatter.format(record)
     end
   end
 end
