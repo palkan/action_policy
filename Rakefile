@@ -27,7 +27,7 @@ end
 namespace :test do
   task :isolated do
     Dir.glob("test/**/*_test.rb").all? do |file|
-      sh(Gem.ruby, "-Ilib:test", file)
+      sh(Gem.ruby, "-I#{__dir__}/lib:#{__dir__}/test", file)
     end || raise("Failures")
   end
 
