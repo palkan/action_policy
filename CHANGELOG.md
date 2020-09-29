@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.5.0 (2020-09-29)
+
 - Move `deny!` / `allow!` to core. ([@palkan][])
 
 Now you can call `deny!` and `allow!` in policy rules to fail- or pass-fast.
