@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
   spec.homepage = "https://github.com/palkan/action_policy"
   spec.license = "MIT"
 
-  spec.files = Dir.glob("lib/**/*") + %w[README.md LICENSE.txt CHANGELOG.md]
+  spec.files = Dir.glob("lib/**/*") + Dir.glob("lib/.rbnext/**/*") + %w[README.md LICENSE.txt CHANGELOG.md]
 
   spec.metadata = {
     "bug_tracker_uri" => "http://github.com/palkan/action_policy/issues",
