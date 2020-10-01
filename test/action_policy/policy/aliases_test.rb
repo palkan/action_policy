@@ -37,6 +37,16 @@ class AliasesRuleTestPolicy
   end
 end
 
+class AliasesRuleTestBasePolicy < ActionPolicy::Base
+  def manage?
+    user.admin?
+  end
+
+  def update_or_destroy?
+    allowed_to?(:update?) || allowed_to?(:destroy?)
+  end
+end
+
 class TestPolicyAliasesRule < Minitest::Test
   def setup
     @policy = AliasesRuleTestPolicy.new
@@ -66,6 +76,12 @@ class TestPolicyAliasesRule < Minitest::Test
   end
 
   def test_alias_rule_within_policy
+    assert policy.apply(:update_or_destroy?)
+  end
+
+  def test_alias_rule_within_base_policy
+    policy = AliasesRuleTestBasePolicy.new(user: User.new("admin"))
+
     assert policy.apply(:update_or_destroy?)
   end
 
