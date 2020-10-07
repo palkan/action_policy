@@ -157,6 +157,8 @@ class Mutations::DestroyUser < Types::BaseMutation
 end
 ```
 
+Check out this issue on how you can implement a `verify_authorized` callback for your mutations: [#28](https://github.com/palkan/action_policy-graphql/issues/28).
+
 ## Handling exceptions
 
 The query would fail with `ActionPolicy::Unauthorized` exception when using `authorize: true` (in raising mode) or calling `authorize!` explicitly.
