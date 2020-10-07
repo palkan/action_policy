@@ -102,6 +102,13 @@ def homes
 end
 ```
 
+You can specify the default _raising_ behaviour for `preauthorize:` by setting a configuration option:
+
+```ruby
+# By default, it fallbacks to .authorize_raise_exception
+ActionPolicy::GraphQL.preauthorize_raise_exception = false
+```
+
 **NOTE:** we pass the field's name as the `record` to the policy rule. We assume that pre-authorization rules do not depend on
 the record itself and pass the field's name for debugging purposes only.
 
@@ -158,6 +165,17 @@ end
 ```
 
 Check out this issue on how you can implement a `verify_authorized` callback for your mutations: [#28](https://github.com/palkan/action_policy-graphql/issues/28).
+
+### Using `preauthorize: *` with mutations
+
+Since mutation is also a GraphQL field, we can also use our custom `authorize: *` and `preauthorize: *` options. Using `authorize: *` doesn't make any sense because it's called after the field has been resolved (i.e., mutation has been executed).
+
+It is possible to override the default _raising_ behaviour for mutation only via the following configuration option:
+
+```ruby
+# By default, it fallbacks to .preauthorize_raise_exception
+ActionPolicy::GraphQL.preauthorize_mutation_raise_exception = true
+```
 
 ## Handling exceptions
 
