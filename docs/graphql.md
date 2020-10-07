@@ -168,7 +168,7 @@ Check out this issue on how you can implement a `verify_authorized` callback for
 
 ### Using `preauthorize: *` with mutations
 
-Since mutation is also a GraphQL field, we can also use our custom `authorize: *` and `preauthorize: *` options. Using `authorize: *` doesn't make any sense because it's called after the field has been resolved (i.e., mutation has been executed).
+Since mutation is also a GraphQL field, we can also use our custom `authorize: *` and `preauthorize: *` options. However, using `authorize: *` for mutations is deprecated and will raise an error in the future versions: it doesn't make any sense because it's called after the field has been resolved (i.e., mutation has been executed).
 
 It is possible to override the default _raising_ behaviour for mutation only via the following configuration option:
 
