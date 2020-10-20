@@ -146,6 +146,26 @@ class TestLookupChain < Minitest::Test
     )
   end
 
+  def test_lookup_namespace_strict
+    assert_raises(ActionPolicy::NotFound) do
+      ActionPolicy.lookup(:lookup_a, namespace: LookupNamespace::NestedNamespace, strict_namespace: true)
+    end
+
+    assert_equal(
+      LookupNamespace::LookupAPolicy,
+      ActionPolicy.lookup(:lookup_a, namespace: LookupNamespace, strict_namespace: true)
+    )
+
+    assert_raises(ActionPolicy::NotFound) do
+      ActionPolicy.lookup(:lookup_b, namespace: LookupNamespace, strict_namespace: true)
+    end
+
+    assert_equal(
+      LookupBPolicy,
+      ActionPolicy.lookup(:lookup_b, strict_namespace: true)
+    )
+  end
+
   def test_namespace_cache_strategy
     ActionPolicy::LookupChain.namespace_cache_enabled = true
     ActionPolicy::LookupChain::NamespaceCache.clear
