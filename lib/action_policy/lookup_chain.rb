@@ -65,20 +65,15 @@ module ActionPolicy
       private
 
       def lookup_within_namespace(policy_name, namespace, strict: false)
-        return unless namespace
-        NamespaceCache.fetch(namespace.name, policy_name, strict: strict) do
+        NamespaceCache.fetch(namespace&.name || "Kernel", policy_name, strict: strict) do
           mod = namespace
           loop do
-            policy = "#{mod.name}::#{policy_name}".safe_constantize
-            break policy unless policy.nil?
+            policy = [mod&.name, policy_name].compact.join("::").safe_constantize
+            break policy if policy || mod.nil? || strict
+
             mod = mod.namespace
-            break if mod.nil? || strict
           end
         end
-      end
-
-      def objectify_policy(policy_name, strict: false)
-        policy_name.safe_constantize unless strict
       end
 
       def policy_class_name_for(record)
@@ -109,17 +104,10 @@ module ActionPolicy
       record.class.policy_class if record.class.respond_to?(:policy_class)
     }
 
-    # Lookup within namespace when provided
-    NAMESPACE_LOOKUP = ->(record, namespace: nil, **) {
-      next if namespace.nil?
-
-      policy_name = policy_class_name_for(record)
-      lookup_within_namespace(policy_name, namespace)
-    }
-
     # Infer from class name
-    INFER_FROM_CLASS = ->(record, **) {
-      policy_class_name_for(record).safe_constantize
+    INFER_FROM_CLASS = ->(record, namespace: nil, strict_namespace: false, **) {
+      policy_name = policy_class_name_for(record)
+      lookup_within_namespace(policy_name, namespace, strict: strict_namespace)
     }
 
     # Infer from passed symbol
@@ -127,8 +115,7 @@ module ActionPolicy
       next unless record.is_a?(Symbol)
 
       policy_name = "#{record.camelize}Policy"
-      lookup_within_namespace(policy_name, namespace, strict: strict_namespace) ||
-        objectify_policy(policy_name, strict: strict_namespace)
+      lookup_within_namespace(policy_name, namespace, strict: strict_namespace)
     }
 
     # (Optional) Infer using String#classify if available
@@ -136,8 +123,7 @@ module ActionPolicy
       next unless record.is_a?(Symbol)
 
       policy_name = "#{record.to_s.classify}Policy"
-      lookup_within_namespace(policy_name, namespace, strict: strict_namespace) ||
-        objectify_policy(policy_name, strict: strict_namespace)
+      lookup_within_namespace(policy_name, namespace, strict: strict_namespace)
     }
 
     self.chain = [
@@ -145,7 +131,6 @@ module ActionPolicy
       (CLASSIFY_SYMBOL_LOOKUP if String.method_defined?(:classify)),
       INSTANCE_POLICY_CLASS,
       CLASS_POLICY_CLASS,
-      NAMESPACE_LOOKUP,
       INFER_FROM_CLASS
     ].compact
   end

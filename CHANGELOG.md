@@ -4,6 +4,8 @@
 
 - Add support for RSpec aliases detection when linting policy specs with `rubocop-rspec` 2.0 ([@pirj][])
 
+- Fix `strict_namespace: true` lookup option not finding policies in global namespace ([@Be-ngt-oH][])
+
 ## 0.5.0 (2020-09-29)
 
 - Move `deny!` / `allow!` to core. ([@palkan][])
@@ -39,7 +41,7 @@ This method is similar to `allowed_to?` but returns an authorization result obje
 
 Fixes [#122](https://github.com/palkan/action_policy/issues/122).
 
-- Separated `#classify`-based and `#camelize`-based symbol lookups. ([Be-ngt-oH][])
+- Separated `#classify`-based and `#camelize`-based symbol lookups. ([@Be-ngt-oH][])
 
 Only affects Rails apps. Now lookup for `:users` tries to find `UsersPolicy` first (camelize),
 and only then search for `UserPolicy` (classify).
