@@ -36,8 +36,7 @@ module ActionPolicy
           if strict
             put_if_absent(:strict, namespace, policy, &block)
           else
-            cached_policy = put_if_absent(:strict, namespace, policy, &block)
-            put_if_absent(:flexible, namespace, policy) { cached_policy }
+            put_if_absent(:flexible, namespace, policy, &block)
           end
         end
 

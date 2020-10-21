@@ -157,12 +157,14 @@ class TestLookupChain < Minitest::Test
     assert_nil store.dig(:flexible, LookupNamespace.name, LookupAPolicy.name)
 
     ActionPolicy.lookup(:lookup_a, namespace: LookupNamespace)
+    ActionPolicy.lookup(:lookup_a, namespace: LookupNamespace, strict_namespace: true)
 
     # cache stored
     assert_equal LookupNamespace::LookupAPolicy, store.dig(:strict, LookupNamespace.name, LookupAPolicy.name)
     assert_equal LookupNamespace::LookupAPolicy, store.dig(:flexible, LookupNamespace.name, LookupAPolicy.name)
 
     # return cached policy
+    assert_equal LookupNamespace::LookupAPolicy, ActionPolicy.lookup(:lookup_a, namespace: LookupNamespace)
     assert_equal LookupNamespace::LookupAPolicy, ActionPolicy.lookup(:lookup_a, namespace: LookupNamespace, strict_namespace: true)
 
     # should respect cascade search
