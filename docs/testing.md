@@ -70,7 +70,7 @@ describe PostPolicy do
     # that the result of application is successful
     succeed "when post is published"
 
-    # `succeed` is `context` + `specify`, which checks
+    # `failed` is `context` + `specify`, which checks
     # that the result of application wasn't successful
     failed "when post is draft" do
       before { post.draft = false }
