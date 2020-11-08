@@ -1,0 +1,17 @@
+RSpec:
+  Language:
+    ExampleGroups:
+      Regular:
+        - describe_rule
+      Focused:
+        - fdescribe_rule
+      Skipped:
+        - xdescribe_rule
+    Includes:
+      Examples:
+        - succeed
+        - failed
+        - fsucceed
+        - ffailed
+        - xsucceed
+        - xfailed
