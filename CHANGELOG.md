@@ -2,6 +2,8 @@
 
 ## master
 
+- Add support for RSpec aliases detection when linting policy specs with `rubocop-rspec` 2.0 ([@pirj][])
+
 ## 0.5.0 (2020-09-29)
 
 - Move `deny!` / `allow!` to core. ([@palkan][])
@@ -429,3 +431,4 @@ This value is now stored in a cache (if any) instead of just the call result (`t
 [@nicolas-brousse]: https://github.com/nicolas-brousse
 [@somenugget]: https://github.com/somenugget
 [@Be-ngt-oH]: https://github.com/Be-ngt-oH
+[@pirj]: https://github.com/pirj

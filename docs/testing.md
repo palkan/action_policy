@@ -388,3 +388,13 @@ describe "users/index.html.slim" do
   end
 end
 ```
+
+## Linting with RuboCop RSpec
+
+When you lint your RSpec spec files with `rubocop-rspec`, it will fail to detect RSpec aliases that Action Policy defines.
+Make sure to use `rubocop-rspec` 2.0 or newer and add the following to your `.rubocop.yml`:
+
+```yaml
+inherit_gem:
+  action_policy: config/rubocop-rspec.yml
+```
