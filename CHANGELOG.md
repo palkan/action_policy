@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.5.4 (2020-12-09)
+
 - Add support for RSpec aliases detection when linting policy specs with `rubocop-rspec` 2.0 ([@pirj][])
 
 - Fix `strict_namespace: true` lookup option not finding policies in global namespace ([@Be-ngt-oH][])
