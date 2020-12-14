@@ -431,7 +431,7 @@ This value is now stored in a cache (if any) instead of just the call result (`t
 [@ilyasgaraev]: https://github.com/ilyasgaraev
 [@brendon]: https://github.com/brendon
 [@DmitryTsepelev]: https://github.com/DmitryTsepelev
-[@korolvs]: https://github.com/korolvs
+[@korolvs]: https://github.com/slavadev
 [@nicolas-brousse]: https://github.com/nicolas-brousse
 [@somenugget]: https://github.com/somenugget
 [@Be-ngt-oH]: https://github.com/Be-ngt-oH
