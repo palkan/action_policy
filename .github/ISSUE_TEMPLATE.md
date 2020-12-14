@@ -1,6 +1,6 @@
 <!--
   This template is for bug reports. If you are reporting a bug, please continue on. If you are here for another reason,
-  feel free to skip the rest of this template.
+  please, go to Discussions: https://github.com/palkan/action_policy/discussions
 -->
 
 ### Tell us about your environment
