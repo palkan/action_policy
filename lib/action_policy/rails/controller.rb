@@ -42,12 +42,12 @@ module ActionPolicy
     # from controller name (i.e. `controller_name.classify.safe_constantize`).
     #
     # Raises `ActionPolicy::Unauthorized` if check failed.
-    def authorize!(record = :__undef__, to: nil, **options)
+    def authorize!(record = :__undef__, to: nil, skip_count: false, **options)
       to ||= :"#{action_name}?"
 
       super(record, to: to, **options)
 
-      self.authorize_count += 1
+      self.authorize_count += 1 unless skip_count
     end
 
     # Tries to infer the resource class from controller name
