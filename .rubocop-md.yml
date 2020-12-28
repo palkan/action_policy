@@ -7,10 +7,6 @@ AllCops:
   Include:
     - '**/*.md'
 
-Lint/Void:
-  Exclude:
-    - '**/*.md'
-
-Lint/DuplicateMethods:
+Layout/EmptyLineBetweenDefs:
   Exclude:
     - '**/*.md'

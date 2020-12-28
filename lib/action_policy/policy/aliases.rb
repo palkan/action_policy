@@ -53,11 +53,11 @@ module ActionPolicy
         def rules_aliases
           return @rules_aliases if instance_variable_defined?(:@rules_aliases)
 
-          if superclass.respond_to?(:rules_aliases)
+          @rules_aliases = if superclass.respond_to?(:rules_aliases)
             superclass.rules_aliases.dup
           else
             {}
-          end => @rules_aliases
+          end
         end
 
         def method_added(name)

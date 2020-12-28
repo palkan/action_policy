@@ -52,7 +52,7 @@ module ActionPolicy
     class << self
       attr_accessor :chain, :namespace_cache_enabled
 
-      alias namespace_cache_enabled? namespace_cache_enabled
+      alias_method :namespace_cache_enabled?, :namespace_cache_enabled
 
       def call(record, **opts)
         chain.each do |probe|

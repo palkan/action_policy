@@ -11,7 +11,7 @@ module ActionPolicy
       def policy_for(record:, with: nil, namespace: authorization_namespace, context: authorization_context, allow_nil: false, default: default_authorization_policy_class)
         policy_class = with || ::ActionPolicy.lookup(
           record,
-          **{namespace, context, allow_nil, default}
+          namespace:, context:, allow_nil:, default:
         )
         policy_class&.new(record, **context)
       end

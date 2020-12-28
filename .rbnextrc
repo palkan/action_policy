@@ -1,6 +1,5 @@
 nextify: |
   ./lib
-  --transpile-mode=rewrite
   --min-version=2.5
   --edge
   --proposed

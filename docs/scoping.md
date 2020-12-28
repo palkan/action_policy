@@ -88,7 +88,7 @@ You can add as many options as you want:
 
 ```ruby
 class PostPolicy < ApplicationPolicy
-  scope_for :relation do |relation, with_deleted: false, magic_number: 42, some_required_option:|
+  scope_for :relation do |relation, some_required_option:, with_deleted: false, magic_number: 42|
     # Your code
   end
 end

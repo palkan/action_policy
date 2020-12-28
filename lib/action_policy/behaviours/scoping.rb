@@ -19,11 +19,11 @@ module ActionPolicy
         type ||= authorization_scope_type_for(policy, target)
         name = as
 
-        Authorizer.scopify(target, policy, **{type, name, scope_options})
+        Authorizer.scopify(target, policy, type:, name:, scope_options:)
       end
 
       # For backward compatibility
-      alias authorized authorized_scope
+      alias_method :authorized, :authorized_scope
 
       # Infer scope type for target if none provided.
       # Raises an exception if type couldn't be inferred.

@@ -150,11 +150,11 @@ module ActionPolicy
         def pre_checks
           return @pre_checks if instance_variable_defined?(:@pre_checks)
 
-          if superclass.respond_to?(:pre_checks)
+          @pre_checks = if superclass.respond_to?(:pre_checks)
             superclass.pre_checks.dup
           else
             []
-          end => @pre_checks
+          end
         end
       end
     end

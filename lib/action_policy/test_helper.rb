@@ -21,6 +21,7 @@ module ActionPolicy
         yield scopes.first.target
       end
     end
+
     # Asserts that the given policy was used to authorize the given target.
     #
     #   def test_authorize

@@ -30,9 +30,9 @@ Gem::Specification.new do |spec|
   # When gem is installed from source, we add `ruby-next` as a dependency
   # to auto-transpile source files during the first load
   if ENV["RELEASING_GEM"].nil? && File.directory?(File.join(__dir__, ".git"))
-    spec.add_runtime_dependency "ruby-next", ">= 0.10.3"
+    spec.add_runtime_dependency "ruby-next", ">= 0.11.0"
   else
-    spec.add_dependency "ruby-next-core", ">= 0.10.3"
+    spec.add_dependency "ruby-next-core", ">= 0.11.0"
   end
 
   spec.add_development_dependency "ammeter", "~> 1.1.3"

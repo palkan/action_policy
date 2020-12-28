@@ -4,6 +4,7 @@ require "test_helper"
 
 class LookupA
   class NestedLookup; end
+
   class NestedLookupPolicy; end
 end
 
@@ -24,7 +25,9 @@ class LookupC
 end
 
 class LookupAPolicy; end
+
 class LookupBPolicy; end
+
 class LookupBsPolicy; end
 
 module LookupNamespace

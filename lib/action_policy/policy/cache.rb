@@ -89,11 +89,11 @@ module ActionPolicy # :nodoc:
         def cached_rules
           return @cached_rules if instance_variable_defined?(:@cached_rules)
 
-          if superclass.respond_to?(:cached_rules)
+          @cached_rules = if superclass.respond_to?(:cached_rules)
             superclass.cached_rules.dup
           else
             {}
-          end => @cached_rules
+          end
         end
       end
     end

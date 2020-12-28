@@ -72,7 +72,7 @@ module ActionPolicy
       def all_details
         return @all_details if defined?(@all_details)
 
-        {}.tap do |all|
+        @all_details = {}.tap do |all|
           next unless defined?(@reasons)
 
           reasons.reasons.each_value do |rules|
@@ -84,7 +84,7 @@ module ActionPolicy
               all.merge!(details)
             end
           end
-        end => @all_details
+        end
       end
 
       # Add reasons to inspect

@@ -29,7 +29,7 @@ using [`librato-rack`](https://github.com/librato/librato-rack):
 ```ruby
 ActiveSupport::Notifications.subscribe("action_policy.apply_rule") do |event, started, finished, _, data|
   # Track hit and miss events separately (to display two measurements)
-  measurement = "#{event}.#{(data[:cached] ? "hit" : "miss")}"
+  measurement = "#{event}.#{data[:cached] ? "hit" : "miss"}"
   # show ms times
   timing = ((finished - started) * 1000).to_i
   Librato.tracker.check_worker

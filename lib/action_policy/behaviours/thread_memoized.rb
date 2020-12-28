@@ -40,7 +40,7 @@ module ActionPolicy
           base.prepend InstanceMethods
         end
 
-        alias included prepended
+        alias_method :included, :prepended
       end
 
       module InstanceMethods # :nodoc:

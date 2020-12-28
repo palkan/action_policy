@@ -148,11 +148,11 @@ module ActionPolicy
         def scope_matchers
           return @scope_matchers if instance_variable_defined?(:@scope_matchers)
 
-          if superclass.respond_to?(:scope_matchers)
+          @scope_matchers = if superclass.respond_to?(:scope_matchers)
             superclass.scope_matchers.dup
           else
             []
-          end => @scope_matchers
+          end
         end
       end
     end
