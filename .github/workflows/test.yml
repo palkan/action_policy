@@ -22,6 +22,9 @@ jobs:
           "gemfiles/rails6.gemfile"
         ]
         include:
+        - ruby: "3.0"
+          gemfile: "gemfiles/rails6.gemfile"
+          bundler: "2"
         - ruby: "2.7"
           gemfile: "gemfiles/railsmaster.gemfile"
           bundler: "2"
