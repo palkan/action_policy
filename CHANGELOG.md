@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.5.5 (2020-12-28)
+
+- Upgrade to Ruby 3.0. ([@palkan][])
+
 ## 0.5.4 (2020-12-09)
 
 - Add support for RSpec aliases detection when linting policy specs with `rubocop-rspec` 2.0 ([@pirj][])
