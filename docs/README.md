@@ -6,8 +6,6 @@
 > Authorization framework for Ruby and Rails.
 <br>Composable. Extensible. Performant.
 
-**NOTE:** this documentation is for the version "0.3.0+".
-
 ## What is it?
 
 _Authorization_ is an act of giving **someone** official

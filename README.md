@@ -31,7 +31,7 @@ Composable. Extensible. Performant.
 Add this line to your application's `Gemfile`:
 
 ```ruby
-gem "action_policy", "~> 0.4.0"
+gem "action_policy"
 ```
 
 And then execute:
