@@ -13,6 +13,10 @@ class TestRailtie < Minitest::Test
   def test_default_configuration
     assert(ActionController::Base <= ActionPolicy::Controller, "#{ActionController::Base.ancestors} must include ActionPolicy::Controller")
 
+    if ::Rails::VERSION::MAJOR >= 5
+      assert(ActionController::API <= ActionPolicy::Controller, "#{ActionController::API.ancestors} must include ActionPolicy::Controller")
+    end
+
     assert_equal({user: :current_user}, ActionController::Base.authorization_targets)
 
     refute ActionPolicy::LookupChain.namespace_cache_enabled?

@@ -87,6 +87,10 @@ module ActionPolicy # :nodoc:
 
         ActionController::Base.include ActionPolicy::Controller
 
+        if ::Rails::VERSION::MAJOR >= 5
+          ActionController::API.include ActionPolicy::Controller
+        end
+
         next unless ::Rails.application.config.action_policy.controller_authorize_current_user
 
         ActionController::Base.authorize :user, through: :current_user
