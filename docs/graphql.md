@@ -183,6 +183,8 @@ The query would fail with `ActionPolicy::Unauthorized` exception when using `aut
 
 That could be useful to handle this exception and send a more detailed error message to the client, for example:
 
+Please make sure you have added error handling to your schema with `use GraphQL::Execution::Errors`.
+
 ```ruby
 # in your schema file
 rescue_from(ActionPolicy::Unauthorized) do |exp|
@@ -248,7 +250,7 @@ end
 
 **NOTE:** you can use [aliases](./aliases.md) here as well as defined rules.
 
- **NOTE:** This feature relies the [_failure reasons_](./reasons.md) and
+**NOTE:** This feature relies the [_failure reasons_](./reasons.md) and
 the [i18n integration](./i18n.md) extensions. If your policies don't include any of these,
 you won't be able to use it.
 
