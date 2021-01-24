@@ -57,6 +57,10 @@ Now when you call `authorize! post` with any rule not defined in the policy clas
 
 By default, `ActionPolicy::Base` sets `manage?` as a default rule.
 
+## Mistypes & Default
+
+In case you forget to add `?` at the end of `:new` in a code like `allowed_to?(:new, User)`, a wrong rule will be called. Instead of the`:new?`, the `:manage?` rule will be applied. You can set `ActionPolicy.enforce_predicate_rules_naming = true` to raise an error when the called rule doesn't end with a question mark.
+
 ## Aliases and Private Methods
 
 Rules in `action_policy` can only be public methods. Trying to use a private method as a rule will raise an error. Thus, aliases can also only point to public methods.

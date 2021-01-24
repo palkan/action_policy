@@ -2,6 +2,8 @@
 
 ## master
 
+- Add `ActionPolicy.enforce_predicate_rules_naming` config to catch rule missing question mark ([@skojin][])
+
 ## 0.5.5 (2020-12-28)
 
 - Upgrade to Ruby 3.0. ([@palkan][])
