@@ -20,10 +20,10 @@ module ActionPolicy
 
     attr_reader :policy, :rule, :message
 
-    def initialize(policy, rule)
+    def initialize(policy, rule, message = nil)
       @policy = policy.class
       @rule = rule
-      @message =
+      @message = message ||
         "Couldn't find rule '#{@rule}' for #{@policy}" \
         "#{suggest(@rule, @policy.instance_methods - Object.instance_methods)}"
     end

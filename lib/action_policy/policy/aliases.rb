@@ -31,8 +31,16 @@ module ActionPolicy
       def resolve_rule(activity)
         self.class.lookup_alias(activity) ||
           (activity if respond_to?(activity)) ||
+          (check_rule_naming(activity) if ActionPolicy.enforce_predicate_rules_naming) ||
           self.class.lookup_default_rule ||
           super
+      end
+
+      private def check_rule_naming(activity)
+        unless activity[-1] == "?"
+          raise UnknownRule.new(self, activity, "The rule '#{activity}' of '#{self.class}' must ends with ? (question mark)")
+        end
+        nil
       end
 
       module ClassMethods # :nodoc:

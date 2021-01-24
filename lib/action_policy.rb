@@ -34,6 +34,8 @@ module ActionPolicy
   class << self
     attr_accessor :cache_store
 
+    attr_accessor :enforce_predicate_rules_naming
+
     # Find a policy class for a target
     def lookup(target, allow_nil: false, default: nil, **options)
       LookupChain.call(target, **options) ||
