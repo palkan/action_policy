@@ -1,8 +1,8 @@
 # Authorization Context
 
-_Authorization context_ contains information about the acting subject.
+_Authorization context_ contains all contextual information required to apply a policy rule.
 
-In most cases, it is just a _user_, but sometimes it could be a composition of subjects.
+In most cases, it only contains a _user_. However, if needed, Action Policy allows extending a policy's authorization context to include any additional information required to contextualize the authorization of a system or a particular resource.
 
 You must configure authorization context in **two places**: in the policy itself and in the place where you perform the authorization (e.g., controllers).
 
