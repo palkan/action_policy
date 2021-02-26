@@ -38,7 +38,7 @@ module ActionPolicy
 
       private def check_rule_naming(activity)
         unless activity[-1] == "?"
-          raise UnknownRule.new(self, activity, "The rule '#{activity}' of '#{self.class}' must ends with ? (question mark)")
+          raise NonPredicateRule.new(self, activity)
         end
         nil
       end
