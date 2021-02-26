@@ -20,8 +20,10 @@ class TestPolicyWithInvalidRuleName < Minitest::Test
   end
 
   def test_bad_named_rule_without_question
-    assert_raises(ActionPolicy::UnknownRule) do
+    e = assert_raises(ActionPolicy::NonPredicateRule) do
       @policy.resolve_rule(:bad)
     end
+    assert_includes e.message, "must ends with"
+    assert_includes e.message, "Did you mean? bad?"
   end
 end

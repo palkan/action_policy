@@ -20,12 +20,19 @@ module ActionPolicy
 
     attr_reader :policy, :rule, :message
 
-    def initialize(policy, rule, message = nil)
+    def initialize(policy, rule)
       @policy = policy.class
       @rule = rule
-      @message = message ||
-        "Couldn't find rule '#{@rule}' for #{@policy}" \
+      @message = "Couldn't find rule '#{@rule}' for #{@policy}" \
         "#{suggest(@rule, @policy.instance_methods - Object.instance_methods)}"
+    end
+  end
+
+  class NonPredicateRule < UnknownRule
+    def initialize(policy, rule)
+      @policy = policy.class
+      @rule = rule
+      @message = "The rule '#{@rule}' of '#{@policy}' must ends with ? (question mark)\nDid you mean? #{@rule}?"
     end
   end
 
