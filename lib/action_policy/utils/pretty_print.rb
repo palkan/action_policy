@@ -146,8 +146,8 @@ module ActionPolicy
 
       def colorize(val)
         return val unless $stdout.isatty
-        return TRUE if val.eql?(true)
-        return FALSE if val.eql?(false)
+        return TRUE if val.eql?(true) # rubocop:disable Lint/DeprecatedConstants
+        return FALSE if val.eql?(false) # rubocop:disable Lint/DeprecatedConstants
         val
       end
     end
