@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.5.6 (2021-03-03)
+
 - Add `ActionPolicy.enforce_predicate_rules_naming` config to catch rule missing question mark ([@skojin][])
 
 ## 0.5.5 (2020-12-28)
@@ -442,3 +444,4 @@ This value is now stored in a cache (if any) instead of just the call result (`t
 [@somenugget]: https://github.com/somenugget
 [@Be-ngt-oH]: https://github.com/Be-ngt-oH
 [@pirj]: https://github.com/pirj
+[@skojin]: https://github.com/skojin
