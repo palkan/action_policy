@@ -2,7 +2,11 @@
 
 ## master
 
-## 0.5.6 (2021-03-03)
+## 0.5.7 (2021-03-03)
+
+The previous release had incorrect dependencies (due to the missing transpiled files).
+
+## ~~0.5.6 (2021-03-03)~~
 
 - Add `ActionPolicy.enforce_predicate_rules_naming` config to catch rule missing question mark ([@skojin][])
 
