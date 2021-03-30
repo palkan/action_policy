@@ -8,6 +8,31 @@ if ActionPack.version.release < Gem::Version.new("5")
   using ControllerRails4
 end
 
+class TestContextThroughProcIntegration < ActionController::TestCase
+  class UsersController < ActionController::Base
+    authorize :user, through: -> { @user }
+    before_action :set_user
+
+    def index
+      authorize!
+      render plain: "OK"
+    end
+
+    private
+
+    def set_user
+      @user = User.new(params[:user])
+    end
+  end
+
+  tests UsersController
+
+  def test_index
+    get :index, params: {subject: "pete"}
+    assert_equal "OK", response.body
+  end
+end
+
 class TestSimpleControllerIntegration < ActionController::TestCase
   class UsersController < ActionController::Base
     authorize :user, through: :current_user
