@@ -2,6 +2,8 @@
 
 ## master
 
+- A proc can now be used to assign the authorization context.
+
 ## 0.5.7 (2021-03-03)
 
 The previous release had incorrect dependencies (due to the missing transpiled files).
