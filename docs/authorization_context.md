@@ -48,6 +48,9 @@ class ApplicationController < ActionController::Base
   # get the required context object
   # (equals to the context name itself by default, i.e. `account`)
   authorize :account, through: :current_account
+
+  # You can also specify a proc to assign the context.
+  authorize :team, through: -> { @team }
 end
 ```
 
