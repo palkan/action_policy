@@ -63,11 +63,11 @@ module ActionPolicy
 
       @__authorization_context = self.class.authorization_targets
         .each_with_object({}) do |(key, meth), obj|
-          if meth.is_a?(Proc)
-            obj[key] = instance_exec(&meth)
-          else
-            obj[key] = send(meth)
-          end
+        obj[key] = if meth.is_a?(Proc)
+          instance_exec(&meth)
+        else
+          send(meth)
+        end
       end
     end
 
