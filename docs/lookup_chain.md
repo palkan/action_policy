@@ -11,7 +11,7 @@ Action Policy tries to automatically infer policy class from the target using th
 2. If the target responds to `policy_class`, then use it;
 3. If the target's class responds to `policy_class`, then use it;
 4. If the target or the target's class responds to `policy_name`, then use it (the `policy_name` should end with `Policy` as it's not appended automatically);
-5. Otherwise, use `#{target.class.name}Policy`.
+5. Otherwise, use `#{target.class.name}Policy` or `#{target.name}Policy` if target is a Module or Class.
 
 > \* [Namespaces](namespaces.md) could be also be considered when `namespace` option is set. You can also set the `strict_namespace` option to disable constant cascade lookup.
 
