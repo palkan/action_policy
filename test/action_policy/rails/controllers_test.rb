@@ -216,3 +216,53 @@ class TestNamespacedControllerIntegration < ActionController::TestCase
     assert_equal "OK", response.body
   end
 end
+
+class TestOverrideControllerIntegration < ActionController::TestCase
+  class AnotherUserPolicy < ::UserPolicy
+    authorize :user, allow_nil: true
+
+    def index?
+      user.present?
+    end
+
+    def show?
+      user&.admin?
+    end
+  end
+
+  class UsersController < ActionController::Base
+    authorize :user, through: :current_user
+
+    def index
+      authorize!
+      render plain: "OK"
+    end
+
+    private
+
+    def authorize!
+      super with: AnotherUserPolicy
+    end
+
+    def current_user
+      return unless params[:user]
+      @current_user ||= User.new(params[:user])
+    end
+  end
+
+  tests UsersController
+
+  def test_index_unauthorized
+    e = assert_raises(ActionPolicy::Unauthorized) do
+      get :index
+    end
+
+    assert_equal AnotherUserPolicy, e.policy
+    assert_equal :index?, e.rule
+  end
+
+  def test_index_authorized
+    get :index, params: {user: "guest"}
+    assert_equal "OK", response.body
+  end
+end
