@@ -218,7 +218,7 @@ class TestNamespacedControllerIntegration < ActionController::TestCase
 end
 
 class TestOverrideControllerIntegration < ActionController::TestCase
-  class AnotherUserPolicy < ::UserPolicy
+  class UserPolicy < ::UserPolicy
     authorize :user, allow_nil: true
 
     def index?
@@ -230,7 +230,7 @@ class TestOverrideControllerIntegration < ActionController::TestCase
     end
   end
 
-  class UsersController < ActionController::Base
+  class HumansController < ActionController::Base
     authorize :user, through: :current_user
 
     def index
@@ -241,23 +241,27 @@ class TestOverrideControllerIntegration < ActionController::TestCase
     private
 
     def authorize!
-      super with: AnotherUserPolicy
+      super with: UserPolicy
     end
 
     def current_user
       return unless params[:user]
       @current_user ||= User.new(params[:user])
     end
+
+    def implicit_authorization_target
+      :human
+    end
   end
 
-  tests UsersController
+  tests HumansController
 
   def test_index_unauthorized
     e = assert_raises(ActionPolicy::Unauthorized) do
       get :index
     end
 
-    assert_equal AnotherUserPolicy, e.policy
+    assert_equal UserPolicy, e.policy
     assert_equal :index?, e.rule
   end
 
