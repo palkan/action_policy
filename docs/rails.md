@@ -67,7 +67,7 @@ You can also call `authorize!` without a resource specified.
 In that case, Action Policy tries to infer the resource class from the controller name:
 
 ```ruby
-class PostsController < ApplicationPolicy
+class PostsController < ApplicationController
   def index
     # Uses Post class as a resource implicitly.
     # NOTE: it just calls `controller_name.classify.safe_constantize`,
