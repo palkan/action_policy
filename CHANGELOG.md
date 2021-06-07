@@ -2,6 +2,8 @@
 
 ## master
 
+- Add `ActionPolicy.default_strict_namespace` config to globally set strict_namespace lookup chain's option ([@kevynlebouille][])
+
 ## 0.5.7 (2021-03-03)
 
 The previous release had incorrect dependencies (due to the missing transpiled files).
