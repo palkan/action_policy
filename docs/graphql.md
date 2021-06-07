@@ -203,7 +203,7 @@ end
 
 ## Scoping Data
 
-You can add `authorized_scope: true` option to a field (list or [_connection_](https://graphql-ruby.org/relay/connections.html)) to apply the corresponding policy rules to the data:
+You can add `authorized_scope: true` option to a field (list or [_connection_](https://graphql-ruby.org/pagination/connection_concepts.html)) to apply the corresponding policy rules to the data:
 
 ```ruby
 class CityType < ::Common::Graphql::Type
