@@ -64,7 +64,7 @@ module ActionPolicy
 
       private
 
-      def lookup_within_namespace(policy_name, namespace, strict: false)
+      def lookup_within_namespace(policy_name, namespace, strict: ActionPolicy.default_strict_namespace)
         NamespaceCache.fetch(namespace&.name || "Kernel", policy_name, strict: strict) do
           mod = namespace
           loop do
@@ -105,13 +105,13 @@ module ActionPolicy
     }
 
     # Infer from class name
-    INFER_FROM_CLASS = ->(record, namespace: nil, strict_namespace: false, **) {
+    INFER_FROM_CLASS = ->(record, namespace: nil, strict_namespace: ActionPolicy.default_strict_namespace, **) {
       policy_name = policy_class_name_for(record)
       lookup_within_namespace(policy_name, namespace, strict: strict_namespace)
     }
 
     # Infer from passed symbol
-    SYMBOL_LOOKUP = ->(record, namespace: nil, strict_namespace: false, **) {
+    SYMBOL_LOOKUP = ->(record, namespace: nil, strict_namespace: ActionPolicy.default_strict_namespace, **) {
       next unless record.is_a?(Symbol)
 
       policy_name = "#{record.camelize}Policy"
@@ -119,7 +119,7 @@ module ActionPolicy
     }
 
     # (Optional) Infer using String#classify if available
-    CLASSIFY_SYMBOL_LOOKUP = ->(record, namespace: nil, strict_namespace: false, **) {
+    CLASSIFY_SYMBOL_LOOKUP = ->(record, namespace: nil, strict_namespace: ActionPolicy.default_strict_namespace, **) {
       next unless record.is_a?(Symbol)
 
       policy_name = "#{record.to_s.classify}Policy"

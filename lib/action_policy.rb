@@ -34,6 +34,8 @@ module ActionPolicy
   class << self
     attr_accessor :cache_store
 
+    attr_accessor :default_strict_namespace
+
     attr_accessor :enforce_predicate_rules_naming
 
     # Find a policy class for a target
