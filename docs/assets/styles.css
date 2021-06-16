@@ -198,8 +198,8 @@ section.cover .cover-main {
 
 .markdown-section pre,
 .markdown-section pre > code {
-  background-color: #2E2E46;
-  color: rgba(255,255,255,0.75);
+  /* background-color: #2E2E46; */
+  /* color: rgba(255,255,255,0.75); */
   font-size: 1em;
   line-height: 1.5;
 }
