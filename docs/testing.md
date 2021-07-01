@@ -2,7 +2,7 @@
 
 Authorization is one of the crucial parts of your application. Hence, it should be thoroughly tested (that is the place where 100% coverage makes sense).
 
-When you use policies for authorization, it is possible to split testing into two parts:
+When you use policies for authorization, it is possible to split testing into three parts:
 
 - Test the policy class itself
 - Test that **the required authorization is performed** within your authorization layer (controller, channel, etc.)
