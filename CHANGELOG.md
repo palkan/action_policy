@@ -2,6 +2,8 @@
 
 ## master
 
+- Add `strict_namespace:` option to policy_for behaviour ([@kevynlebouille][])
+
 ## 0.5.7 (2021-03-03)
 
 The previous release had incorrect dependencies (due to the missing transpiled files).
