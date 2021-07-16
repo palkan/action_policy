@@ -86,6 +86,18 @@ allowed_to?(:edit?, post, with: SpecialPostPolicy)
 authorize! post, to: :destroy?, namespace: Admin
 ```
 
+- Provide a [strict_namespace lookup option](./lookup_chain.md):
+
+```ruby
+# Would not fallback lookup PostPolicy if Admin::PostPolicy doesn't exist
+authorize! post, to: :destroy?, namespace: Admin, strict_namespace: true
+
+# or by overriding a specific behavior method
+def authorization_strict_namespace
+  true
+end
+```
+
 - Define a default policy to use in case lookup finds nothing:
 
 ```ruby
