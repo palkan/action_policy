@@ -251,3 +251,41 @@ class TestDefaultAuthorizationPolicy < Minitest::Test
     assert_equal "pong", user_channel.ping
   end
 end
+
+class TestStrictNamespaceAuthorizationPolicy < Minitest::Test
+  class RoomChannelPolicy
+    include ActionPolicy::Policy::Core
+
+    def ping?
+      true
+    end
+  end
+
+  module Admin
+    class RoomChannel
+      include ActionPolicy::Behaviour
+      include ActionPolicy::Behaviours::Namespaced
+
+      def ping
+        authorize! self, to: :ping?
+        "pong"
+      end
+
+      def policy_name
+        'RoomChannelPolicy'
+      end
+
+      def authorization_strict_namespace
+        true
+      end
+    end
+  end
+
+  def test_strict_namespace_authorization_policy_class
+    admin_channel = Admin::RoomChannel.new
+
+    assert_raises ActionPolicy::NotFound do
+      admin_channel.ping
+    end
+  end
+end
