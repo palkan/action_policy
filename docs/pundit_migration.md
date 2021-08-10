@@ -28,7 +28,7 @@ helper_method :policy
 helper_method :policy_scope
 
 def policy(record)
-  policy_for(record)
+  policy_for(record: record)
 end
 
 def policy_scope(scope)
