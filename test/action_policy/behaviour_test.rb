@@ -272,7 +272,7 @@ class TestStrictNamespaceAuthorizationPolicy < Minitest::Test
       end
 
       def policy_name
-        'RoomChannelPolicy'
+        "RoomChannelPolicy"
       end
 
       def authorization_strict_namespace
