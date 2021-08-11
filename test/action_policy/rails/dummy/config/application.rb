@@ -11,6 +11,8 @@ Bundler.require(*Rails.groups)
 
 module Dummy
   class Application < Rails::Application
+    # Hack for Rails 7 alpha
+    config.active_record = ActiveSupport::OrderedOptions.new
     config.logger = Logger.new("/dev/null")
     config.eager_load = false
   end
