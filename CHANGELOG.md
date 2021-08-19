@@ -3,6 +3,7 @@
 ## master
 
 - Add `strict_namespace:` option to policy_for behaviour ([@kevynlebouille][])
+- Prevent possible side effects in policy lookup ([@tomdalling][])
 
 ## 0.5.7 (2021-03-03)
 
@@ -451,3 +452,4 @@ This value is now stored in a cache (if any) instead of just the call result (`t
 [@Be-ngt-oH]: https://github.com/Be-ngt-oH
 [@pirj]: https://github.com/pirj
 [@skojin]: https://github.com/skojin
+[@tomdalling]: https://github.com/tomdalling

@@ -74,7 +74,7 @@ module ActionPolicy
     end
 
     def lookup_authorization_policy(record, **options) # :nodoc:
-      record = implicit_authorization_target! if record == :__undef__
+      record = implicit_authorization_target! if :__undef__ == record
       raise ArgumentError, "Record must be specified" if record.nil?
 
       options[:context] && (options[:context] = authorization_context.merge(options[:context]))
