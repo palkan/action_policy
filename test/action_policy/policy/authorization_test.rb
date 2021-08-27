@@ -89,6 +89,10 @@ class ProxyAuthorizationToSubPoliciesTest < Minitest::Test
     def manage?
       allowed_to?(:manage?, with: TestPolicy)
     end
+
+    def manage_as_admin?
+      allowed_to?(:manage?, with: TestPolicy, context: {role: "admin"})
+    end
   end
 
   def test_passing_context_in_policy_for
@@ -97,5 +101,11 @@ class ProxyAuthorizationToSubPoliciesTest < Minitest::Test
     assert_equal "admin", policy.authorization_context[:role]
     assert_equal "guest", policy.authorization_context[:user].name
     assert policy.apply(:manage?)
+  end
+
+  def test_extending_explicit_context_with_implicit
+    policy = SubTestPolicy.new(user: User.new("admin"), role: "guest")
+
+    assert policy.apply(:manage_as_admin?)
   end
 end

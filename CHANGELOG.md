@@ -2,6 +2,7 @@
 
 ## master
 
+- [Fix [#173](https://github.com/palkan/action_policy/issues/173)] Explicit context were not merged with implicit one within policy classes. ([@palkan][])
 - Add `strict_namespace:` option to policy_for behaviour ([@kevynlebouille][])
 - Prevent possible side effects in policy lookup ([@tomdalling][])
 

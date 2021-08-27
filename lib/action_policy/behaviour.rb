@@ -77,8 +77,6 @@ module ActionPolicy
       record = implicit_authorization_target! if :__undef__ == record # rubocop:disable Style/YodaCondition See https://github.com/palkan/action_policy/pull/180
       raise ArgumentError, "Record must be specified" if record.nil?
 
-      options[:context] && (options[:context] = authorization_context.merge(options[:context]))
-
       policy_for(record: record, **options)
     end
 

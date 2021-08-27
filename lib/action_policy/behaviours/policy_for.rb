@@ -8,7 +8,9 @@ module ActionPolicy
       using ActionPolicy::Ext::PolicyCacheKey
 
       # Returns policy instance for the record.
-      def policy_for(record:, with: nil, namespace: authorization_namespace, context: authorization_context, allow_nil: false, default: default_authorization_policy_class, strict_namespace: authorization_strict_namespace)
+      def policy_for(record:, with: nil, namespace: authorization_namespace, context: nil, allow_nil: false, default: default_authorization_policy_class, strict_namespace: authorization_strict_namespace)
+        context = context ? authorization_context.merge(context) : authorization_context
+
         policy_class = with || ::ActionPolicy.lookup(
           record,
           namespace:, context:, allow_nil:, default:, strict_namespace:
