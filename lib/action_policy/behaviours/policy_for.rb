@@ -19,7 +19,7 @@ module ActionPolicy
       end
 
       def authorization_context
-        raise NotImplementedError, "Please, define `authorization_context` method!"
+        Kernel.raise NotImplementedError, "Please, define `authorization_context` method!"
       end
 
       def authorization_namespace
@@ -45,7 +45,7 @@ module ActionPolicy
 
       # Return implicit authorization target or raises an exception if it's nil
       def implicit_authorization_target!
-        implicit_authorization_target || raise(
+        implicit_authorization_target || Kernel.raise(
           NotFound,
           [
             self,

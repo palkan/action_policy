@@ -57,7 +57,7 @@ module ActionPolicy
     end
 
     def verify_authorized
-      raise UnauthorizedAction.new(controller_path, action_name) if
+      Kernel.raise UnauthorizedAction.new(controller_path, action_name) if
         authorize_count.zero? && !verify_authorized_skipped
     end
 
