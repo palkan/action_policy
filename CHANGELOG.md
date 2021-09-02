@@ -2,6 +2,9 @@
 
 ## master
 
+## 0.6.0 (2021-09-02)
+
+- Drop Ruby 2.5 support.
 - [Closes [#186](https://github.com/palkan/action_policy/issues/186)] Add `inline_reasons: true` option to `allowed_to?` to avoid wrapping reasons. ([@palkan][])
 - [Fixes [#173](https://github.com/palkan/action_policy/issues/173)] Explicit context were not merged with implicit one within policy classes. ([@palkan][])
 - Add `strict_namespace:` option to policy_for behaviour ([@kevynlebouille][])

@@ -1,5 +1,5 @@
 require:
-  - standard/cop/semantic_blocks
+  - standard/cop/block_single_line_braces
   - ruby-next/rubocop
 
 inherit_gem:
@@ -17,17 +17,11 @@ AllCops:
   SuggestExtensions: false
   TargetRubyVersion: next
 
-Standard/SemanticBlocks:
+Standard/BlockSingleLineBraces:
   Enabled: false
 
 Style/FrozenStringLiteralComment:
   Enabled: true
-
-Style/TrailingCommaInArrayLiteral:
-  EnforcedStyleForMultiline: no_comma
-
-Style/TrailingCommaInHashLiteral:
-  EnforcedStyleForMultiline: no_comma
 
 Naming/FileName:
   Exclude:

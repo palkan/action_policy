@@ -6,7 +6,3 @@ require:
 AllCops:
   Include:
     - '**/*.md'
-
-Layout/EmptyLineBetweenDefs:
-  Exclude:
-    - '**/*.md'

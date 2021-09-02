@@ -30,7 +30,7 @@ class PrettyPrintPolicy < ActionPolicy::Base
   end
 
   def admind_jard?
-    jard
+    jard # rubocop:disable Lint/Debugger
     user.admin?
   end
 end

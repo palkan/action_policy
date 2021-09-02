@@ -1,5 +1,5 @@
 source "https://rubygems.org" do
   gem "rubocop-md", "~> 1.0"
-  gem "standard", "~> 0.10"
-  gem "ruby-next", ">= 0.11.0"
+  gem "standard", "~> 1.0"
+  gem "ruby-next", ">= 0.12.0"
 end
