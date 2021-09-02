@@ -2,7 +2,8 @@
 
 ## master
 
-- [Fix [#173](https://github.com/palkan/action_policy/issues/173)] Explicit context were not merged with implicit one within policy classes. ([@palkan][])
+- [Closes [#186](https://github.com/palkan/action_policy/issues/186)] Add `inline_reasons: true` option to `allowed_to?` to avoid wrapping reasons. ([@palkan][])
+- [Fixes [#173](https://github.com/palkan/action_policy/issues/173)] Explicit context were not merged with implicit one within policy classes. ([@palkan][])
 - Add `strict_namespace:` option to policy_for behaviour ([@kevynlebouille][])
 - Prevent possible side effects in policy lookup ([@tomdalling][])
 

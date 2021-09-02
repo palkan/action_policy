@@ -13,7 +13,7 @@ Consider an example:
 class ApplicantPolicy < ApplicationPolicy
   def show?
     user.has_permission?(:view_applicants) &&
-      allowed_to?(:show?, object.stage)
+      allowed_to?(:show?, record.stage)
   end
 end
 ```
@@ -39,7 +39,7 @@ You can also wrap _local_ rules into `allowed_to?` to populate reasons:
 class ApplicantPolicy < ApplicationPolicy
   def show?
     allowed_to?(:view_applicants?) &&
-      allowed_to?(:show?, object.stage)
+      allowed_to?(:show?, record.stage)
   end
 
   def view_applicants?
@@ -68,6 +68,29 @@ end
 p ex.result.reasons.details #=> { applicant: [:no_user] }
 ```
 
+In some cases it might be useful to propagate reasons from the nested policy calls instead of adding a top-level reason.
+You can achieve this by adding the `inline_reasons: true` option:
+
+```ruby
+class ApplicantPolicy < ApplicationPolicy
+  def show?
+    allowed_to?(:show?, record.stage, inline_reasons: true)
+  end
+end
+
+class StagePolicy < ApplicationPolicy
+  def show?
+    deny!(:archived) if record.archived?
+  end
+end
+
+# When applying ApplicationPolicy and the stage is archived
+p ex.result.reasons.details #=> { stage: [:archived] }
+# Without inline_reasons we would get { stage: [:show?] } instead
+```
+
+See also [#186](https://github.com/palkan/action_policy/issues/186) for discussion.
+
 ## Detailed Reasons
 
 You can provide additional details to your failure reasons by using a `details: { ... }` option:
@@ -75,7 +98,7 @@ You can provide additional details to your failure reasons by using a `details: 
 ```ruby
 class ApplicantPolicy < ApplicationPolicy
   def show?
-    allowed_to?(:show?, object.stage)
+    allowed_to?(:show?, record.stage)
   end
 end
 

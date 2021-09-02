@@ -31,6 +31,20 @@ module ActionPolicy
 
       def present?() = !empty?
 
+      def merge(other)
+        other.reasons.each do |policy_class, rules|
+          reasons[policy_class] ||= []
+
+          rules.each do |rule|
+            if rule.is_a?(::Hash)
+              add_detailed_reason(reasons[policy_class], rule)
+            else
+              add_non_detailed_reason(reasons[policy_class], rule)
+            end
+          end
+        end
+      end
+
       private
 
       def add_non_detailed_reason(store, rule)
@@ -182,7 +196,7 @@ module ActionPolicy
         result.details ||= {}
       end
 
-      def allowed_to?(rule, record = :__undef__, **options)
+      def allowed_to?(rule, record = :__undef__, inline_reasons: false, **options)
         res =
           if (record == :__undef__ || record == self.record) && options.empty?
             rule = resolve_rule(rule)
@@ -196,7 +210,9 @@ module ActionPolicy
             policy.result
           end
 
-        result&.reasons&.add(policy, rule, res.details) if res.fail?
+        if res.fail? && result&.reasons
+          inline_reasons ? result.reasons.merge(res.reasons) : result.reasons.add(policy, rule, res.details)
+        end
 
         res.clear_details
 
