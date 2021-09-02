@@ -15,4 +15,4 @@ pre-commit:
     rubocop:
       tags: style
       glob: "**/*.md"
-      run: BUNDLE_GEMFILE=gemfiles/rubocop.gemfile bundle exec rubocop -c .rubocop-md.yml {staged_files}
+      run: bundle exec rubocop -c .rubocop-md.yml {staged_files}
