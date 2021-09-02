@@ -133,7 +133,7 @@ module ActionPolicy
       end
 
       # An alias for readability purposes
-      def check?(*args) = allowed_to?(*args)
+      def check?(*args, **hargs) = allowed_to?(*args, **hargs)
 
       # Returns a rule name (policy method name) for activity.
       #

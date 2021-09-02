@@ -51,6 +51,13 @@ class ComplexFailuresTestPolicy < ActionPolicy::Base
   def sing?
     deny!(:no_singing_today)
   end
+
+  def clone?
+    (user.name != "admin") && (
+      allowed_to?(:clone?, user, inline_reasons: true) ||
+      check?(:copyable?, user, inline_reasons: true)
+    )
+  end
 end
 
 class TestComplexFailuresPolicy < Minitest::Test
@@ -61,6 +68,20 @@ class TestComplexFailuresPolicy < Minitest::Test
 
     def create?
       user.name == "admin"
+    end
+
+    def clone?
+      deny!(:cloning_humans_is_not_allowed)
+    end
+
+    def copyable?
+      check?(:non_guest)
+    end
+
+    def non_guest
+      details[:username] = user.name
+
+      user.name != "guest"
     end
   end
 
@@ -122,6 +143,21 @@ class TestComplexFailuresPolicy < Minitest::Test
 
     assert_equal({
       complex: [:no_singing_today]
+    }, details)
+  end
+
+  def test_merge_reasons
+    policy = ComplexFailuresTestPolicy.new user: User.new("guest")
+
+    refute policy.apply(:clone?)
+
+    details = policy.result.reasons.details
+
+    assert_equal({
+      user: [
+        :cloning_humans_is_not_allowed,
+        non_guest: {username: "guest"}
+      ]
     }, details)
   end
 end
