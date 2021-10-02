@@ -16,7 +16,7 @@ class TestThreadMemoized < Minitest::Test
       end
     end
 
-    def initialize(record = nil, **params)
+    def initialize(record: nil, **params)
       super
       MUTEX.synchronize do
         self.class.policies << self

@@ -60,7 +60,7 @@ class TestRailsInstrumentation < Minitest::Test
   attr_reader :events
 
   def test_instrument_apply
-    policy = TestPolicy.new false
+    policy = TestPolicy.new record: false
 
     # drop init event
     events.shift
@@ -79,7 +79,7 @@ class TestRailsInstrumentation < Minitest::Test
   end
 
   def test_instrument_cached_apply
-    policy = TestPolicy.new true
+    policy = TestPolicy.new record: true
 
     # drop init event
     events.shift
@@ -148,7 +148,7 @@ class TestRailsInstrumentation < Minitest::Test
   end
 
   def test_instrument_initialize
-    TestPolicy.new true
+    TestPolicy.new record: true
     assert_equal 1, events.size
 
     event, data = events.shift

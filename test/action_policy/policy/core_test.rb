@@ -23,7 +23,7 @@ end
 class TestPolicyCore < Minitest::Test
   def setup
     @record = {}
-    @policy = CoreTestPolicy.new @record
+    @policy = CoreTestPolicy.new record: @record
   end
 
   def test_apply

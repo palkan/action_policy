@@ -43,8 +43,8 @@ module ActionPolicy
 
       attr_reader :authorization_context
 
-      def initialize(record = nil, **params)
-        super(record)
+      def initialize(record: nil, **params)
+        super(record: record)
 
         @authorization_context = {}
 

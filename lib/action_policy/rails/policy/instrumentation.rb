@@ -11,7 +11,7 @@ module ActionPolicy # :nodoc:
         INIT_EVENT_NAME = "action_policy.init"
         APPLY_EVENT_NAME = "action_policy.apply_rule"
 
-        def initialize(record = nil, **params)
+        def initialize(record: nil, **params)
           event = {policy: self.class.name}
           ActiveSupport::Notifications.instrument(INIT_EVENT_NAME, event) { super }
         end

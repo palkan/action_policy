@@ -25,7 +25,7 @@ class TestCachedApply < Minitest::Test
   end
 
   def test_cache_truth
-    policy = TestPolicy.new true
+    policy = TestPolicy.new record: true
 
     assert policy.apply(:manage?)
     assert policy.apply(:manage?)
@@ -34,7 +34,7 @@ class TestCachedApply < Minitest::Test
   end
 
   def test_cache_falsey
-    policy = TestPolicy.new false
+    policy = TestPolicy.new record: false
 
     refute policy.apply(:manage?)
     refute policy.apply(:manage?)
@@ -43,7 +43,7 @@ class TestCachedApply < Minitest::Test
   end
 
   def test_cache_with_reasons
-    policy = TestPolicy.new false
+    policy = TestPolicy.new record: false
 
     refute policy.apply(:kill?)
     assert_equal({test: [:manage?]}, policy.result.reasons.details)

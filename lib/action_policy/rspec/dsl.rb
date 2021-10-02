@@ -50,7 +50,7 @@ if defined?(::RSpec)
   ::RSpec.shared_context "action_policy:policy_context" do
     let(:record) { nil }
     let(:context) { {} }
-    let(:policy) { described_class.new(record, **context) }
+    let(:policy) { described_class.new(record: record, **context) }
   end
 
   ::RSpec.shared_context "action_policy:policy_rule_context" do |policy_rule, *args, method: "describe", block: nil|
