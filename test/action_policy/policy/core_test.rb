@@ -4,6 +4,7 @@ require "test_helper"
 
 class CoreTestPolicy
   include ActionPolicy::Policy::Core
+  include ActionPolicy::Policy::Aliases
 
   def index?
     true
@@ -18,6 +19,8 @@ class CoreTestPolicy
     deny! if record[:undeletable]
     true
   end
+
+  alias_rule :show?, to: :index?
 end
 
 class TestPolicyCore < Minitest::Test
@@ -30,6 +33,7 @@ class TestPolicyCore < Minitest::Test
     assert @policy.apply(:index?)
     refute @policy.apply(:update?)
     assert @policy.apply(:destroy?)
+    assert @policy.apply(:show?)
   end
 
   def test_allow_deny
