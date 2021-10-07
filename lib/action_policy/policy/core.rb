@@ -86,7 +86,6 @@ module ActionPolicy
         @result = self.class.result_class.new(self.class, rule)
 
         catch :policy_fulfilled do
-          super
           result.load __apply__(resolve_rule(rule))
         end
 
