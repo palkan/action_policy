@@ -86,6 +86,7 @@ module ActionPolicy
         @result = self.class.result_class.new(self.class, rule)
 
         catch :policy_fulfilled do
+          super
           result.load __apply__(resolve_rule(rule))
         end
 
@@ -139,7 +140,7 @@ module ActionPolicy
       #
       # By default, rule name is equal to activity name.
       #
-      # Raises ActionPolicy::UknownRule when rule is not found in policy.
+      # Raises ActionPolicy::UnknownRule when rule is not found in policy.
       def resolve_rule(activity)
         raise UnknownRule.new(self, activity) unless
           respond_to?(activity)
