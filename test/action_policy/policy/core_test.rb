@@ -33,6 +33,9 @@ class TestPolicyCore < Minitest::Test
     assert @policy.apply(:index?)
     refute @policy.apply(:update?)
     assert @policy.apply(:destroy?)
+  end
+
+  def test_alias_rule_apply
     assert @policy.apply(:show?)
   end
 
