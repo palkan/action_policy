@@ -43,6 +43,23 @@ describe PostPolicy do
 end
 ```
 
+And we provide a `#be_an_alias_of` RSpec matcher for testing authorization rule aliases:
+
+```ruby
+describe PostPolicy do
+  let(:user) { build_stubbed(:user) }
+  let(:post) { build_stubbed(:post) }
+
+  let(:policy) { described_class.new(post, user: user) }
+
+  describe "#show?" do
+    it "is an alias of :index? authorization rule" do
+      expect(:show?).to be_an_alias_of(policy, :index?)
+    end
+  end
+end
+```
+
 ### RSpec DSL
 
 We also provide a simple RSpec DSL which aims to reduce the boilerplate when writing
