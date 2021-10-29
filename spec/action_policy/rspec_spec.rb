@@ -268,7 +268,7 @@ describe "ActionPolicy RSpec matchers" do
         end.to raise_error(
           RSpec::Expectations::ExpectationNotMetError,
           Regexp.new("expected a scoping named :default for type :data " \
-                     'with scope options matching {:with_admins=>\(a falsey value\)} ' \
+                     "with scope options matching {:with_admins=>\\(a falsey value\\)} " \
                      "from TestService::CustomPolicy to have been applied")
         )
       end
