@@ -66,18 +66,18 @@ end
 describe "ActionPolicy RSpec matchers" do
   subject { TestService.new("guest") }
 
-  describe '#be_an_alias_of' do
+  describe "#be_an_alias_of" do
     let(:policy) { TestService::CustomPolicy.new(User.new("guest"), user: User.new("admin")) }
     let(:target) { :some_action? }
 
-    context 'when using positive matcher' do
-      context 'when provided rule is an alias to target policy rule' do
+    context "when using positive matcher" do
+      context "when provided rule is an alias to target policy rule" do
         specify do
           expect(:aliased_action?).to be_an_alias_of(policy, target)
         end
       end
 
-      context 'when provided rule is not an alias to target policy rule' do
+      context "when provided rule is not an alias to target policy rule" do
         specify do
           expect do
             expect(:bad_action?).to be_an_alias_of(policy, target)
@@ -86,14 +86,14 @@ describe "ActionPolicy RSpec matchers" do
       end
     end
 
-    context 'when using negative matcher' do
-      context 'when provided rule is not an alias to target policy rule' do
+    context "when using negative matcher" do
+      context "when provided rule is not an alias to target policy rule" do
         specify do
           expect(:bad_action?).to_not be_an_alias_of(policy, target)
         end
       end
 
-      context 'when provided rule is an alias to target policy rule' do
+      context "when provided rule is an alias to target policy rule" do
         specify do
           expect do
             expect(:aliased_action?).to_not be_an_alias_of(policy, target)
@@ -102,10 +102,10 @@ describe "ActionPolicy RSpec matchers" do
       end
     end
 
-    context 'matcher errors' do
+    context "matcher errors" do
       specify "block is not supported" do
         expect do
-          expect{ subject }.to be_an_alias_of('PolicyStub', 'PolicyRuleStub')
+          expect { subject }.to be_an_alias_of("PolicyStub", "PolicyRuleStub")
         end.to raise_error(/You must pass an argument rather than a block/)
       end
     end
