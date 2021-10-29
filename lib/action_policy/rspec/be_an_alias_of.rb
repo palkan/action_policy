@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "action_policy/testing"
-require 'pry-byebug'
 
 module ActionPolicy
   module RSpec
