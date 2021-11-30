@@ -48,3 +48,6 @@ end
 ```
 
 The `Core` module provides `apply` and `allowed_to?` methods.
+
+**NOTE:** When using with Rails, custom [scope matchers](./scoping.md) are also registered within the `Base` class.
+If you plan to use them, you need to copy setup code from the [corresponding files](https://github.com/palkan/action_policy/tree/master/lib/action_policy/rails/scope_matchers).
