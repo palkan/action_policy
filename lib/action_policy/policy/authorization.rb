@@ -66,7 +66,7 @@ module ActionPolicy
           allow_nil ||= optional
 
           ids.each do |id|
-            authorization_targets[id] = {allow_nil, optional}
+            authorization_targets[id] = {allow_nil:, optional:}
           end
 
           attr_reader(*ids)
