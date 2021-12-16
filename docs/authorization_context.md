@@ -51,6 +51,8 @@ class ApplicationController < ActionController::Base
 end
 ```
 
+**NOTE:** To un-register a context (e.g., if you want to remove `:user` from the Base policy class), you can manipulate the contexts map directly: `authorization_targets.delete(:user)`.
+
 ## Nested Policies vs Contexts
 
 See also: [action_policy#36](https://github.com/palkan/action_policy/issues/36) and [action_policy#37](https://github.com/palkan/action_policy/pull/37)
