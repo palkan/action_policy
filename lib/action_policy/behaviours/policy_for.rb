@@ -11,11 +11,13 @@ module ActionPolicy
       def policy_for(record:, with: nil, namespace: authorization_namespace, context: nil, allow_nil: false, default: default_authorization_policy_class, strict_namespace: authorization_strict_namespace)
         context = context ? authorization_context.merge(context) : authorization_context
 
-        if with.is_a? String || with.is_a? Symbol
+        if with.is_a?(String) || with.is_a?(Symbol)
           record = with
           with = nil
         end
-        
+
+        byebug
+
         policy_class = with || ::ActionPolicy.lookup(
           record,
           namespace:, context:, allow_nil:, default:, strict_namespace:
