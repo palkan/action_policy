@@ -16,8 +16,6 @@ module ActionPolicy
           with = nil
         end
 
-        byebug
-
         policy_class = with || ::ActionPolicy.lookup(
           record,
           namespace:, context:, allow_nil:, default:, strict_namespace:
