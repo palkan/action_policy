@@ -24,7 +24,7 @@ jobs:
           bundle-
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: jruby-head
+        ruby-version: jruby
     - name: Bundle install
       run: |
         bundle config --global gemfile gemfiles/jruby.gemfile
