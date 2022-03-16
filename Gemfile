@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "pry-byebug", platform: :mri
+gem "debug", platform: :mri
 
 gem "method_source"
 gem "unparser"

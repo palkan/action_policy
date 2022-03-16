@@ -2,6 +2,8 @@
 
 ## master
 
+- Fix policy lookup when a namespaced record is passed and the strict mode is used. ([@palkan][])
+
 - Expose `#authorized_scope` as helper. ([@palkan][])
 
 ## 0.6.0 (2021-09-02)

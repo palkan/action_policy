@@ -67,12 +67,20 @@ module ActionPolicy
       def lookup_within_namespace(policy_name, namespace, strict: false)
         NamespaceCache.fetch(namespace&.name || "Kernel", policy_name, strict: strict) do
           mod = namespace
+          policy_class = nil
+
           loop do
-            policy = [mod&.name, policy_name].compact.join("::").safe_constantize
-            break policy if policy || mod.nil? || strict
+            policy_class = [mod&.name, policy_name].compact.join("::").safe_constantize
+            break policy_class if policy_class || mod.nil?
 
             mod = mod.namespace
           end
+
+          next policy_class if !strict || namespace.nil? || policy_class.nil?
+
+          # If we're in the strict mode and the namespace boundary is provided,
+          # we must check that the found policy satisfies it
+          policy_class if policy_class.name.start_with?("#{namespace.name}::")
         end
       end
 

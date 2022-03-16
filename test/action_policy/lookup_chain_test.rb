@@ -31,6 +31,8 @@ class LookupBPolicy; end
 class LookupBsPolicy; end
 
 module LookupNamespace
+  class LookupA; end
+
   class LookupAPolicy; end
 
   module NestedNamespace; end
@@ -157,6 +159,11 @@ class TestLookupChain < Minitest::Test
     assert_equal(
       LookupNamespace::LookupAPolicy,
       ActionPolicy.lookup(:lookup_a, namespace: LookupNamespace, strict_namespace: true)
+    )
+
+    assert_equal(
+      LookupNamespace::LookupAPolicy,
+      ActionPolicy.lookup(LookupNamespace::LookupA, namespace: LookupNamespace, strict_namespace: true)
     )
 
     assert_raises(ActionPolicy::NotFound) do
