@@ -2,6 +2,8 @@
 
 ## master
 
+- Expose `#authorized_scope` as helper. ([@palkan][])
+
 ## 0.6.0 (2021-09-02)
 
 - Drop Ruby 2.5 support.

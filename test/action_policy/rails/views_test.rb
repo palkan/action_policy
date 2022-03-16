@@ -42,7 +42,7 @@ class TestViewsIntegration < ActionController::TestCase
     get :index, params: {user: "guest"}
 
     assert_includes response.body, "guest (read-only)"
-    assert_includes response.body, "admin (read-only)"
+    refute_includes response.body, "admin"
     refute_includes response.body, "Create User"
   end
 end

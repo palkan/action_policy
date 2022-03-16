@@ -1,4 +1,4 @@
-<% @users.each do |user| %>
+<% authorized_scope(@users, with: UserPolicy, type: :data).each do |user| %>
   <li><%= user.name %> (<%= allowed_to?(:edit?, user) ? "editable" : "read-only" %>)</li>
 <% end %>
 <% if allowed_to?(:create?) %>

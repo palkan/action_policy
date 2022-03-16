@@ -23,7 +23,10 @@ module ActionPolicy
     include ActionPolicy::Behaviours::Namespaced
 
     included do
-      helper_method :allowed_to? if respond_to?(:helper_method)
+      if respond_to?(:helper_method)
+        helper_method :allowed_to?
+        helper_method :authorized_scope
+      end
 
       attr_writer :authorize_count
       attr_reader :verify_authorized_skipped
