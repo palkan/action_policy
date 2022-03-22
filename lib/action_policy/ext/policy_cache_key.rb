@@ -23,7 +23,7 @@ module ActionPolicy
       end
 
       refine Object do
-        include ObjectExt
+        import_methods ObjectExt
       end
 
       refine NilClass do
