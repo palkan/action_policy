@@ -21,7 +21,7 @@ module ActionPolicy
       ::Module.include(Ext) if RUBY_PLATFORM.match?(/java/i)
 
       refine Module do
-        include Ext
+        import_methods Ext
       end
     end
   end
