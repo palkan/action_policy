@@ -4,7 +4,7 @@
 
 - Fix policy lookup when a namespaced record is passed and the strict mode is used. ([@palkan][])
 - Expose `#authorized_scope` as helper. ([@palkan][])
-- Fixed #207 refinement#include deprecation warning on Ruby 3.1
+- [Fixes [#207](https://github.com/palkan/action_policy/issues/207)] refinement#include deprecation warning on Ruby 3.1
 
 ## 0.6.0 (2021-09-02)
 
