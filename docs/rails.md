@@ -27,8 +27,8 @@ end
 
 > Read more about [authorization context](authorization_context.md).
 
-In case you don't want to include Action Policy to controllers at all,
-you can turn disable the integration by setting `config.action_policy.auto_inject_into_controller = false` in `application.rb`.
+If you don't want to include Action Policy in your controllers at all,
+you can disable the integration by setting `config.action_policy.auto_inject_into_controller = false` in `application.rb`.
 
 ### `verify_authorized` hooks
 
