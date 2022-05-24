@@ -92,7 +92,7 @@ class UsersController < ApplicationController
 end
 ```
 
-That means that **all the policies that could be used together MUST share the same set of authorization contexts** (or at least the _parent_ policies contexts must be supersets of the nested policies' contexts).
+That means that **all the policies that could be used together MUST share the same set of authorization contexts** (or at least the _parent_ policies' contexts must be supersets of the nested policies' contexts).
 
 ## Explicit context
 
