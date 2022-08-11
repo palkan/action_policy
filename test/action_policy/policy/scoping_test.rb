@@ -208,7 +208,7 @@ class TestPolicyScopeMatchers < Minitest::Test
 end
 
 class TestNestedPolicyScope < Minitest::Test
-  class Post < Struct.new(:user); end
+  class Post < Struct.new(:user, :published); end
 
   class UserPolicy
     include ActionPolicy::Policy::Core
@@ -239,15 +239,21 @@ class TestNestedPolicyScope < Minitest::Test
     end
   end
 
+  class PublishedPostPolicy < PostPolicy
+    scope_for :array do |posts|
+      super(posts).select(&:published)
+    end
+  end
+
   def test_nested_policy_authorized_scope
     user = User.new("jack")
     admin = User.new("admin")
 
     users = [user, admin]
 
-    post = Post.new(user)
-    post2 = Post.new(admin)
-    post3 = Post.new(nil)
+    post = Post.new(user, true)
+    post2 = Post.new(admin, true)
+    post3 = Post.new(nil, false)
 
     posts = [post, post2, post3]
 
@@ -264,5 +270,25 @@ class TestNestedPolicyScope < Minitest::Test
     scoped_posts = policy.apply_scope(posts, type: :array)
 
     assert_equal 3, scoped_posts.size
+  end
+
+  def test_super_in_scopes
+    user = User.new("jack")
+    admin = User.new("admin")
+
+    users = [user, admin]
+
+    post = Post.new(user, true)
+    post2 = Post.new(admin, true)
+    post3 = Post.new(nil, false)
+
+    posts = [post, post2, post3]
+
+    policy = PublishedPostPolicy.new(user: User.new("guest"), all_users: users)
+
+    scoped_posts = policy.apply_scope(posts, type: :array)
+
+    assert_equal 1, scoped_posts.size
+    assert_includes scoped_posts, post
   end
 end

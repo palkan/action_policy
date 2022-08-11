@@ -94,6 +94,30 @@ class PostPolicy < ApplicationPolicy
 end
 ```
 
+### Scopes inheritance and chaining
+
+Even though we use blocks to declare scopes, under the hood they are transformed into class instance methods. Hence, inheritance works out-of-the-box as with pure Ruby classes.
+
+It is also possible to _chain_ scopes by using the `super` keyword. For example:
+
+```ruby
+class ApplicationPolicy < ActionPolicy::Base
+  authorize :user, :account
+
+  scope_for :relation do |relation|
+    relation.where(account_id: account.id)
+  end
+end
+
+class PostPolicy < ApplicationPolicy
+  scope_for :relation do |relation|
+    super(relation).published
+  end
+end
+```
+
+**NOTE:** Using `super` with implicit arguments is not supported, since we use `define_method` internally.
+
 ## Apply scopes
 
 Action Policy behaviour (`ActionPolicy::Behaviour`) provides an `authorized` method which allows you to use scoping:
