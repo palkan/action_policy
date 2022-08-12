@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.6.2 (2022-08-12)
+
 - Allow omitting authorization record if `with` is provided. ([@palkan][])
 
 ## 0.6.1 (2022-05-23)
