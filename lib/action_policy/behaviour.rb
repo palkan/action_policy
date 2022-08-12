@@ -58,10 +58,11 @@ module ActionPolicy
     end
 
     def authorization_context
-      return @__authorization_context if
-        instance_variable_defined?(:@__authorization_context)
+      @_authorization_context ||= build_authorization_context
+    end
 
-      @__authorization_context = self.class.authorization_targets
+    def build_authorization_context
+      self.class.authorization_targets
         .each_with_object({}) do |(key, meth), obj|
         obj[key] = send(meth)
       end
