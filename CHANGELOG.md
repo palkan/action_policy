@@ -2,6 +2,8 @@
 
 ## master
 
+- Allow omitting authorization record if `with` is provided. ([@palkan][])
+
 ## 0.6.1 (2022-05-23)
 
 - Fix policy lookup when a namespaced record is passed and the strict mode is used. ([@palkan][])

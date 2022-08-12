@@ -205,6 +205,35 @@ class TestMissingImplicitTarget < Minitest::Test
   end
 end
 
+class TestNoTarget < Minitest::Test
+  class ChatChannel
+    include ActionPolicy::Behaviour
+
+    attr_reader :user
+
+    authorize :user
+
+    def initialize(name)
+      @user = User.new(name)
+    end
+  end
+
+  def test_no_record_provided
+    channel = ChatChannel.new("guest")
+
+    assert_raises ActionPolicy::NotFound do
+      channel.authorize! to: :ping
+    end
+  end
+
+  def test_no_record_provided_but_with_policy
+    channel = ChatChannel.new("guest")
+
+    channel.authorize! to: :show?, with: UserPolicy
+    assert channel.allowed_to? :show?, with: UserPolicy
+  end
+end
+
 class TestDefaultAuthorizationPolicy < Minitest::Test
   class UserPolicy
     include ActionPolicy::Policy::Core

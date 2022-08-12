@@ -73,11 +73,19 @@ module ActionPolicy
       policy.resolve_rule(rule)
     end
 
-    def lookup_authorization_policy(record, **options) # :nodoc:
-      record = implicit_authorization_target! if :__undef__ == record # rubocop:disable Style/YodaCondition See https://github.com/palkan/action_policy/pull/180
-      Kernel.raise ArgumentError, "Record must be specified" if record.nil?
+    def lookup_authorization_policy(record, with: nil, **options) # :nodoc:
+      if record == :__undef__
+        record =
+          if with
+            implicit_authorization_target
+          else
+            implicit_authorization_target!
+          end
+      end
 
-      policy_for(record: record, **options)
+      Kernel.raise ArgumentError, "Record or policy must be specified" if record.nil? && with.nil?
+
+      policy_for(record: record, with: with, **options)
     end
 
     module ClassMethods # :nodoc:
