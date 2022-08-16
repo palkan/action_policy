@@ -75,7 +75,7 @@ module ActionPolicy
     end
 
     def lookup_authorization_policy(record, with: nil, **options) # :nodoc:
-      if record == :__undef__
+      if :__undef__ == record # rubocop:disable Style/YodaCondition
         record =
           if with
             implicit_authorization_target

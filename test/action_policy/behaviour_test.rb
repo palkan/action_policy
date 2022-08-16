@@ -186,6 +186,15 @@ class TestMissingImplicitTarget < Minitest::Test
       "pong"
     end
 
+    # Regression test for https://github.com/palkan/action_policy/issues/179
+    def pong
+      user = User.new("admin")
+      user.define_singleton_method(:==) { |*| true }
+
+      authorize! user, to: :show?, context: {user: user}
+      "ping"
+    end
+
     def implicit_authorization_target
       nil
     end
@@ -202,6 +211,12 @@ class TestMissingImplicitTarget < Minitest::Test
                                "for TestMissingImplicitTarget::ChatChannel. " \
                                "Please, provide policy class explicitly using `with` option or " \
                                "define the `implicit_authorization_target` method."
+  end
+
+  def test_overriden_equality
+    channel = ChatChannel.new
+
+    assert_equal "ping", channel.pong
   end
 end
 
