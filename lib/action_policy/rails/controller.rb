@@ -32,6 +32,8 @@ module ActionPolicy
       attr_reader :verify_authorized_skipped
 
       protected :authorize_count=, :authorize_count
+
+      define_callbacks :authorize
     end
 
     # Authorize action against a policy.
@@ -46,11 +48,13 @@ module ActionPolicy
     #
     # Raises `ActionPolicy::Unauthorized` if check failed.
     def authorize!(record = :__undef__, to: nil, **options)
-      to ||= :"#{action_name}?"
+      run_callbacks(:authorize) do
+        to ||= :"#{action_name}?"
 
-      super(record, to: to, **options)
+        super(record, to: to, **options)
 
-      self.authorize_count += 1
+        self.authorize_count += 1
+      end
     end
 
     # Tries to infer the resource class from controller name
@@ -82,6 +86,20 @@ module ActionPolicy
       # Skips verify_authorized after_action callback.
       def skip_verify_authorized(**options)
         skip_after_action :verify_authorized, options
+      end
+
+      %i(before after around).each do |callback|
+        define_method :"#{callback}_authorize" do |*names, &blk|
+          _insert_callbacks(names, blk) do |name, options|
+            set_callback(:authorize, callback, name, options)
+          end
+        end
+
+        define_method :"skip_#{callback}_authorize" do |*names, &blk|
+          _insert_callbacks(names, blk) do |name, options|
+            skip_callback(:authorize, callback, name, options)
+          end
+        end
       end
     end
   end

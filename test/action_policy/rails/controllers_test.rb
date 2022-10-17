@@ -270,3 +270,40 @@ class TestOverrideControllerIntegration < ActionController::TestCase
     assert_equal "OK", response.body
   end
 end
+
+class TestControllerCallbacksIntegration < ActionController::TestCase
+  class UsersController < ActionController::Base
+    before_action :authorize!
+
+    attr_reader :current_user
+    authorize :user, through: :current_user
+    before_authorize :load_current_user, only: :create
+
+    def create
+      render plain: "OK"
+    end
+
+    private
+
+    def load_current_user
+      @current_user ||= User.new(params[:user])
+    end
+  end
+
+  tests UsersController
+
+  def test_create_failed
+    e = assert_raises(ActionPolicy::Unauthorized) do
+      post :create, params: {user: "guest"}
+    end
+
+    assert_equal UserPolicy, e.policy
+    assert_equal :create?, e.rule
+    assert e.result.reasons.is_a?(::ActionPolicy::Policy::FailureReasons)
+  end
+
+  def test_create_succeed
+    post :create, params: {user: "admin"}
+    assert_equal "OK", response.body
+  end
+end

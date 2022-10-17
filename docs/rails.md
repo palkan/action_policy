@@ -77,6 +77,28 @@ class PostsController < ApplicationController
 end
 ```
 
+### Callbacks
+
+You can add and skip callbacks which are called before, after and around authorization:
+
+```ruby
+class PostsController < ApplicationController
+  before_action :authorize!
+  before_authorize :set_current_user, only: :index
+  
+  def index
+  end
+  
+  private
+  
+  attr_reader :current_user
+  
+  def set_current_user
+    @current_user = User.find(params[:id])
+  end
+end
+```
+
 ### Usage with `API` and `Metal` controllers
 
 Action Policy is only included into `ActionController::Base`. If you want to use it with other base Rails controllers, you have to include it manually:
