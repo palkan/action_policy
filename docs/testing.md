@@ -162,13 +162,13 @@ describe PostPolicy do
     end
 
     context "as manager" do
-      before { user.update!(role: :manager) }
+      before { user.role = :manager }
 
       it { is_expected.to eq(%w[A B]) }
     end
 
     context "as banned user" do
-      before { user.update!(banned: true) }
+      before { user.banned = true }
 
       it { is_expected.to be_empty }
     end
