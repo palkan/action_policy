@@ -20,12 +20,12 @@ class TestHelperTest < Minitest::Test
     end
 
     def talk(user)
-      authorize! user, to: :update?
+      authorize! user, context: {admin: true}, to: :update?
       "OK"
     end
 
     def speak(user)
-      authorize! user, to: :update?, with: CustomPolicy
+      authorize! user, context: {admin: true}, to: :update?, with: CustomPolicy
       "OK"
     end
 
@@ -63,6 +63,18 @@ class TestHelperTest < Minitest::Test
 
   def test_assert_authorized_to_with_custom_policy
     assert_authorized_to(:manage?, user, with: CustomPolicy) do
+      subject.speak(user)
+    end
+  end
+
+  def test_assert_authorized_to_with_context
+    assert_authorized_to(:manage?, user, context: {admin: true}) do
+      subject.talk(user)
+    end
+  end
+
+  def test_assert_authorized_to_with_context_and_custom_policy
+    assert_authorized_to(:manage?, user, context: {admin: true}, with: CustomPolicy) do
       subject.speak(user)
     end
   end

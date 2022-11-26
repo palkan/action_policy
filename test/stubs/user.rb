@@ -20,6 +20,8 @@ class User
 end
 
 class UserPolicy < ActionPolicy::Base
+  authorize :admin, optional: true
+
   scope_for :data do |users, with_admins: false|
     next users if user.admin? || with_admins
     users.reject(&:admin?)
