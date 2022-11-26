@@ -13,14 +13,15 @@ module ActionPolicy
           @rule = rule
         end
 
-        def matches?(policy_class, actual_rule, target)
+        def matches?(policy_class, actual_rule, target, context)
           policy_class == policy.class &&
             (target.is_a?(Class) ? target == policy.record : target === policy.record) &&
-            rule == actual_rule
+            rule == actual_rule && policy.authorization_context >= context
         end
 
         def inspect
-          "#{policy.record.inspect} was authorized with #{policy.class}##{rule}"
+          "#{policy.record.inspect} was authorized with #{policy.class}##{rule} " \
+            "and context #{policy.authorization_context.inspect}"
         end
       end
 

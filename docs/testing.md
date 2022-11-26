@@ -221,7 +221,7 @@ Include `ActionPolicy::TestHelper` to your test class and you'll be able to use
 class PostsController < ApplicationController
   def update
     @post = Post.find(params[:id])
-    authorize! @post
+    authorize! @post, context: {favorite: true}
     if @post.update(post_params)
       redirect_to @post
     else
@@ -241,7 +241,7 @@ class PostsControllerTest < ActionDispatch::IntegrationTest
 
     post = posts(:example)
 
-    assert_authorized_to(:update?, post, with: PostPolicy) do
+    assert_authorized_to(:update?, post, with: PostPolicy, context: {favorite: true}) do
       patch :update, id: post.id, name: "Bob"
     end
   end
@@ -278,6 +278,25 @@ end
 ```
 
 If you omit `.with(PostPolicy)` then the inferred policy for the target (`post`) would be used.
+
+When specifying contexts in the authorization, you can use the `with_context` modifier to ensure the context match.
+
+```ruby
+class PostController
+  def post
+    authorize! post, context: { favorite: true }
+  end
+end
+
+describe PostsController do
+  subject { patch :update, id: post.id, params: params }
+
+  it "is authorized" do
+    expect { subject }.to be_authorized_to(:update?, post)
+      .with_context(favorite: true)
+  end
+end
+```
 
 RSpec composed matchers are available as target:
 

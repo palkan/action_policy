@@ -20,7 +20,7 @@ module ActionPolicy
     #   end
     #
     class BeAuthorizedTo < ::RSpec::Matchers::BuiltIn::BaseMatcher
-      attr_reader :rule, :target, :policy, :actual_calls
+      attr_reader :rule, :target, :policy, :actual_calls, :context
 
       def initialize(rule, target)
         @rule = rule
@@ -32,10 +32,16 @@ module ActionPolicy
         self
       end
 
+      def with_context(context)
+        @context = context
+        self
+      end
+
       def match(_expected, actual)
         raise "This matcher only supports block expectations" unless actual.is_a?(Proc)
 
         @policy ||= ::ActionPolicy.lookup(target)
+        @context ||= {}
 
         begin
           ActionPolicy::Testing::AuthorizeTracker.tracking { actual.call }
@@ -45,7 +51,7 @@ module ActionPolicy
 
         @actual_calls = ActionPolicy::Testing::AuthorizeTracker.calls
 
-        actual_calls.any? { _1.matches?(policy, rule, target) }
+        actual_calls.any? { _1.matches?(policy, rule, target, context) }
       end
 
       def does_not_match?(*)
@@ -57,6 +63,7 @@ module ActionPolicy
       def failure_message
         "expected #{formatted_record} " \
         "to be authorized with #{policy}##{rule}, " \
+        "#{context.empty? ? "" : "and context #{context.inspect}, "} " \
         "but #{actual_calls_message}"
       end
 

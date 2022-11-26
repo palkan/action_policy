@@ -6,8 +6,14 @@ class TestService # :nodoc:
   include ActionPolicy::Behaviour
 
   class CustomPolicy < UserPolicy
+    authorize :able_to_yell, optional: true
+
     def some_action?
       true
+    end
+
+    def yell?
+      able_to_yell
     end
 
     alias_rule :aliased_action?, to: :some_action?
@@ -39,6 +45,14 @@ class TestService # :nodoc:
 
   def speak(text)
     "The Truth is #{text}"
+  end
+
+  def yell(name)
+    user = User.new(name)
+
+    authorize! user, context: {able_to_yell: true}, to: :yell?, with: CustomPolicy
+
+    "MY NAME IS #{user.name}"
   end
 
   def create?
@@ -129,6 +143,13 @@ describe "ActionPolicy RSpec matchers" do
         end
       end
 
+      context "when context is specified" do
+        specify do
+          expect { subject.yell("admin") }
+            .to be_authorized_to(:yell?, target).with(TestService::CustomPolicy).with_context(able_to_yell: true)
+        end
+      end
+
       context "with fallback rule" do
         specify do
           expect { subject.say("admin") }
@@ -176,6 +197,16 @@ describe "ActionPolicy RSpec matchers" do
             expect { subject.say("admin") }
               .to be_authorized_to(:manage?, target).with(UserPolicy)
           end.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+        end
+      end
+
+      context "when context doesn't match" do
+        specify do
+          expect do
+            expect { subject.yell("admin") }
+              .to be_authorized_to(:yell?, target).with(TestService::CustomPolicy)
+              .with_context(able_to_yell: false)
+          end.to raise_error(RSpec::Expectations::ExpectationNotMetError, %r{and context.+:able_to_yell=>true})
         end
       end
 

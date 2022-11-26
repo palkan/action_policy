@@ -36,7 +36,7 @@ module ActionPolicy
     #       get :show, id: user.id
     #     end
     #
-    def assert_authorized_to(rule, target, with: nil)
+    def assert_authorized_to(rule, target, with: nil, context: {})
       raise ArgumentError, "Block is required" unless block_given?
 
       policy = with || ::ActionPolicy.lookup(target)
@@ -50,8 +50,9 @@ module ActionPolicy
       actual_calls = ActionPolicy::Testing::AuthorizeTracker.calls
 
       assert(
-        actual_calls.any? { |call| call.matches?(policy, rule, target) },
+        actual_calls.any? { |call| call.matches?(policy, rule, target, context) },
         "Expected #{target.inspect} to be authorized with #{policy}##{rule}, " \
+        "#{context.empty? ? "" : "and context #{context}, "}" \
         "but no such authorization has been made.\n" \
         "Registered authorizations: " \
         "#{actual_calls.empty? ? "none" : actual_calls.map(&:inspect).join(",")}"
