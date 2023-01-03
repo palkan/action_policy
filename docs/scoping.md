@@ -48,9 +48,9 @@ class PostPolicy < ApplicationPolicy
     relation.where(user: user)
   end
 
-  # define a scope of `my_data` type,
+  # define a scope of `data` type,
   # which acts on hashes
-  scope_for :my_data do |data|
+  scope_for :data do |data|
     next data if user.admin?
     data.delete_if { |k, _| SENSITIVE_KEYS.include?(k) }
   end
