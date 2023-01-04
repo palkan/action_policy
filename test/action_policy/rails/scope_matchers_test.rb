@@ -16,7 +16,7 @@ class TestRailsScopeMatchers < ActionController::TestCase
     authorize :user
 
     relation_scope do |scope|
-      user.role == "guest" ? scope.where(role: "guest") : scope.all
+      (user.role == "guest") ? scope.where(role: "guest") : scope.all
     end
 
     params_filter do |params|
