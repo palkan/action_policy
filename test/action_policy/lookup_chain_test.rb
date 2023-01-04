@@ -14,7 +14,7 @@ class LookupB
   end
 
   def policy_class
-    @type == "a" ? LookupAPolicy : LookupBPolicy
+    (@type == "a") ? LookupAPolicy : LookupBPolicy
   end
 end
 

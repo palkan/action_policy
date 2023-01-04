@@ -100,7 +100,7 @@ module ActionPolicy
     # Enable namespace cache by default or
     # if RACK_ENV provided and equal to "production"
     self.namespace_cache_enabled =
-      !ENV["RACK_ENV"].nil? ? ENV["RACK_ENV"] == "production" : true
+      (!ENV["RACK_ENV"].nil?) ? ENV["RACK_ENV"] == "production" : true
 
     # By self `policy_class` method
     INSTANCE_POLICY_CLASS = ->(record, **) {

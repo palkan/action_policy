@@ -3,7 +3,7 @@
 ## master
 
 - Add support to assert context in test matchers ([@matsales28][])
- 
+
 ## 0.6.3 (2022-08-16)
 
 - Fix regression for [#179](https://github.com/palkan/action_policy/issues/179). ([@palkan][])
