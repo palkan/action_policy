@@ -284,7 +284,7 @@ When specifying contexts in the authorization, you can use the `with_context` mo
 ```ruby
 class PostController
   def post
-    authorize! post, context: { favorite: true }
+    authorize! post, context: {favorite: true}
   end
 end
 
