@@ -41,7 +41,7 @@ module ActionPolicy
         raise "This matcher only supports block expectations" unless actual.is_a?(Proc)
 
         @policy ||= ::ActionPolicy.lookup(target)
-        @context ||= {}
+        @context ||= nil
 
         begin
           ActionPolicy::Testing::AuthorizeTracker.tracking { actual.call }
@@ -63,7 +63,7 @@ module ActionPolicy
       def failure_message
         "expected #{formatted_record} " \
         "to be authorized with #{policy}##{rule}, " \
-        "#{context.empty? ? "" : "and context #{context.inspect}, "} " \
+        "#{context ? "and context #{context.inspect}, " : ""}" \
         "but #{actual_calls_message}"
       end
 

@@ -16,12 +16,20 @@ module ActionPolicy
         def matches?(policy_class, actual_rule, target, context)
           policy_class == policy.class &&
             (target.is_a?(Class) ? target == policy.record : target === policy.record) &&
-            rule == actual_rule && policy.authorization_context >= context
+            rule == actual_rule && context_matches?(context, policy.authorization_context)
         end
 
         def inspect
           "#{policy.record.inspect} was authorized with #{policy.class}##{rule} " \
             "and context #{policy.authorization_context.inspect}"
+        end
+
+        private
+
+        def context_matches?(context, actual)
+          return true unless context
+
+          context === actual || actual >= context
         end
       end
 
