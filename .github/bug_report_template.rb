@@ -14,13 +14,13 @@ require "bundler/inline"
 # Run the script as follows:
 #
 #   $ ruby bug_report_template.rb
-gemfile(true) do
+gemfile(true, quiet: true) do
   source "https://rubygems.org"
 
-  gem "rails", "~> 6.0"
-  gem "action_policy", "~> 0.4"
+  gem "rails", "~> 7.0"
+  gem "action_policy", "~> 0.6", require: false
 
-  gem "pry-byebug", platform: :mri
+  gem "debug", platform: :mri
 end
 
 require "rails"
@@ -34,10 +34,8 @@ module Buggy
     config.logger = Logger.new("/dev/null")
     config.eager_load = false
 
-    initializer "routes" do
-      Rails.application.routes.draw do
-        get ":controller(/:action)"
-      end
+    routes.append do
+      get ":controller(/:action)"
     end
   end
 end
