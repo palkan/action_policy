@@ -2,6 +2,12 @@
 
 ## master
 
+## 0.6.4 (2022-01-17)
+
+- Fix loading of Rails scope matchers. ([@palkan][])
+
+[Issue #225](https://github.com/palkan/action_policy/issues/225)
+
 - Add support to assert context in test matchers ([@matsales28][])
 
 ## 0.6.3 (2022-08-16)
@@ -474,3 +480,4 @@ This value is now stored in a cache (if any) instead of just the call result (`t
 [@pirj]: https://github.com/pirj
 [@skojin]: https://github.com/skojin
 [@tomdalling]: https://github.com/tomdalling
+[@matsales28]: https://github.com/matsales28
