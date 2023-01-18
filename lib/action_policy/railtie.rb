@@ -4,6 +4,14 @@ module ActionPolicy # :nodoc:
   require "action_policy/rails/controller"
   require "action_policy/rails/channel"
 
+  if defined?(::ActionController)
+    require "action_policy/rails/scope_matchers/action_controller_params"
+  end
+
+  if defined?(::ActiveRecord)
+    require "action_policy/rails/scope_matchers/active_record"
+  end
+
   class Railtie < ::Rails::Railtie # :nodoc:
     # Provides Rails-specific configuration,
     # accessible through `Rails.application.config.action_policy`
@@ -81,8 +89,6 @@ module ActionPolicy # :nodoc:
         ::Rails.application.config.action_policy.namespace_cache_enabled
 
       ActiveSupport.on_load(:action_controller) do
-        require "action_policy/rails/scope_matchers/action_controller_params"
-
         next unless ::Rails.application.config.action_policy.auto_inject_into_controller
 
         ActionController::Base.include ActionPolicy::Controller
@@ -104,7 +110,6 @@ module ActionPolicy # :nodoc:
 
       ActiveSupport.on_load(:active_record) do
         require "action_policy/rails/ext/active_record"
-        require "action_policy/rails/scope_matchers/active_record"
       end
     end
   end
