@@ -2,6 +2,22 @@
 
 ENV["RAILS_ENV"] = "test"
 
+if ENV["COVERAGE"] == "true"
+  require "simplecov"
+  require "simplecov-lcov"
+  SimpleCov::Formatter::LcovFormatter.config do |c|
+    c.report_with_single_file = true
+    c.single_report_path = "coverage/lcov.info"
+  end
+
+  SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
+  SimpleCov.start do
+    add_filter File.expand_path(File.join(__dir__, "..", "spec"))
+    add_filter File.expand_path(File.join(__dir__, "..", "test"))
+    add_filter File.expand_path(File.join(__dir__, "..", "lib", "generators"))
+  end
+end
+
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 
 ENV["RUBY_NEXT_TRANSPILE_MODE"] = "rewrite"

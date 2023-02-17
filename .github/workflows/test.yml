@@ -14,6 +14,7 @@ jobs:
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
       CI: true
+      COVERAGE: ${{ matrix.coverage }}
     strategy:
       fail-fast: false
       matrix:
@@ -22,17 +23,23 @@ jobs:
         gemfile: [
           "gemfiles/rails6.gemfile"
         ]
+        coverage: ["false"]
         include:
         - ruby: "3.0"
           gemfile: "gemfiles/rails6.gemfile"
+          coverage: "false"
         - ruby: "3.1"
           gemfile: "gemfiles/rails7.gemfile"
+          coverage: "false"
         - ruby: "3.2"
           gemfile: "gemfiles/rails7.gemfile"
+          coverage: "true"
         - ruby: "3.1"
           gemfile: "gemfiles/railsmaster.gemfile"
+          coverage: "false"
         - ruby: "2.6"
           gemfile: "gemfiles/rails6.gemfile"
+          coverage: "false"
     steps:
     - uses: actions/checkout@v2
     - uses: actions/cache@v1
@@ -55,10 +62,32 @@ jobs:
     - name: Run Minitest tests
       run: |
         bundle exec rake test
+    - name: Coveralls Parallel
+      if: ${{ matrix.coverage == 'true' }}
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        flag-name: minitest
+        parallel: true
+        coveralls-endpoint: ${{ secrets.COVERALLS_ENDPOINT }}
     - name: Run RSpec tests
       run: |
         bundle exec rspec --force-color
+    - name: Coveralls Parallel
+      if: ${{ matrix.coverage == 'true' }}
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        flag-name: rspec
+        parallel: true
+        coveralls-endpoint: ${{ secrets.COVERALLS_ENDPOINT }}
     - name: Run Minitest tests in isolation
       run: |
         bundle exec rake test:isolated
-
+    - name: Coveralls Finished
+      if: ${{ matrix.coverage == 'true' }}
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
+        coveralls-endpoint: ${{ secrets.COVERALLS_ENDPOINT }}
