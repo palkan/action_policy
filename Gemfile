@@ -22,3 +22,8 @@ if File.exist?(local_gemfile)
 else
   gem "rails", "~> 6.0"
 end
+
+if ENV["COVERAGE"] == "true"
+  gem "simplecov"
+  gem "simplecov-lcov"
+end

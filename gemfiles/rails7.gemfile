@@ -5,4 +5,9 @@ gem "rails", "~> 7.0"
 gem "method_source"
 gem "unparser"
 
+if ENV["COVERAGE"] == "true"
+  gem "simplecov"
+  gem "simplecov-lcov"
+end
+
 gemspec path: ".."

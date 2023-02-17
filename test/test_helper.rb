@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+if ENV["COVERAGE"] == "true"
+  require "simplecov"
+  require "simplecov-lcov"
+  SimpleCov::Formatter::LcovFormatter.config do |c|
+    c.report_with_single_file = true
+    c.single_report_path = "coverage/lcov.info"
+  end
+
+  SimpleCov.formatter = SimpleCov::Formatter::LcovFormatter
+  SimpleCov.start
+end
+
 require "i18n"
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
