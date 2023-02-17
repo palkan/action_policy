@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.6.5 (2023-02-16)
+
+- Fix generated policies' outdated Ruby API (to work with Ruby 3.2).
+
 ## 0.6.4 (2022-01-17)
 
 - Fix loading of Rails scope matchers. ([@palkan][])
