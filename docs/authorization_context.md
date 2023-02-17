@@ -61,7 +61,7 @@ When you call another policy from the policy object (e.g. via `allowed_to?` meth
 the context of the current policy is passed to the _nested_ policy.
 
 That means that if the nested policy has a different authorization context, we won't be able
-to build it (event if you configure all the required keys in the controller).
+to build it (even if you configure all the required keys in the controller).
 
 For example:
 
