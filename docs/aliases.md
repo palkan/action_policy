@@ -74,14 +74,13 @@ Here's the order in which aliases and concrete rule methods are resolved in rega
   * When aliases are defined on the subclass they will overwrite matching aliases on the superclass.
 3. If there is a concrete rule method on the superclass, then this is called, else
 4. If there is a default rule defined, then this is called, else
-5. `ActionPolicy::UnknownRule` is raised.
+5. If the default rule is unaltered, then the `manage?` rule is called
+6. If the default rule is set to `nil`, `ActionPolicy::UnknownRule` is raised.
 
 Here's an example with the expected results:
 
 ```ruby
 class SuperPolicy < ApplicationPolicy
-  default_rule :manage?
-
   alias_rule :update?, :destroy?, :create?, to: :edit?
 
   def manage?
@@ -112,7 +111,7 @@ Authorizing against the SuperPolicy:
 * `manage?` will resolve to `manage?`
 * `edit?` will resolve to `edit?`
 * `index?` will resolve to `index?`
-* `something?` will resolve to `manage?`
+* `something?` will resolve to the `default_rule`: `manage?`
 
 Authorizing against the SubPolicy:
 
