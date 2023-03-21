@@ -15,6 +15,7 @@ jobs:
       BUNDLE_RETRY: 3
       CI: true
       COVERAGE: ${{ matrix.coverage }}
+      COVERALLS_REPO_TOKEN: ${{ secrets.github_token }}
     strategy:
       fail-fast: false
       matrix:
@@ -42,52 +43,31 @@ jobs:
           coverage: "false"
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/cache@v1
-      with:
-        path: /home/runner/bundle
-        key: bundle-${{ matrix.ruby }}-${{ matrix.gemfile }}-${{ hashFiles(matrix.gemfile) }}-${{ hashFiles('**/*.gemspec') }}
-        restore-keys: |
-          bundle-${{ matrix.ruby }}-${{ matrix.gemfile }}-
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
-    - name: Bundle install
-      run: |
-        bundle config path /home/runner/bundle
-        bundle config --global gemfile ${{ matrix.gemfile }}
-        bundle install
-        bundle update
+        bundler-cache: true
     - name: Run Ruby Next
       run: bundle exec rake nextify
+    - name: Install Coveralls reporter
+      if: ${{ matrix.coverage == 'true' }}
+      run: |
+        curl -L https://github.com/coverallsapp/coverage-reporter/releases/latest/download/coveralls-linux.tar.gz | tar zxv
     - name: Run Minitest tests
       run: |
         bundle exec rake test
-    - name: Coveralls Parallel
+    - name: Coveralls upload
       if: ${{ matrix.coverage == 'true' }}
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.github_token }}
-        flag-name: minitest
-        parallel: true
-        coveralls-endpoint: ${{ secrets.COVERALLS_ENDPOINT }}
+      run: |
+        ./coveralls -p --job-flag=minitest
     - name: Run RSpec tests
       run: |
         bundle exec rspec --force-color
-    - name: Coveralls Parallel
+    - name: Coveralls upload
       if: ${{ matrix.coverage == 'true' }}
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.github_token }}
-        flag-name: rspec
-        parallel: true
-        coveralls-endpoint: ${{ secrets.COVERALLS_ENDPOINT }}
-    - name: Run Minitest tests in isolation
       run: |
-        bundle exec rake test:isolated
+        ./coveralls -p --job-flag=rspec
     - name: Coveralls Finished
       if: ${{ matrix.coverage == 'true' }}
-      uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.github_token }}
-        parallel-finished: true
-        coveralls-endpoint: ${{ secrets.COVERALLS_ENDPOINT }}
+      run: |
+        ./coveralls -d
