@@ -2,6 +2,7 @@
 ![Build](https://github.com/palkan/action_policy/workflows/Build/badge.svg)
 ![JRuby Build](https://github.com/palkan/action_policy/workflows/JRuby%20Build/badge.svg)
 [![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)](https://actionpolicy.evilmartians.io)
+[![Coverage Status](https://coveralls.io/repos/github/palkan/action_policy/badge.svg)](https://coveralls.io/github/palkan/action_policy)
 
 # Action Policy
 
