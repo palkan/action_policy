@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 gemspec
 
-gem "debug", platform: :mri
+gem "debug", platform: :mri unless ENV["CI"] == "true"
 
 gem "method_source"
 gem "unparser"
