@@ -24,5 +24,14 @@ describe ActionPolicy::Generators::PolicyGenerator, type: :generator do
       is_expected.to exist
       is_expected.to contain(/class UserPolicy < ApplicationPolicy/)
     end
+
+    context "when using the parent option" do
+      let(:args) { ["user", "--parent", "base_policy"] }
+
+      specify do
+        is_expected.to exist
+        is_expected.to contain(/class UserPolicy < BasePolicy/)
+      end
+    end
   end
 end

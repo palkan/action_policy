@@ -2,7 +2,14 @@ Description:
     Generates a policy for a model with the given name.
 
 Example:
-    rails generate action_policy:policy user
+    rails generate action_policy:policy user --parent=base_policy
 
     This will create:
         app/policies/user_policy.rb
+
+	```ruby
+	class UserPolicy < BasePolicy
+	  # ...
+	end
+	```
+

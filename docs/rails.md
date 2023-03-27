@@ -12,6 +12,7 @@ Action Policy provides a couple of useful Rails generators:
 
 - `rails g action_policy:install` — adds `app/policies/application_policy.rb` file
 - `rails g action_policy:policy MODEL_NAME` — adds a policy file and a policy test file for a given model (also creates an `application_policy.rb` if it's missing)
+- `rails g action_policy:policy MODEL_NAME --parent=base_policy` — adds a policy file that inherits from `BasePolicy`, and a policy test file for a given model (also creates an `application_policy.rb` if it's missing)
 
 ## Controllers integration
 
