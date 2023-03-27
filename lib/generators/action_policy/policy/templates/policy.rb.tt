@@ -1,5 +1,5 @@
 <% module_namespacing do -%>
-class <%= class_name %>Policy < ApplicationPolicy
+class <%= class_name %>Policy < <%= parent_class_name.classify %>
   # See https://actionpolicy.evilmartians.io/#/writing_policies
   #
   # def index?

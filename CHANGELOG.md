@@ -2,6 +2,18 @@
 
 ## master
 
+- Add `--parent` option for policy generator ([@matsales28][])
+
+Example:
+
+`bin/rails g action_policy:policy user --parent=base_policy` generates:
+
+```ruby
+class UserPolicy < BasePolicy
+# ...
+end
+```
+
 ## 0.6.5 (2023-02-16)
 
 - Fix generated policies' outdated Ruby API (to work with Ruby 3.2).

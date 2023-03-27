@@ -7,6 +7,8 @@ module ActionPolicy
     class PolicyGenerator < ::Rails::Generators::NamedBase
       source_root File.expand_path("templates", __dir__)
 
+      class_option :parent, type: :string, desc: "The parent class for the generated policy"
+
       def run_install_if_needed
         in_root do
           return if File.exist?("app/policies/application_policy.rb")
@@ -20,6 +22,16 @@ module ActionPolicy
       end
 
       hook_for :test_framework
+
+      private
+
+      def parent_class_name
+        parent || "ApplicationPolicy"
+      end
+
+      def parent
+        options[:parent]
+      end
     end
   end
 end

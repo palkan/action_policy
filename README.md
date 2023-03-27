@@ -72,6 +72,8 @@ end
 ```
 
 This may be done with `rails generate action_policy:policy Post` generator.
+You can also use `rails generate action_policy:policy Post --parent=BasePolicy` to make the generated policy inherits
+from `BasePolicy`.
 
 Now you can easily add authorization to your Rails\* controller:
 
