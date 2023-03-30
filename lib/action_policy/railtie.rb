@@ -62,16 +62,14 @@ module ActionPolicy # :nodoc:
     end
 
     config.after_initialize do
-      next unless ::Rails.application.config.action_policy.instrumentation_enabled
+      if ::Rails.application.config.action_policy.instrumentation_enabled
+        require "action_policy/rails/policy/instrumentation"
+        require "action_policy/rails/authorizer"
 
-      require "action_policy/rails/policy/instrumentation"
-      require "action_policy/rails/authorizer"
+        ActionPolicy::Base.prepend ActionPolicy::Policy::Rails::Instrumentation
+        ActionPolicy::Authorizer.singleton_class.prepend ActionPolicy::Rails::Authorizer
+      end
 
-      ActionPolicy::Base.prepend ActionPolicy::Policy::Rails::Instrumentation
-      ActionPolicy::Authorizer.singleton_class.prepend ActionPolicy::Rails::Authorizer
-    end
-
-    config.to_prepare do |_app|
       ActionPolicy::LookupChain.namespace_cache_enabled =
         ::Rails.application.config.action_policy.namespace_cache_enabled
 
@@ -100,6 +98,18 @@ module ActionPolicy # :nodoc:
       ActiveSupport.on_load(:active_record) do
         require "action_policy/rails/ext/active_record"
         require "action_policy/rails/scope_matchers/active_record"
+      end
+
+      # Trigger load hooks of the components that extend ActionPolicy itself
+      # (e.g., scope matchers)
+      begin
+        ::ActionController::Base
+      rescue NameError
+      end
+
+      begin
+        ::ActiveRecord::Base
+      rescue NameError
       end
     end
   end
