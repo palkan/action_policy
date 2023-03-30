@@ -57,13 +57,8 @@ module ActionPolicy # :nodoc:
     config.action_policy = Config
 
     initializer "action_policy.clear_per_thread_cache" do |app|
-      if ::Rails::VERSION::MAJOR >= 5
-        app.executor.to_run { ActionPolicy::PerThreadCache.clear_all }
-        app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
-      else
-        require "action_policy/cache_middleware"
-        app.middleware.use ActionPolicy::CacheMiddleware
-      end
+      app.executor.to_run { ActionPolicy::PerThreadCache.clear_all }
+      app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
     end
 
     config.after_initialize do
