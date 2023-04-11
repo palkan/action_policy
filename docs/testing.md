@@ -45,7 +45,6 @@ end
 
 And we provide a `#be_an_alias_of` RSpec matcher for testing authorization rule aliases:
 
-
 Add the following to your `rails_helper.rb` (or `spec_helper.rb`):
 
 ```ruby
