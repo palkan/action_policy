@@ -17,12 +17,12 @@
 }
 
 :root {
-  --theme-color: #9FA628;
-  --theme-color-light: rgb(196, 202, 75);
-  --theme-color-dark: rgba(159, 166, 40, .8);
-  --theme-color-secondary: #c52f24;
-  --theme-color-secondary-dark: #980905;
-  --theme-color-secondary-light: #f64242;
+  --theme-color: #0F4D8A;
+  --theme-color-light: #0F4D8A;
+  --theme-color-dark: #0E7EF1;
+  --theme-color-secondary: #F1F7FD;
+  --theme-color-secondary-dark: #F1F7FD;
+  --theme-color-secondary-light: #F1F7FD;
 
   --text-color-base: #363636;
   --text-color-secondary: #646473;
@@ -48,7 +48,7 @@ a {
 }
 
 .github-corner svg {
-  fill: var(--theme-color-secondary);
+  fill: var(--theme-color);
 }
 
 .chart-container {
@@ -59,7 +59,6 @@ a {
 .sidebar {
   border: none;
   background-color: var(--theme-color-secondary);
-  color: #fff;
   width: 20%;
   display: flex;
   flex-direction: column;
@@ -69,13 +68,23 @@ body.close .sidebar {
   transform: translateX(-100%);
 }
 
+.sidebar-logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0 15px;
+  justify-content: center
+}
+
+.sidebar-logo-title {
+  margin-left: 10px;
+}
+
 .sidebar .sidebar-nav {
   order: 3;
 }
 
 .sidebar ul li a {
-  color: rgba(255,255,255,0.8);
-  color: var(--theme-color-light);
   font-size: 1rem;
 }
 
@@ -85,11 +94,11 @@ body.close .sidebar {
 
 .sidebar ul li a:hover {
   text-decoration: none;
-  color: rgba(255,255,255,1);
+  color: #0E7EF1;
 }
 
 .sidebar .sidebar-nav ul li.active>a {
-  color: #fff;
+  color: #0E7EF1;
   border-right: 0.2rem solid var(--theme-color-secondary-light);
 }
 

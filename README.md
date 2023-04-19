@@ -6,6 +6,9 @@
 
 # Action Policy
 
+<img align="right" height="150" width="129"
+     title="Action Policy logo" src="./docs/assets/images/logo.svg">
+
 Authorization framework for Ruby and Rails applications.
 
 Composable. Extensible. Performant.

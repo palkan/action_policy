@@ -17,7 +17,7 @@
   <meta name="twitter:creator" content="@palkan_tula" />
   <meta property="og:site_name" content="Action Policy" />
   <meta name="keywords" content="ruby, rails, authorization, open-source" />
-  <meta name="theme-color" content="#CB2028" />
+  <meta name="theme-color" content="#0F4D8A" />
   <link rel="stylesheet" href="assets/vue.min.css">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
@@ -25,7 +25,10 @@
   <div id="app"></div>
   <script>
     window.$docsify = {
-      name: 'action_policy',
+      name: '<a id="logo-link" class="app-name-link" data-nosearch href="/"><div class="sidebar-logo">' +
+              '<img src="./assets/images/logo.svg" height="90px">' +
+            '</div></a>',
+      nameLink: false,
       repo: 'https://github.com/palkan/action_policy',
       loadSidebar: true,
       subMaxLevel: 3,

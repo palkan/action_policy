@@ -1,5 +1,5 @@
 [![Gem Version](https://badge.fury.io/rb/action_policy.svg)](https://badge.fury.io/rb/action_policy)
-[![Build Status](https://travis-ci.org/palkan/action_policy.svg?branch=master)](https://travis-ci.org/palkan/action_policy)
+![Build](https://github.com/palkan/action_policy/workflows/Build/badge.svg)
 
 # Action Policy
 
