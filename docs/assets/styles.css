@@ -29,7 +29,7 @@
 }
 
 ::selection {
-  background: var(--theme-color-light);
+  background: var(--theme-color-secondary-light);
 }
 
 body {
