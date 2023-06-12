@@ -3,7 +3,6 @@
    * [Writing Policies](writing_policies.md)
    * [Rails Integration](rails.md)
    * [Non-Rails Usage](non_rails.md)
-   * [GraphQL Integration](graphql.md)
    * [Testing](testing.md)
 * Features
    * [Authorization Behaviour](behaviour.md)
@@ -18,6 +17,9 @@
    * [Instrumentation](instrumentation.md)
    * [I18n Support](i18n.md)
    * [Debugging](debugging.md)
+* Integrations
+   * [GraphQL](graphql.md)
+   * <a rel="noopener" href="https://github.com/shrimple-tech/action_policy-graphiti" target="_blank">Graphiti 🔗</a>
 * Tips & Tricks
    * [From Pundit to Action Policy](./pundit_migration.md)
    * [Dealing with Decorators](./decorators.md)
