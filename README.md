@@ -29,6 +29,7 @@ Composable. Extensible. Performant.
 ## Integrations
 
 - GraphQL Ruby ([`action_policy-graphql`](https://github.com/palkan/action_policy-graphql))
+- Graphiti (JSON:API) ([`action_policy-graphiti`](https://github.com/shrimple-tech/action_policy-graphiti))
 
 ## Installation
 
