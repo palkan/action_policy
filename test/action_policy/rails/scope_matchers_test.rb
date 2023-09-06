@@ -4,7 +4,7 @@ require "test_helper"
 require_relative "controllers_helper"
 require_relative "active_record_helper"
 
-require_relative "./dummy/config/environment"
+require_relative "dummy/config/environment"
 
 if ActionPack.version.release < Gem::Version.new("5")
   require_relative "controller_rails_4"

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "test_helper"
-require_relative "./dummy/config/environment"
+require_relative "dummy/config/environment"
 require_relative "active_record_helper"
 
 require "action_policy/ext/policy_cache_key"

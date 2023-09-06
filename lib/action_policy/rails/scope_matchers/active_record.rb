@@ -5,8 +5,8 @@ module ActionPolicy
     # Adds `relation_scope` method as an alias
     # for `scope_for :active_record_relation`
     module ActiveRecord
-      def relation_scope(*args, &block)
-        scope_for :active_record_relation, *args, &block
+      def relation_scope(...)
+        scope_for(:active_record_relation, ...)
       end
     end
   end

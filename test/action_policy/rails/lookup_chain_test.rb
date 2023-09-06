@@ -4,7 +4,7 @@
 # *not* running in isolated mode (`bundle exec rake test:isolated`).
 return if defined?(ActionPolicy::LookupChain)
 
-require_relative "./dummy/config/environment"
+require_relative "dummy/config/environment"
 require "test_helper"
 
 class EntityPolicy; end

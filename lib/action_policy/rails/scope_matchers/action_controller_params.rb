@@ -5,8 +5,8 @@ module ActionPolicy
     # Adds `params_filter` method as an alias
     # for `scope_for :action_controller_params`
     module ActionControllerParams
-      def params_filter(*args, &block)
-        scope_for :action_controller_params, *args, &block
+      def params_filter(...)
+        scope_for(:action_controller_params, ...)
       end
     end
   end
