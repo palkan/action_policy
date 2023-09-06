@@ -26,6 +26,8 @@ class ApplicationController < ActionController::Base
 end
 ```
 
+**NOTE:** The `controller_authorize_current_user` setting only affects the way authorization context is built in controllers but does not affect policy classes configuration. If you inherit from `ActionPolicy::Base`, you will still have the `user` required as an authorization context. Add `authorize :user, optional: true` to your base policy class to make it optional or use a [custom base class](custom_policy.md).
+
 > Read more about [authorization context](authorization_context.md).
 
 If you don't want to include Action Policy in your controllers at all,
