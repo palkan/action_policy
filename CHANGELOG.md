@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.6.6 (2023-09-11)
+
+- Fix loading Active Record and Action Controller scope matchers. ([@palkan][])
+
 - Add `--parent` option for policy generator ([@matsales28][])
 
 Example:
