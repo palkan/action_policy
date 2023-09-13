@@ -61,8 +61,8 @@ module ActionPolicy # :nodoc:
       app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
     end
 
-    config.after_initialize do
-      if ::Rails.application.config.action_policy.instrumentation_enabled
+    initializer "action_policy.extensions" do |app|
+      if app.config.action_policy.instrumentation_enabled
         require "action_policy/rails/policy/instrumentation"
         require "action_policy/rails/authorizer"
 
@@ -71,26 +71,26 @@ module ActionPolicy # :nodoc:
       end
 
       ActionPolicy::LookupChain.namespace_cache_enabled =
-        ::Rails.application.config.action_policy.namespace_cache_enabled
+        app.config.action_policy.namespace_cache_enabled
 
       ActiveSupport.on_load(:action_controller) do
         require "action_policy/rails/scope_matchers/action_controller_params"
 
-        next unless ::Rails.application.config.action_policy.auto_inject_into_controller
+        next unless app.config.action_policy.auto_inject_into_controller
 
         ActionController::Base.include ActionPolicy::Controller
 
-        next unless ::Rails.application.config.action_policy.controller_authorize_current_user
+        next unless app.config.action_policy.controller_authorize_current_user
 
         ActionController::Base.authorize :user, through: :current_user
       end
 
       ActiveSupport.on_load(:action_cable) do
-        next unless ::Rails.application.config.action_policy.auto_inject_into_channel
+        next unless app.config.action_policy.auto_inject_into_channel
 
         ActionCable::Channel::Base.include ActionPolicy::Channel
 
-        next unless ::Rails.application.config.action_policy.channel_authorize_current_user
+        next unless app.config.action_policy.channel_authorize_current_user
 
         ActionCable::Channel::Base.authorize :user, through: :current_user
       end
