@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.6.7 (2023-09-13)
+
+- Fix loading Rails extensions during eager load. ([@palkan][])
+
 ## 0.6.6 (2023-09-11)
 
 - Fix loading Active Record and Action Controller scope matchers. ([@palkan][])
