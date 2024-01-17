@@ -74,8 +74,6 @@ module ActionPolicy # :nodoc:
         app.config.action_policy.namespace_cache_enabled
 
       ActiveSupport.on_load(:action_controller) do
-        require "action_policy/rails/scope_matchers/action_controller_params"
-
         next unless app.config.action_policy.auto_inject_into_controller
 
         ActionController::Base.include ActionPolicy::Controller
@@ -95,21 +93,12 @@ module ActionPolicy # :nodoc:
         ActionCable::Channel::Base.authorize :user, through: :current_user
       end
 
+      # Scope matchers
+      require "action_policy/rails/scope_matchers/action_controller_params"
+      require "action_policy/rails/scope_matchers/active_record"
+
       ActiveSupport.on_load(:active_record) do
         require "action_policy/rails/ext/active_record"
-        require "action_policy/rails/scope_matchers/active_record"
-      end
-
-      # Trigger load hooks of the components that extend ActionPolicy itself
-      # (e.g., scope matchers)
-      begin
-        ::ActionController::Base
-      rescue NameError
-      end
-
-      begin
-        ::ActiveRecord::Base
-      rescue NameError
       end
     end
   end

@@ -12,8 +12,10 @@ module ActionPolicy
   end
 end
 
-# Register params scope matcher
-ActionPolicy::Base.scope_matcher :action_controller_params, ActionController::Parameters
-
 # Add alias to base policy
 ActionPolicy::Base.extend ActionPolicy::ScopeMatchers::ActionControllerParams
+
+ActiveSupport.on_load(:action_controller) do
+  # Register params scope matcher
+  ActionPolicy::Base.scope_matcher :action_controller_params, ActionController::Parameters
+end
