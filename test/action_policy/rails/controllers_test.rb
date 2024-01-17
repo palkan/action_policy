@@ -241,7 +241,7 @@ class TestOverrideControllerIntegration < ActionController::TestCase
     private
 
     def authorize!
-      super with: UserPolicy
+      super(with: UserPolicy)
     end
 
     def current_user
