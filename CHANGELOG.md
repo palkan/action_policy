@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.6.8 (2024-01-17)
+
 - Do not preload Rails base classes, use load hooks everywhere. ([@palkan][])
 
 ## 0.6.7 (2023-09-13)
