@@ -74,12 +74,11 @@ module ActionPolicy
 
       attr_reader :record, :result
 
-      # NEXT_RELEASE: deprecate `record` arg, migrate to `record: nil`
-      def initialize(record = nil, *)
+      def initialize(record: nil, **params)
         @record = record
       end
 
-      # Returns a result of applying the specified rule (true of false).
+      # Returns a result of applying the specified rule (true or false).
       # Unlike simply calling a predicate rule (`policy.manage?`),
       # `apply` also calls pre-checks.
       def apply(rule)

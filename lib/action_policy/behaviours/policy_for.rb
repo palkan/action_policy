@@ -15,7 +15,7 @@ module ActionPolicy
           record,
           namespace:, context:, allow_nil:, default:, strict_namespace:
         )
-        policy_class&.new(record, **context)
+        policy_class&.new(record: record, **context)
       end
 
       def authorization_context

@@ -93,7 +93,7 @@ class TestCache < Minitest::Test
   def test_cache
     user = CacheableUser.new("admin")
 
-    policy = TestPolicy.new guest, user: user
+    policy = TestPolicy.new record: guest, user: user
 
     assert policy.apply(:manage?)
     assert policy.apply(:manage?)
@@ -103,7 +103,7 @@ class TestCache < Minitest::Test
     assert_equal 1, TestPolicy.managed_count
     assert_equal 2, TestPolicy.shown_count
 
-    policy_2 = TestPolicy.new guest, user: user
+    policy_2 = TestPolicy.new record: guest, user: user
 
     assert policy_2.apply(:manage?)
     assert policy_2.apply(:show?)
@@ -115,14 +115,14 @@ class TestCache < Minitest::Test
   def test_custom_cache
     user = CacheableUser.new("guest")
 
-    policy = TestPolicy.new nil, user: user
+    policy = TestPolicy.new record: nil, user: user
 
     assert policy.apply(:create?)
     assert policy.apply(:create?)
 
     assert_equal 1, TestPolicy.custom_count
 
-    policy_2 = TestPolicy.new nil, user: user
+    policy_2 = TestPolicy.new record: nil, user: user
 
     assert policy_2.apply(:create?)
 
@@ -132,12 +132,12 @@ class TestCache < Minitest::Test
   def test_cache_with_reasons
     user = CacheableUser.new("guest")
 
-    policy = TestPolicy.new guest, user: user
+    policy = TestPolicy.new record: guest, user: user
 
     refute policy.apply(:save?)
     assert_equal({test: [:manage?]}, policy.result.reasons.details)
 
-    policy = TestPolicy.new guest, user: user
+    policy = TestPolicy.new record: guest, user: user
 
     refute policy.apply(:save?)
     assert_equal({test: [:manage?]}, policy.result.reasons.details)
@@ -149,13 +149,13 @@ class TestCache < Minitest::Test
   def test_cache_with_different_records
     user = CacheableUser.new("admin")
 
-    policy = TestPolicy.new guest, user: user
+    policy = TestPolicy.new record: guest, user: user
 
     assert policy.apply(:manage?)
 
     assert_equal 1, TestPolicy.managed_count
 
-    policy_2 = TestPolicy.new CacheableUser.new("guest_2"), user: user
+    policy_2 = TestPolicy.new record: CacheableUser.new("guest_2"), user: user
 
     assert policy_2.apply(:manage?)
     assert_equal 2, TestPolicy.managed_count
@@ -164,13 +164,13 @@ class TestCache < Minitest::Test
   def test_cache_with_different_contexts
     user = CacheableUser.new("admin")
 
-    policy = TestPolicy.new guest, user: user
+    policy = TestPolicy.new record: guest, user: user
 
     assert policy.apply(:manage?)
 
     assert_equal 1, TestPolicy.managed_count
 
-    policy_2 = TestPolicy.new guest, user: CacheableUser.new("admin_2")
+    policy_2 = TestPolicy.new record: guest, user: CacheableUser.new("admin_2")
 
     assert policy_2.apply(:manage?)
     assert_equal 2, TestPolicy.managed_count
@@ -179,7 +179,7 @@ class TestCache < Minitest::Test
   def test_with_multiple_contexts
     user = CacheableUser.new("admin")
 
-    policy = MultipleContextPolicy.new guest, user: user, account: "test"
+    policy = MultipleContextPolicy.new record: guest, user: user, account: "test"
 
     assert policy.apply(:manage?)
     assert policy.apply(:manage?)
@@ -189,7 +189,7 @@ class TestCache < Minitest::Test
     assert_equal 1, MultipleContextPolicy.managed_count
     assert_equal 1, MultipleContextPolicy.shown_count
 
-    policy_2 = MultipleContextPolicy.new guest, user: CacheableUser.new("admin"), account: :test
+    policy_2 = MultipleContextPolicy.new record: guest, user: CacheableUser.new("admin"), account: :test
 
     assert policy_2.apply(:manage?)
     assert policy_2.apply(:show?)
@@ -201,14 +201,14 @@ class TestCache < Minitest::Test
   def test_with_different_multiple_contexts
     user = CacheableUser.new("admin")
 
-    policy = MultipleContextPolicy.new guest, user: user, account: "test"
+    policy = MultipleContextPolicy.new record: guest, user: user, account: "test"
 
     assert policy.apply(:manage?)
     assert policy.apply(:manage?)
 
     assert_equal 1, MultipleContextPolicy.managed_count
 
-    policy_2 = MultipleContextPolicy.new guest, user: CacheableUser.new("admin"), account: "test_2"
+    policy_2 = MultipleContextPolicy.new record: guest, user: CacheableUser.new("admin"), account: "test_2"
 
     assert policy_2.apply(:manage?)
     assert_equal 2, MultipleContextPolicy.managed_count
