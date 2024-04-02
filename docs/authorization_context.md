@@ -29,7 +29,7 @@ class GuestPolicy < ApplicationPolicy
 end
 
 class ProjectPolicy < ApplicationPolicy
-  # With optional: true, authorization context may not include the `user` key at all
+  # With optional: true, authorization context may not include the `team` key at all
   authorize :team, optional: true
 end
 
