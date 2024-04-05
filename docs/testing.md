@@ -323,6 +323,10 @@ class UsersController < ApplicationController
   def index
     @user = authorized(User.all)
   end
+
+  def favorite
+    authorized_scope(User.all, context: {favorite: true})
+  end
 end
 ```
 
@@ -406,6 +410,14 @@ expect { subject }.to have_authorized_scope(:scope)
   .with_target { |target|
     expect(target).to eq(User.all)
   }
+```
+
+Also can use the `with_context` options:
+
+```ruby
+expect { get :favorite }.to have_authorized_scope(:scope)
+  .with_scope_options(matching(with_deleted: a_falsey_value))
+  .with_context(favorite: true)
 ```
 
 ## Testing views

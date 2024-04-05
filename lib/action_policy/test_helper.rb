@@ -82,7 +82,7 @@ module ActionPolicy
     #     end
     #   end
     #
-    def assert_have_authorized_scope(type:, with:, as: :default, scope_options: nil)
+    def assert_have_authorized_scope(type:, with:, as: :default, scope_options: nil, context: {})
       raise ArgumentError, "Block is required" unless block_given?
 
       policy = with
@@ -97,10 +97,13 @@ module ActionPolicy
         "without scope options"
       end
 
+      context_message = context.empty? ? "without context" : "with context: #{context}"
+
       assert(
-        actual_scopes.any? { |scope| scope.matches?(policy, type, as, scope_options) },
+        actual_scopes.any? { |scope| scope.matches?(policy, type, as, scope_options, context) },
         "Expected a scoping named :#{as} for :#{type} type " \
         "#{scope_options_message} " \
+        "and #{context_message} " \
         "from #{policy} to have been applied, " \
         "but no such scoping has been made.\n" \
         "Registered scopings: " \

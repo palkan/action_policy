@@ -21,12 +21,13 @@ module ActionPolicy
     #
     class HaveAuthorizedScope < ::RSpec::Matchers::BuiltIn::BaseMatcher
       attr_reader :type, :name, :policy, :scope_options, :actual_scopes,
-        :target_expectations
+        :target_expectations, :context
 
       def initialize(type)
         @type = type
         @name = :default
         @scope_options = nil
+        @context = {}
       end
 
       def with(policy)
@@ -49,6 +50,11 @@ module ActionPolicy
         self
       end
 
+      def with_context(context)
+        @context = context
+        self
+      end
+
       def match(_expected, actual)
         raise "This matcher only supports block expectations" unless actual.is_a?(Proc)
 
@@ -56,7 +62,7 @@ module ActionPolicy
 
         @actual_scopes = ActionPolicy::Testing::AuthorizeTracker.scopings
 
-        matching_scopes = actual_scopes.select { _1.matches?(policy, type, name, scope_options) }
+        matching_scopes = actual_scopes.select { _1.matches?(policy, type, name, scope_options, context) }
 
         return false if matching_scopes.empty?
 
@@ -80,6 +86,7 @@ module ActionPolicy
       def failure_message
         "expected a scoping named :#{name} for type :#{type} " \
         "#{scope_options_message} " \
+        "and #{context_message} " \
         "from #{policy} to have been applied, " \
         "but #{actual_scopes_message}"
       end
@@ -95,6 +102,10 @@ module ActionPolicy
         else
           "without scope options"
         end
+      end
+
+      def context_message
+        context.empty? ? "without context" : "with context: #{context}"
       end
 
       def actual_scopes_message
