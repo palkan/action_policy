@@ -6,7 +6,13 @@ require "action_policy/test_helper"
 class TestHelperTest < Minitest::Test
   include ActionPolicy::TestHelper
 
-  class CustomPolicy < ::UserPolicy; end
+  class CustomPolicy < ::UserPolicy
+    authorize :all_users, optional: true
+
+    scope_for :data, :all do |users|
+      all_users ? users : []
+    end
+  end
 
   class Channel
     include ActionPolicy::Behaviour
@@ -39,6 +45,10 @@ class TestHelperTest < Minitest::Test
 
     def own(users)
       authorized_scope users, type: :data, as: :own, with: CustomPolicy
+    end
+
+    def filter_with_context(users, context:)
+      authorized_scope users, type: :data, as: :all, with: CustomPolicy, context: context
     end
   end
 
@@ -116,6 +126,12 @@ class TestHelperTest < Minitest::Test
     end
   end
 
+  def test_assert_have_authorized_scope_with_context
+    assert_have_authorized_scope(type: :data, as: :all, with: CustomPolicy, context: {all_users: false}) do
+      subject.filter_with_context([user], context: {all_users: false})
+    end
+  end
+
   def test_assert_have_authorized_scope_raised_when_policy_mismatch
     error = assert_raises Minitest::Assertion do
       assert_have_authorized_scope(type: :data, with: ::UserPolicy) do
@@ -125,7 +141,7 @@ class TestHelperTest < Minitest::Test
 
     assert_match(
       Regexp.new("Expected a scoping named :default for :data type without scope options " \
-                 "from UserPolicy to have been applied"),
+                 "and without context from UserPolicy to have been applied"),
       error.message
     )
   end
@@ -139,7 +155,7 @@ class TestHelperTest < Minitest::Test
 
     assert_match(
       Regexp.new("Expected a scoping named :own for :data type without scope options " \
-                 "from UserPolicy to have been applied"),
+                 "and without context from UserPolicy to have been applied"),
       error.message
     )
     assert_match(
@@ -159,12 +175,26 @@ class TestHelperTest < Minitest::Test
     assert_match(
       Regexp.new("Expected a scoping named :default for :data type " \
                  "with scope options {:with_admins=>false} " \
-                 "from UserPolicy to have been applied"),
+                 "and without context from UserPolicy to have been applied"),
       error.message
     )
     assert_match(
       Regexp.new("Registered scopings: .*TestHelperTest::CustomPolicy :default " \
                  "for :data with scope options {:with_admins=>true}"),
+      error.message
+    )
+  end
+
+  def test_assert_have_authorized_scope_raised_when_context_mismatch
+    error = assert_raises Minitest::Assertion do
+      assert_have_authorized_scope(type: :data, as: :all, with: CustomPolicy, context: {all_users: false}) do
+        subject.filter_with_context([user], context: {all_users: true})
+      end
+    end
+
+    assert_match(
+      Regexp.new("Expected a scoping named :all for :data type without scope options " \
+                 "and with context: {:all_users=>false} from TestHelperTest::CustomPolicy to have been applied"),
       error.message
     )
   end

@@ -34,7 +34,7 @@ module ActionPolicy
       end
 
       class Scoping # :nodoc:
-        attr_reader :policy, :target, :type, :name, :scope_options
+        attr_reader :policy, :target, :type, :name, :scope_options, :context
 
         def initialize(policy, target, type, name, scope_options)
           @policy = policy
@@ -42,13 +42,15 @@ module ActionPolicy
           @type = type
           @name = name
           @scope_options = scope_options
+          @context = policy.authorization_context
         end
 
-        def matches?(policy_class, actual_type, actual_name, actual_scope_options)
+        def matches?(policy_class, actual_type, actual_name, actual_scope_options, actual_context)
           policy_class == policy.class &&
             type == actual_type &&
             name == actual_name &&
-            actual_scope_options === scope_options
+            actual_scope_options === scope_options &&
+            actual_context.all? { |key, value| context[key] == value }
         end
 
         def inspect
