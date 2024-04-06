@@ -324,8 +324,9 @@ class UsersController < ApplicationController
     @user = authorized(User.all)
   end
 
-  def favorite
-    authorized_scope(User.all, context: {favorite: true})
+  def for_user
+    user = User.find(params[:id])
+    authorized_scope(User.all, context: {user:})
   end
 end
 ```
@@ -415,9 +416,9 @@ expect { subject }.to have_authorized_scope(:scope)
 Also can use the `with_context` options:
 
 ```ruby
-expect { get :favorite }.to have_authorized_scope(:scope)
+expect { get :for_user, params: {id: user.id} }.to have_authorized_scope(:scope)
   .with_scope_options(matching(with_deleted: a_falsey_value))
-  .with_context(favorite: true)
+  .with_context(a_hash_including(user:))
 ```
 
 ## Testing views
