@@ -27,7 +27,6 @@ module ActionPolicy
         @type = type
         @name = :default
         @scope_options = nil
-        @context = {}
       end
 
       def with(policy)
@@ -105,7 +104,7 @@ module ActionPolicy
       end
 
       def context_message
-        context.empty? ? "without context" : "with context: #{context}"
+        context.blank? ? "without context" : "with context: #{context}"
       end
 
       def actual_scopes_message

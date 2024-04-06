@@ -5,7 +5,19 @@ module ActionPolicy
   module Testing
     # Collects all Authorizer calls
     module AuthorizeTracker
+      module Context
+        private
+
+        def context_matches?(context, actual)
+          return true unless context
+
+          context === actual || actual >= context
+        end
+      end
+
       class Call # :nodoc:
+        include Context
+
         attr_reader :policy, :rule
 
         def initialize(policy, rule)
@@ -23,18 +35,12 @@ module ActionPolicy
           "#{policy.record.inspect} was authorized with #{policy.class}##{rule} " \
             "and context #{policy.authorization_context.inspect}"
         end
-
-        private
-
-        def context_matches?(context, actual)
-          return true unless context
-
-          context === actual || actual >= context
-        end
       end
 
       class Scoping # :nodoc:
-        attr_reader :policy, :target, :type, :name, :scope_options, :context
+        include Context
+
+        attr_reader :policy, :target, :type, :name, :scope_options
 
         def initialize(policy, target, type, name, scope_options)
           @policy = policy
@@ -42,7 +48,6 @@ module ActionPolicy
           @type = type
           @name = name
           @scope_options = scope_options
-          @context = policy.authorization_context
         end
 
         def matches?(policy_class, actual_type, actual_name, actual_scope_options, actual_context)
@@ -50,7 +55,7 @@ module ActionPolicy
             type == actual_type &&
             name == actual_name &&
             actual_scope_options === scope_options &&
-            actual_context.all? { |key, value| context[key] == value }
+            context_matches?(actual_context, policy.authorization_context)
         end
 
         def inspect
