@@ -15,3 +15,6 @@ release: test lint
 	RELEASING_GEM=true gem release -t
 	git push
 	git push --tags
+
+ci-release: test lint
+	RELEASING_GEM=true gem release
