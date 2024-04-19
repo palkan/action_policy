@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.6.9 (2024-04-19)
+
 - Add `.with_context` modifier to the `#have_authorized_scope` matcher. ([@killondark][])
 
 ## 0.6.8 (2024-01-17)
