@@ -2,6 +2,8 @@
 
 ## master
 
+- Add `.with_context` modifier to the `#have_authorized_scope` matcher. ([@killondark][])
+
 ## 0.6.8 (2024-01-17)
 
 - Do not preload Rails base classes, use load hooks everywhere. ([@palkan][])
@@ -509,3 +511,4 @@ This value is now stored in a cache (if any) instead of just the call result (`t
 [@skojin]: https://github.com/skojin
 [@tomdalling]: https://github.com/tomdalling
 [@matsales28]: https://github.com/matsales28
+[@killondark]: https://github.com/killondark
