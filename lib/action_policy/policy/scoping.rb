@@ -90,8 +90,6 @@ module ActionPolicy
       # If `type` is not specified then we try to infer the type from the
       # target class.
       def apply_scope(target, type:, name: :default, scope_options: nil)
-        # binding.pry
-
         raise ActionPolicy::UnknownScopeType.new(self.class, type) unless
           self.class.scoping_handlers.key?(type)
 
