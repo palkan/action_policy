@@ -90,6 +90,8 @@ module ActionPolicy
       # If `type` is not specified then we try to infer the type from the
       # target class.
       def apply_scope(target, type:, name: :default, scope_options: nil)
+        # binding.pry
+
         raise ActionPolicy::UnknownScopeType.new(self.class, type) unless
           self.class.scoping_handlers.key?(type)
 
@@ -113,8 +115,11 @@ module ActionPolicy
 
       module ClassMethods # :nodoc:
         # Register a new scoping method for the `type`
-        def scope_for(type, name = :default, &block)
+        def scope_for(type, name = :default, callable = nil, &block)
+          name, callable = prepare_args(name, callable)
+
           mid = :"__scoping__#{type}__#{name}"
+          block = ->(target) { callable.call(target) } if callable
 
           define_method(mid, &block)
 
@@ -153,6 +158,14 @@ module ActionPolicy
           else
             []
           end
+        end
+
+        private
+
+        def prepare_args(name, callable)
+          return [name, callable] if name && callable
+          return [name, nil] if name.is_a?(Symbol) || name.is_a?(String)
+          [:default, name]
         end
       end
     end
