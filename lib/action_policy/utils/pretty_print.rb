@@ -7,8 +7,7 @@ begin
   # Ignore parse warnings when patch
   # Ruby version mismatches
   $VERBOSE = nil
-  require "parser/current"
-  require "unparser"
+  require "prism"
 rescue LoadError
   # do nothing
 ensure
@@ -42,7 +41,7 @@ module ActionPolicy
     FALSE = "\e[31mfalse\e[0m"
 
     class Visitor
-      attr_reader :lines, :object
+      attr_reader :lines, :object, :source
       attr_accessor :indent
 
       def initialize(object)
@@ -52,6 +51,8 @@ module ActionPolicy
       def collect(ast)
         @lines = []
         @indent = 0
+        @source = ast.source.source
+        ast = ast.value.child_nodes[0].child_nodes[0].body
 
         visit_node(ast)
 
@@ -67,7 +68,7 @@ module ActionPolicy
       end
 
       def expression_with_result(sexp)
-        expression = Unparser.unparse(sexp)
+        expression = source[sexp.location.start_offset...sexp.location.end_offset]
         "#{expression} #=> #{PrettyPrint.colorize(eval_exp(expression))}"
       end
 
@@ -78,34 +79,31 @@ module ActionPolicy
         "Failed: #{e.message}"
       end
 
-      def visit_and(ast)
-        visit_node(ast.children[0])
+      def visit_and_node(ast)
+        visit_node(ast.left)
         lines << indented("AND")
-        visit_node(ast.children[1])
+        visit_node(ast.right)
       end
 
-      def visit_or(ast)
-        visit_node(ast.children[0])
+      def visit_or_node(ast)
+        visit_node(ast.left)
         lines << indented("OR")
-        visit_node(ast.children[1])
+        visit_node(ast.right)
       end
 
-      def visit_begin(ast)
-        #  Parens
-        if ast.children.size == 1
-          lines << indented("(")
-          self.indent += 2
-          visit_node(ast.children[0])
+      def visit_statements_node(ast)
+        ast.child_nodes.each do |node|
+          visit_node(node)
+          # restore indent after each expression
           self.indent -= 2
-          lines << indented(")")
-        else
-          # Multiple expressions
-          ast.children.each do |node|
-            visit_node(node)
-            # restore indent after each expression
-            self.indent -= 2
-          end
         end
+      end
+
+      def visit_parentheses_node(ast)
+        lines << indented("(")
+        self.indent += 2
+        visit_node(ast.child_nodes[0])
+        lines << indented(")")
       end
 
       def visit_missing(ast)
@@ -128,15 +126,13 @@ module ActionPolicy
     class << self
       attr_accessor :ignore_expressions
 
-      if defined?(::Unparser) && defined?(::MethodSource)
+      if defined?(::Prism) && defined?(::MethodSource)
         def available?() = true
 
         def print_method(object, method_name)
-          ast = object.method(method_name).source.then(&Unparser.:parse)
-          # outer node is a method definition itself
-          body = ast.children[2]
+          ast = Prism.parse(object.method(method_name).source)
 
-          Visitor.new(object).collect(body)
+          Visitor.new(object).collect(ast)
         end
       else
         def available?() = false
