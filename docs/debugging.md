@@ -2,7 +2,7 @@
 
 **NOTE:** this functionality requires two additional gems to be available in the app:
 
-- [unparser](https://github.com/mbj/unparser)
+- [prism](https://github.com/ruby/prism)
 - [method_source](https://github.com/banister/method_source).
 
 We usually describe policy rules using _boolean expressions_ (e.g. `A or (B and C)` where each of `A`, `B` and `C` is a simple boolean expression or predicate method).

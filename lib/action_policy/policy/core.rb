@@ -147,7 +147,7 @@ module ActionPolicy
       end
 
       # Return annotated source code for the rule
-      # NOTE: require "method_source" and "unparser" gems to be installed.
+      # NOTE: require "method_source" and "prism" gems to be installed.
       # Otherwise returns empty string.
       def inspect_rule(rule) = PrettyPrint.print_method(self, rule)
 

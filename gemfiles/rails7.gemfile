@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "sqlite3", "~> 1.4"
 gem "rails", "~> 7.0.0"
 gem "method_source"
-gem "unparser"
+gem "prism"
 
 if ENV["COVERAGE"] == "true"
   gem "simplecov"
