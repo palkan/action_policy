@@ -37,6 +37,29 @@ class PostPolicy < ApplicationPolicy
 end
 ```
 
+Or just pass class name where included logic of scope to `relation_scope` and write `.call` method:
+
+```ruby
+class PostsController < ApplicationController
+  def index
+    @posts = authorized_scope(Post.all)
+  end
+end
+
+class PostPolicy < ApplicationPolicy
+  relation_scope AuthorizedPosts
+end
+
+class AuthorizedPosts
+  class << self
+    def call(policy, relation)
+      user = policy.user
+      user.admin? ? relation : relation.where(user: user)
+    end
+  end
+end
+```
+
 ## Define scopes
 
 To define scope you should use either `scope_for` or `smth_scope` methods in your policy:
