@@ -7,7 +7,7 @@ gemspec
 gem "debug", platform: :mri unless ENV["CI"] == "true"
 
 gem "method_source"
-gem "unparser"
+gem "prism"
 
 gem 'sqlite3', "~> 1.4.0", platform: :mri
 gem 'activerecord-jdbcsqlite3-adapter', '~> 50.0', platform: :jruby

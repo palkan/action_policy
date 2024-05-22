@@ -2,6 +2,8 @@
 
 ## master
 
+- **Ruby 2.7+** is required.
+
 ## 0.6.9 (2024-04-19)
 
 - Add `.with_context` modifier to the `#have_authorized_scope` matcher. ([@killondark][])
