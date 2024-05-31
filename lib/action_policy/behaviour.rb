@@ -3,6 +3,7 @@
 require "action_policy/behaviours/policy_for"
 require "action_policy/behaviours/scoping"
 require "action_policy/behaviours/memoized"
+require "action_policy/behaviours/memoized_context"
 require "action_policy/behaviours/thread_memoized"
 require "action_policy/behaviours/namespaced"
 
@@ -58,7 +59,7 @@ module ActionPolicy
     end
 
     def authorization_context
-      @_authorization_context ||= build_authorization_context
+      build_authorization_context
     end
 
     private def build_authorization_context

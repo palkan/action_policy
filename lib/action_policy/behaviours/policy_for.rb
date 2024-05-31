@@ -9,7 +9,7 @@ module ActionPolicy
 
       # Returns policy instance for the record.
       def policy_for(record:, with: nil, namespace: authorization_namespace, context: nil, allow_nil: false, default: default_authorization_policy_class, strict_namespace: authorization_strict_namespace)
-        context = context ? authorization_context.merge(context) : authorization_context
+        context = context_for_policy(context)
 
         policy_class = with || ::ActionPolicy.lookup(
           record,
@@ -57,11 +57,15 @@ module ActionPolicy
         )
       end
 
-      def policy_for_cache_key(record:, with: nil, namespace: nil, context: authorization_context, **)
+      def policy_for_cache_key(record:, with: nil, namespace: nil, context: nil, **)
         record_key = record._policy_cache_key(use_object_id: true)
-        context_key = context.values.map { _1._policy_cache_key(use_object_id: true) }.join(".")
+        context_key = context_for_policy(context).values.map { _1._policy_cache_key(use_object_id: true) }.join(".")
 
         "#{namespace}/#{with}/#{context_key}/#{record_key}"
+      end
+
+      private def context_for_policy(context)
+        context ? authorization_context.merge(context) : authorization_context
       end
     end
   end
