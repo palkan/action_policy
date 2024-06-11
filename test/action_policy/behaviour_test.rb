@@ -341,7 +341,9 @@ class TestAuthorizationContext < Minitest::Test
 
     authorize :user
 
-    def show? = user.name == "admin" || record != "admin"
+    def show?
+      user.name == "admin" || record != "admin"
+    end
   end
 
   class ChatPolicy < AdminPolicy
@@ -350,7 +352,9 @@ class TestAuthorizationContext < Minitest::Test
 
     authorize :user, :account
 
-    def speak? = user.name == account
+    def speak?
+      user.name == account
+    end
   end
 
   class ChatChannel
@@ -382,9 +386,13 @@ class TestAuthorizationContext < Minitest::Test
       @account = @account ? @account.succ : "a"
     end
 
-    def implicit_authorization_target = self
+    def implicit_authorization_target
+      self
+    end
 
-    def policy_class = ChatPolicy
+    def policy_class
+      ChatPolicy
+    end
   end
 
   class ChutChannel < ChatChannel
