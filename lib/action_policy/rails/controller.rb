@@ -48,7 +48,7 @@ module ActionPolicy
     def authorize!(record = :__undef__, to: nil, **options)
       to ||= :"#{action_name}?"
 
-      super(record, to: to, **options)
+      super
 
       self.authorize_count += 1
     end

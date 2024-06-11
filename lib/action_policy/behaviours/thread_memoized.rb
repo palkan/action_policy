@@ -45,7 +45,7 @@ module ActionPolicy
 
       module InstanceMethods # :nodoc:
         def policy_for(record:, **opts)
-          __policy_thread_memoize__(record, **opts) { super(record: record, **opts) }
+          __policy_thread_memoize__(record, **opts) { super }
         end
       end
 
