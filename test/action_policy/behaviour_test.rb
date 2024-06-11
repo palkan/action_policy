@@ -335,6 +335,24 @@ class TestStrictNamespaceAuthorizationPolicy < Minitest::Test
 end
 
 class TestAuthorizationContext < Minitest::Test
+  class AdminPolicy
+    include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::Authorization
+
+    authorize :user
+
+    def show? = user.name == "admin" || record != "admin"
+  end
+
+  class ChatPolicy < AdminPolicy
+    include ActionPolicy::Policy::Core
+    include ActionPolicy::Policy::Authorization
+
+    authorize :user, :account
+
+    def speak? = user.name == account
+  end
+
   class ChatChannel
     include ActionPolicy::Behaviour
 
@@ -347,9 +365,26 @@ class TestAuthorizationContext < Minitest::Test
       @user = User.new(name)
     end
 
+    def speak(word, to:)
+      # Use explicit context to skip memoization
+      authorize! to, to: :show?, with: AdminPolicy, context: {}
+
+      @explicit_account = to
+      # This will use implicit context (shouldn't be memoized)
+      # See https://github.com/palkan/action_policy/issues/265
+      authorize! to: :speak?
+
+      "I have spoken #{word} to ##{to}"
+    end
+
     def account
+      return @explicit_account if defined?(@explicit_account)
       @account = @account ? @account.succ : "a"
     end
+
+    def implicit_authorization_target = self
+
+    def policy_class = ChatPolicy
   end
 
   class ChutChannel < ChatChannel
@@ -370,5 +405,13 @@ class TestAuthorizationContext < Minitest::Test
 
     assert_equal({user: User.new("guest"), account: "a"}, channel.authorization_context)
     assert_equal({user: User.new("guest"), account: "b"}, channel.authorization_context)
+  end
+
+  def test_authorization_context_with_explicit_context
+    memoize_free_channel = ChutChannel.new("pilot")
+    assert_equal "I have spoken yohanga to #pilot", memoize_free_channel.speak("yohanga", to: "pilot")
+
+    channel = ChatChannel.new("bart")
+    assert_equal "I have spoken karamba to #bart", channel.speak("karamba", to: "bart")
   end
 end
