@@ -2,7 +2,11 @@
 
 ## master
 
+## 0.7.0 (2024-06-20)
+
 - **Ruby 2.7+** is required.
+
+- Support using callable objects as scopes. ([@killondark][])
 
 ## 0.6.9 (2024-04-19)
 
