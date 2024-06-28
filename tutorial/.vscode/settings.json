@@ -1,0 +1,16 @@
+{
+  "files.exclude": {
+    ".astro": true,
+    "astro.config.ts": true,
+    "uno.config.ts": true,
+    "tsconfig.json": true,
+    "icons": true,
+    "src/env.d.ts": true,
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  }
+}
