@@ -13,6 +13,7 @@ AllCops:
     - 'vendor/**/*'
     - 'gemfiles/**/*'
     - 'lib/generators/**/templates/**/*'
+    - '**/node_modules/**/*'
   DisplayCopNames: true
   SuggestExtensions: false
   TargetRubyVersion: next

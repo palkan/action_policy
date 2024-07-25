@@ -157,10 +157,10 @@ end
 class TestRailsScopeMatchersViaClass < ActionController::TestCase
   class AuthorizedPosts
     class << self
-      def call(policy, relation)
+      def call(policy, relation, order_by:, order: :asc)
         user = policy.user
         scope = user.admin? ? relation : relation.where(user: user)
-        scope.order(:title)
+        scope.order(order_by => order)
       end
     end
   end
@@ -173,7 +173,7 @@ class TestRailsScopeMatchersViaClass < ActionController::TestCase
     authorize :user, through: :current_user
 
     def index
-      render json: authorized_scope(AR::Post.all)
+      render json: authorized_scope(AR::Post.all, scope_options: {order_by: :title})
     end
 
     private

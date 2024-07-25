@@ -21,6 +21,16 @@ class TestScopingPolicy < Minitest::Test
 
       users.reject(&:admin?)
     end
+
+    class TakeOneResolver
+      def call(policy, data)
+        return data if policy.user.admin?
+
+        data.take(1)
+      end
+    end
+
+    scope_for :data, :with_callable, TakeOneResolver.new
   end
 
   class GuestPolicy < UserPolicy
@@ -134,6 +144,15 @@ class TestScopingPolicy < Minitest::Test
       scope_options: {with_admins: true})
 
     assert_equal 2, scoped_users.size
+  end
+
+  def test_callable_resolver
+    policy = UserPolicy.new(user: User.new("guest"))
+
+    scoped_users = policy.apply_scope(users, type: :data, name: :with_callable)
+
+    assert_equal 1, scoped_users.size
+    assert_equal "jack", scoped_users.first.name
   end
 end
 

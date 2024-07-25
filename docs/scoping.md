@@ -37,7 +37,7 @@ class PostPolicy < ApplicationPolicy
 end
 ```
 
-Or just pass class name where included logic of scope to `relation_scope` and write `.call` method:
+You can also use a callable object to encapsulate the scoping logic:
 
 ```ruby
 class PostsController < ApplicationController
@@ -52,7 +52,7 @@ end
 
 class AuthorizedPosts
   class << self
-    def call(policy, relation)
+    def call(policy, relation, **_scope_options)
       user = policy.user
       user.admin? ? relation : relation.where(user: user)
     end

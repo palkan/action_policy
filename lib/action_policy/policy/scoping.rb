@@ -117,7 +117,7 @@ module ActionPolicy
           name, callable = prepare_args(name, callable)
 
           mid = :"__scoping__#{type}__#{name}"
-          block = ->(target) { callable.call(self, target) } if callable
+          block = ->(target, **opts) { callable.call(self, target, **opts) } if callable
 
           define_method(mid, &block)
 

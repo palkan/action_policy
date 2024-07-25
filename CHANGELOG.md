@@ -2,6 +2,8 @@
 
 ## master
 
+- Support passing scope options to callable scope objects. ([@palkan][])
+
 ## 0.7.0 (2024-06-20)
 
 - **Ruby 2.7+** is required.
