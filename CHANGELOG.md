@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.1 (2024-07-25)
+
 - Support passing scope options to callable scope objects. ([@palkan][])
 
 ## 0.7.0 (2024-06-20)
