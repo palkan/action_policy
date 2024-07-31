@@ -10,7 +10,7 @@ module ActionPolicy
         matcher :permit do |user, record|
           match do |policy|
             permissions.all? do |permission|
-              policy.new(record, user: user).apply(permission)
+              policy.new(record: record, user: user).apply(permission)
             end
           end
         end

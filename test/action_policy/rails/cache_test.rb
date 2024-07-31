@@ -46,14 +46,14 @@ class TestRailsPolicyCache < Minitest::Test
   def test_cache_with_versioning
     user = AR::User.create!(role: "admin")
 
-    policy = UserPolicy.new guest, user: user
+    policy = UserPolicy.new record: guest, user: user
 
     assert policy.apply(:manage?)
     assert policy.apply(:manage?)
 
     assert_equal 1, UserPolicy.managed_count
 
-    policy_2 = UserPolicy.new guest, user: user
+    policy_2 = UserPolicy.new record: guest, user: user
 
     assert policy_2.apply(:manage?)
 
@@ -61,7 +61,7 @@ class TestRailsPolicyCache < Minitest::Test
 
     user.touch
 
-    policy_3 = UserPolicy.new guest, user: user
+    policy_3 = UserPolicy.new record: guest, user: user
 
     assert policy_3.apply(:manage?)
 
@@ -69,7 +69,7 @@ class TestRailsPolicyCache < Minitest::Test
 
     guest.touch
 
-    policy_4 = UserPolicy.new guest, user: user
+    policy_4 = UserPolicy.new record: guest, user: user
 
     assert policy_4.apply(:manage?)
 
