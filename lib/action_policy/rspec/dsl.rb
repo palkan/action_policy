@@ -21,11 +21,11 @@ module ActionPolicy
             end
           end
 
-          def #{prefix}failed(msg = "fails", *args, **kwargs, &block)
+          def #{prefix}failed(msg = "fails", *args, reason: nil, **kwargs, &block)
             the_caller = caller
             #{prefix}context(msg, *args, **kwargs) do
               instance_eval(&block) if block_given?
-              find_and_eval_shared("examples", "action_policy:policy_rule_example", the_caller.first, false, the_caller)
+              find_and_eval_shared("examples", "action_policy:policy_rule_example", the_caller.first, false, the_caller, reason)
             end
           end
         CODE
@@ -67,7 +67,7 @@ if defined?(::RSpec)
     end
   end
 
-  ::RSpec.shared_examples_for "action_policy:policy_rule_example" do |success, the_caller|
+  ::RSpec.shared_examples_for "action_policy:policy_rule_example" do |success, the_caller, reason|
     if success
       specify "is allowed" do
         next if subject.success?
@@ -79,10 +79,26 @@ if defined?(::RSpec)
       end
     else
       specify "is denied" do
-        next if subject.fail?
+        if subject.success?
+          raise(
+            RSpec::Expectations::ExpectationNotMetError,
+            "Expected to fail but succeed:\n#{formatted_policy(policy)}",
+            the_caller
+          )
+        end
+
+        case reason
+        when nil    then next
+        when Hash   then next if subject.reasons.details == reason
+        when Symbol then next if subject.reasons.details.values.flatten.include?(reason)
+        when String then next if subject.reasons.full_messages.flatten.include?(reason)
+        else
+          raise TypeError, "unexpected reason: #{reason.inspect}"
+        end
+
         raise(
           RSpec::Expectations::ExpectationNotMetError,
-          "Expected to fail but succeed:\n#{formatted_policy(policy)}",
+          "Expected to fail with #{reason.inspect} but but actually failed for another reason:\n#{subject.inspect}",
           the_caller
         )
       end
