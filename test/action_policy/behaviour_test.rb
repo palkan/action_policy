@@ -57,6 +57,7 @@ class TestBehaviour < Minitest::Test
 
     assert_equal UserPolicy, e.policy
     assert_equal :manage?, e.rule
+    assert_equal "Not authorized: UserPolicy#manage? returns false", e.message
   end
 
   def test_allowed_to
