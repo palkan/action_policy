@@ -10,7 +10,7 @@ module ActionPolicy
       @rule = rule
       @result = policy.result
 
-      super("Not Authorized")
+      super("Not authorized: #{@policy}##{@rule}? returns false")
     end
   end
 
