@@ -2,6 +2,10 @@
 
 ## master
 
+- Improve default `ActionPolicy::Unauthorized` error message. ([@Spone][])
+
+Before: `Not Authorized` / After: `Not authorized: UserPolicy#create? returns false`
+
 ## 0.7.1 (2024-07-25)
 
 - Support passing scope options to callable scope objects. ([@palkan][])
@@ -524,3 +528,4 @@ This value is now stored in a cache (if any) instead of just the call result (`t
 [@tomdalling]: https://github.com/tomdalling
 [@matsales28]: https://github.com/matsales28
 [@killondark]: https://github.com/killondark
+[@Spone]: https://github.com/Spone
