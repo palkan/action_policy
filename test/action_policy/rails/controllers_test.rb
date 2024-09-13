@@ -196,7 +196,7 @@ class TestNamespacedControllerIntegration < ActionController::TestCase
 
     assert_equal Admin::UserPolicy, e.policy
     assert_equal :index?, e.rule
-    assert_equal "Not authorized: Admin::UserPolicy#index? returns false", e.message
+    assert_equal "Not authorized: TestNamespacedControllerIntegration::Admin::UserPolicy#index? returns false", e.message
   end
 
   def test_index_authorized
@@ -211,7 +211,7 @@ class TestNamespacedControllerIntegration < ActionController::TestCase
 
     assert_equal Admin::UserPolicy, e.policy
     assert_equal :show?, e.rule
-    assert_equal "Not authorized: Admin::UserPolicy#show? returns false", e.message
+    assert_equal "Not authorized: TestNamespacedControllerIntegration::Admin::UserPolicy#show? returns false", e.message
   end
 
   def test_show_authorized
@@ -266,7 +266,7 @@ class TestOverrideControllerIntegration < ActionController::TestCase
 
     assert_equal UserPolicy, e.policy
     assert_equal :index?, e.rule
-    assert_equal "Not authorized: UserPolicy#index? returns false", e.message
+    assert_equal "Not authorized: TestOverrideControllerIntegration::UserPolicy#index? returns false", e.message
   end
 
   def test_index_authorized
