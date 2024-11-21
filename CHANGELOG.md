@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.2 (2024-11-21)
+
 - Fix missing details in deny! message interpolation. ([@palkan][])
 
 - Fix implicit authorization target in anonymous controllers. ([@palkan][])
