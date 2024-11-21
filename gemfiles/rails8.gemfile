@@ -1,0 +1,13 @@
+source "https://rubygems.org"
+
+gem "sqlite3", "~> 2.1"
+gem "rails", "~> 8.0"
+gem "method_source"
+gem "prism"
+
+if ENV["COVERAGE"] == "true"
+  gem "simplecov"
+  gem "simplecov-lcov"
+end
+
+gemspec path: ".."

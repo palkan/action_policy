@@ -13,9 +13,7 @@ end)
 SharedTestRoutes = ActionDispatch::Routing::RouteSet.new
 
 SharedTestRoutes.draw do
-  ActiveSupport::Deprecation.silence do
-    get ":controller(/:action)"
-  end
+  get ":controller(/:action)"
 end
 
 ActionController::TestCase.include(
