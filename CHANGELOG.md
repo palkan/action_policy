@@ -2,6 +2,8 @@
 
 ## master
 
+- Fix missing details in deny! message interpolation. ([@palkan][])
+
 - Fix implicit authorization target in anonymous controllers. ([@palkan][])
 
 - Improve default `ActionPolicy::Unauthorized` error message. ([@Spone][])

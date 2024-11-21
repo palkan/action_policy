@@ -220,7 +220,7 @@ module ActionPolicy
       end
 
       def deny!(reason = nil)
-        result&.reasons&.add(self, reason) if reason
+        result&.reasons&.add(self, reason, result.details) if reason
         super()
       end
     end

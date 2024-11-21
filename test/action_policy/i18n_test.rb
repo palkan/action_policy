@@ -209,6 +209,12 @@ class I18nNestedPolicy < ActionPolicy::Base
     details[:role] = user.name
     user.admin?
   end
+
+  def deny?
+    details[:role] = user.name
+    deny!(:denied) unless user.admin?
+    allow!
+  end
 end
 
 class TestI18nNestedPolicies < Minitest::Test
@@ -217,6 +223,7 @@ class TestI18nNestedPolicies < Minitest::Test
       :en,
       action_policy: {
         policy: {
+          denied: "I deny you: %{role}",
           i18n_nested: {
             show?: "Stop looking at me!",
             admin?: "Only for admins but you are: %{role}"
@@ -257,5 +264,11 @@ class TestI18nNestedPolicies < Minitest::Test
       "You're not allowed to manage this account"
     assert_includes policy.result.reasons.full_messages,
       "Only for admins but you are: guest"
+  end
+
+  def test_result_message_with_deny_and_interpolation
+    refute policy.apply(:deny?)
+    assert_includes policy.result.reasons.full_messages,
+      "I deny you: guest"
   end
 end
