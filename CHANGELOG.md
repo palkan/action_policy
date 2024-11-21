@@ -2,6 +2,8 @@
 
 ## master
 
+- Fix implicit authorization target in anonymous controllers. ([@palkan][])
+
 - Improve default `ActionPolicy::Unauthorized` error message. ([@Spone][])
 
 Before: `Not Authorized` / After: `Not authorized: UserPolicy#create? returns false`

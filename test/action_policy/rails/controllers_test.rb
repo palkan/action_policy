@@ -274,3 +274,36 @@ class TestOverrideControllerIntegration < ActionController::TestCase
     assert_equal "OK", response.body
   end
 end
+
+class TestAnonymousControllerIntegration < ActionController::TestCase
+  class UserPolicy < ::UserPolicy
+    authorize :user, allow_nil: true
+
+    def index? = user.present?
+  end
+
+  def test_nameless_controllers_work
+    controller_class = Class.new(ActionController::Base) do
+      authorize :user, through: :current_user
+
+      def index
+        authorize! with: UserPolicy
+        head :ok
+      end
+
+      def current_user
+        return unless params[:user]
+        @current_user ||= User.new(params[:user])
+      end
+    end
+
+    env = Rack::MockRequest.env_for("http://localhost:3000")
+
+    assert_raises(ActionPolicy::Unauthorized) do
+      controller_class.action(:index).call(env)
+    end
+
+    env = Rack::MockRequest.env_for("http://localhost:3000/?user=guest")
+    controller_class.action(:index).call(env)
+  end
+end

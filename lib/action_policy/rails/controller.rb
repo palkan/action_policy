@@ -56,7 +56,7 @@ module ActionPolicy
     # Tries to infer the resource class from controller name
     # (i.e. `controller_name.classify.safe_constantize`).
     def implicit_authorization_target
-      controller_name.classify.safe_constantize
+      controller_name&.classify&.safe_constantize
     end
 
     def verify_authorized
