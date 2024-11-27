@@ -54,27 +54,27 @@ class TestPreCheck < Minitest::Test
   attr_reader :guest, :admin
 
   def test_allow_pre_check
-    policy = TestPolicy.new false, user: admin
+    policy = TestPolicy.new record: false, user: admin
 
     assert policy.apply(:manage?)
 
-    policy2 = TestPolicy.new false, user: guest
+    policy2 = TestPolicy.new record: false, user: guest
 
     refute policy2.apply(:manage?)
   end
 
   def test_deny_pre_check
-    policy = TestPolicy.new false, user: guest
+    policy = TestPolicy.new record: false, user: guest
 
     assert policy.apply(:index?)
     refute policy.apply(:manage?)
 
-    policy2 = TestPolicy.new nil, user: guest
+    policy2 = TestPolicy.new record: nil, user: guest
 
     assert policy2.apply(:index?)
     refute policy2.apply(:manage?)
 
-    policy3 = TestPolicy.new nil, user: admin
+    policy3 = TestPolicy.new record: nil, user: admin
 
     assert policy3.apply(:index?)
     assert policy3.apply(:manage?)
@@ -91,13 +91,13 @@ class TestPreCheck < Minitest::Test
   end
 
   def test_skip_except_pre_check_with_only
-    policy = AdminTestPolicy.new false, user: admin
+    policy = AdminTestPolicy.new record: false, user: admin
 
     assert policy.apply(:index?)
     refute policy.apply(:manage?)
     assert policy.apply(:show?)
 
-    policy2 = AdminTestPolicy.new nil, user: guest
+    policy2 = AdminTestPolicy.new record: nil, user: guest
 
     assert policy2.apply(:index?)
     assert policy2.apply(:manage?)
@@ -105,13 +105,13 @@ class TestPreCheck < Minitest::Test
   end
 
   def test_skip_only_pre_check_with_except
-    policy = TestPolicy.new true, user: User.new("Neil")
+    policy = TestPolicy.new record: true, user: User.new("Neil")
 
     refute policy.apply(:index?)
     refute policy.apply(:new?)
     assert policy.apply(:manage?)
 
-    policy2 = AdminTestPolicy.new true, user: User.new("Neil")
+    policy2 = AdminTestPolicy.new record: true, user: User.new("Neil")
 
     assert policy2.apply(:index?)
     refute policy2.apply(:new?)
@@ -128,7 +128,7 @@ class TestPreCheck < Minitest::Test
   end
 
   def test_skip_pre_check_completely
-    policy = NoAdminTestPolicy.new false, user: admin
+    policy = NoAdminTestPolicy.new record: false, user: admin
 
     assert policy.apply(:index?)
     refute policy.apply(:manage?)
@@ -146,7 +146,7 @@ class TestPreCheck < Minitest::Test
   end
 
   def test_pre_check_with_reasons
-    policy = ReasonsTestPolicy.new true, user: User.new("Neil")
+    policy = ReasonsTestPolicy.new record: true, user: User.new("Neil")
 
     refute policy.apply(:index?)
 
