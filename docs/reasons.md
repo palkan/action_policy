@@ -143,6 +143,23 @@ Sometimes details could be useful not only to provide more context to the user, 
 In this cases, digging through the `ex.result.reasons.details` could be cumbersome (see [this PR](https://github.com/palkan/action_policy/pull/130) for discussion). We provide a helper method, `result.all_details`, which could be used to get all details merged into a single Hash:
 
 ```ruby
+class PostPolicy < ApplicationPolicy
+  def edit?
+    check?(:published?)
+  end
+
+  def published?
+    details[:not_found] = true
+    record.published?
+  end
+end
+```
+
+```ruby
+p ex.result.all_details #=> {not_found: true}
+```
+
+```ruby
 rescue_from ActionPolicy::Unauthorized do |ex|
   if ex.result.all_details[:not_found]
     head :not_found
