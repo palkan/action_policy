@@ -2,6 +2,8 @@
 
 ## master
 
+- Allow to match failure reasons with RSpec DSL. ([@inkstak])
+
 ## 0.7.5 (2025-05-09) 🎇
 
 - Ensure `result.value` is true or false. ([@palkan][])

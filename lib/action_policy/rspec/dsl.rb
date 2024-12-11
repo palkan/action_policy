@@ -88,17 +88,21 @@ if defined?(::RSpec)
         end
 
         case reason
-        when nil    then next
-        when Hash   then next if subject.reasons.details == reason
-        when Symbol then next if subject.reasons.details.values.flatten.include?(reason)
-        when String then next if subject.reasons.full_messages.flatten.include?(reason)
+        when nil
+          next
+        when Hash
+          next if subject.reasons.details == reason
+        when Symbol
+          next if subject.reasons.details.values.flatten.any? { |h| h.include?(reason) }
+        when String
+          next if subject.reasons.respond_to?(:full_messages) && subject.reasons.full_messages.flatten.include?(reason)
         else
           raise TypeError, "unexpected reason: #{reason.inspect}"
         end
 
         raise(
           RSpec::Expectations::ExpectationNotMetError,
-          "Expected to fail with #{reason.inspect} but but actually failed for another reason:\n#{subject.inspect}",
+          "Expected to fail with #{reason.inspect} but but actually failed for another reason:\n#{formatted_policy(policy)}}",
           the_caller
         )
       end

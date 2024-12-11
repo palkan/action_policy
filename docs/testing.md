@@ -104,6 +104,12 @@ describe PostPolicy do
         before { user.role = "manager" }
       end
     end
+
+    # `failed` allowed to validates feailures reasons when they are provided
+    # (see Failure Reasons)
+    failed "when post is archived", reason: {post: [{archived?: {since: "2 days"}}]} do
+      before { post.archived_at = 2.days.ago }
+    end
   end
 end
 ```
