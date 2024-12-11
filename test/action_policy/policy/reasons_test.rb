@@ -74,6 +74,10 @@ class TestComplexFailuresPolicy < Minitest::Test
       deny!(:cloning_humans_is_not_allowed)
     end
 
+    def confirmable?
+      deny!(:not_a_guest, username: user.name) if user.name != "guest"
+    end
+
     def copyable?
       check?(:non_guest)
     end
@@ -143,6 +147,18 @@ class TestComplexFailuresPolicy < Minitest::Test
 
     assert_equal({
       complex: [:no_singing_today]
+    }, details)
+  end
+
+  def test_deny_with_details
+    policy = ComplexFailuresTestPolicy.new user: User.new("admin")
+
+    refute policy.apply(:confirmable?)
+
+    details = policy.result.reasons.details
+
+    assert_equal({
+      confirmable?: {username: "admin"}
     }, details)
   end
 

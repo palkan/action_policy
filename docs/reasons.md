@@ -117,6 +117,18 @@ end
 p ex.result.reasons.details #=> { stage: [{show?: {title: "Onboarding"}] }
 ```
 
+You can provide details when calling `deny!`:
+
+```ruby
+class StagePolicy < ApplicationPolicy
+  def show?
+    deny!(:archived, since: record.archived_duration) if record.archived?
+  end
+end
+
+p ex.result.reasons.details #=> { stage: [{archived: {since:"2 days"}] }
+```
+
 **NOTE**: when using detailed reasons, the `details` array contains as the last element
 a hash with ALL details reasons for the policy (in a form of `<rule> => <details>`).
 

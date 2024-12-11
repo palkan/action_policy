@@ -16,7 +16,7 @@ module ActionPolicy
         policy_class = policy_or_class.is_a?(Module) ? policy_or_class : policy_or_class.class
         reasons[policy_class] ||= []
 
-        if details.nil?
+        if details.nil? || details.empty?
           add_non_detailed_reason reasons[policy_class], rule
         else
           add_detailed_reason reasons[policy_class], with_details(rule, details)
@@ -219,8 +219,8 @@ module ActionPolicy
         res.success?
       end
 
-      def deny!(reason = nil)
-        result&.reasons&.add(self, reason) if reason
+      def deny!(reason = nil, **details)
+        result&.reasons&.add(self, reason, details) if reason
         super()
       end
     end
