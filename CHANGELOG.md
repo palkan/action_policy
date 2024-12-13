@@ -2,6 +2,8 @@
 
 ## master
 
+- Allow to match failure reasons with RSpec DSL. ([@inkstak])
+
 ## 0.7.2 (2024-11-21)
 
 - Fix missing details in deny! message interpolation. ([@palkan][])
