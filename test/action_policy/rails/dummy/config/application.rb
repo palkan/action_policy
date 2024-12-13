@@ -13,7 +13,7 @@ module Dummy
   class Application < Rails::Application
     # Hack for Rails 7 alpha
     config.active_record = ActiveSupport::OrderedOptions.new
-    config.logger = Logger.new("/dev/null")
+    config.logger = Logger.new("/dev/null") # rubocop:disable Style/FileNull
     config.eager_load = false
   end
 end
