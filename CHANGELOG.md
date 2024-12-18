@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.7.3 (2024-12-18)
+
+- Fix keeping the result object in concurrent (Fiber-ed) execution environments. ([@palkan][])
+
 ## 0.7.2 (2024-11-21)
 
 - Fix missing details in deny! message interpolation. ([@palkan][])
