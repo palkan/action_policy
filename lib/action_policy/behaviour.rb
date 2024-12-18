@@ -53,8 +53,7 @@ module ActionPolicy
     def allowance_to(rule, record = :__undef__, **options)
       policy = lookup_authorization_policy(record, **options)
 
-      policy.apply(authorization_rule_for(policy, rule))
-      policy.result
+      policy.apply_r(authorization_rule_for(policy, rule))
     end
 
     def authorization_context

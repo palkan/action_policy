@@ -9,10 +9,10 @@ module ActionPolicy # :nodoc:
       def authorize(policy, rule)
         event = {policy: policy.class.name, rule: rule.to_s}
         ActiveSupport::Notifications.instrument(EVENT_NAME, event) do
-          res = super
-          event[:cached] = policy.result.cached?
-          event[:value] = policy.result.value
-          res
+          result = super
+          event[:cached] = result.cached?
+          event[:value] = result.value
+          result
         end
       end
     end

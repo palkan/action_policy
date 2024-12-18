@@ -16,13 +16,13 @@ module ActionPolicy # :nodoc:
           ActiveSupport::Notifications.instrument(INIT_EVENT_NAME, event) { super }
         end
 
-        def apply(rule)
+        def apply_r(rule)
           event = {policy: self.class.name, rule: rule.to_s}
           ActiveSupport::Notifications.instrument(APPLY_EVENT_NAME, event) do
-            res = super
+            result = super
             event[:cached] = result.cached?
             event[:value] = result.value
-            res
+            result
           end
         end
       end

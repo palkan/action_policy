@@ -17,8 +17,8 @@ class APolicy < ActionPolicy::Base
   authorize :user, optional: true
 
   def apply(rule)
-    @result = self.class.result_class.new(self.class, rule)
-    @result.load __apply__(rule)
+    self.result = self.class.result_class.new(self.class, rule)
+    result.load __apply__(rule)
   end
 
   def show?
@@ -30,17 +30,17 @@ class BPolicy < ActionPolicy::Base
   authorize :user, optional: true
 
   def apply(rule)
-    @result = self.class.result_class.new(self.class, rule)
+    self.result = self.class.result_class.new(self.class, rule)
 
     catch :throw_me_away do
-      @result.load __apply__(rule)
+      result.load __apply__(rule)
     end
 
-    @result.value
+    result.value
   end
 
   def show?
-    @result.load true
+    result.load true
 
     throw :throw_me_away
   end

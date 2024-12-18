@@ -50,18 +50,18 @@ module ActionPolicy # :nodoc:
         key = rule_cache_key(rule)
 
         ActionPolicy.cache_store.then do |store|
-          @result = store.read(key)
+          result = store.read(key)
           unless result.nil?
             result.cached!
-            next result.value
+            next result
           end
-          yield
-          store.write(key, result, options)
-          result.value
+          yield.tap do |result|
+            store.write(key, result, options)
+          end
         end
       end
 
-      def apply(rule)
+      def apply_r(rule)
         return super if ActionPolicy.cache_store.nil? ||
           !self.class.cached_rules.key?(rule)
 

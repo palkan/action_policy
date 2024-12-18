@@ -72,7 +72,7 @@ module ActionPolicy
 
       include ActionPolicy::Behaviours::PolicyFor
 
-      attr_reader :record, :result
+      attr_reader :record
 
       # NEXT_RELEASE: deprecate `record` arg, migrate to `record: nil`
       def initialize(record = nil, *)
@@ -83,13 +83,23 @@ module ActionPolicy
       # Unlike simply calling a predicate rule (`policy.manage?`),
       # `apply` also calls pre-checks.
       def apply(rule)
-        @result = self.class.result_class.new(self.class, rule)
+        res = apply_r(rule)
 
-        catch :policy_fulfilled do
-          result.load __apply__(resolve_rule(rule))
+        # DEPRECATED (we still rely on it in tests)
+        @result = res
+
+        res.value
+      end
+
+      # NEXT_RELEASE: This is gonna be #apply in 1.0
+      def apply_r(rule) # :nodoc:
+        with_result(rule) do |result|
+          catch :policy_fulfilled do
+            result.load __apply__(resolve_rule(rule))
+          end
+
+          result
         end
-
-        result.value
       end
 
       def deny!
@@ -107,14 +117,17 @@ module ActionPolicy
       # (such as caching, pre checks, etc.)
       def __apply__(rule) = public_send(rule)
 
-      # Wrap code that could modify result
-      # to prevent the current result modification
-      def with_clean_result # :nodoc:
-        was_result = @result
-        yield
-        @result
+      # Prepare a new result object for the next rule application.
+      # It's stored in the thread-local storage to be accessible from within the policy.
+      def with_result(rule) # :nodoc:
+        result = self.class.result_class.new(self.class, rule)
+
+        Thread.current[:__action_policy_result__] ||= []
+        Thread.current[:__action_policy_result__] << result
+
+        yield result
       ensure
-        @result = was_result
+        Thread.current[:__action_policy_result__]&.pop
       end
 
       # Returns a result of applying the specified rule to the specified record.
@@ -146,6 +159,13 @@ module ActionPolicy
         activity
       end
 
+      # Returns the result object for the last rule application within the given
+      # execution context (Thread or Fiber)
+      def result
+        # FIXME: Remove ivar fallback after 1.0
+        Thread.current[:__action_policy_result__]&.last || @result
+      end
+
       # Return annotated source code for the rule
       # NOTE: require "method_source" and "prism" gems to be installed.
       # Otherwise returns empty string.
@@ -155,9 +175,7 @@ module ActionPolicy
       # Useful for debugging: type `pp :show?` within the context of the policy
       # to preview the rule.
       def pp(rule)
-        with_clean_result do
-          # We need result to exist for `allowed_to?` to work correctly
-          @result = self.class.result_class.new(self.class, rule)
+        with_result(rule) do
           header = "#{self.class.name}##{rule}"
           source = inspect_rule(rule)
           $stdout.puts "#{header}\n#{source}"

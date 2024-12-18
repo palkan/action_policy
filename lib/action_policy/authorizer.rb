@@ -5,10 +5,11 @@ module ActionPolicy
   class Unauthorized < Error
     attr_reader :policy, :rule, :result
 
-    def initialize(policy, rule)
+    # NEXT_RELEASE: remove result fallback
+    def initialize(policy, rule, result = policy.result)
       @policy = policy.class
       @rule = rule
-      @result = policy.result
+      @result = result
 
       super("Not authorized: #{@policy}##{@rule} returns false")
     end
@@ -20,12 +21,14 @@ module ActionPolicy
     class << self
       # Performs authorization, raises an exception when check failed.
       def call(policy, rule)
-        authorize(policy, rule) ||
-          raise(::ActionPolicy::Unauthorized.new(policy, rule))
+        res = authorize(policy, rule)
+        return if res.success?
+
+        raise(::ActionPolicy::Unauthorized.new(policy, rule, res))
       end
 
       def authorize(policy, rule)
-        policy.apply(rule)
+        policy.apply_r(rule)
       end
 
       # Applies scope to the target

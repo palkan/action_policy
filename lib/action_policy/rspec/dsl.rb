@@ -39,6 +39,7 @@ module ActionPolicy
         super
       end
 
+      # FIXME(1.0): Update to use result object directly
       def formatted_policy(policy)
         "#{policy.result.inspect}\n#{policy.inspect_rule(policy.result.rule)}"
       end

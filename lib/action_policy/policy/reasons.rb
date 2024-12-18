@@ -201,13 +201,12 @@ module ActionPolicy
           if (record == :__undef__ || record == self.record) && options.empty?
             rule = resolve_rule(rule)
             policy = self
-            with_clean_result { apply(rule) }
+            apply_r(rule)
           else
             policy = policy_for(record: record, **options)
             rule = policy.resolve_rule(rule)
 
-            policy.apply(rule)
-            policy.result
+            policy.apply_r(rule)
           end
 
         if res.fail? && result&.reasons
