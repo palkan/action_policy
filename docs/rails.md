@@ -85,7 +85,7 @@ end
 Action Policy is only included into `ActionController::Base`. If you want to use it with other base Rails controllers, you have to include it manually:
 
 ```ruby
-class ApiController < ApplicationController::API
+class ApiController < ActionController::API
   include ActionPolicy::Controller
 
   # NOTE: you have to provide authorization context manually as well
