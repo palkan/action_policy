@@ -44,13 +44,15 @@ module ActionPolicy
     # If record is not provided, tries to infer the resource class
     # from controller name (i.e. `controller_name.classify.safe_constantize`).
     #
+    # @return the policy record
     # Raises `ActionPolicy::Unauthorized` if check failed.
     def authorize!(record = :__undef__, to: nil, **options)
       to ||= :"#{action_name}?"
 
-      super
+      policy_record = super
 
       self.authorize_count += 1
+      policy_record
     end
 
     # Tries to infer the resource class from controller name

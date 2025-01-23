@@ -2,6 +2,8 @@
 
 ## master
 
+- Let authorize! return the policy record ([@sedubois][])
+
 ## 0.7.3 (2024-12-18)
 
 - Fix keeping the result object in concurrent (Fiber-ed) execution environments. ([@palkan][])
