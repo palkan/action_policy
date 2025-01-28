@@ -4,3 +4,6 @@
 <% if allowed_to?(:create?) %>
   <button>Create User</button>
 <% end %>
+
+<% result = allowance_to(:create?, with: UserPolicy) %>
+<%= result.rule %> - <%= result.value %>

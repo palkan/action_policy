@@ -36,6 +36,7 @@ class TestViewsIntegration < ActionController::TestCase
     assert_includes response.body, "guest (editable)"
     assert_includes response.body, "admin (read-only)"
     assert_includes response.body, "Create User"
+    assert_includes response.body, "create? - true"
   end
 
   def test_index_as_guest
@@ -44,6 +45,7 @@ class TestViewsIntegration < ActionController::TestCase
     assert_includes response.body, "guest (read-only)"
     refute_includes response.body, "admin"
     refute_includes response.body, "Create User"
+    assert_includes response.body, "create? - false"
   end
 end
 

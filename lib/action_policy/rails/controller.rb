@@ -26,6 +26,7 @@ module ActionPolicy
       if respond_to?(:helper_method)
         helper_method :allowed_to?
         helper_method :authorized_scope
+        helper_method :allowance_to
       end
 
       attr_writer :authorize_count
