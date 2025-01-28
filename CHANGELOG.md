@@ -2,6 +2,8 @@
 
 ## master
 
+- Enable `allowance_to` as a helper method by default ([@stephannv][])
+
 ## 0.7.3 (2024-12-18)
 
 - Fix keeping the result object in concurrent (Fiber-ed) execution environments. ([@palkan][])
