@@ -43,8 +43,7 @@ class TestSimpleControllerIntegration < ActionController::TestCase
     private
 
     def set_user
-      @user = User.new(params[:target])
-      authorize! @user
+      @user = authorize! User.new(params[:target])
     end
   end
 
