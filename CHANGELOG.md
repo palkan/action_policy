@@ -2,7 +2,6 @@
 
 ## master
 
-
 - Let authorize! return the policy record ([@sedubois][])
 
 - Enable `allowance_to` as a helper method by default ([@stephannv][])
@@ -544,3 +543,5 @@ This value is now stored in a cache (if any) instead of just the call result (`t
 [@matsales28]: https://github.com/matsales28
 [@killondark]: https://github.com/killondark
 [@Spone]: https://github.com/Spone
+[@stephannv]: https://github.com/stephannv
+[@sedubois]: https://github.com/sedubois

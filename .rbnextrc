@@ -1,5 +1,4 @@
 nextify: |
   ./lib
-  --min-version=2.6
+  --min-version=2.7
   --edge
-  --proposed

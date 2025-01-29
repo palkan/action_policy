@@ -9,7 +9,6 @@ gem "debug", platform: :mri unless ENV["CI"] == "true"
 gem "method_source"
 gem "prism"
 
-gem 'sqlite3', "~> 2.0", platform: :mri
 gem 'activerecord-jdbcsqlite3-adapter', '~> 50.0', platform: :jruby
 gem 'jdbc-sqlite3', platform: :jruby
 
@@ -20,6 +19,7 @@ local_gemfile = File.join(__dir__, "Gemfile.local")
 if File.exist?(local_gemfile)
   eval(File.read(local_gemfile)) # rubocop:disable Security/Eval
 else
+  gem "sqlite3", "~> 2.0"
   gem "rails", "~> 8.0"
 end
 
