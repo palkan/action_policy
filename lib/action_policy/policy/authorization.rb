@@ -44,8 +44,8 @@ module ActionPolicy
       attr_reader :authorization_context
       alias_method :build_authorization_context, :authorization_context
 
-      def initialize(record = nil, **params)
-        super(record)
+      def initialize(record: nil, **params)
+        super(record: record)
 
         @authorization_context = {}
 
