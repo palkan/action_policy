@@ -48,6 +48,9 @@ class ApplicationController < ActionController::Base
   # get the required context object
   # (equals to the context name itself by default, i.e. `account`)
   authorize :account, through: :current_account
+
+  # `through` can also be passed a proc:
+  authorize :user, through: -> { Current.user }
 end
 ```
 
