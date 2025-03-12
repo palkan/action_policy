@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.4 (2025-03-12)
+
 - Let authorize! return the policy record ([@sedubois][])
 
 - Enable `allowance_to` as a helper method by default ([@stephannv][])
