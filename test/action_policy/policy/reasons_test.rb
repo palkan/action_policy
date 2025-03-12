@@ -107,7 +107,7 @@ class TestComplexFailuresPolicy < Minitest::Test
 
     refute policy.apply(:save?)
 
-    details = policy.result.reasons.details
+    details = policy.result.reasons.to_h
 
     assert_equal({
       complex: [:kill?],
@@ -120,7 +120,7 @@ class TestComplexFailuresPolicy < Minitest::Test
 
     refute policy.apply(:save?)
 
-    details = policy.result.reasons.details
+    details = policy.result.reasons.to_h
 
     assert_equal({
       complex: [:kill?, :feed?]
@@ -139,7 +139,7 @@ class TestComplexFailuresPolicy < Minitest::Test
 
     refute policy.apply(:sing?)
 
-    details = policy.result.reasons.details
+    details = policy.result.reasons.to_h
 
     assert_equal({
       complex: [:no_singing_today]
@@ -151,7 +151,7 @@ class TestComplexFailuresPolicy < Minitest::Test
 
     refute policy.apply(:clone?)
 
-    details = policy.result.reasons.details
+    details = policy.result.reasons.to_h
 
     assert_equal({
       user: [

@@ -23,7 +23,7 @@ When `ApplicantPolicy#show?` check fails, the exception has the `result` object,
 ```ruby
 class ApplicationController < ActionController::Base
   rescue_from ActionPolicy::Unauthorized do |ex|
-    p ex.result.reasons.details #=> { stage: [:show?] }
+    p ex.result.reasons.to_h #=> { stage: [:show?] }
 
     # or with i18n support
     p ex.result.reasons.full_messages #=> ["You do not have access to the stage"]
@@ -48,10 +48,10 @@ class ApplicantPolicy < ApplicationPolicy
 end
 
 # then the reasons object could be
-p ex.result.reasons.details #=> { applicant: [:view_applicants?] }
+p ex.result.reasons.to_h #=> { applicant: [:view_applicants?] }
 
 # or
-p ex.result.reasons.details #=> { stage: [:show?] }
+p ex.result.reasons.to_h #=> { stage: [:show?] }
 ```
 
 Reason could also be specified for `deny!` calls:
@@ -65,7 +65,7 @@ class TeamPolicy < ApplicationPolicy
   end
 end
 
-p ex.result.reasons.details #=> { applicant: [:no_user] }
+p ex.result.reasons.to_h #=> { applicant: [:no_user] }
 ```
 
 In some cases it might be useful to propagate reasons from the nested policy calls instead of adding a top-level reason.
@@ -114,7 +114,7 @@ class StagePolicy < ApplicationPolicy
 end
 
 # when accessing the reasons
-p ex.result.reasons.details #=> { stage: [{show?: {title: "Onboarding"}] }
+p ex.result.reasons.to_h #=> { stage: [{show?: {title: "Onboarding"}] }
 ```
 
 **NOTE**: when using detailed reasons, the `details` array contains as the last element

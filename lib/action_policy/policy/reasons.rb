@@ -27,6 +27,8 @@ module ActionPolicy
       #   { policy_identifier => [rules, ...] }
       def details() = reasons.transform_keys(&:identifier)
 
+      alias_method :to_h, :details
+
       def empty?() = reasons.empty?
 
       def present?() = !empty?
