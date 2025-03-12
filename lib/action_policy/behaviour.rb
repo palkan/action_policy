@@ -64,8 +64,8 @@ module ActionPolicy
 
     private def build_authorization_context
       self.class.authorization_targets
-        .each_with_object({}) do |(key, meth), obj|
-        obj[key] = send(meth)
+        .each_with_object({}) do |(key, method_or_proc), obj|
+        obj[key] = method_or_proc.is_a?(Proc) ? method_or_proc.call : send(method_or_proc)
       end
     end
 
@@ -105,8 +105,8 @@ module ActionPolicy
       #     authorize :user
       #   end
       def authorize(key, through: nil)
-        meth = through || key
-        authorization_targets[key] = meth
+        method_or_proc = through || key
+        authorization_targets[key] = method_or_proc
       end
 
       def authorization_targets

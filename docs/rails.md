@@ -26,6 +26,14 @@ class ApplicationController < ActionController::Base
 end
 ```
 
+You can also pass a proc to `:through`. This is useful if you're using `ActiveSupport::CurrentAttributes`:
+
+```ruby
+class ApplicationController < ActionController::Base
+  authorize :user, through: -> { Current.user }
+end
+```
+
 **NOTE:** The `controller_authorize_current_user` setting only affects the way authorization context is built in controllers but does not affect policy classes configuration. If you inherit from `ActionPolicy::Base`, you will still have the `user` required as an authorization context. Add `authorize :user, optional: true` to your base policy class to make it optional or use a [custom base class](custom_policy.md).
 
 > Read more about [authorization context](authorization_context.md).

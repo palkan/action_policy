@@ -306,3 +306,21 @@ class TestAnonymousControllerIntegration < ActionController::TestCase
     controller_class.action(:index).call(env)
   end
 end
+
+class TestProcCurrentUserControllerIntegration < ActionController::TestCase
+  class UsersController < ActionController::Base
+    authorize :user, through: -> { User.new({user: "guest"}) }
+
+    def index
+      authorize!
+      render plain: "OK"
+    end
+  end
+
+  tests UsersController
+
+  def test_index
+    get :index
+    assert_equal "OK", response.body
+  end
+end
