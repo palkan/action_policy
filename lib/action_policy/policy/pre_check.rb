@@ -78,8 +78,6 @@ module ActionPolicy
 
           rebuild_filter
         end
-        # rubocop: enable
-        # rubocop: enable
 
         def dup
           self.class.new(
