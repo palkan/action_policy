@@ -125,7 +125,7 @@ module ActionPolicy
         def pre_check(*names, **options)
           names.each do |name|
             # do not allow pre-check override
-            check = pre_checks.find { _1.name == name }
+            check = pre_checks.find { it.name == name }
             raise "Pre-check already defined: #{name}" unless check.nil?
 
             pre_checks << Check.new(self, name, **options)
@@ -134,14 +134,14 @@ module ActionPolicy
 
         def skip_pre_check(*names, **options)
           names.each do |name|
-            check = pre_checks.find { _1.name == name }
+            check = pre_checks.find { it.name == name }
             raise "Pre-check not found: #{name}" if check.nil?
 
             # when no options provided we remove this check completely
             next pre_checks.delete(check) if options.empty?
 
             # otherwise duplicate and apply skip options
-            pre_checks[pre_checks.index(check)] = check.dup.tap { _1.skip!(**options) }
+            pre_checks[pre_checks.index(check)] = check.dup.tap { it.skip!(**options) }
           end
         end
 

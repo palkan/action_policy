@@ -51,7 +51,7 @@ module ActionPolicy
 
         @actual_calls = ActionPolicy::Testing::AuthorizeTracker.calls
 
-        actual_calls.any? { _1.matches?(policy, rule, target, context) }
+        actual_calls.any? { it.matches?(policy, rule, target, context) }
       end
 
       def does_not_match?(*)
@@ -78,7 +78,7 @@ module ActionPolicy
 
       def formatted_calls
         actual_calls.map do
-          " - #{_1.inspect}"
+          " - #{it.inspect}"
         end.join("\n")
       end
 

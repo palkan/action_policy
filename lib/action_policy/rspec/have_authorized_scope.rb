@@ -61,7 +61,7 @@ module ActionPolicy
 
         @actual_scopes = ActionPolicy::Testing::AuthorizeTracker.scopings
 
-        matching_scopes = actual_scopes.select { _1.matches?(policy, type, name, scope_options, context) }
+        matching_scopes = actual_scopes.select { it.matches?(policy, type, name, scope_options, context) }
 
         return false if matching_scopes.empty?
 
@@ -114,7 +114,7 @@ module ActionPolicy
 
       def formatted_scopings
         actual_scopes.map do
-          " - #{_1.inspect}"
+          " - #{it.inspect}"
         end.join("\n")
       end
     end

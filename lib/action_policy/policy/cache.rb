@@ -29,7 +29,7 @@ module ActionPolicy # :nodoc:
         [
           cache_namespace,
           *parts
-        ].map { _1._policy_cache_key }.join("/")
+        ].map { it._policy_cache_key }.join("/")
       end
 
       def rule_cache_key(rule)

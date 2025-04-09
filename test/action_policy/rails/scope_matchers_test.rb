@@ -230,7 +230,7 @@ class TestRailsScopeMatchersViaClass < ActionController::TestCase
     get :index, params: {user_id: admin.id}
 
     assert_equal 2, json_body.size
-    assert_equal ["Good news!", "[wip]"], json_body.map { _1["title"] }
+    assert_equal ["Good news!", "[wip]"], json_body.map { |item| item["title"] }
   end
 
   def test_authorized_association_3

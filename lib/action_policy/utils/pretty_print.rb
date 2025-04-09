@@ -119,7 +119,7 @@ module ActionPolicy
 
       # Some lines should not be evaled
       def ignore_exp?(exp)
-        PrettyPrint.ignore_expressions.any? { exp.match?(_1) }
+        PrettyPrint.ignore_expressions.any? { exp.match?(it) }
       end
     end
 
