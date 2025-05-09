@@ -16,7 +16,7 @@ module ActionPolicy
 
       # Populate the final value
       def load(value)
-        @value = value
+        @value = !!value
       end
 
       def success?() = @value == true

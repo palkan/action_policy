@@ -2,13 +2,15 @@
 
 ## master
 
+- Ensure `result.value` is true or false. ([@palkan][])
+
 ## 0.7.4 (2025-03-12)
 
-- Let authorize! return the policy record ([@sedubois][])
+- Let authorize! return the policy record. ([@sedubois][])
 
-- Enable `allowance_to` as a helper method by default ([@stephannv][])
+- Enable `allowance_to` as a helper method by default. ([@stephannv][])
 
-- Allow the `:through` option of `authorize` to be passed a proc ([@brendon][])
+- Allow the `:through` option of `authorize` to be passed a Proc. ([@brendon][])
 
 ## 0.7.3 (2024-12-18)
 
