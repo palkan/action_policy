@@ -174,13 +174,13 @@ class TestHelperTest < Minitest::Test
 
     assert_match(
       Regexp.new("Expected a scoping named :default for :data type " \
-                 "with scope options {:with_admins=>false} " \
+                 "with scope options {:?with_admins(=>|: )false} " \
                  "and without context from UserPolicy to have been applied"),
       error.message
     )
     assert_match(
       Regexp.new("Registered scopings: .*TestHelperTest::CustomPolicy :default " \
-                 "for :data with scope options {:with_admins=>true}"),
+                 "for :data with scope options {:?with_admins(=>|: )true}"),
       error.message
     )
   end
@@ -194,7 +194,7 @@ class TestHelperTest < Minitest::Test
 
     assert_match(
       Regexp.new("Expected a scoping named :all for :data type without scope options " \
-                 "and with context: {:all_users=>false} from TestHelperTest::CustomPolicy to have been applied"),
+                 "and with context: {:?all_users(=>|: )false} from TestHelperTest::CustomPolicy to have been applied"),
       error.message
     )
   end

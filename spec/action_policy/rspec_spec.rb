@@ -215,7 +215,7 @@ describe "ActionPolicy RSpec matchers" do
             expect { subject.yell("admin") }
               .to be_authorized_to(:yell?, target).with(TestService::CustomPolicy)
               .with_context(able_to_yell: false)
-          end.to raise_error(RSpec::Expectations::ExpectationNotMetError, %r{and context.+:able_to_yell=>true})
+          end.to raise_error(RSpec::Expectations::ExpectationNotMetError, %r{and context.+able_to_yell(=>|: )true})
         end
       end
 
@@ -353,7 +353,7 @@ describe "ActionPolicy RSpec matchers" do
         end.to raise_error(
           RSpec::Expectations::ExpectationNotMetError,
           Regexp.new("expected a scoping named :default for type :data " \
-                     "with scope options {:with_admins=>false} " \
+                     "with scope options {:?with_admins(=>|: )false} " \
                      "from TestService::CustomPolicy to have been applied")
         )
       end
@@ -366,7 +366,7 @@ describe "ActionPolicy RSpec matchers" do
         end.to raise_error(
           RSpec::Expectations::ExpectationNotMetError,
           Regexp.new("expected a scoping named :default for type :data " \
-                     "with scope options matching {:with_admins=>\\(a falsey value\\)} " \
+                     "with scope options matching {:?with_admins(=>|: )\\(a falsey value\\)} " \
                      "from TestService::CustomPolicy to have been applied")
         )
       end
@@ -393,7 +393,7 @@ describe "ActionPolicy RSpec matchers" do
         end.to raise_error(
           RSpec::Expectations::ExpectationNotMetError,
           Regexp.new("expected a scoping named :default for type :data without scope options " \
-                     "and context {:all_users=>false} " \
+                     "and context {:?all_users(=>|: )false} " \
                      "from TestService::CustomPolicy to have been applied")
         )
       end
