@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.5 (2025-05-09) 🎇
+
 - Ensure `result.value` is true or false. ([@palkan][])
 
 ## 0.7.4 (2025-03-12)
