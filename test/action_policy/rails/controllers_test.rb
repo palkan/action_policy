@@ -309,9 +309,10 @@ end
 
 class TestProcCurrentUserControllerIntegration < ActionController::TestCase
   class UsersController < ActionController::Base
-    authorize :user, through: -> { User.new({user: "guest"}) }
+    authorize :user, through: -> { @current_user }
 
     def index
+      @current_user = User.new({user: "guest"})
       authorize!
       render plain: "OK"
     end

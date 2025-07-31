@@ -2,6 +2,8 @@
 
 ## master
 
+- Execute proc passed to the `:through` option of `authorize` against `self` ([@Pagehey][])
+
 ## 0.7.5 (2025-05-09) 🎇
 
 - Ensure `result.value` is true or false. ([@palkan][])
