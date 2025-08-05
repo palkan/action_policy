@@ -87,18 +87,8 @@ if defined?(::RSpec)
           )
         end
 
-        case reason
-        when nil
-          next
-        when Hash
-          next if subject.reasons.details == reason
-        when Symbol
-          next if subject.reasons.details.values.flatten.any? { |h| h.include?(reason) }
-        when String
-          next if subject.reasons.respond_to?(:full_messages) && subject.reasons.full_messages.flatten.include?(reason)
-        else
-          raise TypeError, "unexpected reason: #{reason.inspect}"
-        end
+        next if reason.nil?
+        next if subject.reasons.details === reason
 
         raise(
           RSpec::Expectations::ExpectationNotMetError,

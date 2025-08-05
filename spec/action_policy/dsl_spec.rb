@@ -88,27 +88,7 @@ describe UserPolicy, type: :policy do
     let(:user) { admin }
     let(:record) { User.new("admin") }
 
-    around do |ex|
-      I18n.backend.store_translations(
-        :en,
-        action_policy: {
-          policy: {
-            user: {
-              not_admin?: "Only admins are authorized to perform this action"
-            }
-          }
-        }
-      )
-
-      ex.run
-      I18n.backend.reload!
-    end
-
-    failed "and matches reasons", reason: {user: [{not_admin?: {username: "admin"}}]}
-
-    failed "and partially matches reasons", reason: :not_admin?
-
-    failed "and match i18n reasons", reason: "Only admins are authorized to perform this action"
+    failed "when user is not an admin", reason: {user: [{not_admin?: {username: "admin"}}]}
 
     context "test errors with reasons" do
       after do |ex|
@@ -118,7 +98,7 @@ describe UserPolicy, type: :policy do
 
         expect(msg).to include(<<~MESSAGE.strip)
           Expected to fail with :unexpected but but actually failed for another reason:
-          <UserPolicy#delete?: false (reasons: {:user=>[{:not_admin?=>{:username=>"admin"}}]})
+          <UserPolicy#delete?: false (reasons: {user: [{not_admin?: {username: "admin"}}]})
         MESSAGE
 
         if ActionPolicy::PrettyPrint.available?

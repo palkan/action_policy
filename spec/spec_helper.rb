@@ -23,8 +23,6 @@ if ENV["COVERAGE"] == "true"
   ])
 end
 
-require "i18n"
-
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 
 ENV["RUBY_NEXT_TRANSPILE_MODE"] = "rewrite"
