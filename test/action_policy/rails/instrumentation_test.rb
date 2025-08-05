@@ -13,6 +13,7 @@ class TestRailsInstrumentation < Minitest::Test
   class TestPolicy
     include ActionPolicy::Policy::Core
     include ActionPolicy::Policy::Cache
+    include ActionPolicy::Policy::Reasons
     prepend ActionPolicy::Policy::Rails::Instrumentation
 
     cache :manage?
@@ -76,6 +77,7 @@ class TestRailsInstrumentation < Minitest::Test
     assert_equal "show?", data[:rule]
     refute data[:value]
     refute data[:cached]
+    assert_equal({}, data[:reasons])
   end
 
   def test_instrument_cached_apply
@@ -94,6 +96,7 @@ class TestRailsInstrumentation < Minitest::Test
     assert_equal TestPolicy.name, data[:policy]
     assert_equal "manage?", data[:rule]
     assert_equal false, data[:cached]
+    assert_equal({}, data[:reasons])
 
     assert policy.apply(:manage?)
 

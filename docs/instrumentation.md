@@ -17,7 +17,8 @@ The event contains the following information:
 - `:policy` – policy class name
 - `:rule` – applied rule (String)
 - `:value` – the result of the rule application (true of false)
-- `:cached` – whether we hit the [cache](caching.md)\*.
+- `:cached` – whether we hit the [cache](caching.md)\*
+- `:reasons` – details of [failures reasons](reasons.md) (an Hash).
 
 \* This parameter tracks only the cache store usage, not memoization.
 
