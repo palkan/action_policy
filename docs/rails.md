@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
 end
 ```
 
-You can also pass a proc that will be executed in action context `self` to `:through`. This is useful if you're using `ActiveSupport::CurrentAttributes`:
+You can also pass a proc that will be executed in action context `self` to `:through`. This is useful if you're using `ActiveSupport::CurrentAttributes` or want to refer to instance variables:
 
 ```ruby
 class ApplicationController < ActionController::Base
