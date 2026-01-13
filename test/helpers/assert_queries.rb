@@ -10,7 +10,7 @@ module QueriesAssertions
       @queries = []
       ActiveSupport::Notifications
         .subscribed(method(:callback), "sql.active_record") do
-        yield
+          yield
       end
       @queries
     end
