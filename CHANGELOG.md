@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.6 (2025-01-13)
+
 - Execute proc passed to the `:through` option of `authorize` against `self` ([@Pagehey][])
 
 - Add authorization result to the instrumentation payload (as `event[:result]`). ([@palkan][])
