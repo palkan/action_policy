@@ -21,7 +21,7 @@ module ActionPolicy
       @message =
         message ||
         "Couldn't find policy class for #{target.inspect}" \
-        "#{target.is_a?(Module) ? "" : " (#{target.class})"}"
+        "#{" (#{target.class})" unless target.is_a?(Module)}"
     end
   end
 

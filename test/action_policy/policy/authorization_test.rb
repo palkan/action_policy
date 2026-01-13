@@ -5,6 +5,7 @@ require "test_helper"
 class AuthorizeTestPolicy
   include ActionPolicy::Policy::Core
   include ActionPolicy::Policy::Authorization
+
   authorize :account
 end
 

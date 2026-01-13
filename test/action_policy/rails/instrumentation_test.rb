@@ -22,7 +22,7 @@ class TestRailsInstrumentation < Minitest::Test
     end
 
     def show?
-      false || record
+      !!record
     end
 
     def authorization_context

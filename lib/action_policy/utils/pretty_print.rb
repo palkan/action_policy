@@ -111,7 +111,7 @@ module ActionPolicy
       end
 
       def indented(str)
-        "#{indent.zero? ? "↳ " : ""}#{" " * indent}#{str}".tap do
+        "#{"↳ " if indent.zero?}#{" " * indent}#{str}".tap do
           # increase indent after the first expression
           self.indent += 2 if indent.zero?
         end

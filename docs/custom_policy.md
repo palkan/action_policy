@@ -18,8 +18,11 @@ class ActionPolicy::Base
 
   # Rails-specific scoping extensions
   extend ActionPolicy::ScopeMatchers::ActiveRecord
+
   scope_matcher :active_record_relation, ActiveRecord::Relation
+
   extend ActionPolicy::ScopeMatchers::ActionControllerParams
+
   scope_matcher :action_controller_params, ActionController::Parameters
 
   # Active Support notifications
