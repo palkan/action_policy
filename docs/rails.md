@@ -72,6 +72,37 @@ end
 
 When an unauthorized action is encountered, the `ActionPolicy::UnauthorizedAction` error is raised.
 
+### `verify_authorized_scoped` hooks
+
+Similarly, you might want to ensure that `authorized_scope` has been called during certain actions. Action Policy provides a `verify_authorized_scoped` hook for this:
+
+```ruby
+class ApplicationController < ActionController::Base
+  # adds an after_action callback to verify
+  # that `authorized_scope` has been called.
+  verify_authorized_scoped
+
+  # you can also pass additional options,
+  # like with a usual callback
+  verify_authorized_scoped only: :index
+end
+```
+
+You can skip this check when necessary:
+
+```ruby
+class PostsController < ApplicationController
+  skip_verify_authorized_scoped only: :show
+
+  def index
+    # or dynamically within an action
+    skip_verify_authorized_scoped! if some_condition
+  end
+end
+```
+
+When an unscoped action is encountered, the `ActionPolicy::UnscopedAction` error is raised.
+
 ### Resource-less `authorize!`
 
 You can also call `authorize!` without a resource specified.

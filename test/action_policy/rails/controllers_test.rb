@@ -152,6 +152,72 @@ class TestControllerHookIntegration < ActionController::TestCase
   end
 end
 
+class TestControllerScopedHookIntegration < ActionController::TestCase
+  class UsersController < ActionController::Base
+    authorize :user, through: :current_user
+
+    verify_authorized_scoped except: [:index]
+
+    skip_verify_authorized_scoped only: [:show]
+
+    def index
+      render plain: "OK"
+    end
+
+    def new
+      authorized_scope(users, type: :data)
+      render plain: "OK"
+    end
+
+    def create
+      skip_verify_authorized_scoped! if params[:skip_scoping]
+      render plain: "OK"
+    end
+
+    def show
+      render plain: "OK"
+    end
+
+    def current_user
+      @current_user ||= User.new("admin")
+    end
+
+    private
+
+    def users
+      [User.new("guest"), User.new("admin")]
+    end
+  end
+
+  tests UsersController
+
+  def test_non_verified_index
+    get :index
+    assert_equal "OK", response.body
+  end
+
+  def test_verified_new
+    get :new
+    assert_equal "OK", response.body
+  end
+
+  def test_missing_scoped_create
+    assert_raises(ActionPolicy::UnscopedAction) do
+      get :create
+    end
+  end
+
+  def test_skip_verify_authorized_scoped_dynamically
+    get :create, params: {skip_scoping: "Y"}
+    assert_equal "OK", response.body
+  end
+
+  def test_skipped_verify_show
+    get :show
+    assert_equal "OK", response.body
+  end
+end
+
 class TestNamespacedControllerIntegration < ActionController::TestCase
   module Admin
     class UserPolicy < ::UserPolicy

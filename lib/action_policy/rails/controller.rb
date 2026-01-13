@@ -11,6 +11,13 @@ module ActionPolicy
     end
   end
 
+  # Raised when `authorized_scope` hasn't been called for action
+  class UnscopedAction < Error
+    def initialize(controller, action)
+      super("Action '#{controller}##{action}' hasn't been scoped")
+    end
+  end
+
   # Controller concern.
   # Add `authorize!` and `allowed_to?` methods,
   # provide `verify_authorized` hook.
@@ -29,10 +36,10 @@ module ActionPolicy
         helper_method :allowance_to
       end
 
-      attr_writer :authorize_count
-      attr_reader :verify_authorized_skipped
+      attr_writer :authorize_count, :scoped_count
+      attr_reader :verify_authorized_skipped, :verify_authorized_scoped_skipped
 
-      protected :authorize_count=, :authorize_count
+      protected :authorize_count=, :authorize_count, :scoped_count=, :scoped_count
     end
 
     # Authorize action against a policy.
@@ -56,6 +63,16 @@ module ActionPolicy
       policy_record
     end
 
+    # Apply scope to the target.
+    #
+    # @return the scoped target
+    def authorized_scope(target, **options)
+      scoped = super
+
+      self.scoped_count += 1
+      scoped
+    end
+
     # Tries to infer the resource class from controller name
     # (i.e. `controller_name.classify.safe_constantize`).
     def implicit_authorization_target
@@ -67,12 +84,25 @@ module ActionPolicy
         authorize_count.zero? && !verify_authorized_skipped
     end
 
+    def verify_authorized_scoped
+      Kernel.raise UnscopedAction.new(controller_path, action_name) if
+        scoped_count.zero? && !verify_authorized_scoped_skipped
+    end
+
     def authorize_count
       @authorize_count ||= 0
     end
 
+    def scoped_count
+      @scoped_count ||= 0
+    end
+
     def skip_verify_authorized!
       @verify_authorized_skipped = true
+    end
+
+    def skip_verify_authorized_scoped!
+      @verify_authorized_scoped_skipped = true
     end
 
     class_methods do
@@ -85,6 +115,17 @@ module ActionPolicy
       # Skips verify_authorized after_action callback.
       def skip_verify_authorized(**options)
         skip_after_action :verify_authorized, options
+      end
+
+      # Adds after_action callback to check that
+      # authorized_scope method has been called.
+      def verify_authorized_scoped(**options)
+        after_action :verify_authorized_scoped, options
+      end
+
+      # Skips verify_authorized_scoped after_action callback.
+      def skip_verify_authorized_scoped(**options)
+        skip_after_action :verify_authorized_scoped, options
       end
     end
   end
