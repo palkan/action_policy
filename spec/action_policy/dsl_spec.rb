@@ -28,6 +28,15 @@ class UserPolicy < ActionPolicy::Base
   def manage?
     user.admin? && !record.admin?
   end
+
+  def delete?
+    user.admin? && check?(:not_admin?)
+  end
+
+  def not_admin?
+    details[:username] = record.name
+    !record.admin?
+  end
 end
 
 describe UserPolicy, type: :policy do
@@ -71,6 +80,40 @@ describe UserPolicy, type: :policy do
     context "test skip" do
       xfailed do
         let(:user) { admin }
+      end
+    end
+  end
+
+  describe_rule :delete? do
+    let(:user) { admin }
+    let(:record) { User.new("admin") }
+
+    failed "when user is not an admin", reason: {user: [{not_admin?: {username: "admin"}}]}
+    
+    failed "when user is not an admin", reason: a_hash_including(user: anything)
+
+    context "test errors with reasons" do
+      after do |ex|
+        msg = ex.exception.message
+        # mark as not failed
+        ex.remove_instance_variable(:@exception)
+
+        expect(msg).to include(<<~MESSAGE.strip)
+          Expected to fail with :unexpected but but actually failed for another reason:
+          <UserPolicy#delete?: false (reasons: {user: [{not_admin?: {username: "admin"}}]})
+        MESSAGE
+
+        if ActionPolicy::PrettyPrint.available?
+          expect(msg).to include(<<~MESSAGE.strip)
+            ↳ user.admin? #=> #{ActionPolicy::PrettyPrint.colorize(true)}
+              AND
+              check?(:not_admin?) #=> #{ActionPolicy::PrettyPrint.colorize(false)}
+          MESSAGE
+        end
+      end
+
+      failed reason: :unexpected do
+        let(:record) { User.new("admin") }
       end
     end
   end

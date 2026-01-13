@@ -2,6 +2,8 @@
 
 ## master
 
+- Allow to match failure reasons with RSpec DSL. ([@inkstak])
+
 - Execute proc passed to the `:through` option of `authorize` against `self` ([@Pagehey][])
 
 - Add authorization result to the instrumentation payload (as `event[:result]`). ([@palkan][])
@@ -558,3 +560,4 @@ This value is now stored in a cache (if any) instead of just the call result (`t
 [@stephannv]: https://github.com/stephannv
 [@sedubois]: https://github.com/sedubois
 [@Pagehey]: https://github.com/Pagehey
+[@inkstak]: https://github.com/inkstak
