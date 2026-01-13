@@ -20,7 +20,7 @@ module ActionPolicy
 
   # Controller concern.
   # Add `authorize!` and `allowed_to?` methods,
-  # provide `verify_authorized` hook.
+  # provide `verify_authorized` and `verify_authorized_scoped` hooks.
   module Controller
     extend ActiveSupport::Concern
 
