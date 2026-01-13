@@ -63,7 +63,7 @@ module ActionPolicy
       def failure_message
         "expected #{formatted_record} " \
         "to be authorized with #{policy}##{rule}, " \
-        "#{context ? "and context #{context.inspect}, " : ""}" \
+        "#{"and context #{context.inspect}, " if context}" \
         "but #{actual_calls_message}"
       end
 

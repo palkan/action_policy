@@ -16,8 +16,12 @@ The event contains the following information:
 
 - `:policy` – policy class name
 - `:rule` – applied rule (String)
-- `:value` – the result of the rule application (true of false)
-- `:cached` – whether we hit the [cache](caching.md)\*.
+- `:result` — the authorization result object.
+
+The following fields are deprecated and will be removed in v1.0:
+
+- `:value` – the result of the rule application (true of false) (use `event[:result].value` instead)
+- `:cached` – whether we hit the [cache](caching.md)\* (use `even[:result].cached?` instead).
 
 \* This parameter tracks only the cache store usage, not memoization.
 

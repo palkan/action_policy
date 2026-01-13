@@ -13,12 +13,12 @@ jobs:
       id-token: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0 # Fetch current tag as annotated. See https://github.com/actions/checkout/issues/290
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2
+          ruby-version: 3.4
           bundler-cache: true
       - name: Configure RubyGems Credentials
         uses: rubygems/configure-rubygems-credentials@main
