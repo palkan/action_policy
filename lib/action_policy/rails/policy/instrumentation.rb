@@ -22,6 +22,7 @@ module ActionPolicy # :nodoc:
             result = super
             event[:cached] = result.cached?
             event[:value] = result.value
+            event[:result] = result
             result
           end
         end

@@ -2,6 +2,8 @@
 
 ## master
 
+- Add authorization result to the instrumentation payload (as `event[:result]`). ([@palkan][])
+
 ## 0.7.5 (2025-05-09) 🎇
 
 - Ensure `result.value` is true or false. ([@palkan][])
