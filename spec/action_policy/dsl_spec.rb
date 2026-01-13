@@ -89,6 +89,8 @@ describe UserPolicy, type: :policy do
     let(:record) { User.new("admin") }
 
     failed "when user is not an admin", reason: {user: [{not_admin?: {username: "admin"}}]}
+    
+    failed "when user is not an admin", reason: a_hash_including(user: anything)
 
     context "test errors with reasons" do
       after do |ex|
