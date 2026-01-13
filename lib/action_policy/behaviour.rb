@@ -65,7 +65,7 @@ module ActionPolicy
     private def build_authorization_context
       self.class.authorization_targets
         .each_with_object({}) do |(key, method_or_proc), obj|
-        obj[key] = method_or_proc.is_a?(Proc) ? method_or_proc.call : send(method_or_proc)
+        obj[key] = method_or_proc.is_a?(Proc) ? instance_exec(&method_or_proc) : send(method_or_proc)
       end
     end
 

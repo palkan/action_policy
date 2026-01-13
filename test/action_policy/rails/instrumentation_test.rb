@@ -22,7 +22,7 @@ class TestRailsInstrumentation < Minitest::Test
     end
 
     def show?
-      false || record
+      !!record
     end
 
     def authorization_context
@@ -74,8 +74,16 @@ class TestRailsInstrumentation < Minitest::Test
     assert_equal "action_policy.apply_rule", event
     assert_equal TestPolicy.name, data[:policy]
     assert_equal "show?", data[:rule]
+
+    if ActionPolicy::VERSION >= "1.0.0"
+      refute data.key?(:value)
+      refute data.key?(:cached)
+    end
+
     refute data[:value]
     refute data[:cached]
+    refute data[:result].value
+    refute data[:result].cached?
   end
 
   def test_instrument_cached_apply
@@ -102,6 +110,7 @@ class TestRailsInstrumentation < Minitest::Test
     _event_2, data_2 = events.pop
 
     assert_equal true, data_2[:cached]
+    assert data_2[:result].cached?
   end
 
   def test_instrument_authorize

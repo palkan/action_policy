@@ -52,7 +52,7 @@ module ActionPolicy
       assert(
         actual_calls.any? { |call| call.matches?(policy, rule, target, context) },
         "Expected #{target.inspect} to be authorized with #{policy}##{rule}, " \
-        "#{context ? "and context #{context}, " : ""}" \
+        "#{"and context #{context}, " if context}" \
         "but no such authorization has been made.\n" \
         "Registered authorizations: " \
         "#{actual_calls.empty? ? "none" : actual_calls.map(&:inspect).join(",")}"

@@ -85,7 +85,7 @@ module ActionPolicy
       def failure_message
         "expected a scoping named :#{name} for type :#{type} " \
         "#{scope_options_message} " \
-        "#{context ? "and context #{context.inspect} " : ""}" \
+        "#{"and context #{context.inspect} " if context}" \
         "from #{policy} to have been applied, " \
         "but #{actual_scopes_message}"
       end
