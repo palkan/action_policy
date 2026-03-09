@@ -1,10 +1,6 @@
 [![Gem Version](https://badge.fury.io/rb/action_policy.svg)](https://badge.fury.io/rb/action_policy)
-![Build](https://github.com/palkan/action_policy/workflows/Build/badge.svg)
 
 # Action Policy
-
-> Authorization framework for Ruby and Rails.
-<br>Composable. Extensible. Performant.
 
 ## What is it?
 

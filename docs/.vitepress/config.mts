@@ -1,8 +1,25 @@
 import { defineConfig } from 'vitepress'
+import llmstxt from 'vitepress-plugin-llms'
+import { availableSinceMarkdownPlugin } from './availableSinceMarkdownPlugin'
 
 export default defineConfig({
   title: "Action Policy",
   description: "Authorization framework for Ruby and Rails applications",
+
+  cleanUrls: true,
+
+  vite: {
+    plugins: [
+      llmstxt(),
+    ],
+  },
+
+  markdown: {
+    config(md) {
+      md.use(availableSinceMarkdownPlugin)
+    },
+  },
+
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { name: 'theme-color', content: '#0F4D8A' }],
@@ -19,6 +36,7 @@ export default defineConfig({
 
     nav: [
       { text: 'Guide', link: '/guide/', activeMatch: '/guide/' },
+      { text: 'LLMs', link: '/llms-full.txt' },
     ],
 
     sidebar: {
