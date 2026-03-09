@@ -14,7 +14,7 @@ permission to **do something** (to not be confused with [_authentication_](https
 Action Policy provides flexible tools to build an _authorization layer_ for your application.
 
 <div class="chart-container">
-  <img src="assets/images/layer.svg" alt="Authorization layer" width="80%">
+  <img src="../assets/images/layer.svg" alt="Authorization layer" width="80%">
 </div>
 
 **NOTE:** Action Policy does not force you to use a specific authorization model (i.e., roles, permissions, etc.) and does not provide one. It only answers a single question: **How to verify access?**
