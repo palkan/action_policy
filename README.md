@@ -118,7 +118,7 @@ Read more in our [Documentation][].
 
 There are [many authorization libraries](https://www.ruby-toolbox.com/categories/rails_authorization) for Ruby/Rails applications.
 
-What makes Action Policy different? See [this section](https://actionpolicy.evilmartians.io/#/?id=what-about-the-existing-solutions) in our docs.
+What makes Action Policy different? See [this section](https://actionpolicy.evilmartians.io/guide/#what-about-the-existing-solutions) in our docs.
 
 ## Contributing
 
