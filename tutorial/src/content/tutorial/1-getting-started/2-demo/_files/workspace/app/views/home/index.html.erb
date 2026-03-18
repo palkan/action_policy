@@ -1,3 +1,13 @@
-<h1>This is a home page of the tutorial application</h1>
-
-<p>Do smth with me and see me updated on the web page</p>
+<div class="hero">
+  <h1 class="hero__title">Welcome to Demo App</h1>
+  <p class="hero__subtitle">
+    This is a tutorial demo application. Explore the features, edit the source code, and see your changes live.
+  </p>
+  <div class="hero__actions">
+    <% if authenticated? %>
+      <span class="text-muted">Signed in as <strong><%= Current.user.name %></strong></span>
+    <% else %>
+      <%= link_to "Sign in to get started", new_session_path, class: "btn btn--primary" %>
+    <% end %>
+  </div>
+</div>

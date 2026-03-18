@@ -1,0 +1,4 @@
+<%= button_to preauthenticate_session_path(user_id: user.id), class: "quick-login__btn", method: :post do %>
+  <span class="quick-login__name"><%= user.name %></span>
+  <span class="quick-login__email"><%= user.email_address %></span>
+<% end %>
