@@ -3,11 +3,8 @@
 import initVM from "../lib/rails.js";
 import ExternalCommands from "../lib/commands.js";
 import util from "node:util";
-import { wait } from "../scripts/ready.js"
 
-await wait();
-
-const vm = await initVM({ env: { "HOME": "/rails-vm" } });
+const vm = await initVM({env: {"HOME": "/rails-vm"}});
 const args = util.inspect(process.argv.slice(2));
 const commands = new ExternalCommands();
 // Make commands accessible from Ruby via global JS object

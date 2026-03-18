@@ -2,9 +2,6 @@
 
 import initVM from "../lib/rails.js";
 import IRBRepl from "../lib/irb.js";
-import { wait } from "../scripts/ready.js"
-
-await wait();
 
 const vm = await initVM();
 const irb = new IRBRepl(vm);

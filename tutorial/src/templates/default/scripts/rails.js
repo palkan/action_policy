@@ -38,8 +38,7 @@ const railsProcess = spawn("rails", process.argv.slice(2), {
   stdio: 'inherit',
   cwd: railsRootDir,
   env: {
-    PATH: "/home/tutorial/bin:/bin:/usr/bin:/usr/local/bin",
-    READY_CHECK: "off",
+    PATH: "/home/tutorial/bin:/bin:/usr/bin:/usr/local/bin"
   }
 });
 
