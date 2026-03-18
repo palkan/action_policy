@@ -1,0 +1,41 @@
+#!/usr/bin/env -S node --disable-warning=ExperimentalWarning
+
+import initVM from "../lib/rails.js";
+import ExternalCommands from "../lib/commands.js";
+import util from "node:util";
+
+const vm = await initVM({env: {"HOME": "/rails-vm"}});
+const args = util.inspect(process.argv.slice(2));
+const commands = new ExternalCommands();
+// Make commands accessible from Ruby via global JS object
+global.externalCommands = commands;
+
+await vm.evalAsync(`
+  args = ${args}
+  ARGV.replace(args)
+
+  begin
+    if File.file?("config/application.rb")
+      APP_PATH = File.expand_path("config/application", Dir.pwd)
+      require File.expand_path("../boot", APP_PATH)
+      require "rails/commands"
+    else
+      require "rails/command"
+      case ARGV.first
+      when Rails::Command::HELP_MAPPINGS, "help", nil
+        ARGV.shift
+        Rails::Command.invoke :gem_help, ARGV
+      when "plugin"
+        ARGV.shift
+        Rails::Command.invoke :plugin, ARGV
+      else
+        Rails::Command.invoke :application, ARGV
+      end
+    end
+    execute_at_exit_hooks unless Wasmify::ExternalCommands.any?
+  rescue SystemExit
+    # expected, do nothing
+  end
+`)
+
+commands.invoke(vm)

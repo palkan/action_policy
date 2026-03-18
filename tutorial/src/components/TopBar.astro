@@ -1,0 +1,48 @@
+---
+import path from 'node:path';
+import RailsPathLinkHandler from './RailsPathLinkHandler.tsx';
+import { ShellConfigurator } from './ShellConfigurator';
+import { FileManager } from './FileManager';
+import { HelpDropdown } from './HelpDropdown';
+import GitHubLink from './GitHubLink.astro';
+
+const logo = path.join(import.meta.env.BASE_URL, 'logo.svg');
+const logoDark = path.join(import.meta.env.BASE_URL, 'logo-dark.svg');
+---
+
+<nav
+  class="bg-tk-elements-topBar-backgroundColor transition-theme border-b border-tk-elements-app-borderColor flex max-w-full items-center p-3 px-4 min-h-[56px]"
+>
+  <div class="flex flex-1">
+    <a
+      href="/"
+      class="flex items-center text-tk-elements-topBar-logo-color hover:text-tk-elements-topBar-logo-colorHover"
+    >
+      {logo && <img class="h-5 w-auto dark:hidden" src={logo} />}
+      {logo && <img class="h-5 w-auto hidden dark:inline-block" src={logoDark} />}
+    </a>
+  </div>
+
+  <div class="mr-2">
+    <HelpDropdown client:only />
+  </div>
+  <div class="mr-2">
+    <slot name="download-button" />
+  </div>
+  <div class="mr-2">
+    <slot name="open-in-stackblitz-link" />
+  </div>
+  <div>
+    <slot name="theme-switch" />
+  </div>
+  <div>
+    <slot name="login-button" />
+  </div>
+  <div class="mr-2">
+    <GitHubLink />
+  </div>
+</nav>
+
+<RailsPathLinkHandler client:only />
+<ShellConfigurator client:only />
+<FileManager client:only />

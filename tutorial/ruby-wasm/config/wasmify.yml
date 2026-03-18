@@ -1,0 +1,23 @@
+output_dir: "./dist"
+ruby_version: "3.3"
+
+# Specify the list of directories to be included into the final
+# app.wasm file.
+pack_directories: []
+pack_root: "/rails-vm"
+additional_root_files:
+  - boot.rb
+  - .railsrc
+
+# Specify the list of gems to skip during the base module compiliation.
+# Usually, you want to specify the gems with native extensions that are
+# not currently Wasm-compatible.
+exclude_gems:
+  - nio4r
+  - io-console
+  - psych
+
+# Skip building native extensions for the following gems (and keep their Ruby source)
+ignore_gem_extensions:
+  - bigdecimal
+  - date

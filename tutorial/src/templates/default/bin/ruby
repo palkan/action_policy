@@ -1,0 +1,37 @@
+#!/usr/bin/env -S node --disable-warning=ExperimentalWarning
+
+import initVM from "../lib/rails.js";
+import ExternalCommands from "../lib/commands.js";
+import util from "node:util";
+import fs from "node:fs";
+
+const commands = new ExternalCommands();
+// Make commands accessible from Ruby via global JS object
+global.externalCommands = commands;
+
+const args = process.argv.slice(2);
+
+if (args[0] && fs.existsSync(process.cwd() + '/' + args[0])) {
+  const firstLine = fs.readFileSync(process.cwd() + '/' + args[0], 'utf8').split('\n')[0];
+  // Check if called via shebang
+  if (firstLine.includes('#!/usr/bin/env ruby')) {
+    const path = args.shift();
+    const vm = await initVM({ env: { "HOME": "/rails-vm" } });
+
+    await vm.evalAsync(`
+      args = ${util.inspect(args)}
+      ARGV.replace(args)
+
+      begin
+        load "./${path}"
+        execute_at_exit_hooks unless Wasmify::ExternalCommands.any?
+      rescue SystemExit
+      end
+    `);
+
+    commands.invoke(vm)
+  }
+} else {
+  const vm = await initVM({ env: { "HOME": "/rails-vm" }, args, skipRails: true });
+  commands.invoke(vm)
+}

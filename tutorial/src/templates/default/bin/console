@@ -1,0 +1,9 @@
+#!/usr/bin/env -S node --disable-warning=ExperimentalWarning
+
+import initVM from "../lib/rails.js";
+import IRBRepl from "../lib/irb.js";
+
+const vm = await initVM();
+const irb = new IRBRepl(vm);
+
+irb.start();

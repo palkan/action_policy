@@ -1,0 +1,65 @@
+<slot name="title" />
+<slot name="links" />
+<slot name="meta" />
+
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+
+<style>
+  /* Rails path links styling */
+  :global(.rails-path-link) {
+    text-decoration: none;
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+  }
+
+  :global(.rails-path-link code) {
+    color: #0969da;
+    background-color: #f6f8fa;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Consolas, 'Liberation Mono', Menlo, monospace;
+    transition: all 0.2s ease;
+  }
+
+  /* Dark mode support */
+  :global(.dark .rails-path-link code) {
+    color: #58a6ff;
+    background-color: #161b22;
+  }
+
+  /* Hover state */
+  :global(.rails-path-link:hover code) {
+    color: #0860ca;
+    background-color: #e7f1ff;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  :global(.dark .rails-path-link:hover code) {
+    color: #79c0ff;
+    background-color: #1f2937;
+  }
+
+  /* Active/clicked state */
+  :global(.rails-path-link:active code) {
+    transform: scale(0.98);
+  }
+
+  /* Focus state for accessibility */
+  :global(.rails-path-link:focus) {
+    outline: none;
+  }
+
+  :global(.rails-path-link:focus-visible code) {
+    outline: 2px solid #0969da;
+    outline-offset: 2px;
+  }
+
+  :global(.dark .rails-path-link:focus-visible code) {
+    outline-color: #58a6ff;
+  }
+</style>

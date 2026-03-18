@@ -1,0 +1,12 @@
+--skip-bundle
+--skip-git
+--skip-decrypted-diffs
+--skip-bootsnap
+--skip-brakeman
+--skip-dev-gems
+--skip-kamal
+--skip-thruster
+--skip-docker
+--skip-system-test
+--skip-dev-gems
+--skip-rubocop

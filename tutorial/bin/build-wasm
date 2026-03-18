@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+
+echo "Building Ruby WASM module..."
+
+# Check if ruby-wasm directory exists
+if [ ! -d "ruby-wasm" ]; then
+  echo "Error: ruby-wasm directory not found. Make sure you're running this from the template root."
+  exit 1
+fi
+
+# Change to ruby-wasm directory
+cd ruby-wasm
+
+echo "Installing Ruby gems..."
+# Install gems using bundle install
+bundle install --path vendor/bundle
+
+echo "Building WASM module..."
+# Run the pack script to build ruby.wasm
+./bin/pack
+
+echo "WASM build completed successfully!"
+echo "ruby.wasm is now available at ruby-wasm/dist/ruby.wasm"
+
+# Generate hash of Gemfile.lock for cache versioning
+echo "Generating Gemfile.lock hash..."
+GEMFILE_HASH=$(sha256sum Gemfile.lock | cut -c1-16)
+echo "Gemfile.lock hash: $GEMFILE_HASH"
+
+# Copy the built ruby.wasm to the public directory
+echo "Copying ruby.wasm to public directory..."
+cp dist/ruby.wasm ../public/
+echo "ruby.wasm copied to public directory."
+
+# Create ruby.wasm.hash with the hash
+echo "Creating ruby.wasm.hash..."
+echo "$GEMFILE_HASH" > ../public/ruby.wasm.hash
+echo "ruby.wasm.hash created with hash: $GEMFILE_HASH"

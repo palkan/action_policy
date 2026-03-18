@@ -1,0 +1,11 @@
+#!/usr/bin/env -S node --disable-warning=ExperimentalWarning --watch --watch-path=./
+
+import initVM from "../lib/rails.js";
+import { createRackServer } from "../lib/server.js";
+
+const vm = await initVM();
+const server = await createRackServer(vm);
+
+server.listen(3000, () => {
+  console.log("Server started on port 3000");
+});

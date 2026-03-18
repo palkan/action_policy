@@ -1,0 +1,4 @@
+{
+  "recommendations": ["astro-build.astro-vscode", "StackBlitz.tutorialkit", "unifiedjs.vscode-mdx"],
+  "unwantedRecommendations": []
+}
