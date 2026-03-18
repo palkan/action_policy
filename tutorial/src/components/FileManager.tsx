@@ -134,6 +134,12 @@ export function FileManager() {
         }
       });
 
+      // Now, update permissions for the /home/tutorial/workspace/bin folder
+      const templateBins = await wc.fs.readdir("workspace/bin");
+      templateBins.forEach((bin) => {
+        chmodx(wc, `/home/tutorial/workspace/bin/${bin}`);
+      });
+
       if (!wasmCached.current) {
         await wc.fs.writeFile(WC_WASM_LOG_PATH, 'status: init');
 

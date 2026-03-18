@@ -1,4 +1,8 @@
 ---
 type: part
-title: Getting Started with Rails
+title: Getting started with Action Policy
+template: rails-app
+prepareCommands:
+  - ['npm install', 'Preparing Ruby runtime']
+  - ['node scripts/rails.js db:prepare', 'Prepare development database']
 ---

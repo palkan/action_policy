@@ -52,17 +52,21 @@ export const ShellConfigurator: React.FC = () => {
 
     const { workdir } = conf;
 
+    console.log("shell working directory: ", workdir)
+
     if (!workdir) {
       return;
     }
 
     if (currWorkdir === workdir) {
+      console.log("currWorkdir == workdir: ", workdir)
       return;
     }
 
     currWorkdir = workdir;
 
     const checkProcess = () => {
+      console.log("checkProcess: terminal.process: ", terminal.process, " observedProcess: ", observedProcess)
       if (terminal.process || observedProcess) {
         if (!observedProcess) {
           observedProcess = terminal.process;

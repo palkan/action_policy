@@ -2,7 +2,7 @@ import fs from 'fs';
 import { join } from 'path';
 import { spawn } from 'child_process';
 
-const railsRootDir = new URL("../workspace/store", import.meta.url).pathname;
+const railsRootDir = new URL("../workspace", import.meta.url).pathname;
 const railsPath = join(railsRootDir, 'bin/rails');
 
 const waitBinRails = async () => {
