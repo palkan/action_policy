@@ -89,23 +89,21 @@ $ cd store
   _files/
     .tk-config.json
     workspace/
-      store/
-        app/
-          controllers/
-            pages_controller.rb       ← starter/skeleton code
-        config/
-          routes.rb
+      app/
+        controllers/
+          pages_controller.rb       ← starter/skeleton code
+      config/
+        routes.rb
   _solution/
     workspace/
-      store/
-        app/
-          controllers/
-            pages_controller.rb       ← completed code
-          views/
-            pages/
-              home.html.erb           ← new file the user creates
-        config/
-          routes.rb
+      app/
+        controllers/
+          pages_controller.rb       ← completed code
+        views/
+          pages/
+            home.html.erb           ← new file the user creates
+      config/
+        routes.rb
 ```
 
 ### Frontmatter
@@ -114,12 +112,12 @@ $ cd store
 ---
 type: lesson
 title: Adding a Controller
-focus: /workspace/store/app/controllers/pages_controller.rb
+focus: /workspace/app/controllers/pages_controller.rb
 previews: [3000]
 mainCommand: ['node scripts/rails.js server', 'Starting Rails server']
 custom:
   shell:
-    workdir: '/workspace/store'
+    workdir: '/workspace'
 ---
 ```
 
@@ -180,14 +178,13 @@ Click **Solve** to see the completed code if you get stuck.
   _files/
     .tk-config.json
     workspace/
-      store/
-        db/
-          migrate/
-            20240101000000_create_products.rb
-          seeds.rb
-        app/
-          models/
-            product.rb
+      db/
+        migrate/
+          20240101000000_create_products.rb
+        seeds.rb
+      app/
+        models/
+          product.rb
 ```
 
 ### Frontmatter
@@ -196,15 +193,16 @@ Click **Solve** to see the completed code if you get stuck.
 ---
 type: lesson
 title: Creating a Product Model
-focus: /workspace/store/app/models/product.rb
+focus: /workspace/app/models/product.rb
 previews: [3000]
 mainCommand: ['node scripts/rails.js server', 'Starting Rails server']
 prepareCommands:
   - ['npm install', 'Preparing Ruby runtime']
   - ['node scripts/rails.js db:prepare', 'Prepare development database']
+terminalBlockingPrepareCommandsCount: 2
 custom:
   shell:
-    workdir: '/workspace/store'
+    workdir: '/workspace'
 ---
 ```
 
@@ -265,15 +263,16 @@ store(dev)> Product.all
 ---
 type: lesson
 title: CRUD Operations
-focus: /workspace/store/app/controllers/products_controller.rb
+focus: /workspace/app/controllers/products_controller.rb
 previews: [3000]
 mainCommand: ['node scripts/rails.js server', 'Starting Rails server']
 prepareCommands:
   - ['npm install', 'Preparing Ruby runtime']
   - ['node scripts/rails.js db:prepare', 'Prepare development database']
+terminalBlockingPrepareCommandsCount: 2
 custom:
   shell:
-    workdir: '/workspace/store'
+    workdir: '/workspace'
 ---
 ```
 
@@ -317,7 +316,7 @@ type: lesson
 title: Rails Console
 custom:
   shell:
-    workdir: "/workspace/store"
+    workdir: "/workspace"
 ---
 ```
 
@@ -373,7 +372,7 @@ Each template captures the **expected state** at the start of that lesson. This 
 
 **Always assume each lesson starts fresh.** The WASM runtime reinstalls on lesson navigation. Design each lesson to be self-contained:
 
-1. Use `prepareCommands` for setup (npm install, db:prepare)
+1. Use `prepareCommands` for setup (npm install, db:prepare) and `terminalBlockingPrepareCommandsCount: <number of commands>` to ensure terminal is not used before the prepare commands finish.
 2. Use templates or `_files/` for starting code state
 3. Don't rely on user actions from a previous lesson
 
@@ -405,7 +404,7 @@ After creating a lesson, verify these structural requirements. Violations cause 
 
 ### If focus is set
 
-- [ ] `focus` path is absolute from WebContainer root (e.g., `/workspace/store/app/...`)
+- [ ] `focus` path is absolute from WebContainer root (e.g., `/workspace/app/...`)
 - [ ] The file at `focus` path exists in `_files/` or in the referenced template
 - [ ] `editor` is not set to `false` (focus is silently ignored when editor is hidden)
 

@@ -161,7 +161,7 @@ The WASM runtime takes time to load. Set expectations for tutorial users:
 
 The runtime includes an auto-login patch: if `tmp/authenticated-user.txt` exists in the Rails app root, the first HTTP request auto-authenticates the user found by `User.find_by(email_address: <file contents>)`. The file should contain a single email address (e.g., `admin@example.com`).
 
-**To use:** Place `workspace/store/tmp/authenticated-user.txt` in `_files/` or a template, containing the email of a seeded user. The first request calls `start_new_session_for(user)`, creating a session cookie for all subsequent requests. Runs once per VM lifetime (the `$__pre_authenticated` global flag prevents repeat attempts).
+**To use:** Place `workspace/tmp/authenticated-user.txt` in `_files/` or a template, containing the email of a seeded user. The first request calls `start_new_session_for(user)`, creating a session cookie for all subsequent requests. Runs once per VM lifetime (the `$__pre_authenticated` global flag prevents repeat attempts).
 
 This requires the Rails 8 `Authentication` concern and a `User` model with an `email_address` column.
 

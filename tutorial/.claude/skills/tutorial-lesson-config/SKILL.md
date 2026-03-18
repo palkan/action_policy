@@ -115,8 +115,8 @@ editor:
     allowEdits: true                   # Allow creating files/folders anywhere
     allowEdits: "/workspace/**"        # Allow edits matching glob
     allowEdits:                        # Multiple glob patterns
-      - "/workspace/store/app/**"
-      - "/workspace/store/config/**"
+      - "/workspace/app/**"
+      - "/workspace/config/**"
 ```
 
 ### Focus File
@@ -124,7 +124,7 @@ editor:
 Auto-open a specific file in the editor when the lesson loads:
 
 ```yaml
-focus: /workspace/store/app/controllers/products_controller.rb
+focus: /workspace/app/controllers/products_controller.rb
 ```
 
 **Path must be absolute** from the WebContainer root. For Rails apps, this is typically `/workspace/<app-name>/...`.

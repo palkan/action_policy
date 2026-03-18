@@ -12,3 +12,5 @@ pnpm-debug.log*
 
 public/ruby.wasm
 public/ruby.wasm.hash
+
+.claude/*.local.json

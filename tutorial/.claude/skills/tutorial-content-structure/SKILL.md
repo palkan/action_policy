@@ -245,6 +245,133 @@ Available attributes:
 | `collapse={range}` | `collapse={1-5}` | Collapse line range |
 | `frame="terminal"` | `frame="terminal"` | Terminal-style frame |
 
+### Rails path links
+
+Inline code matching Rails path patterns (`app/`, `db/`, `config/`, `test/`) is automatically converted into clickable buttons that open the file in the editor:
+
+```markdown
+Open `app/models/user.rb` to see the User model.
+```
+
+This is handled by the `remarkRailsPathLinks` plugin. Only paths starting with `app/`, `db/`, `config/`, or `test/` are matched.
+
+### Links
+
+Standard markdown links work. For linking to the running app preview:
+
+```markdown
+Visit [the home page](http://localhost:3000) to see the result.
+```
+
 ### MDX Support
 
 Rename `content.md` to `content.mdx` to use MDX features (component imports, JSX in markdown).
+
+## Styling Rails Views in Lessons
+
+The `rails-app` template includes a CSS design system with BEM components and CSS custom properties. When writing ERB views in `_files/` or `_solution/`, use these classes for consistent styling without adding custom CSS.
+
+### Common Patterns
+
+**Page with a list (index view):**
+
+```erb
+<div class="page-header">
+  <h1>Tickets</h1>
+  <%%= link_to "New Ticket", new_ticket_path, class: "btn btn--primary" %>
+</div>
+
+<div class="card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Status</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%% @tickets.each do |ticket| %>
+        <tr>
+          <td><%%= link_to ticket.title, ticket %></td>
+          <td><span class="badge badge--primary"><%%= ticket.status %></span></td>
+          <td class="inline-actions">
+            <%%= link_to "Edit", edit_ticket_path(ticket), class: "btn btn--small" %>
+          </td>
+        </tr>
+      <%% end %>
+    </tbody>
+  </table>
+</div>
+```
+
+**Detail page (show view):**
+
+```erb
+<div class="page-header">
+  <h1><%%= @ticket.title %></h1>
+  <div class="inline-actions">
+    <%%= link_to "Edit", edit_ticket_path(@ticket), class: "btn btn--small" %>
+    <%%= link_to "Back", tickets_path, class: "btn btn--small" %>
+  </div>
+</div>
+
+<div class="card mb-md">
+  <div class="card__body">
+    <p><%%= @ticket.description %></p>
+    <p class="text-muted text-sm">
+      Created by <%%= @ticket.user.name %> &middot;
+      <span class="badge badge--primary"><%%= @ticket.status %></span>
+    </p>
+  </div>
+</div>
+```
+
+**Form:**
+
+```erb
+<div class="card">
+  <div class="card__header">
+    <h2>New Ticket</h2>
+  </div>
+  <div class="card__body">
+    <%%= form_with model: @ticket do |form| %>
+      <div class="form__group">
+        <%%= form.label :title, class: "form__label" %>
+        <%%= form.text_field :title, class: "input" %>
+      </div>
+
+      <div class="form__group">
+        <%%= form.label :description, class: "form__label" %>
+        <%%= form.text_area :description, class: "input" %>
+      </div>
+
+      <div class="form__actions">
+        <%%= form.submit "Create", class: "btn btn--primary" %>
+        <%%= link_to "Cancel", tickets_path, class: "btn" %>
+      </div>
+    <%% end %>
+  </div>
+</div>
+```
+
+**Flash messages** are handled automatically by the layout. Controllers just use `redirect_to ..., notice: "..."` or `alert: "..."`.
+
+### Quick Reference
+
+| Need | Classes |
+|------|---------|
+| Primary action button | `btn btn--primary` |
+| Destructive action | `btn btn--danger` |
+| Small inline button | `btn btn--small` |
+| Text input / textarea / select | `input` |
+| Wrap content in a box | `card` > `card__body` |
+| Box with title | `card` > `card__header` + `card__body` |
+| Status label | `badge badge--primary` (or `--success`, `--danger`, `--warning`) |
+| Data table | `table` |
+| Title + action row | `page-header` |
+| Form field wrapper | `form__group` > `form__label` + `input` |
+| Muted helper text | `text-muted text-sm` |
+| Row of buttons/links | `inline-actions` |
+
+See the `tutorial-quickstart` skill for the full CSS custom properties reference and the complete component list.

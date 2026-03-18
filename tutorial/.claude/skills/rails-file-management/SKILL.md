@@ -31,10 +31,10 @@ _solution/ (lesson)    ← Completed/answer code
 Files from each layer **overlay** the previous — same-path files are replaced, new files are added.
 
 **Two template mechanisms (don't confuse them):**
-- **`template` frontmatter field** (e.g., `template: default`) — selects which base template JSON is loaded as the "Template (base)" layer. Almost always `default` (provides the WASM runtime). Set once in tutorial root `meta.md`.
-- **`_files/.tk-config.json` with `extends`** — extends the `_files` layer with files from another template directory (e.g., `rails-app`, `crud-products`). These provide the Rails app code that overlays on top of the base template.
+- **`template` frontmatter field** (e.g., `template: default`) — selects which base template JSON is loaded as the "Template (base)" layer. Almost always set in the part's `meta.md`. The tutorial's root `meta.md` contains `rails-app`—a minimal demo app used in the tutotiral.
+- **`_files/.tk-config.json` with `extends`** — extends the `_files` layer with files from another template directory. These provide the source code that overlays on top of the template used. Use it to share many files between lessons. Otherwise, prefer duplication and the `template` frontmatter..
 
-A typical lesson uses both: `template: default` for the runtime (inherited from tutorial root) + `_files/.tk-config.json` extending `rails-app` for the app code.
+IMPORTANT: Files added via the `template` frontmatter are not visible in the editor; only the `_files` contents (including `_files/.tk-config.json`'s contents) are shown in the editor.
 
 ## Templates
 
@@ -45,8 +45,7 @@ Templates live in `src/templates/` and provide the base project structure for We
 | Template | Purpose | Inherits From |
 |----------|---------|---------------|
 | `default` | Base Rails WASM runtime — Node.js wrappers, Express server, PGLite, WASM loader. Selected via `template: default` in frontmatter (the default). | (none) |
-| `rails-app` | Pre-generated Rails app at `workspace/store/`. Used via `_files/.tk-config.json`, not via the `template` frontmatter field. | (standalone — only contains `workspace/`) |
-| `crud-products` | Rails app with Product model, controller, views, migrations, seeds. Used via `_files/.tk-config.json`. | `rails-app` |
+| `rails-app` | Pre-generated Rails app at `workspace/`. Update this template to set up the base Rails app for the tutorial | `default` |
 
 ### Template Inheritance
 
@@ -73,17 +72,16 @@ Create a directory under `src/templates/` with:
 src/templates/blog-app/
   .tk-config.json          → { "extends": "../rails-app" }
   workspace/
-    blog/
-      app/
-        models/post.rb
-        controllers/posts_controller.rb
-        views/posts/
-          index.html.erb
-          show.html.erb
-      config/routes.rb
-      db/
-        migrate/001_create_posts.rb
-        seeds.rb
+    app/
+      models/post.rb
+      controllers/posts_controller.rb
+      views/posts/
+        index.html.erb
+        show.html.erb
+    config/routes.rb
+    db/
+      migrate/001_create_posts.rb
+      seeds.rb
 ```
 
 ### What Belongs in a Template vs. a Lesson
@@ -103,36 +101,22 @@ The `_files/` directory contains files shown to the user when the lesson loads. 
 
 ### Path Convention
 
-All Rails app files **must** live under `workspace/<app-name>/` to match the WASI preopen at `/workspace`:
+All Rails app files **must** live under `workspace/` to match the WASI preopen at `/workspace`:
 
 ```
 _files/
   workspace/
-    store/
-      app/
-        controllers/
-          products_controller.rb
-        models/
-          product.rb
-        views/
-          products/
-            index.html.erb
-      config/
-        routes.rb
+    app/
+      controllers/
+        products_controller.rb
+      models/
+        product.rb
+      views/
+        products/
+          index.html.erb
+    config/
+      routes.rb
 ```
-
-### Switching Templates Per-Lesson
-
-Place a `.tk-config.json` in `_files/` to use a different template for that lesson:
-
-```
-_files/
-  .tk-config.json      → { "extends": "../../../../../templates/crud-products" }
-  workspace/
-    .keep
-```
-
-The `extends` path is **relative to the `_files/` directory**. Count the `../` segments carefully to reach `src/templates/`.
 
 ### `.tk-config.json` Path Formula
 
@@ -147,16 +131,6 @@ The `extends` path in `.tk-config.json` is **relative to the directory containin
 The count is: 1 (`_files/`) + 1 (lesson dir) + N (intermediate dirs: part, chapter) + 1 (`tutorial/`) + 1 (`content/`) = **4 + number of intermediate levels**.
 
 For the standard `tutorial/part/lesson/_files/` structure used by most Rails tutorials, the path is always `"../../../../../templates/<name>"` (5 segments).
-
-### Empty Workspace
-
-For lessons where the user creates the app from scratch (e.g., `rails new`), use an empty workspace:
-
-```
-_files/
-  workspace/
-    .keep
-```
 
 ## `_solution/` Directory
 
