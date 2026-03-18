@@ -47,7 +47,7 @@ export default function RailsPathLinkHandler() {
         const railsPath = link.getAttribute('data-rails-path');
 
         if (railsPath) {
-          tutorialStore.setSelectedFile(`/workspace/store/${railsPath}`);
+          tutorialStore.setSelectedFile(`/workspace/${railsPath}`);
         }
 
         return;
