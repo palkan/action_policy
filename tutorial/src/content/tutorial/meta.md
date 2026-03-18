@@ -3,6 +3,7 @@ type: tutorial
 openInStackBlitz: false
 prepareCommands:
   - ['npm install', 'Preparing Ruby runtime']
+terminalBlockingPrepareCommandsCount: 1
 previews: false
 filesystem:
   watch: ['/*.json', '/workspace/**/*']
