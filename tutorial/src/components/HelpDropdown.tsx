@@ -60,7 +60,7 @@ export function HelpDropdown() {
             </div>
             <button
               onClick={handleReload}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors"
+              className="w-full bg-accent-600 hover:bg-accent-700 text-white font-medium py-2 px-4 rounded transition-colors"
             >
               Reload
             </button>
