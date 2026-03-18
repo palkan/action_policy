@@ -15,7 +15,7 @@
     "@codemirror/lang-yaml": "^6.1.2",
     "@codemirror/legacy-modes": "^6.5.1",
     "@nanostores/react": "0.7.2",
-    "@tutorialkit-rb/react": "0.1.4",
+    "@tutorialkit-rb/react": "0.1.6",
     "nanostores": "^0.10.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
@@ -23,9 +23,9 @@
   "devDependencies": {
     "@astrojs/check": "^0.7.0",
     "@astrojs/react": "^3.6.0",
-    "@tutorialkit-rb/astro": "0.1.4",
-    "@tutorialkit-rb/theme": "0.1.4",
-    "@tutorialkit-rb/types": "0.1.4",
+    "@tutorialkit-rb/astro": "0.1.6",
+    "@tutorialkit-rb/theme": "0.1.6",
+    "@tutorialkit-rb/types": "0.1.6",
     "@types/mdast": "^4.0.4",
     "@types/node": "^20.14.6",
     "@types/react": "^18.3.3",
