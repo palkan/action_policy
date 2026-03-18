@@ -2,6 +2,9 @@
 
 import initVM from "../lib/rails.js";
 import { createRackServer } from "../lib/server.js";
+import { wait } from "../scripts/ready.js"
+
+await wait();
 
 const vm = await initVM();
 const server = await createRackServer(vm);

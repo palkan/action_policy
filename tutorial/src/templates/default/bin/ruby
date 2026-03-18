@@ -5,6 +5,10 @@ import ExternalCommands from "../lib/commands.js";
 import util from "node:util";
 import fs from "node:fs";
 
+import { wait } from "../scripts/ready.js"
+
+await wait();
+
 const commands = new ExternalCommands();
 // Make commands accessible from Ruby via global JS object
 global.externalCommands = commands;
