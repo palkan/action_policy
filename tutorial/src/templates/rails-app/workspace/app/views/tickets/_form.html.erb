@@ -1,0 +1,39 @@
+<%= form_with model: ticket do |form| %>
+  <% if ticket.errors.any? %>
+    <div class="alert alert--error mb-md">
+      <% ticket.errors.full_messages.each do |msg| %>
+        <p><%= msg %></p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="form__group">
+    <%= form.label :title, class: "form__label" %>
+    <%= form.text_field :title, class: "input" %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :description, class: "form__label" %>
+    <%= form.text_area :description, class: "input" %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :status, class: "form__label" %>
+    <%= form.select :status, Ticket::STATUSES.map { |s| [s.titleize, s] }, {}, class: "input" %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :escalation_level, "Escalation Level", class: "form__label" %>
+    <%= form.select :escalation_level, (1..3).to_a, {}, class: "input" %>
+  </div>
+
+  <div class="form__group">
+    <%= form.label :agent_id, "Assign to", class: "form__label" %>
+    <%= form.select :agent_id, User.where(role: ["agent", "admin"]).pluck(:name, :id), {include_blank: "Unassigned"}, class: "input" %>
+  </div>
+
+  <div class="form__actions">
+    <%= form.submit class: "btn btn--primary" %>
+    <%= link_to "Cancel", tickets_path, class: "btn" %>
+  </div>
+<% end %>

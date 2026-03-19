@@ -1,7 +1,6 @@
 ---
 type: lesson
 title: Meet the Demo App
-focus: /workspace/app/views/home/index.html.erb
 previews:
   - 3000
 custom:
@@ -9,16 +8,18 @@ custom:
     workdir: "/workspace"
 ---
 
-Exploring the demo app
+Meet HelpDesk
 -------------------
 
-On the right side of the screen, you can see a running Rails application — this is the **demo app** you'll be working with throughout the tutorial.
+On the right side of the screen, you can see a running Rails application — **HelpDesk**, a support ticket management system you'll be working with throughout the tutorial.
 
-The app is pre-configured with:
+The app has three user roles:
 
-- **Authentication** — a simple session-based login system
-- **Users** — two sample accounts you can sign in with
-- **An editor** — browse and edit source files above the preview
+| User | Role | Description |
+|---|---|---|
+| **Alice** | Customer | Submits and tracks support tickets |
+| **Bob** | Agent  | Handles and responds to tickets |
+| **Charlie** | Admin  | Full access to manage everything |
 
 ### Try it out
 
@@ -28,14 +29,25 @@ Launch the Rails server:
 $ bin/rails s
 ```
 
-Click the **"Sign in to get started"** button in the preview, and log in with one of the sample accounts using the quick login links. You can also check the full login flow and use the following login credentials:
+:::tip
+The server starts automatically whenever you click on the application URL, e.g., [localhost:3000](http://localhost:3000) (only if the terminal is ready).
+:::
 
-| Email | Password |
-|---|---|
-| `alice@example.org` | `s3cr3t` |
-| `bob@example.org` | `s3cr3t` |
+Sign in using one of the quick login links (or use the credentials below):
 
-After signing in, you'll see the home page greets you by name. Feel free to update the home page ERB template and reload the page—the changes are picked up by the server!
+| Email | Password | Role |
+|---|---|---|
+| `alice@example.org` | `s3cr3t` | Customer |
+| `bob@example.org` | `s3cr3t` | Agent |
+| `charlie@example.org` | `s3cr3t` | Admin |
+
+After signing in, you'll be redirected to the **Tickets** page. Try creating a ticket, adding a comment, or editing existing ones.
+
+### Notice something?
+
+Right now, **every user can do everything** — any user can edit or delete any ticket, read internal comments, and assign agents. There are no access controls in place (check out the `app/controllers/tickets_controller.rb` file).
+
+That's exactly the problem we'll solve in this tutorial using **Action Policy**.
 
 ### Using the terminal
 
@@ -45,17 +57,16 @@ You can also interact with the app through the terminal below the preview. Try o
 $ bin/rails console
 ```
 
-You should see a prompt like:
+Try listing users with their roles:
 
 ```irb
-Loading development environment (Rails 8.0.2)
-demo_app(dev)>
+helpdesk(dev)> User.pluck(:name, :role)
 ```
 
-Try listing users:
+### Running tests
 
-```irb
-demo_app(dev)> User.pluck(:name, :email_address)
+You can run Rails tests from the terminal as usual. For example, run the TicketsController integration tests:
+
+```bash
+$ bin/rails test test/integration/tickets_test.rb
 ```
-
-In the next lessons, we'll turn this blank canvas into something cool.

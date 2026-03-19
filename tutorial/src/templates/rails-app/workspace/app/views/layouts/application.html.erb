@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Demo App" %></title>
+    <title><%= content_for(:title) || "HelpDesk" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="mobile-web-app-capable" content="yes">
@@ -20,7 +20,10 @@
 
   <body>
     <nav class="nav">
-      <%= link_to "Demo App", root_path, class: "nav__brand" %>
+      <%= link_to "HelpDesk", root_path, class: "nav__brand" %>
+      <% if authenticated? %>
+        <%= link_to "Tickets", tickets_path, class: "nav__link" %>
+      <% end %>
       <% if authenticated? %>
         <span class="nav__user"><%= Current.user.name %></span>
         <%= button_to "Log out", session_path, method: :delete, class: "btn btn--small" %>
