@@ -52,4 +52,5 @@ Rails.application.configure do
   config.action_controller.raise_on_missing_callback_actions = true
 
   config.log_level = :fatal
+  config.logger = ActiveSupport::TaggedLogging.new(Logger.new(nil))
 end

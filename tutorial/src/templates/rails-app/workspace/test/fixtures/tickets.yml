@@ -1,0 +1,14 @@
+password_reset:
+  title: "Can not reset my password"
+  description: "I tried to reset my password but never received the email."
+  status: open
+  escalation_level: 1
+  user: alice
+
+billing:
+  title: "Billing discrepancy on invoice #1042"
+  description: "I was charged twice for my last subscription renewal."
+  status: in_progress
+  escalation_level: 2
+  user: alice
+  agent: bob

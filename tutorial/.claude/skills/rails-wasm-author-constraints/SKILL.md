@@ -165,6 +165,81 @@ The runtime includes an auto-login patch: if `tmp/authenticated-user.txt` exists
 
 This requires the Rails 8 `Authentication` concern and a `User` model with an `email_address` column.
 
+## Integration Testing
+
+Rails integration tests work in the WASM runtime with important limitations.
+
+### What Works
+
+- `ActionDispatch::IntegrationTest` with `get`, `post`, `patch`, `delete`
+- `assert_response`, `assert_redirected_to`
+- `assert_difference`, `assert_no_difference`
+- Fixtures (`fixtures :all`) for test data
+- Cookie-based session management for authentication
+
+### What Does NOT Work
+
+**Nokogiri-dependent assertions are unavailable.** The Nokogiri gem is a minimal stub in WASM — CSS selectors return `[]` and HTML parsing is non-functional. This means these Rails test helpers will not work:
+
+- `assert_select` — relies on Nokogiri CSS selectors
+- `css_select` — same
+- `assert_dom` — same
+- Any assertion that parses response HTML into a DOM
+
+### Best Practices
+
+**Use `response.body` string matching instead of DOM assertions:**
+
+```ruby
+# BAD — uses Nokogiri under the hood
+assert_select "h1", text: "Tickets"
+assert_select ".alert--error", text: /blank/
+assert_select "form"
+
+# GOOD — plain string matching
+assert_includes response.body, "Tickets"
+assert_includes response.body, "blank"
+assert_includes response.body, "<form"
+```
+
+**Define an `assert_text` helper in `test_helper.rb`:**
+
+```ruby
+class ActionDispatch::IntegrationTest
+  def assert_text(text)
+    assert_includes response.body, text
+  end
+end
+```
+
+**Use cookie-based sign_in without making HTTP requests:**
+
+```ruby
+class ActionDispatch::IntegrationTest
+  private
+
+  def sign_in(user)
+    Current.session = user.sessions.create!
+
+    ActionDispatch::TestRequest.create.cookie_jar.tap do |cookie_jar|
+      cookie_jar.signed[:session_id] = Current.session.id
+      cookies[:session_id] = cookie_jar[:session_id]
+    end
+  end
+end
+```
+
+**Disable test parallelization** — PGLite does not support concurrent connections:
+
+```ruby
+module ActiveSupport
+  class TestCase
+    parallelize(workers: 1)
+    fixtures :all
+  end
+end
+```
+
 ## Filesystem Boundaries
 
 Ruby code can only access `/workspace` (the WASI preopen). Attempting to access paths outside this boundary raises `Errno::ENOENT`. Tutorial code should never navigate above `/workspace` with `Dir.chdir("..")` or absolute paths outside the preopen.
