@@ -70,6 +70,7 @@ export function FileManager() {
       const opfsRoot = await navigator.storage.getDirectory();
       const fileHandle = await opfsRoot.getFileHandle(cacheFileName, { create: true });
       const writable = await fileHandle.createWritable();
+      // @ts-ignore
       await writable.write(wasmData);
       await writable.close();
       console.log(`Ruby WASM file ${cacheFileName} cached`);

@@ -6,6 +6,18 @@ export default defineConfig({
   devToolbar: {
     enabled: false,
   },
+  vite: {
+    server: {
+      watch: {
+        ignored: ['**/ruby-wasm/**'],
+      },
+    },
+    build: {
+      rollupOptions: {
+        external: [/ruby-wasm/],
+      },
+    },
+  },
   integrations: [
     tutorialkit({
       components: {
