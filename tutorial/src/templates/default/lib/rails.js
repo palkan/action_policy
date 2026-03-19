@@ -53,6 +53,7 @@ export default async function initVM(vmopts = {}) {
       Dir.chdir("${workdir}") unless "${workdir}".empty?
 
       ENV["RACK_HANDLER"] = "wasi"
+      ENV["BUNDLE_GEMFILE"] = "/rails-vm/Gemfile"
 
       require "/rails-vm/boot"
 

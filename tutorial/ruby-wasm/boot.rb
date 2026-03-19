@@ -12,14 +12,14 @@ require "wasmify/external_commands"
 # Patch Bundler.require to only require precompiled deps
 # (We don't want to deal with group: :wasm here)
 def Bundler.require(*groups)
-  %w[
-    rails
-    wasmify-rails
-    propshaft
-    bcrypt
-    tzinfo/data
-  ].each do |gem_name|
-
-    Kernel.require gem_name
+  gemfile = ENV["BUNDLE_GEMFILE"] || File.join(__dir__, "Gemfile")
+  definition = Bundler::Dsl.evaluate(gemfile, nil, {})
+  definition.dependencies.each do |dep|
+    requires = Array(dep.autorequire || dep.name)
+    requires.each do |req|
+      Kernel.require req
+    rescue LoadError
+      Kernel.require req.tr("-", "/")
+    end
   end
 end
