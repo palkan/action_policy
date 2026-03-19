@@ -16,3 +16,6 @@ spec/dummy/tmp/
 
 gemfiles/*.lock
 lib/.rbnext
+
+# Local Netlify folder
+.netlify
