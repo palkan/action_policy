@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "wasmify-rails", "~> 0.4.0"
+gem "wasmify-rails", "~> 0.4.1"
 
 gem "rails", "~> 8.0.0"
 

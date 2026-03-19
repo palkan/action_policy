@@ -227,7 +227,7 @@ GEM
       parser (>= 3.3.0)
     uri (1.0.3)
     useragent (0.16.11)
-    wasmify-rails (0.4.0)
+    wasmify-rails (0.4.1)
       js (>= 2.6, < 3.0)
       railties (>= 7.0, < 9.0)
       ruby_wasm (>= 2.6, < 3.0)
@@ -255,7 +255,7 @@ DEPENDENCIES
   propshaft
   rails (~> 8.0.0)
   tzinfo-data
-  wasmify-rails (~> 0.4.0)
+  wasmify-rails (~> 0.4.1)
 
 BUNDLED WITH
    2.6.5
