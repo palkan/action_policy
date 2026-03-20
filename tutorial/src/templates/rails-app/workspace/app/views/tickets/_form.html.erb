@@ -19,7 +19,7 @@
 
   <div class="form__group">
     <%= form.label :status, class: "form__label" %>
-    <%= form.select :status, Ticket::STATUSES.map { |s| [s.titleize, s] }, {}, class: "input" %>
+    <%= form.select :status, Ticket.statuses.keys.map { |s| [s.titleize, s] }, {}, class: "input" %>
   </div>
 
   <div class="form__group">

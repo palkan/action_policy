@@ -5,7 +5,5 @@ class Ticket < ApplicationRecord
 
   validates :title, presence: true
 
-  STATUSES = %w[open in_progress resolved closed].freeze
-
-  validates :status, inclusion: {in: STATUSES}
+  enum :status, %w[open in_progress resolved closed].index_by(&:itself)
 end
