@@ -27,13 +27,20 @@ npm install         # Install dependencies (or pnpm/yarn/bun — whichever this 
 npm run dev         # Start dev server at http://localhost:4321/
 ```
 
-## Skills Reference
+## Before Creating or Modifying Lessons
+
+**MANDATORY:** Always invoke these skills before writing any lesson content:
+
+- `rails-lesson-recipes` — lesson patterns, directory structures, and post-creation checklist
+- `rails-file-management` — `_files/`, `_solution/`, template organization, and the file layering model
+- `tutorial-lesson-config` — frontmatter options, inheritance rules, and invalid-combination constraints
+
+Do NOT create lessons without loading these skills first. Incorrect structure causes silent runtime failures.
+
+## Additional Skills
 
 | Question | Skill |
 |----------|-------|
 | How do I start a new tutorial from scratch? | `tutorial-quickstart` |
 | How do I structure parts, chapters, and lessons? | `tutorial-content-structure` |
-| What frontmatter options can I use? | `tutorial-lesson-config` |
-| Where do I put my Rails files? | `rails-file-management` |
 | Can I teach feature X in WASM? | `rails-wasm-author-constraints` |
-| Show me a lesson pattern for Y | `rails-lesson-recipes` |
