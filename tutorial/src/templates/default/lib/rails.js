@@ -54,6 +54,8 @@ export default async function initVM(vmopts = {}) {
 
       ENV["RACK_HANDLER"] = "wasi"
       ENV["BUNDLE_GEMFILE"] = "/rails-vm/Gemfile"
+      # Prevent Minitest from enabling parallel mode
+      ENV["MT_CPU"] = "1"
 
       require "/rails-vm/boot"
 

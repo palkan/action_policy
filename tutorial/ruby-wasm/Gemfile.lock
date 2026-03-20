@@ -112,7 +112,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     mini_mime (1.1.5)
-    minitest (5.25.5)
+    minitest (5.26.2)
     net-imap (0.5.8)
       date
       net-protocol
@@ -252,6 +252,7 @@ PLATFORMS
 DEPENDENCIES
   action_policy!
   bcrypt (~> 3.1.7)
+  minitest (~> 5.26.0)
   propshaft
   rails (~> 8.0.0)
   tzinfo-data

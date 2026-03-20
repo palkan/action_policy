@@ -4,7 +4,6 @@ require "rails/test_help"
 
 module ActiveSupport
   class TestCase
-    parallelize(workers: 1)
     fixtures :all
   end
 end

@@ -5,7 +5,6 @@ require "action_policy/test_helper"
 
 module ActiveSupport
   class TestCase
-    parallelize(workers: 1)
     fixtures :all
   end
 end

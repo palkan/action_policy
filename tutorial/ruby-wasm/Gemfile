@@ -12,3 +12,5 @@ gem "propshaft"
 # other rails deps
 gem "bcrypt", "~> 3.1.7"
 gem "tzinfo-data"
+# Rails 8.0 doesn't support Minitest 6
+gem "minitest", "~> 5.26.0"

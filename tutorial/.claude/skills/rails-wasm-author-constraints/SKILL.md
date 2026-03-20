@@ -229,12 +229,12 @@ class ActionDispatch::IntegrationTest
 end
 ```
 
-**Disable test parallelization** — PGLite does not support concurrent connections:
+**Disable test parallelization** — we don't have threads or processes:
 
 ```ruby
 module ActiveSupport
   class TestCase
-    parallelize(workers: 1)
+    # parallelize(workers: 1)
     fixtures :all
   end
 end
