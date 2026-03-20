@@ -7,9 +7,7 @@ class User < ApplicationRecord
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
 
-  validates :name, :email_address, presence: true
+  enum :role, %w[customer agent admin].index_by(&:itself)
 
-  def customer? = role == "customer"
-  def agent? = role == "agent"
-  def admin? = role == "admin"
+  validates :name, :email_address, presence: true
 end

@@ -1,5 +1,6 @@
 class CommentsController < ApplicationController
   before_action :set_ticket
+  before_action :set_comment, only: %i[destroy]
 
   def create
     @comment = @ticket.comments.build(comment_params)
@@ -13,7 +14,6 @@ class CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = @ticket.comments.find(params[:id])
     @comment.destroy
     redirect_to @ticket, notice: "Comment deleted."
   end
@@ -22,6 +22,10 @@ class CommentsController < ApplicationController
 
   def set_ticket
     @ticket = Ticket.find(params[:ticket_id])
+  end
+
+  def set_comment
+    @comment = @ticket.comments.find(params[:id])
   end
 
   def comment_params
