@@ -92,6 +92,9 @@ class ResponseOutparam {
         if (location.startsWith("http://localhost:3000/")) {
           res.set("location", location.replace("http://localhost:3000", ""));
         }
+        if (location.startsWith("https://localhost:3000/")) {
+          res.set("location", location.replace("https://localhost:3000", ""));
+        }
       }
 
       let body = response.call("body").toJS();
