@@ -8,13 +8,14 @@ description: |
   'COEP headers', 'COOP headers', 'hosting setup', 'CSS classes', 'BEM components',
   'design system', 'application.css', 'quick login', 'preauthenticate', 'authentication
   setup', 'customize demo app', 'seed users', 'rails-app template', 'branding', 'logo',
-  'favicon', 'accent color', 'theme color', 'look and feel', 'customize colors', or asks
+  'favicon', 'accent color', 'theme color', 'look and feel', 'customize colors',
+  'OG image', 'og:image', 'cover image', 'social preview', 'meta tags', 'og meta', or asks
   how to set up, build, style, brand, or deploy a Rails tutorial from scratch — even if
   they don't explicitly mention quickstart. This skill provides the exact CLI commands,
   project structure, WASM build steps, rails-app template features (CSS design system,
   authentication, quick login), branding customization (logos, favicons, accent colors,
-  top bar title, component colors), demo app customization steps, deployment header
-  configuration, and common issue troubleshooting. Do NOT attempt project setup or deployment without this skill. Do NOT
+  top bar title, component colors, OG meta for social sharing), demo app customization
+  steps, deployment header configuration, and common issue troubleshooting. Do NOT attempt project setup or deployment without this skill. Do NOT
   use for detailed frontmatter reference (use tutorial-lesson-config) or WASM compatibility
   questions (use rails-wasm-author-constraints).
 ---
@@ -444,6 +445,30 @@ Update the primary color in `src/templates/rails-app/workspace/app/assets/styles
   --color-primary-light: #EFF6FF; /* tinted background */
 }
 ```
+
+### OG Meta (Social Sharing Image)
+
+Add Open Graph meta tags so your tutorial shows a rich preview when shared on social media, Slack, etc.
+
+**1. Generate a cover image.** Use a tool like [myogimage.com](https://myogimage.com/) to create a 1200×630 OG image with your tutorial title and branding.
+
+**2. Save it as `public/cover.png`.**
+
+**3. Add the `meta` key** to your tutorial root `src/content/tutorial/meta.md`:
+
+```yaml
+---
+type: tutorial
+meta:
+  image: /cover.png
+  title: Your Tutorial Title
+  description: |
+    A short description of what your tutorial teaches
+# ... rest of frontmatter
+---
+```
+
+The `meta` fields map to standard OG tags (`og:image`, `og:title`, `og:description`) and are rendered in `<head>` automatically by TutorialKit.
 
 ### GitHub Link
 

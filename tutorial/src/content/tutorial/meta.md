@@ -1,6 +1,11 @@
 ---
 type: tutorial
 openInStackBlitz: false
+meta:
+  image: /cover.png
+  title: Action Policy Tutorial
+  description: |
+    Learn how to manage access control in a structured, maintainable way in Ruby on Rails applications using Action Policy
 prepareCommands:
   - ['npm install', 'Preparing Ruby runtime']
 terminalBlockingPrepareCommandsCount: 1
