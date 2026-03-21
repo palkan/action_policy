@@ -4,6 +4,8 @@
 
 Create a progressive tutorial demonstrating how Action Policy helps manage evolving authorization requirements in a Rails app. The tutorial starts with no authorization, shows the pain of ad-hoc checks, then introduces Action Policy features incrementally as new "requirements" appear.
 
+You can find the Action Policy docs here: "../docs".
+
 ## Domain: Help Desk / Support Ticket System
 
 **Models:**
@@ -159,24 +161,27 @@ Remove all `user.admin?` checks from individual rules — handled globally now.
 **Simplify with aliases:**
 ```ruby
 class TicketPolicy < ApplicationPolicy
-  alias_rule :show?, :update?, :destroy?, to: :manage?
-
   def manage?
     record.user_id == user.id ||
       (user.agent? && record.agent_id == user.id)
   end
+  
+  def destroy? = false
 end
 ```
 
-**Introduce CommentPolicy with internal comments rule:**
+**Introduce authorization context for CommentPolicy:**
+
+We also introduce an additional authorization context—ticket.
+We encourage using only persisted records as authorization objects, so Comment.new can't be used.
+Thus, for create? rules, we provide a parent context record instead.
+
 ```ruby
 class CommentPolicy < ApplicationPolicy
-  def show?
-    !record.internal? || user.agent?
-  end
+  authorize :ticket, optional: true
 
   def create?
-    allowed_to?(:show?, record.ticket)
+    ticket && allowed_to?(:show?, ticket)
   end
 
   def destroy?
@@ -188,7 +193,7 @@ end
 **Key concepts:**
 - Pre-checks for cross-cutting concerns
 - `allow!` for fail-fast authorization
-- `alias_rule` to reduce duplication
+- `authorize` for additional authorization context
 - `allowed_to?` to delegate to another policy (CommentPolicy → TicketPolicy)
 
 ---
@@ -200,6 +205,18 @@ end
 - Agents see tickets assigned to them + unassigned tickets
 - Admins see everything
 - Internal comments are hidden from customers in ticket show view
+
+**Add CommentPolicy#show? for internal comments:**
+
+The `show?` rule provides direct-access protection—not everything is covered by scoping (e.g., future actions that operate on individual comments). The `relation_scope` handles query-level filtering.
+
+```ruby
+class CommentPolicy < ApplicationPolicy
+  def show?
+    !record.internal? || user.agent?
+  end
+end
+```
 
 **Introduce relation scoping:**
 ```ruby
@@ -246,6 +263,7 @@ end
 ```
 
 **Key concepts:**
+- `CommentPolicy#show?` for direct-access protection on internal comments
 - `relation_scope` for ActiveRecord filtering
 - `authorized_scope` in controllers
 - Pre-check in admin means scoping returns all (admin bypasses)

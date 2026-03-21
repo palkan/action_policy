@@ -1,0 +1,36 @@
+password_reset:
+  title: "Can not reset my password"
+  description: "I tried to reset my password but never received the email."
+  status: open
+  escalation_level: 1
+  user: alice
+
+billing:
+  title: "Billing discrepancy on invoice #1042"
+  description: "I was charged twice for my last subscription renewal."
+  status: in_progress
+  escalation_level: 2
+  user: alice
+  agent: bob
+
+dark_mode:
+  title: "Feature request: dark mode"
+  description: "It would be great to have a dark mode option for the dashboard."
+  status: resolved
+  escalation_level: 1
+  user: alice
+
+slow_search:
+  title: "Search is extremely slow"
+  description: "The search feature takes over 10 seconds to return results."
+  status: open
+  escalation_level: 1
+  user: dana
+
+login_issues:
+  title: "Can not log in from mobile"
+  description: "I keep getting session expired errors on my phone."
+  status: in_progress
+  escalation_level: 1
+  user: eve
+  agent: bob
