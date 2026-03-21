@@ -9,10 +9,34 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  transpile:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+    steps:
+    - uses: actions/checkout@v6
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: "3.3"
+        bundler-cache: true
+    - name: Run Ruby Next
+      run: bundle exec rake nextify
+    - name: Upload .rbnext
+      uses: actions/upload-artifact@v4
+      with:
+        name: rbnext
+        path: './lib/.rbnext'
+        include-hidden-files: true
+
   build:
     runs-on: ubuntu-latest
+    needs: transpile
     steps:
       - uses: actions/checkout@v6
+      - uses: actions/download-artifact@v4
+        with:
+          name: rbnext
+          path: './lib/.rbnext'
       - uses: actions-rust-lang/setup-rust-toolchain@v1
         with:
           toolchain: 1.74.0
