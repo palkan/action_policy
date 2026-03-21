@@ -47,6 +47,21 @@ class TicketPolicyTest < ActiveSupport::TestCase
     assert policy.apply(:destroy?)
   end
 
+  test "resolve? allows agent" do
+    policy = TicketPolicy.new(tickets(:password_reset), user: @bob)
+    assert policy.apply(:resolve?)
+  end
+
+  test "resolve? denies customer" do
+    policy = TicketPolicy.new(tickets(:password_reset), user: @alice)
+    assert_not policy.apply(:resolve?)
+  end
+
+  test "resolve? allows admin" do
+    policy = TicketPolicy.new(tickets(:billing), user: @charlie)
+    assert policy.apply(:resolve?)
+  end
+
   test "relation_scope returns customer's own tickets" do
     scope = TicketPolicy.new(Ticket, user: @alice).apply_scope(Ticket.all, type: :active_record_relation)
     assert_equal @alice.tickets.count, scope.count

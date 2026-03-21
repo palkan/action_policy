@@ -47,6 +47,38 @@ class TicketPolicyTest < ActiveSupport::TestCase
     assert policy.apply(:destroy?)
   end
 
+  test "resolve? allows agent with sufficient level" do
+    policy = TicketPolicy.new(tickets(:password_reset), user: @bob)
+    assert policy.apply(:resolve?)
+  end
+
+  test "resolve? denies agent with insufficient level" do
+    policy = TicketPolicy.new(tickets(:billing), user: @bob)
+    assert_not policy.apply(:resolve?)
+  end
+
+  test "resolve? denies customer" do
+    policy = TicketPolicy.new(tickets(:password_reset), user: @alice)
+    assert_not policy.apply(:resolve?)
+  end
+
+  test "resolve? allows admin" do
+    policy = TicketPolicy.new(tickets(:billing), user: @charlie)
+    assert policy.apply(:resolve?)
+  end
+
+  test "resolve? failure reason is agent_role? for customer" do
+    policy = TicketPolicy.new(tickets(:password_reset), user: @alice)
+    policy.apply(:resolve?)
+    assert_includes policy.result.reasons.full_messages, "Customers are not allowed to resolve tickets"
+  end
+
+  test "resolve? failure reason is sufficient_level? for low-level agent" do
+    policy = TicketPolicy.new(tickets(:billing), user: @bob)
+    policy.apply(:resolve?)
+    assert_includes policy.result.reasons.full_messages, "Your level is insufficient to resolve this ticket"
+  end
+
   test "relation_scope returns customer's own tickets" do
     scope = TicketPolicy.new(Ticket, user: @alice).apply_scope(Ticket.all, type: :active_record_relation)
     assert_equal @alice.tickets.count, scope.count
