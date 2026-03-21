@@ -241,6 +241,33 @@ h1, h2, h3, h4 {
   border-color: var(--color-danger-hover);
 }
 
+.btn--success {
+  background-color: var(--color-success);
+  border-color: var(--color-success);
+  color: var(--color-text-inverse);
+}
+
+.btn--success:hover {
+  background-color: #15803d;
+  border-color: #15803d;
+}
+
+.btn[disabled],
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn[disabled]:hover,
+.btn:disabled:hover {
+  background-color: inherit;
+}
+
+.btn--success[disabled]:hover,
+.btn--success:disabled:hover {
+  background-color: var(--color-success);
+}
+
 .btn--small {
   padding: var(--space-xs) var(--space-sm);
   font-size: 0.75rem;
