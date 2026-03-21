@@ -1,0 +1,11 @@
+alice_on_password_reset:
+  body: "I checked my spam folder too — nothing there."
+  ticket: password_reset
+  user: alice
+  internal: false
+
+bob_internal:
+  body: "Confirmed duplicate charge. Refund initiated."
+  ticket: billing
+  user: bob
+  internal: true

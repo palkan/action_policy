@@ -1,0 +1,34 @@
+alice:
+  name: Alice
+  email_address: alice@example.org
+  password_digest: <%= BCrypt::Password.create("s3cr3t") %>
+  role: customer
+  level: 1
+
+bob:
+  name: Bob
+  email_address: bob@example.org
+  password_digest: <%= BCrypt::Password.create("s3cr3t") %>
+  role: agent
+  level: 2
+
+charlie:
+  name: Charlie
+  email_address: charlie@example.org
+  password_digest: <%= BCrypt::Password.create("s3cr3t") %>
+  role: admin
+  level: 3
+
+dana:
+  name: Dana
+  email_address: dana@example.org
+  password_digest: <%= BCrypt::Password.create("s3cr3t") %>
+  role: customer
+  level: 1
+
+eve:
+  name: Eve
+  email_address: eve@example.org
+  password_digest: <%= BCrypt::Password.create("s3cr3t") %>
+  role: customer
+  level: 1

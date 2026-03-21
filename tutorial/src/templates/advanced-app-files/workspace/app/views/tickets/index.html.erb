@@ -1,0 +1,29 @@
+<div class="page-header">
+  <h1>Tickets</h1>
+  <%= link_to "New Ticket", new_ticket_path, class: "btn btn--primary" %>
+</div>
+
+<div class="card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Status</th>
+        <th>Created by</th>
+        <th>Assigned to</th>
+        <th>Level</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tickets.each do |ticket| %>
+        <tr>
+          <td><%= link_to ticket.title, ticket %></td>
+          <td><span class="badge badge--<%= status_badge_class(ticket.status) %>"><%= ticket.status.titleize %></span></td>
+          <td><%= ticket.user.name %></td>
+          <td><%= ticket.agent&.name || "—" %></td>
+          <td><%= ticket.escalation_level %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
