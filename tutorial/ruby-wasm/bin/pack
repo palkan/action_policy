@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+
+require "fileutils"
+require "wasmify/rails/builder"
+
+builder = Wasmify::Rails::Builder.new
+builder.run(name: "ruby.wasm")
+
+require "wasmify/rails/packer"
+
+output_dir = ARGV[0] ? ARGV[0] : Wasmify::Rails.config.output_dir
+
+packer = Wasmify::Rails::Packer.new(output_dir:)
+packer.run(name: "ruby.wasm", ruby_wasm_path: File.join(Wasmify::Rails.config.tmp_dir, "ruby.wasm"))

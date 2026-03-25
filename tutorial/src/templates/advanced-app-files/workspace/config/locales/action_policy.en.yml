@@ -1,0 +1,7 @@
+en:
+  action_policy:
+    unauthorized: "You are not authorized to perform this action"
+    policy:
+      ticket:
+        agent_role?: "Customers are not allowed to resolve tickets"
+        sufficient_level?: "Your level is insufficient to resolve this ticket"

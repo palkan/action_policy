@@ -1,0 +1,48 @@
+<div style="max-width: 24rem; margin: var(--space-2xl) auto;">
+  <div class="card mb-md">
+    <div class="card__header">
+      <h2>Sign in</h2>
+    </div>
+    <div class="card__body">
+      <%= form_with url: session_path do |form| %>
+        <div class="form__group">
+          <%= form.label :email_address, "Email", class: "form__label" %>
+          <%= form.email_field :email_address,
+                required: true,
+                autofocus: true,
+                autocomplete: "username",
+                placeholder: "you@example.com",
+                value: params[:email_address],
+                class: "input" %>
+        </div>
+
+        <div class="form__group">
+          <%= form.label :password, "Password", class: "form__label" %>
+          <%= form.password_field :password,
+                required: true,
+                autocomplete: "current-password",
+                placeholder: "Enter your password",
+                maxlength: 72,
+                class: "input" %>
+        </div>
+
+        <div class="form__actions">
+          <%= form.submit "Sign in", class: "btn btn--primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @preauthenticate_users.any? %>
+    <div class="card">
+      <div class="card__header">
+        <h2>Quick login</h2>
+      </div>
+      <div class="card__body">
+        <div class="quick-login">
+          <%= render partial: "preauthenticate_user", collection: @preauthenticate_users, as: :user %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

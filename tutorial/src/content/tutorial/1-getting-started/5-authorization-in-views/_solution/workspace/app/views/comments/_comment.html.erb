@@ -1,0 +1,17 @@
+<div class="card mb-md">
+  <div class="card__body">
+    <div class="inline-actions" style="justify-content: space-between; margin-bottom: var(--space-sm);">
+      <span>
+        <strong><%= comment.user.name %></strong>
+        <span class="text-sm text-muted"><%= time_ago_in_words(comment.created_at) %> ago</span>
+        <% if comment.internal? %>
+          <span class="badge badge--warning">Internal</span>
+        <% end %>
+      </span>
+      <% if allowed_to?(:destroy?, comment) %>
+        <%= button_to "Delete", ticket_comment_path(comment.ticket, comment), method: :delete, class: "btn btn--small btn--danger" %>
+      <% end %>
+    </div>
+    <p><%= comment.body %></p>
+  </div>
+</div>
