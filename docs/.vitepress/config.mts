@@ -36,6 +36,7 @@ export default defineConfig({
 
     nav: [
       { text: 'Guide', link: '/guide/', activeMatch: '/guide/' },
+      { text: 'Tutorial', link: 'https://tutorial.actionpolicy.evilmartians.io' },
       { text: 'LLMs', link: '/llms-full.txt' },
     ],
 
