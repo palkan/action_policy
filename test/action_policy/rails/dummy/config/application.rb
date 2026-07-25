@@ -11,7 +11,7 @@ Bundler.require(*Rails.groups)
 
 module Dummy
   class Application < Rails::Application
-    config.load_defaults [Rails::VERSION::MAJOR, Rails::VERSION::MINOR].map(&:to_s).join(".").to_f
+    config.load_defaults [Rails::VERSION::MAJOR, Rails::VERSION::MINOR].join(".").to_f
     config.action_controller.allow_forgery_protection = false
 
     # Hack for Rails 7 alpha
