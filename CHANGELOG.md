@@ -2,6 +2,8 @@
 
 ## master
 
+- Fix initializer racing condition with Rails 8.1 ([@inkstak][])
+
 ## 0.7.6 (2025-01-13)
 
 - Execute proc passed to the `:through` option of `authorize` against `self` ([@Pagehey][])
