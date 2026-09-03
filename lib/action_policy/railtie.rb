@@ -61,7 +61,7 @@ module ActionPolicy # :nodoc:
       app.executor.to_complete { ActionPolicy::PerThreadCache.clear_all }
     end
 
-    initializer "action_policy.extensions" do |app|
+    initializer "action_policy.extensions", after: :load_config_initializers do |app|
       if app.config.action_policy.instrumentation_enabled
         require "action_policy/rails/policy/instrumentation"
         require "action_policy/rails/authorizer"
