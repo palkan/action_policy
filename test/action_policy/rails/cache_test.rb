@@ -20,19 +20,23 @@ class TestRailsPolicyCache < Minitest::Test
 
     authorize :user
 
-    cache :manage?
+    cache :manage?, :show?
 
     def manage?
       self.class.managed_count += 1
 
       user.admin? && !record.admin?
     end
+
+    def show?
+      record.name.present?
+    end
   end
 
   def setup
     ActiveRecord::Base.connection.begin_transaction(joinable: false)
     ActionPolicy.cache_store = InMemoryCache.new
-    @guest = AR::User.create!(role: "guest")
+    @guest = AR::User.create!(name: "Goo", role: "guest")
   end
 
   attr_reader :guest
@@ -74,5 +78,17 @@ class TestRailsPolicyCache < Minitest::Test
     assert policy_4.apply(:manage?)
 
     assert_equal 3, UserPolicy.managed_count
+  end
+
+  def test_cache_new_records
+    user = AR::User.create!(role: "admin")
+
+    noname = AR::User.new(name: "")
+
+    policy = UserPolicy.new noname, user: user
+    refute policy.apply(:show?)
+
+    policy = UserPolicy.new AR::User.new(name: "Moo"), user: user
+    assert policy.apply(:show?)
   end
 end

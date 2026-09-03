@@ -15,3 +15,14 @@ ActiveRecord::Relation.include(Module.new do
     nil
   end
 end)
+
+# Ensure non-persistent models are not cached as a single entry
+ActiveRecord::Base.include(Module.new do
+  def policy_cache_key
+    if persisted?
+      cache_key_with_version
+    else
+      object_id.to_s
+    end
+  end
+end)
