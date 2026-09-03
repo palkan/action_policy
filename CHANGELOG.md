@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.7 (2026-09-03)
+
 - Fix caching non-persistent Active Record objects as the same entry ([@palkan][])
 
 - Fix initializer racing condition with Rails 8.1 ([@inkstak][])
