@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.7.8 (2026-11-03)
+
+- Improve policy caching (less key calculations, fixed collisions). ([@palkan][])
+
 - Fix `ActiveModel::MissingAttributeError` when authorizing a partially selected Active Record model from a memoized context. ([@czj][])
 
 ## 0.7.7 (2026-09-03)
