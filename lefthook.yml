@@ -8,10 +8,10 @@ pre-commit:
       tags: links
       glob: "**/*.md"
       run: lychee docs README.md CHANGELOG.md && test "{staged_files}"
-    forspell:
+    spellcheck:
       tags: grammar
       glob: "**/*.md"
-      run: forspell {staged_files}
+      run: bundle exec rubocop -c .rubocop-spellcheck.yml --only Spellcheck/Spelling {staged_files}
     rubocop:
       tags: style
       glob: "**/*.md"

@@ -165,7 +165,7 @@ end
 
 Cache store must provide at least a `#read(key)` and `#write(key, value, **options)` methods.
 
-**NOTE:** cache store also should take care of serialiation/deserialization since the `value` is `ExecutionResult` instance (which contains also some additional information, e.g. failure reasons). Rails cache store supports serialization/deserialization out-of-the-box.
+**NOTE:** cache store also should take care of serialization/deserialization since the `value` is `ExecutionResult` instance (which contains also some additional information, e.g. failure reasons). Rails cache store supports serialization/deserialization out-of-the-box.
 
 By default, Action Policy builds a cache key using the following scheme (defined in `#rule_cache_key(rule)` method):
 

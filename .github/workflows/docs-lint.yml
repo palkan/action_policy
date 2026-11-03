@@ -18,5 +18,19 @@ jobs:
   docs-lint:
     uses: anycable/github-actions/.github/workflows/docs-lint.yml@master
     with:
-      forspell-args: "*.md"
+      forspell: false
       mdl-path: README.md CHANGELOG.md
+
+  spellcheck:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: "gemfiles/rubocop.gemfile"
+    steps:
+    - uses: actions/checkout@v6
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.4
+        bundler-cache: true
+    - name: Spellcheck docs
+      run: |
+        bundle exec rubocop -c .rubocop-spellcheck.yml --only Spellcheck/Spelling

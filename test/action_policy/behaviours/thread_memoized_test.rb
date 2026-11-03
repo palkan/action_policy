@@ -215,7 +215,7 @@ class TestThreadMemoizedCacheKey < Minitest::Test
     def initialize(user) = (@user = user)
 
     def can_see?(document, account)
-      allowed_to?(:show?, document, with: DocumentPolicy, context: {account:})
+      allowed_to?(:show?, document, with: DocumentPolicy, context: {account: account})
     end
   end
 

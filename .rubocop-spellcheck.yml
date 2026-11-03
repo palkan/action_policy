@@ -1,0 +1,23 @@
+# Spellchecking config (run via `rake rubocop:spellcheck`).
+# Not inherited by the main .rubocop.yml, so regular RuboCop runs don't spellcheck.
+inherit_from: ".rubocop.yml"
+
+plugins:
+  - rubocop-spellcheck
+
+AllCops:
+  Include:
+    - '**/*.md'
+  Exclude:
+    - 'bin/*'
+    - 'tmp/**/*'
+    - 'vendor/**/*'
+    - 'tutorial/**/*'
+    - '**/node_modules/**/*'
+    - 'docs/.vitepress/**/*'
+
+Spellcheck:
+  DictionaryFiles:
+    en:
+      - gem:rubocop-spellcheck/data/en/en.dic
+      - .spellcheck.txt

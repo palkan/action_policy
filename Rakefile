@@ -10,9 +10,14 @@ begin
   RuboCop::RakeTask.new("rubocop:md") do |task|
     task.options << %w[-c .rubocop-md.yml]
   end
+
+  RuboCop::RakeTask.new("rubocop:spellcheck") do |task|
+    task.options << %w[-c .rubocop-spellcheck.yml --only Spellcheck/Spelling]
+  end
 rescue LoadError
   task(:rubocop) {}
   task("rubocop:md") {}
+  task("rubocop:spellcheck") {}
 end
 
 RSpec::Core::RakeTask.new(:spec)
@@ -39,4 +44,4 @@ task :nextify do
   sh "bundle exec ruby-next nextify -V"
 end
 
-task default: %w[rubocop rubocop:md test spec]
+task default: %w[rubocop rubocop:md rubocop:spellcheck test spec]
