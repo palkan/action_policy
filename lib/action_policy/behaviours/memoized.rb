@@ -28,14 +28,14 @@ module ActionPolicy
       end
 
       module InstanceMethods # :nodoc:
-        def policy_for(record:, **opts)
-          __policy_memoize__(record, **opts) { super }
+        def policy_for(record:, context: nil, resolved_context: nil, cache_key: nil, **opts)
+          resolved_context ||= policy_for_context(context)
+          cache_key ||= policy_for_cache_key(record:, context: resolved_context, **opts)
+          __policy_memoize__(cache_key) { super(record:, **opts, resolved_context:, cache_key:) }
         end
       end
 
-      def __policy_memoize__(record, **options)
-        cache_key = policy_for_cache_key(record: record, **options)
-
+      def __policy_memoize__(cache_key)
         return __policies_cache__[cache_key] if
           __policies_cache__.key?(cache_key)
 

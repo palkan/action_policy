@@ -391,3 +391,76 @@ class TestProcCurrentUserControllerIntegration < ActionController::TestCase
     assert_equal "OK", response.body
   end
 end
+
+class TestControllerPolicyMemoization < ActionController::TestCase
+  class Document
+    attr_reader :name, :cache_key_calculated
+
+    def initialize(name)
+      @name = name
+      @cache_key_calculated = 0
+    end
+
+    def policy_cache_key
+      @cache_key_calculated += 1
+      "c/#{name}"
+    end
+  end
+
+  class DocumentPolicy < ActionPolicy::Base
+    authorize :user
+
+    def show? = true
+
+    def destroy? = user.name == "alice"
+  end
+
+  class DocumentsController < ActionController::Base
+    authorize :user, through: :current_user
+
+    def show
+      @document = Document.new(params[:id])
+
+      buf = []
+
+      if allowed_to?(:destroy?, @document)
+        buf << "delete"
+      end
+
+      if allowed_to?(:destroy?, @document, context: {user: User.new("alice")})
+        buf << "alice deletes"
+      end
+
+      authorize! @document
+
+      buf << "cache key calls: #{@document.cache_key_calculated}"
+
+      render plain: buf.join(", ")
+    end
+
+    private
+
+    def current_user
+      return unless params[:user]
+      @current_user ||= User.new(params[:user])
+    end
+  end
+
+  tests DocumentsController
+
+  def setup
+    ActionPolicy::PerThreadCache.enabled = true
+  end
+
+  def teardown
+    ActionPolicy::PerThreadCache.clear_all
+    ActionPolicy::PerThreadCache.enabled = false
+  end
+
+  def test_index
+    get :show, params: {id: "test", user: "jack"}
+
+    # 3 calls: one per authorize!/allowed_to? call
+    assert_equal "alice deletes, cache key calls: 3", response.body
+  end
+end

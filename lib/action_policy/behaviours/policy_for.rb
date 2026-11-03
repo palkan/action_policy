@@ -8,14 +8,14 @@ module ActionPolicy
       using ActionPolicy::Ext::PolicyCacheKey
 
       # Returns policy instance for the record.
-      def policy_for(record:, with: nil, namespace: authorization_namespace, context: nil, allow_nil: false, default: default_authorization_policy_class, strict_namespace: authorization_strict_namespace)
-        context = context ? build_authorization_context.merge(context) : authorization_context
+      def policy_for(record:, with: nil, namespace: authorization_namespace, context: nil, allow_nil: false, default: default_authorization_policy_class, strict_namespace: authorization_strict_namespace, cache_key: nil, resolved_context: nil)
+        resolved_context ||= policy_for_context(context)
 
         policy_class = with || ::ActionPolicy.lookup(
           record,
-          namespace:, context:, allow_nil:, default:, strict_namespace:
+          namespace:, context: resolved_context, allow_nil:, default:, strict_namespace:
         )
-        policy_class&.new(record, **context)
+        policy_class&.new(record, **resolved_context)
       end
 
       def authorization_context = @authorization_context ||= build_authorization_context
@@ -59,13 +59,15 @@ module ActionPolicy
         )
       end
 
-      def policy_for_cache_key(record:, with: nil, namespace: authorization_namespace, **opts)
-        context = opts[:context] ? build_authorization_context.merge(opts[:context]) : authorization_context
-
+      def policy_for_cache_key(record:, context:, with: nil, namespace: authorization_namespace, **opts)
         record_key = record._policy_cache_key(use_object_id: true)
         context_key = context.map { |k, v| "#{k}:#{v._policy_cache_key(use_object_id: true)}" }.join(".")
 
         "#{namespace}/#{with}/#{context_key}/#{record_key}"
+      end
+
+      def policy_for_context(context)
+        context ? build_authorization_context.merge(context) : authorization_context
       end
     end
   end
