@@ -10,16 +10,22 @@ ActionController::Base.include(Module.new do
   end
 end)
 
-SharedTestRoutes = ActionDispatch::Routing::RouteSet.new
-
-SharedTestRoutes.draw do
-  get ":controller(/:action)"
-end
-
 ActionController::TestCase.include(
   Module.new do
     def before_setup
-      @routes = SharedTestRoutes
+      controller = self.class.controller_class
+
+      @routes = ActionDispatch::Routing::RouteSet.new.tap do |routes|
+        routes.draw do
+          next unless controller&.name
+
+          path = controller.controller_path
+
+          controller.action_methods.each do |action|
+            match "#{path}/#{action}", to: "#{path}##{action}", via: :all
+          end
+        end
+      end
       super
     end
 
