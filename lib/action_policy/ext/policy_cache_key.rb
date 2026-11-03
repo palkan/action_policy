@@ -10,7 +10,7 @@ module ActionPolicy
     #
     # Raises ArgumentError otherwise.
     module PolicyCacheKey # :nodoc: all
-      module ObjectExt
+      refine Object do
         def _policy_cache_key(use_object_id: false)
           return policy_cache_key if respond_to?(:policy_cache_key)
           return cache_key_with_version if respond_to?(:cache_key_with_version)
@@ -20,10 +20,6 @@ module ActionPolicy
 
           raise ArgumentError, "object is not cacheable"
         end
-      end
-
-      refine Object do
-        import_methods ObjectExt
       end
 
       refine NilClass do
