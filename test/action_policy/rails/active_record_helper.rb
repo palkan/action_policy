@@ -47,3 +47,5 @@ module AR
     end
   end
 end
+
+require "action_policy/rails/ext/active_record"

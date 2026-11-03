@@ -59,9 +59,11 @@ module ActionPolicy
         )
       end
 
-      def policy_for_cache_key(record:, with: nil, namespace: nil, context: authorization_context, **)
+      def policy_for_cache_key(record:, with: nil, namespace: authorization_namespace, **opts)
+        context = opts[:context] ? build_authorization_context.merge(opts[:context]) : authorization_context
+
         record_key = record._policy_cache_key(use_object_id: true)
-        context_key = context.values.map { it._policy_cache_key(use_object_id: true) }.join(".")
+        context_key = context.map { |k, v| "#{k}:#{v._policy_cache_key(use_object_id: true)}" }.join(".")
 
         "#{namespace}/#{with}/#{context_key}/#{record_key}"
       end

@@ -193,3 +193,93 @@ class TestThreadMemoized < Minitest::Test
     assert_equal 2, UserPolicy.policies.size
   end
 end
+
+class TestThreadMemoizedCacheKey < Minitest::Test
+  class Document; end
+
+  class DocumentPolicy < ActionPolicy::Base
+    authorize :user
+    authorize :account
+
+    def show? = user == "alice"
+  end
+
+  class Viewer
+    include ActionPolicy::Behaviour
+    include ActionPolicy::Behaviours::ThreadMemoized
+
+    authorize :user
+
+    attr_reader :user
+
+    def initialize(user) = (@user = user)
+
+    def can_see?(document, account)
+      allowed_to?(:show?, document, with: DocumentPolicy, context: {account:})
+    end
+  end
+
+  class DocPolicy < ActionPolicy::Base
+    authorize :user
+
+    def show? = false
+  end
+
+  module Admin
+    class DocPolicy < ActionPolicy::Base
+      authorize :user
+
+      def show? = true
+    end
+  end
+
+  class Doc
+    def self.policy_name = "DocPolicy"
+  end
+
+  class Area
+    include ActionPolicy::Behaviour
+    include ActionPolicy::Behaviours::ThreadMemoized
+
+    authorize :user, through: :current_user
+
+    attr_accessor :current_user, :authorization_namespace
+
+    def initialize(user, namespace = nil)
+      @current_user = user
+      @authorization_namespace = namespace
+    end
+  end
+
+  def setup
+    ActionPolicy::PerThreadCache.enabled = true
+  end
+
+  def teardown
+    ActionPolicy::PerThreadCache.clear_all
+    ActionPolicy::PerThreadCache.enabled = false
+  end
+
+  def test_explicit_context_does_not_leak_policy_between_users
+    document = Document.new
+
+    assert Viewer.new("alice").can_see?(document, "acme")
+    refute Viewer.new("bob").can_see?(document, "acme")
+  end
+
+  def test_implicit_namespace_does_not_leak_policy_between_namespaces
+    doc = Doc.new
+
+    assert Area.new("alice", Admin).allowed_to?(:show?, doc)
+    refute Area.new("alice", TestThreadMemoizedCacheKey).allowed_to?(:show?, doc)
+  end
+
+  def test_context_keys_are_part_of_the_key
+    # Same values under different keys must not collide
+    doc = Doc.new
+    policy_a = Area.new("alice").policy_for(record: doc, with: DocPolicy, context: {account: "x"})
+    policy_b = Area.new("alice").policy_for(record: doc, with: DocPolicy, context: {team: "x"})
+
+    refute_same policy_a, policy_b
+  end
+end
