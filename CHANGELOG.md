@@ -2,6 +2,8 @@
 
 ## master
 
+- Fix `ActiveModel::MissingAttributeError` when authorizing a partially selected Active Record model from a memoized context. ([@czj][])
+
 ## 0.7.7 (2026-09-03)
 
 - Fix caching non-persistent Active Record objects as the same entry ([@palkan][])
@@ -566,3 +568,4 @@ This value is now stored in a cache (if any) instead of just the call result (`t
 [@stephannv]: https://github.com/stephannv
 [@sedubois]: https://github.com/sedubois
 [@Pagehey]: https://github.com/Pagehey
+[@czj]: https://github.com/czj

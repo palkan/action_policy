@@ -31,3 +31,41 @@ class TestRailtie < Minitest::Test
     end
   end
 end
+
+class TestActiveRecordPolicyCacheKey < Minitest::Test
+  def setup
+    ActiveRecord::Base.connection.begin_transaction(joinable: false)
+    @user = AR::User.create!(name: "Jack")
+  end
+
+  def teardown
+    ActiveRecord::Base.connection.rollback_transaction
+  end
+
+  attr_reader :user
+
+  class PartialUserPolicy < ActionPolicy::Base
+    authorize :user
+
+    def show? = true
+  end
+
+  class UsersController < ActionController::Base
+    authorize :user, through: :current_user
+
+    def current_user = AR::User.first
+  end
+
+  def test_partially_selected_record
+    partial_user = AR::User.select(:id, :name).find(user.id)
+
+    assert UsersController.new.allowed_to?(:show?, partial_user, with: PartialUserPolicy)
+  end
+
+  def test_partially_selected_records_do_not_share_a_cache_entry
+    refute_equal(
+      AR::User.select(:id, :name).find(user.id).policy_cache_key,
+      AR::User.select(:id, :name).find(user.id).policy_cache_key
+    )
+  end
+end
