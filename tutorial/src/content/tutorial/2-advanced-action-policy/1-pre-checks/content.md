@@ -36,7 +36,7 @@ end
 
 Now that admins are handled globally, remove `user.admin?` from `TicketPolicy`. And since `destroy?` was only allowed for admins—it becomes simply `false`:
 
-```ruby title="app/policies/ticket_policy.rb" del={8,12-15} ins={9}
+```ruby title="app/policies/ticket_policy.rb" del={8-9,13-15} ins={10,16}
 class TicketPolicy < ApplicationPolicy
   def show?
     true
