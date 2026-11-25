@@ -17,7 +17,7 @@ Composable. Extensible. Performant.
 
 <br/>
 
-<img src="https://cdn.evilmartians.com/badges/logo-no-label.svg" alt="Evil Martians logo" width="22" height="16" /> <b>Action Policy</b> is built by <b><a href="https://evilmartians.com/">Evil Martians</a></b>, an American design and engineering consultancy for <b>developer tools, AI, and cybersecurity startups</b>.
+<img src="https://cdn.evilmartians.com/badges/logo-no-label.svg" alt="Evil Martians logo" width="22" height="16" /> <b>Action Policy</b> is built by <b><a href="https://evilmartians.com/">Evil Martians</a></b>, an American design and engineering consultancy for <b>developer tools, AI, and cybersecurity startups</b>. Need a senior Rails team? See <a href="https://evilmartians.com/services/ruby-on-rails-consulting?utm_source=action_policy">Ruby on Rails consulting</a>.
 
 ## Resources
 
