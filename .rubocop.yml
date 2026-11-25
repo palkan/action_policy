@@ -1,6 +1,5 @@
 require:
   - standard/cop/block_single_line_braces
-  - ruby-next/rubocop
 
 inherit_gem:
   standard: config/base.yml
@@ -17,7 +16,7 @@ AllCops:
     - 'tutorial/**/*'
   DisplayCopNames: true
   SuggestExtensions: false
-  TargetRubyVersion: next
+  TargetRubyVersion: 4.0
 
 Standard/BlockSingleLineBraces:
   Enabled: false
@@ -30,4 +29,7 @@ Naming/FileName:
    - '**/*.md'
 
 Style/ArgumentsForwarding:
+  Enabled: false
+
+Style/DefWithParentheses:
   Enabled: false
